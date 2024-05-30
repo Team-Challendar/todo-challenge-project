@@ -1,0 +1,33 @@
+{
+  "originHash" : "b7fd0c3e1d99f0d92182a5e5e5542583c1e0a2847349bc2bf669139da90b6a36",
+  "pins" : [
+    {
+      "identity" : "animated-tab-bar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Ramotion/animated-tab-bar.git",
+      "state" : {
+        "revision" : "52174249fa7b296c0fce1114be8f34081b85ffc3",
+        "version" : "5.2.0"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift",
+      "state" : {
+        "revision" : "b06a8c8596e4c3e8e7788e08e720e3248563ce6a",
+        "version" : "6.7.1"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "state" : {
+        "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+        "version" : "5.7.1"
+      }
+    }
+  ],
+  "version" : 3
+}
