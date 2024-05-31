@@ -10,7 +10,6 @@ import SnapKit
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
-    var textLabel: UILabel!
     var TitleLabel: UILabel!
     var checkButton: UIButton!
     
@@ -31,12 +30,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.layer.masksToBounds = true
         contentView.backgroundColor = .challendarBlack80
         
-        textLabel = UILabel()
-        textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.textColor = .gray
-        textLabel.font = textLabel.font.withSize(14)
-        contentView.addSubview(textLabel)
-        
         TitleLabel = UILabel()
         TitleLabel.translatesAutoresizingMaskIntoConstraints = false
         TitleLabel.textColor = .white
@@ -56,8 +49,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             
-            textLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            textLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
             contentView.heightAnchor.constraint(equalToConstant: 75),
             TitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             TitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),

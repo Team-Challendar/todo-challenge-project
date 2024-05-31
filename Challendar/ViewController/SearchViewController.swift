@@ -58,12 +58,12 @@ class SearchViewController: UIViewController {
         // 그룹 크기 설정 (높이 고정: 75, 너비는 섹션에 맞추기)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(75))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(16) // 아이템 사이 간격 8
+        group.interItemSpacing = .fixed(16) // 아이템 사이 간격 16
         
         // 섹션 설정
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        section.interGroupSpacing = 16 // 그룹 사이 간격 8
+        section.interGroupSpacing = 16 // 그룹 사이 간격 16
         
         // 섹션 헤더 설정
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(32))
@@ -74,7 +74,6 @@ class SearchViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
-
     
     private func reload() {
         self.collectionView.reloadData()
@@ -133,13 +132,14 @@ class SearchViewController: UIViewController {
         ])
     }
     
-    
     private func setLeftImage(_ image: UIImage, for textField: UITextField) {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
+        imageView.frame = CGRect(x: 8, y: 0, width: 22, height: 22) // 좌측 패딩 8
         imageView.tintColor = .challendarBlack60
-        textField.leftView = imageView
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 22))
+        paddingView.addSubview(imageView)
+        textField.leftView = paddingView
         textField.leftViewMode = .always
     }
     
@@ -193,14 +193,17 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
+        
+        let itemCount = (indexPath.section == 0) ? filteredItems.filter { $0.progress == 1.0 }.count : filteredItems.filter { $0.progress! < 1.0 }.count
+        header.isHidden = (itemCount == 0)
+        
+        if !header.isHidden {
             header.sectionLabel.text = indexPath.section == 0 ? "완료 투두" : "미완료 투두"
             header.sectionLabel.textColor = .challendarBlack60
-            return header
         }
         
-        fatalError("Unexpected element kind")
+        return header
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -256,8 +259,8 @@ extension SearchViewController: UISearchBarDelegate {
 class SearchSectionHeader: UICollectionReusableView {
     let sectionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .cyan
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -266,8 +269,10 @@ class SearchSectionHeader: UICollectionReusableView {
         super.init(frame: frame)
         addSubview(sectionLabel)
         NSLayoutConstraint.activate([
-            sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8)
+            sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }
     
