@@ -10,7 +10,8 @@ import SnapKit
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
-    var TitleLabel: UILabel!
+    var titleLabel: UILabel!
+    var dateLabel: UILabel!
     var checkButton: UIButton!
     
     override init(frame: CGRect) {
@@ -30,11 +31,17 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.layer.masksToBounds = true
         contentView.backgroundColor = .challendarBlack80
         
-        TitleLabel = UILabel()
-        TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        TitleLabel.textColor = .white
-        TitleLabel.font = TitleLabel.font.withSize(20)
-        contentView.addSubview(TitleLabel)
+        titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .white
+        titleLabel.font = .pretendardMedium(size: 20)
+        contentView.addSubview(titleLabel)
+        
+        dateLabel = UILabel()
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.textColor = .challendarGreen100
+        dateLabel.font = .pretendardMedium(size: 12)
+        contentView.addSubview(dateLabel)
         
         checkButton = UIButton(type: .system)
         checkButton.setImage(UIImage(systemName: "circle"), for: .normal)
@@ -50,9 +57,14 @@ class SearchCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             
             contentView.heightAnchor.constraint(equalToConstant: 75),
-            TitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            TitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            
+            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            
+            checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
         ])
     }
@@ -60,9 +72,17 @@ class SearchCollectionViewCell: UICollectionViewCell {
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
     }
-    
-    func configure(with todo: TodoModel) {
-        TitleLabel.text = todo.name
-        checkButton.isSelected = todo.dailyCompletionStatus?.contains(true) ?? false
-    }
+//
+//    func formatDate(_ date: Date?) -> String {
+//            guard let date = date else { return "날짜 없음" }
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "yyyy. MM. dd"
+//            return dateFormatter.string(from: date)
+//        }
+//    
+//    func configure(with todo: TodoModel) {
+//        titleLabel.text = todo.name
+//        dateLabel.text = formatDate(todo.endDate)
+//        checkButton.isSelected = todo.dailyCompletionStatus?.contains(true) ?? false
+//    }
 }

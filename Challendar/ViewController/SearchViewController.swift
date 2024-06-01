@@ -83,7 +83,7 @@ class SearchViewController: UIViewController {
         // UISearchBar 객체를 생성하고 설정
         searchBar = UISearchBar()
         searchBar.delegate = self // 델리게이트를 설정하여 이벤트 처리
-        searchBar.placeholder = "검색어를 입력하세요" // 플레이스홀더 텍스트 설정
+        searchBar.placeholder = "검색어를 입력해주세요" // 플레이스홀더 텍스트 설정
         searchBar.setValue("취소", forKey: "cancelButtonText") // 취소 버튼의 텍스트를 "취소"로 설정
         searchBar.showsCancelButton = false // 취소 버튼을 기본적으로 숨김
         
@@ -100,7 +100,7 @@ class SearchViewController: UIViewController {
         }
         
         searchTextField.backgroundColor = .challendarBlack80 // 배경색을 설정
-        searchTextField.font = UIFont.systemFont(ofSize: 18) // 폰트 크기 설정
+        searchTextField.font = .pretendardMedium(size: 18) // 폰트 크기 설정
         searchTextField.layer.borderColor = UIColor.init(white: 1, alpha: 0.02).cgColor // 테두리 색상 설정
         searchTextField.layer.borderWidth = 1 // 테두리 두께 설정
         searchTextField.layer.cornerRadius = 12 // 테두리 모서리 둥글게 설정
@@ -108,14 +108,37 @@ class SearchViewController: UIViewController {
         searchTextField.tintColor = .challendarBlack80 // 틴트 색상 설정
         searchTextField.textColor = .white // 타이핑되는 글씨 색상 설정
         
+//        let deleteButton = UIView()
+//        deleteButton.frame = CGRect(x: 0, y: 0, width: 48, height: 36)
+//        deleteButton.isUserInteractionEnabled = true // Enable user interaction
+//
+//        // Create the label for the button
+//        let cancelText = UILabel()
+//        cancelText.text = "취소"
+//        cancelText.font = UIFont(name: "Pretendard-SemiBold", size: 16)
+//        cancelText.textColor = UIColor(red: 0.04, green: 0.04, blue: 0.04, alpha: 1.00)
+//        deleteButton.addSubview(cancelText)
+//
+//        // Add constraints to the label
+//        cancelText.snp.makeConstraints {
+//            $0.edges.equalToSuperview().inset(8)
+//        }
+//
+//        // Add a tap gesture recognizer to the deleteButton
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
+//        deleteButton.addGestureRecognizer(tapGesture)
+        
         // 플레이스홀더 텍스트 색상 설정
         if let placeholderText = searchBar.placeholder {
             searchTextField.attributedPlaceholder = NSAttributedString(
                 string: placeholderText,
-                attributes: [NSAttributedString.Key.foregroundColor: UIColor.challendarBlack60]
+                attributes: [
+                    NSAttributedString.Key.font: UIFont.pretendardRegular(size: 18), // 커스텀 폰트 사용
+                    NSAttributedString.Key.foregroundColor: UIColor.challendarBlack60 // 텍스트 색상 설정
+                ]
             )
         }
-        
+
         if let image = UIImage(systemName: "magnifyingglass") {
             setLeftImage(image, for: searchTextField)
         } else {
@@ -132,6 +155,10 @@ class SearchViewController: UIViewController {
         ])
     }
     
+//    @objc func cancelButtonTap() {
+//        navigationController?.dismiss(animated: false)
+//    }
+//    
     private func setLeftImage(_ image: UIImage, for textField: UITextField) {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
@@ -184,13 +211,21 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         } else {
             item = filteredItems.filter { $0.progress! < 1.0 }[indexPath.row]
         }
-        cell.TitleLabel.text = item.name
+        cell.titleLabel.text = item.name
+        cell.dateLabel.text = formatDate(item.endDate)
         cell.contentView.backgroundColor = .challendarBlack80
         cell.layer.cornerRadius = 20
         cell.layer.masksToBounds = true
         
         return cell
     }
+    
+    func formatDate(_ date: Date?) -> String {
+            guard let date = date else { return "날짜 없음" }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy. MM. dd."
+            return dateFormatter.string(from: date)
+        }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
@@ -259,8 +294,8 @@ extension SearchViewController: UISearchBarDelegate {
 class SearchSectionHeader: UICollectionReusableView {
     let sectionLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = .cyan
+        label.font = .pretendardMedium(size: 16)
+        label.textColor = .challendarBlack60
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
