@@ -7,11 +7,10 @@
 
 import UIKit
 
-class TodoViewController: UIViewController {
+class TodoViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureBackground()
     }
 
 }

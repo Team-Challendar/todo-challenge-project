@@ -7,11 +7,10 @@
 
 import UIKit
 
-class ChallengeListViewController: UIViewController {
+class ChallengeListViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureBackground()
         configureFloatingButton()
     }
 
