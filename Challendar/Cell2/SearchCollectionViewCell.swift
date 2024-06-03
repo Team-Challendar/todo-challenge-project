@@ -127,3 +127,4 @@ class SearchCollectionViewCell: UICollectionViewCell {
           }
       }
   }
+// 체크 버튼 누를 시 셀 리로드.

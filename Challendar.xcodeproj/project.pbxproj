@@ -36,6 +36,8 @@
 		1472ADEA2C0840AD00145668 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADE92C0840AD00145668 /* TabBarViewController.swift */; };
 		1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADEB2C0840EB00145668 /* CustomBounceAnimation.swift */; };
 		1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADEE2C0850D700145668 /* FloatingButton.swift */; };
+		2E14DAF72C0D4830009C1A43 /* ChallengeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E14DAF62C0D4830009C1A43 /* ChallengeCollectionViewCell.swift */; };
+		2E14DAF92C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E14DAF82C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift */; };
 		2EE276832C0964E700529138 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE276822C0964E700529138 /* SearchCollectionViewCell.swift */; };
 		2EE276872C09AE6900529138 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE276862C09AE6900529138 /* Dummy.swift */; };
 /* End PBXBuildFile section */
@@ -69,6 +71,8 @@
 		1472ADE92C0840AD00145668 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		1472ADEB2C0840EB00145668 /* CustomBounceAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomBounceAnimation.swift; sourceTree = "<group>"; };
 		1472ADEE2C0850D700145668 /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
+		2E14DAF62C0D4830009C1A43 /* ChallengeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCollectionViewCell.swift; sourceTree = "<group>"; };
+		2E14DAF82C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCircleChartViewCell.swift; sourceTree = "<group>"; };
 		2EE276822C0964E700529138 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		2EE276862C09AE6900529138 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -192,6 +196,8 @@
 			isa = PBXGroup;
 			children = (
 				2EE276822C0964E700529138 /* SearchCollectionViewCell.swift */,
+				2E14DAF62C0D4830009C1A43 /* ChallengeCollectionViewCell.swift */,
+				2E14DAF82C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift */,
 			);
 			path = Cell2;
 			sourceTree = "<group>";
@@ -294,7 +300,9 @@
 				1472ADEA2C0840AD00145668 /* TabBarViewController.swift in Sources */,
 				1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */,
 				1472ADD22C082F0000145668 /* Extension.swift in Sources */,
+				2E14DAF92C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift in Sources */,
 				1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */,
+				2E14DAF72C0D4830009C1A43 /* ChallengeCollectionViewCell.swift in Sources */,
 				1472ADDC2C083B1000145668 /* TodoViewController.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,

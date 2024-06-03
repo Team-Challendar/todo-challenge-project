@@ -56,7 +56,6 @@ class SearchViewController: UIViewController {
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(8)
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
@@ -254,7 +253,12 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
 }
 
+
 extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            filterItems(with: searchText)
+        }
+    
     class SearchSectionHeader: UICollectionReusableView {
         let sectionLabel: UILabel = {
             let label = UILabel()
