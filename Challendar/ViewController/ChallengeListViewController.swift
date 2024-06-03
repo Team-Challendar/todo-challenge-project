@@ -1,17 +1,9 @@
-//
-//  ChallengeListViewController.swift
-//  Challendar
-//
-//  Created by Sam.Lee on 5/30/24.
-//
-
 import UIKit
 import SnapKit
 
 class ChallengeListViewController: BaseViewController {
 
     private var todoItems: [TodoModel] = todos
-    private var todoProgress: [TodoModel] = todos
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
@@ -20,7 +12,6 @@ class ChallengeListViewController: BaseViewController {
         
         // isChallenge가 true인 투두만 items 배열에 추가
         todoItems = todos.filter { $0.isChallenge == true }
-        todoProgress = todos.filter { $0.isChallenge == true }
 
         setupCollectionView()
         setupLayout()
@@ -40,7 +31,6 @@ class ChallengeListViewController: BaseViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(HalfCircleChartViewCell.self, forCellWithReuseIdentifier: "chartCell")
         collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
@@ -48,11 +38,7 @@ class ChallengeListViewController: BaseViewController {
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            if sectionIndex == 1 {
-                return self.createTodoSection()
-            } else {
-                return self.createChartSection()
-            }
+            return self.createTodoSection()
         }
     }
     
@@ -75,52 +61,27 @@ class ChallengeListViewController: BaseViewController {
         
         return section
     }
-    
-    private func createChartSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(220))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(220))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
-        section.boundarySupplementaryItems = [header]
-        
-        return section
-    }
 }
 
 extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return section == 1 ? todoItems.count : 1
+        return todoItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
-            cell.configure(with: todoItems[indexPath.item])
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chartCell", for: indexPath) as! HalfCircleChartViewCell
-            cell.configure(with: todoProgress)
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
+        cell.configure(with: todoItems[indexPath.item])
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
-            header.sectionLabel.text = indexPath.section == 1 ? "챌린지 투두" : "성취도 그래프"
+            header.sectionLabel.text = "챌린지 투두"
             return header
         }
         return UICollectionReusableView()

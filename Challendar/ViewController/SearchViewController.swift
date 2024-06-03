@@ -43,6 +43,7 @@ class SearchViewController: BaseViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.register(UICollectionReusableView.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Empty")
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.register(SearchSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
@@ -100,30 +101,29 @@ class SearchViewController: BaseViewController {
             cancelText.centerYAnchor.constraint(equalTo: cancelBtn.centerYAnchor)
         ])
         // 취소 기능 확정 후 작성
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
-//        cancelBtn.addGestureRecognizer(tapGesture)
+        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
+        //        cancelBtn.addGestureRecognizer(tapGesture)
         
         customCancelButton = UIBarButtonItem(customView: cancelBtn)
     }
     // 취소 기능 확정 후 수정
-//    @objc func cancelButtonTap() {
-//        searchBar.setShowsCancelButton(false, animated: true)
-//        navigationItem.rightBarButtonItem = nil // Hide the custom cancel button
-//        updateSearchTextFieldConstraints(showingCancelButton: false)
-//    }
+    //    @objc func cancelButtonTap() {
+    //        searchBar.setShowsCancelButton(false, animated: true)
+    //        navigationItem.rightBarButtonItem = nil // Hide the custom cancel button
+    //        updateSearchTextFieldConstraints(showingCancelButton: false)
+    //    }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true) // Hide default cancel button
         navigationItem.rightBarButtonItem = customCancelButton // Show custom cancel button
         updateSearchTextFieldConstraints(showingCancelButton: true)
     }
-
+    
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
         navigationItem.rightBarButtonItem = nil // Hide the custom cancel button
         updateSearchTextFieldConstraints(showingCancelButton: false)
     }
-
     
     private func searchBarTextFieldConfigure() {
         guard let searchTextField = searchBar.value(forKey: "searchField") as? UITextField else {
@@ -203,21 +203,41 @@ class SearchViewController: BaseViewController {
         }
         reload() // 필터링 후 데이터 리로드
     }
-    
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        var numberOfSection = 0
+        if !filteredChallengeItems.isEmpty{
+            numberOfSection += 1
+        }
+        if !filteredNonChallengeItems.isEmpty{
+            numberOfSection += 1
+        }
+        return numberOfSection
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return section == 0 ? filteredChallengeItems.count : filteredNonChallengeItems.count
+        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty {
+            return section == 0 ? filteredChallengeItems.count : filteredNonChallengeItems.count
+        } else if !filteredChallengeItems.isEmpty {
+            return filteredChallengeItems.count
+        } else {
+            return filteredNonChallengeItems.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
-        let item = indexPath.section == 0 ? filteredChallengeItems[indexPath.row] : filteredNonChallengeItems[indexPath.row]
+        
+        let item : TodoModel
+        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty{
+            item = indexPath.section == 0 ? filteredChallengeItems[indexPath.row] : filteredNonChallengeItems[indexPath.row]
+        } else if !filteredChallengeItems.isEmpty {
+            item = filteredChallengeItems[indexPath.row]
+        }else{
+            item = filteredNonChallengeItems[indexPath.row]
+        }
         cell.configure(with: item)
         return cell
     }
@@ -225,14 +245,15 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
         
-        let itemCount = (indexPath.section == 0) ? filteredChallengeItems.count : filteredNonChallengeItems.count
-        header.isHidden = (itemCount == 0)
-        
-        if !header.isHidden {
+        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty {
             header.sectionLabel.text = indexPath.section == 0 ? "챌린지 투두" : "일반 투두"
-            header.sectionLabel.textColor = .challendarBlack60
-            header.sectionLabel.font = .pretendardSemiBold(size: 14)
+        } else if !filteredChallengeItems.isEmpty {
+            header.sectionLabel.text = "챌린지 투두"
+        } else {
+            header.sectionLabel.text = "일반 투두"
         }
+        header.sectionLabel.textColor = .challendarBlack60
+        header.sectionLabel.font = .pretendardSemiBold(size: 14)
         
         return header
     }
@@ -253,11 +274,10 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
 }
 
-
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-            filterItems(with: searchText)
-        }
+        filterItems(with: searchText)
+    }
     
     class SearchSectionHeader: UICollectionReusableView {
         let sectionLabel: UILabel = {
