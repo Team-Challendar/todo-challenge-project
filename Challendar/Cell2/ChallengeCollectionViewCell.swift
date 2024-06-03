@@ -41,12 +41,16 @@ struct PieChartView: View {
                     .foregroundStyle(color(for: element.status))
             }
         }
-        .padding(0)
+        .padding(-10)
+        .frame(width: 19, height: 19)
+        .cornerRadius(5.5)
+        .clipped()
     }
 }
 
 class ChallengeCollectionViewCell: UICollectionViewCell {
     
+    var checkButton: UIButton!
     var titleLabel: UILabel!
     var dateLabel: UILabel!
     var stateLabel: UILabel!
@@ -89,6 +93,15 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         stateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(stateLabel)
         
+        checkButton = UIButton(type: .system)
+        checkButton.setImage(.done0.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .normal)
+        checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
+        checkButton.tintColor = .clear
+        checkButton.isHidden = false
+        checkButton.translatesAutoresizingMaskIntoConstraints = false
+        checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
+        contentView.addSubview(checkButton)
+        
         NSLayoutConstraint.activate([
             contentView.heightAnchor.constraint(equalToConstant: 75),
             
@@ -100,8 +113,10 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
             dateLabel.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
+            
+            checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
         ])
-        
         setupChartView()
     }
     
@@ -117,13 +132,17 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(hostingController.view)
         
         NSLayoutConstraint.activate([
-            hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            hostingController.view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -25),
             hostingController.view.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             hostingController.view.heightAnchor.constraint(equalToConstant: 22),
-            hostingController.view.widthAnchor.constraint(equalToConstant: 22)
+            hostingController.view.widthAnchor.constraint(equalToConstant: 22),
         ])
     }
     
+    @objc private func checkButtonTapped() {
+        checkButton.isSelected.toggle()
+    }
+      
     func configure(with item: TodoModel) {
         titleLabel.text = item.name
         dateLabel.text = formatDate(item.endDate)
