@@ -66,6 +66,10 @@
 		14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F342C0A4B0F00819B27 /* CALayerExtension.swift */; };
 		14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */; };
 		14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F382C0A4B3600819B27 /* UIViewExtension.swift */; };
+		2E14DAF72C0D4830009C1A43 /* ChallengeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E14DAF62C0D4830009C1A43 /* ChallengeCollectionViewCell.swift */; };
+		2E14DAF92C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E14DAF82C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift */; };
+		2EE276832C0964E700529138 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE276822C0964E700529138 /* SearchCollectionViewCell.swift */; };
+		2EE276872C09AE6900529138 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE276862C09AE6900529138 /* Dummy.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +131,10 @@
 		14C97F342C0A4B0F00819B27 /* CALayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
 		14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		14C97F382C0A4B3600819B27 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		2E14DAF62C0D4830009C1A43 /* ChallengeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCollectionViewCell.swift; sourceTree = "<group>"; };
+		2E14DAF82C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfCircleChartViewCell.swift; sourceTree = "<group>"; };
+		2EE276822C0964E700529138 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
+		2EE276862C09AE6900529138 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,8 +175,8 @@
 			children = (
 				14C3FA192C0C9EA700ACAFB6 /* Challendar.entitlements */,
 				14C3FA0D2C0C7CFF00ACAFB6 /* Manager */,
+				2EE276812C095A4000529138 /* Cell2 */,
 				1472ADED2C0850C200145668 /* Component */,
-				1472ADBC2C082B4400145668 /* Cell */,
 				1472ADB92C082B2E00145668 /* Model */,
 				1472ADB82C082B1B00145668 /* Util */,
 				1472ADB72C082B0B00145668 /* ViewController */,
@@ -215,6 +223,7 @@
 				14C97F262C09D7B400819B27 /* DayModel.swift */,
 				14C3FA152C0C8B0F00ACAFB6 /* Todo.swift */,
 				14C3FA172C0C900400ACAFB6 /* SelectedDateTypeEnum.swift */,
+				2EE276862C09AE6900529138 /* Dummy.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -321,6 +330,16 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		2EE276812C095A4000529138 /* Cell2 */ = {
+			isa = PBXGroup;
+			children = (
+				2EE276822C0964E700529138 /* SearchCollectionViewCell.swift */,
+				2E14DAF62C0D4830009C1A43 /* ChallengeCollectionViewCell.swift */,
+				2E14DAF82C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift */,
+			);
+			path = Cell2;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -423,6 +442,8 @@
 				149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */,
 				14C97F332C0A4AF000819B27 /* BaseViewControllerExtension.swift in Sources */,
 				14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */,
+				1472ADA52C082A0F00145668 /* TodoCalandarViewController.swift in Sources */,
+				2EE276872C09AE6900529138 /* Dummy.swift in Sources */,
 				1472ADD82C083AD400145668 /* SearchViewController.swift in Sources */,
 				1472ADE02C083F5D00145668 /* TabModel.swift in Sources */,
 				14C97F272C09D7B400819B27 /* DayModel.swift in Sources */,
@@ -441,7 +462,10 @@
 				1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */,
 				14C97F312C0A4AD000819B27 /* UIFontExtension.swift in Sources */,
 				1472ADF72C08720900145668 /* TodoTitleTextField.swift in Sources */,
+				1472ADD22C082F0000145668 /* Extension.swift in Sources */,
+				2E14DAF92C0DAFF0009C1A43 /* HalfCircleChartViewCell.swift in Sources */,
 				1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */,
+				2E14DAF72C0D4830009C1A43 /* ChallengeCollectionViewCell.swift in Sources */,
 				1472ADDC2C083B1000145668 /* TodoViewController.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
@@ -456,6 +480,7 @@
 				14C97F1D2C09A4C800819B27 /* BottomSheetViewController.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
+				2EE276832C0964E700529138 /* SearchCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,7 +550,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -582,7 +607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
