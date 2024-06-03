@@ -1,6 +1,13 @@
 import Foundation
 
 extension Date {
+    static func currentTimeZone (date: Date) -> String{
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "yyyy년MM월dd일"
+        dateformatter.locale = Locale(identifier: "ko_KR")
+        dateformatter.timeZone = TimeZone.current
+        return dateformatter.string(from: date)
+    }
     func isSameMonth(as date: Date) -> Bool {
         let calendar = Calendar.current
         
@@ -43,11 +50,7 @@ extension Date {
         let now = Date()
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month, .day, .weekday], from: now)
-        guard let currentWeekday = components.weekday else {
-            return Date()
-        }
-        let daysUntilSunday = 8 - currentWeekday
-        if let nextSunday = calendar.date(byAdding: .day, value: daysUntilSunday, to: now) {
+        if let nextSunday = calendar.date(byAdding: .day, value: 7, to: now) {
             var sundayComponents = calendar.dateComponents([.year, .month, .day], from: nextSunday)
             sundayComponents.hour = 23
             sundayComponents.minute = 59

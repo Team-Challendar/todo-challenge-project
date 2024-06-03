@@ -46,6 +46,11 @@
 		149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F92C0B065200D63368 /* UIViewControllerExtension.swift */; };
 		149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */; };
 		149228FE2C0B1CE500D63368 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FD2C0B1CE500D63368 /* DateExtension.swift */; };
+		14AAA9052C0E08A00085E22F /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA9042C0E08A00085E22F /* SuccessViewController.swift */; };
+		14AAA9072C0E1F110085E22F /* ChallengeCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA9062C0E1F110085E22F /* ChallengeCheckViewController.swift */; };
+		14AAA9092C0E217E0085E22F /* ChallengePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */; };
+		14AAA90B2C0E231D0085E22F /* Speech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90A2C0E231C0085E22F /* Speech.swift */; };
+		14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */; };
 		14C3FA0F2C0C7D0A00ACAFB6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA0E2C0C7D0A00ACAFB6 /* CoreDataManager.swift */; };
 		14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA102C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift */; };
 		14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA112C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift */; };
@@ -107,6 +112,11 @@
 		149228F92C0B065200D63368 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
 		149228FD2C0B1CE500D63368 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		14AAA9042C0E08A00085E22F /* SuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
+		14AAA9062C0E1F110085E22F /* ChallengeCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCheckViewController.swift; sourceTree = "<group>"; };
+		14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengePopUpView.swift; sourceTree = "<group>"; };
+		14AAA90A2C0E231C0085E22F /* Speech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speech.swift; sourceTree = "<group>"; };
+		14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeDelegate.swift; sourceTree = "<group>"; };
 		14C3FA0E2C0C7D0A00ACAFB6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		14C3FA102C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		14C3FA112C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -148,6 +158,7 @@
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
+				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
 				1472AD9E2C082A0F00145668 /* Products */,
@@ -215,6 +226,7 @@
 				14C97F262C09D7B400819B27 /* DayModel.swift */,
 				14C3FA152C0C8B0F00ACAFB6 /* Todo.swift */,
 				14C3FA172C0C900400ACAFB6 /* SelectedDateTypeEnum.swift */,
+				14AAA90A2C0E231C0085E22F /* Speech.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -267,6 +279,7 @@
 				14C97F202C09A71800819B27 /* DateView.swift */,
 				14C97F222C09ACF300819B27 /* DateBottomSheet.swift */,
 				14C97F282C09DB5600819B27 /* DateCalendarView.swift */,
+				14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -277,6 +290,14 @@
 				149228F52C0B024E00D63368 /* BaseViewController.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		14AAA90C2C0E3D3A0085E22F /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		14C3FA0D2C0C7CFF00ACAFB6 /* Manager */ = {
@@ -302,6 +323,8 @@
 				1472ADDD2C083B2A00145668 /* AddTodoViewController.swift */,
 				14C97F142C098C6200819B27 /* AddTodoDateViewController.swift */,
 				14C97F1C2C09A4C800819B27 /* BottomSheetViewController.swift */,
+				14AAA9042C0E08A00085E22F /* SuccessViewController.swift */,
+				14AAA9062C0E1F110085E22F /* ChallengeCheckViewController.swift */,
 			);
 			path = AddTodo;
 			sourceTree = "<group>";
@@ -421,22 +444,26 @@
 				14C3FA162C0C8B0F00ACAFB6 /* Todo.swift in Sources */,
 				1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */,
 				149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */,
+				14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */,
 				14C97F332C0A4AF000819B27 /* BaseViewControllerExtension.swift in Sources */,
 				14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */,
 				1472ADD82C083AD400145668 /* SearchViewController.swift in Sources */,
 				1472ADE02C083F5D00145668 /* TabModel.swift in Sources */,
 				14C97F272C09D7B400819B27 /* DayModel.swift in Sources */,
 				14C97F2E2C0A377C00819B27 /* CalendarCell.swift in Sources */,
+				14AAA9052C0E08A00085E22F /* SuccessViewController.swift in Sources */,
 				149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */,
 				1472ADF92C087B5900145668 /* EditTitleLabel.swift in Sources */,
 				14C97F152C098C6200819B27 /* AddTodoDateViewController.swift in Sources */,
 				1472ADFB2C08868100145668 /* AddPhotoButton.swift in Sources */,
 				1472ADF52C086D4800145668 /* CustomButton.swift in Sources */,
+				14AAA90B2C0E231D0085E22F /* Speech.swift in Sources */,
 				149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */,
 				1472ADFF2C08B6D300145668 /* PhotoCollectionViewCell.swift in Sources */,
 				1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */,
 				14C97F1F2C09A5B200819B27 /* DataPickEnum.swift in Sources */,
 				1472ADEA2C0840AD00145668 /* TabBarViewController.swift in Sources */,
+				14AAA9092C0E217E0085E22F /* ChallengePopUpView.swift in Sources */,
 				14C3FA0F2C0C7D0A00ACAFB6 /* CoreDataManager.swift in Sources */,
 				1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */,
 				14C97F312C0A4AD000819B27 /* UIFontExtension.swift in Sources */,
@@ -449,6 +476,7 @@
 				14C97F252C09B14300819B27 /* DateBottomSheetCollectionViewCell.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
+				14AAA9072C0E1F110085E22F /* ChallengeCheckViewController.swift in Sources */,
 				14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */,
 				14C97F232C09ACF300819B27 /* DateBottomSheet.swift in Sources */,
 				14C3FA182C0C900400ACAFB6 /* SelectedDateTypeEnum.swift in Sources */,

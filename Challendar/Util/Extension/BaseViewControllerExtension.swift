@@ -27,7 +27,7 @@ extension BaseViewController{
         closeImageView.snp.makeConstraints{
             $0.width.height.equalTo(24)
         }
-        closeImageView.contentMode = .scaleAspectFit
+        closeImageView.contentMode = .scaleAspectFill
         closeImageView.isUserInteractionEnabled = true
         var tapGesture = UITapGestureRecognizer()
         if checkFirst {

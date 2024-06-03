@@ -33,5 +33,9 @@ public let textLabelVerticalPadding = 14
 public let textLabelHorizontalPadding = 12
 public let collectionViewToVC = 27
 public let bottomSheetHeight = 375
-public let calendarViewHeight = 406
+public let calendarViewHeight = 435
 public let calendarCircleSize = 30
+
+
+// MARK: - ChallengeCheckViewController 에서 사용하는 Constraint
+public let popUpHeight = 311

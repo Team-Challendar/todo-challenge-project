@@ -35,7 +35,7 @@ class CoreDataManager {
     // MARK: - CRUD Operations
     
     // Create
-    func createTodo(newTodo: Todo) -> TodoModel? {
+    func createTodo(newTodo: Todo) {
         let todo = TodoModel(context: context)
         todo.id = UUID()
         todo.title = newTodo.title
@@ -53,7 +53,6 @@ class CoreDataManager {
         }
         
         saveContext()
-        return todo
     }
     
     // Read

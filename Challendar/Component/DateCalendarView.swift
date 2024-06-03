@@ -8,32 +8,42 @@
 import UIKit
 import SnapKit
 import FSCalendar
+import RxSwift
+import RxCocoa
 
 class DateCalendarView: UIView {
-    
+    var delegate : DateRangeProtocol?
     var calendarView = FSCalendar(frame: .zero)
+    var emptyView = UIView()
     var calendarLabel = UILabel()
     var prevButton = UIButton()
     var confirmButton = UIButton()
-    private var firstDate: Date?
-    private var lastDate: Date?
+    var disposeBag = DisposeBag()
+    var newTodo: Todo?
+    var firstDate: Date?
+    var lastDate: Date?
     private var datesRange: [Date] = []
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureUI()
         configureConstraint()
+        configureUtil()
     }
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         configureUI()
         configureConstraint()
+        configureUtil()
     }
     
     private func configureUI(){
+        emptyView.backgroundColor = .challendarEmpty
+        emptyView.layer.cornerRadius = 2.5
+        emptyView.clipsToBounds = true
         
         calendarLabel.text = DateFormatter.dateFormatter.string(from: Date())
-        calendarLabel.font = .pretendardBold(size: 22)
+        calendarLabel.font = .pretendardMedium(size: 20)
         calendarLabel.backgroundColor = .clear
         calendarLabel.textColor = .challendarWhite100
         
@@ -44,6 +54,7 @@ class DateCalendarView: UIView {
         confirmButton.setTitleColor(.challendarBlack60, for: .normal)
         confirmButton.backgroundColor = .clear
         confirmButton.titleLabel?.font = .pretendardSemiBold(size: 16)
+        confirmButton.isEnabled = false
         
         self.layer.cornerRadius = 20
         self.backgroundColor = .challendarBlack80
@@ -52,12 +63,12 @@ class DateCalendarView: UIView {
         //MARK: - 헤더뷰 설정
         calendarView.locale = Locale(identifier: "ko_KR")
         calendarView.appearance.headerTitleColor = .clear
-        calendarView.headerHeight = 42
-        
+        calendarView.headerHeight = 0
         //MARK: -캘린더 관련
         calendarView.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.identifier)
         calendarView.backgroundColor = .challendarBlack80
         calendarView.weekdayHeight = 46
+        calendarView.rowHeight = 46
         calendarView.appearance.weekdayTextColor = .challendarWhite100
         calendarView.appearance.titleWeekendColor = .challendarWhite100
         calendarView.appearance.selectionColor = .clear
@@ -65,6 +76,9 @@ class DateCalendarView: UIView {
         calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
         calendarView.appearance.todayColor = .clear
         calendarView.scrollDirection = .horizontal
+        calendarView.calendarWeekdayView.weekdayLabels.forEach{
+            $0.font = .pretendardSemiBold(size: 13)
+        }
         calendarView.calendarWeekdayView.weekdayLabels[0].textColor = .challendarWeekend
         calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .challendarWeekend
         calendarView.placeholderType = .fillSixRows
@@ -75,33 +89,46 @@ class DateCalendarView: UIView {
     }
     
     private func configureConstraint(){
-        [calendarView,calendarLabel,prevButton,confirmButton].forEach{
+        [calendarView,calendarLabel,prevButton,confirmButton,emptyView].forEach{
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        emptyView.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(6)
+            $0.width.equalTo(36)
+            $0.height.equalTo(5)
+        }
         
         calendarView.snp.makeConstraints{
-            $0.top.leading.bottom.equalToSuperview().inset(20)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(calendarLabel.snp.bottom).offset(17)
+            $0.trailing.leading.equalToSuperview().inset(35.5)
+            $0.bottom.equalToSuperview().inset(40)
         }
         calendarLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(26)
+            $0.top.equalToSuperview().offset(32)
             $0.centerX.equalToSuperview()
         }
         prevButton.snp.makeConstraints{
-            $0.size.equalTo(32)
+            $0.size.equalTo(24)
             $0.centerY.equalTo(calendarLabel)
-            $0.leading.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(35.5)
         }
         confirmButton.snp.makeConstraints{
             $0.centerY.equalTo(calendarLabel)
             $0.height.equalTo(20)
-            $0.trailing.equalToSuperview().offset(-19)
+            $0.trailing.equalToSuperview().inset(37.5)
         }
     }
     
     func updateLabel(_ date: Date){
         calendarLabel.text = DateFormatter.dateFormatter.string(from: date)
+    }
+    private func configureUtil(){
+        confirmButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.delegate?.dateSetFromCal(startDate: self?.firstDate, endDate: self?.lastDate)
+            }).disposed(by: self.disposeBag)
     }
 }
 
@@ -141,7 +168,8 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 lastDate = range.last
                 datesRange = range
                 confirmButton.setTitleColor(.challendarGreen100, for: .normal)
-                calendar.reloadData()    // (매번 reload)
+                confirmButton.isEnabled = true
+                calendar.reloadData()
                 return
             }
         }
@@ -180,7 +208,7 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         if !date.isSameMonth(as: calendar.currentPage){
             return .challendarCalendarPlaceholder
         }
-
+        
         if datesRange.contains(where: { $0 == date }){
             return .challendarBlack100
         }else{

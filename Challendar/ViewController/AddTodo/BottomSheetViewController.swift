@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 class BottomSheetViewController: UIViewController {
+    var rootViewVC: AddTodoDateViewController?
     var dimmedView = UIView()
     var dateBottomSheet = DateBottomSheet()
     var dispose = DisposeBag()
@@ -23,24 +24,21 @@ class BottomSheetViewController: UIViewController {
         configureUI()
         configureConstraint()
         configureUtil()
+
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         showLayout()
-        setupNotificationCenter()
-    }
-    
-    func setupNotificationCenter(){
-        NotificationCenter.default.addObserver(self, selector: #selector(startDateChanged), name: NSNotification.Name("dateRange"), object: dateRange)
     }
     
     func configureUtil(){
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTap)
         dimmedView.isUserInteractionEnabled = true
+        dateBottomSheet.delegate = self
         dateBottomSheet.applybutton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                self?.hideLayout()
+                self?.hideLayoutShowChallenge()
             }).disposed(by: self.dispose)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
@@ -52,25 +50,31 @@ class BottomSheetViewController: UIViewController {
             })
             .disposed(by: self.dispose)
         
+        dateBottomSheet.newTodo = self.newTodo
+        calenderView.newTodo = self.newTodo
+        calenderView.delegate = self
+        
     }
     func configureUI(){
-        dimmedView.backgroundColor = UIColor.challendarBlack90.withAlphaComponent(dimmedViewAlpha)
+        dimmedView.backgroundColor = UIColor.challendarBlack90
         dimmedView.alpha = 0
-        [dimmedView, dateBottomSheet,calenderView].forEach{
-            view.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
+
         dateBottomSheet.layer.cornerRadius = 10
         dateBottomSheet.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         dateBottomSheet.clipsToBounds = true
-        
+        dateBottomSheet.dateRange = self.dateRange
         calenderView.layer.cornerRadius = 20
+        calenderView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         calenderView.clipsToBounds = true
 
     }
     
     func configureConstraint(){
+        [dimmedView, dateBottomSheet,calenderView].forEach{
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
         dimmedView.snp.makeConstraints{
             $0.edges.equalToSuperview()
         }
@@ -80,15 +84,15 @@ class BottomSheetViewController: UIViewController {
             $0.height.equalTo(bottomSheetHeight)
         }
         calenderView.snp.makeConstraints{
-            $0.leading.trailing.equalToSuperview().inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(14 + calendarViewHeight)
+            $0.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset( calendarViewHeight)
             $0.height.equalTo(calendarViewHeight)
         }
         
     }
     private func showLayout(){
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear,  animations: {
-            self.dimmedView.alpha = 1
+            self.dimmedView.alpha = dimmedViewAlpha
             self.dateBottomSheet.snp.updateConstraints{
                 $0.bottom.equalToSuperview().offset(0)
             }
@@ -107,13 +111,29 @@ class BottomSheetViewController: UIViewController {
             self.dismiss(animated: true, completion: nil)
         })
     }
+    
+    private func hideLayoutShowChallenge(){
+        UIView.animate(withDuration: 0.25, delay: 0, options: .beginFromCurrentState,  animations: {
+            self.dimmedView.alpha = 0
+            self.dateBottomSheet.snp.updateConstraints{
+                $0.bottom.equalToSuperview().offset(bottomSheetHeight)
+            }
+            self.view.layoutIfNeeded()
+        }, completion: { _ in
+            let challengeCheckViewController = ChallengeCheckViewController()
+            challengeCheckViewController.newTodo = self.newTodo
+            self.dismiss(animated: false, completion: {
+                self.rootViewVC?.navigationController?.pushViewController(challengeCheckViewController, animated: true)
+            })
+        })
+    }
     private func hideBottomShowCal(){
         UIView.animate(withDuration: 0.25, delay: 0, options: .beginFromCurrentState,  animations: {
             self.dateBottomSheet.snp.updateConstraints{
                 $0.bottom.equalToSuperview().offset(bottomSheetHeight)
             }
             self.calenderView.snp.updateConstraints{
-                $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(14)
+                $0.bottom.equalToSuperview().offset(0)
             }
             self.view.layoutIfNeeded()
         })
@@ -125,7 +145,7 @@ class BottomSheetViewController: UIViewController {
                 $0.bottom.equalToSuperview().offset(0)
             }
             self.calenderView.snp.updateConstraints{
-                $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(14 + calendarViewHeight)
+                $0.bottom.equalToSuperview().offset(calendarViewHeight)
             }
             self.view.layoutIfNeeded()
         })
@@ -165,10 +185,29 @@ class BottomSheetViewController: UIViewController {
         }
     }
     
-    @objc func startDateChanged(notification : Notification) {
-        guard let data = notification.object as? DateRange else {return}
+    func startDateChanged(data: DateRange) {
         if data == .manual{
             hideBottomShowCal()
+        }else{
+            self.dateRange = data
+            self.newTodo?.startDate = Date()
+            self.newTodo?.endDate = data.date
+        }
+    }
+}
+
+extension BottomSheetViewController : DateRangeProtocol {
+    func dateSetFromCal(startDate: Date?, endDate: Date?) {
+        if let startDate = startDate, let endDate = endDate{
+            self.newTodo?.startDate = startDate
+            self.newTodo?.endDate = endDate
+            hideLayoutShowChallenge()
+        }
+    }
+    
+    func dateRangeChanged(dateRange: DateRange?) {
+        if let dateRange = dateRange {
+            self.startDateChanged(data : dateRange)
         }
     }
 }
