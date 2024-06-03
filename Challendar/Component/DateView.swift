@@ -48,7 +48,7 @@ class DateView: UIView {
         }
     }
 
-    func changeLabel(dateType: StartDate){
+    func changeLabel(dateType: DateRange){
         textLabel.text = dateType.rawValue
     }
 }

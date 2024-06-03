@@ -11,7 +11,7 @@ class AddTodoTitleViewController: BaseViewController {
     
     let todoTextField = TodoTitleTextField(placeholder: "물 1.5L 마시기")
     let photoButton = AddPhotoButton()
-    let confirmButton = ConfirmButton()
+    let confirmButton = CustomButton()
     var dispose = DisposeBag()
     
     var images : [UIImage] = []
@@ -105,8 +105,8 @@ class AddTodoTitleViewController: BaseViewController {
         confirmButton.rx.tap
             .subscribe(onNext: {[weak self] _ in
                 guard let text = self?.todoTextField.text else {return}
-                self?.newTodo = Todo(title: text, images: self?.images)
-                let nextVC = AddTodoStartViewController()
+                self?.newTodo = Todo(title: text, completed: [], images: self?.images)
+                let nextVC = AddTodoDateViewController()
                 nextVC.newTodo = self?.newTodo
                 self?.navigationController?.pushViewController(nextVC, animated: true)
             })

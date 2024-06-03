@@ -36,7 +36,9 @@ class DateBottomSheetCollectionViewCell: UICollectionViewCell {
         
         configureConstraint()
     }
-    
+    func changeImageforCustom(){
+        imageView.image = UIImage.arrowRight
+    }
     func configureConstraint(){
         [textLabel,imageView].forEach{
             self.addSubview($0)

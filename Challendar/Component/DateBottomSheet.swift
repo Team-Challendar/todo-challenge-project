@@ -4,10 +4,14 @@ import UIKit
 class DateBottomSheet: UIView {
     var listCollectionView : UICollectionView!
     var emptyView = UIView()
-    
-    var button = ConfirmButton()
-    var startDate : StartDate?
-    var endDate : EndDate?
+    var laterButton = CustomButton()
+    var applybutton = CustomButton()
+    var dateRange : DateRange? {
+        didSet{
+            applybutton.applyState()
+        }
+    }
+    var stackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -22,8 +26,12 @@ class DateBottomSheet: UIView {
     
     func configureUI(){
         self.backgroundColor = .challendarBlack80
-        button.changeTitle(title: "적용하기")
-        button.highLightState()
+        applybutton.nonApplyState()
+        laterButton.laterState()
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
         emptyView.backgroundColor = .challendarEmpty
         emptyView.layer.cornerRadius = 2.5
         emptyView.clipsToBounds = true
@@ -48,8 +56,12 @@ class DateBottomSheet: UIView {
     }
     
     func configureConstraint(){
-        [button, listCollectionView, emptyView].forEach{
+        [listCollectionView, emptyView,stackView ].forEach{
             self.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        [laterButton,applybutton].forEach{
+            stackView.addArrangedSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         emptyView.snp.makeConstraints{
@@ -61,56 +73,49 @@ class DateBottomSheet: UIView {
         listCollectionView.snp.makeConstraints{
             $0.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(horizontalPadding)
             $0.top.equalToSuperview().offset(collectionViewToVC)
-            $0.bottom.equalTo(button.snp.top).offset(-16)
+            $0.bottom.equalTo(stackView.snp.top).offset(-16)
         }
-        button.snp.makeConstraints{
+        stackView.snp.makeConstraints{
             $0.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(18)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-12)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-6)
             $0.height.equalTo(buttonHeight)
         }
+        laterButton.snp.makeConstraints{
+            $0.height.equalTo(buttonHeight)
+        }
+        
+        applybutton.snp.makeConstraints{
+            $0.height.equalTo(buttonHeight)
+        }
+        
     }
 }
 
 extension DateBottomSheet: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let _ = startDate {
-            return StartDate.allCases.count
-        }else{
-            return EndDate.allCases.count
-        }
+        return DateRange.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = listCollectionView.dequeueReusableCell(withReuseIdentifier: DateBottomSheetCollectionViewCell.identifier, for: indexPath) as? DateBottomSheetCollectionViewCell else{
             return UICollectionViewCell()
         }
-        if let _ = startDate{
-            let startDateCase = StartDate.allCases[indexPath.item]
-            if startDateCase == self.startDate {
-                cell.configureUI(text: startDateCase.rawValue, checked: true)
-            }else{
-                cell.configureUI(text: startDateCase.rawValue, checked: false)
-            }
-            return cell
+        let startDateCase = DateRange.allCases[indexPath.item]
+
+        if startDateCase == self.dateRange {
+            cell.configureUI(text: startDateCase.rawValue, checked: true)
         }else{
-            let endDateCase = EndDate.allCases[indexPath.item]
-            if endDateCase == self.endDate {
-                cell.configureUI(text: endDateCase.rawValue, checked: true)
-            }else{
-                cell.configureUI(text: endDateCase.rawValue, checked: false)
-            }
-            return cell
+            cell.configureUI(text: startDateCase.rawValue, checked: false)
         }
+        if startDateCase == .manual{
+            cell.changeImageforCustom()
+        }
+        return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let _ = startDate{
-            self.startDate = StartDate.allCases[indexPath.item]
-            NotificationCenter.default.post(name: NSNotification.Name("startDate"), object: startDate, userInfo: nil)
-        }else{
-            self.endDate = EndDate.allCases[indexPath.item]
-            NotificationCenter.default.post(name: NSNotification.Name("endDate"), object: endDate, userInfo: nil)
-        }
+        self.dateRange = DateRange.allCases[indexPath.item]
+        NotificationCenter.default.post(name: NSNotification.Name("dateRange"), object: dateRange, userInfo: nil)
         self.listCollectionView.reloadData()
     }
-
+    
 }

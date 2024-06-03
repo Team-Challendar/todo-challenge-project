@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ConfirmButton: UIButton {
+class CustomButton: UIButton {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,8 +39,26 @@ class ConfirmButton: UIButton {
     }
     func highLightState(){
         self.isEnabled = true
-        self.backgroundColor =  .challendarGreen100
+        self.backgroundColor = .challendarGreen100
         self.setTitleColor(.challendarBlack100, for: .normal)
     }
+    func laterState(){
+        changeTitle(title: "나중에 정할래요")
+        self.setTitleColor(.challendarGreen100, for: .normal)
+        self.backgroundColor = .clear
+        self.layer.borderColor = UIColor.challendarGreen100.cgColor
+        self.layer.borderWidth = 1
+    }
     
+    func applyState(){
+        changeTitle(title: "적용하기")
+        self.setTitleColor(.challendarBlack100, for: .normal)
+        self.backgroundColor = .challendarGreen100
+    }
+    
+    func nonApplyState(){
+        changeTitle(title: "적용하기")
+        self.setTitleColor(.challendarNonApply, for: .normal)
+        self.backgroundColor = .challendarNonApplyBackground
+    }
 }

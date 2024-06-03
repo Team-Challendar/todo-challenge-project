@@ -14,10 +14,9 @@ class DateCalendarView: UIView {
     var calendarView = FSCalendar(frame: .zero)
     var calendarLabel = UILabel()
     var prevButton = UIButton()
-    var nextButton = UIButton()
+    var confirmButton = UIButton()
     private var firstDate: Date?
     private var lastDate: Date?
-
     private var datesRange: [Date] = []
     
     override init(frame: CGRect) {
@@ -38,12 +37,13 @@ class DateCalendarView: UIView {
         calendarLabel.backgroundColor = .clear
         calendarLabel.textColor = .challendarWhite100
         
-        prevButton.setImage(.arrowLeft, for: .normal)
+        prevButton.setImage(.arrowLeftNew, for: .normal)
         prevButton.backgroundColor = .clear
-        prevButton.addTarget(self, action: #selector(prevButtonClicked), for: .touchUpInside)
-        nextButton.setImage(.arrowRight, for: .normal)
-        nextButton.backgroundColor = .clear
-        nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
+        
+        confirmButton.setTitle("선택", for: .normal)
+        confirmButton.setTitleColor(.challendarBlack60, for: .normal)
+        confirmButton.backgroundColor = .clear
+        confirmButton.titleLabel?.font = .pretendardSemiBold(size: 16)
         
         self.layer.cornerRadius = 20
         self.backgroundColor = .challendarBlack80
@@ -61,7 +61,7 @@ class DateCalendarView: UIView {
         calendarView.appearance.weekdayTextColor = .challendarWhite100
         calendarView.appearance.titleWeekendColor = .challendarWhite100
         calendarView.appearance.selectionColor = .clear
-        calendarView.appearance.titleSelectionColor  = .challendarBlack100
+        calendarView.appearance.titleSelectionColor = .challendarBlack100
         calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
         calendarView.appearance.todayColor = .clear
         calendarView.scrollDirection = .horizontal
@@ -75,7 +75,7 @@ class DateCalendarView: UIView {
     }
     
     private func configureConstraint(){
-        [calendarView,calendarLabel,prevButton,nextButton].forEach{
+        [calendarView,calendarLabel,prevButton,confirmButton].forEach{
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -86,31 +86,17 @@ class DateCalendarView: UIView {
         }
         calendarLabel.snp.makeConstraints{
             $0.top.equalToSuperview().offset(26)
-            $0.leading.equalToSuperview().offset(20)
-        }
-        nextButton.snp.makeConstraints{
-            $0.size.equalTo(32)
-            $0.centerY.equalTo(calendarLabel)
-            $0.trailing.equalToSuperview().inset(19)
+            $0.centerX.equalToSuperview()
         }
         prevButton.snp.makeConstraints{
             $0.size.equalTo(32)
             $0.centerY.equalTo(calendarLabel)
-            $0.trailing.equalTo(nextButton.snp.leading).offset(-8)
+            $0.leading.equalToSuperview().offset(20)
         }
-    }
-    
-    @objc func prevButtonClicked(){
-        if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: calendarView.currentPage) {
-            calendarView.setCurrentPage(previousMonth, animated: true)
-            updateLabel(previousMonth)
-        }
-    }
-    
-    @objc func nextButtonClicked(){
-        if let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: calendarView.currentPage) {
-            calendarView.setCurrentPage(nextMonth, animated: true)
-            updateLabel(nextMonth)
+        confirmButton.snp.makeConstraints{
+            $0.centerY.equalTo(calendarLabel)
+            $0.height.equalTo(20)
+            $0.trailing.equalToSuperview().offset(-19)
         }
     }
     
@@ -127,6 +113,7 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         self.layoutIfNeeded()
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        confirmButton.setTitleColor(.challendarBlack60, for: .normal)
         if firstDate == nil {
             firstDate = date
             datesRange = [firstDate!]
@@ -153,6 +140,7 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 }
                 lastDate = range.last
                 datesRange = range
+                confirmButton.setTitleColor(.challendarGreen100, for: .normal)
                 calendar.reloadData()    // (매번 reload)
                 return
             }
@@ -186,25 +174,26 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
         updateLabel(date)
+        calendar.reloadData()
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         if !date.isSameMonth(as: calendar.currentPage){
             return .challendarCalendarPlaceholder
         }
+
         if datesRange.contains(where: { $0 == date }){
             return .challendarBlack100
         }else{
             return .challendarWhite100
         }
     }
-    
 }
 
 extension DateCalendarView : FSCalendarDataSource {
     func typeOfDate(_ date: Date) -> SelectedDateType {
         let arr = datesRange
         if !arr.contains(date) {
-            return .notSelectd
+            return .notSelected
         }
         else {
             if arr.count == 1 && date == firstDate { return .singleDate }
@@ -218,6 +207,9 @@ extension DateCalendarView : FSCalendarDataSource {
         
         guard let cell = calendar.dequeueReusableCell(withIdentifier: CalendarCell.identifier, for: date, at: position) as? CalendarCell else { return FSCalendarCell() }
         cell.updateBackImage(typeOfDate(date))
+        if date.isSameDay(as: Date()){
+            cell.updateToday(typeOfDate(date))
+        }
         
         return cell
     }

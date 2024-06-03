@@ -15,8 +15,7 @@ class BottomSheetViewController: UIViewController {
     var dateBottomSheet = DateBottomSheet()
     var dispose = DisposeBag()
     var calenderView = DateCalendarView()
-    var startDate : StartDate?
-    var endDate : EndDate?
+    var dateRange : DateRange?
     var newTodo: Todo?
     
     override func viewDidLoad() {
@@ -32,21 +31,26 @@ class BottomSheetViewController: UIViewController {
     }
     
     func setupNotificationCenter(){
-        NotificationCenter.default.addObserver(self, selector: #selector(startDateChanged), name: NSNotification.Name("startDate"), object: startDate)
-        NotificationCenter.default.addObserver(self, selector: #selector(endDateChanged), name: NSNotification.Name("end"), object: endDate)
+        NotificationCenter.default.addObserver(self, selector: #selector(startDateChanged), name: NSNotification.Name("dateRange"), object: dateRange)
     }
     
     func configureUtil(){
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTap)
         dimmedView.isUserInteractionEnabled = true
-        dateBottomSheet.button.rx.tap
+        dateBottomSheet.applybutton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.hideLayout()
             }).disposed(by: self.dispose)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         dateBottomSheet.addGestureRecognizer(panGesture)
+        
+        calenderView.prevButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.hideCalShowBottom()
+            })
+            .disposed(by: self.dispose)
         
     }
     func configureUI(){
@@ -114,6 +118,18 @@ class BottomSheetViewController: UIViewController {
             self.view.layoutIfNeeded()
         })
     }
+    
+    private func hideCalShowBottom(){
+        UIView.animate(withDuration: 0.25, delay: 0, options: .beginFromCurrentState,  animations: {
+            self.dateBottomSheet.snp.updateConstraints{
+                $0.bottom.equalToSuperview().offset(0)
+            }
+            self.calenderView.snp.updateConstraints{
+                $0.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(14 + calendarViewHeight)
+            }
+            self.view.layoutIfNeeded()
+        })
+    }
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideLayout()
     }
@@ -150,14 +166,7 @@ class BottomSheetViewController: UIViewController {
     }
     
     @objc func startDateChanged(notification : Notification) {
-        guard let data = notification.object as? StartDate else {return}
-        if data == .manual{
-            hideBottomShowCal()
-        }
-    }
-    
-    @objc func endDateChanged(notification : Notification) {
-        guard let data = notification.object as? EndDate else {return}
+        guard let data = notification.object as? DateRange else {return}
         if data == .manual{
             hideBottomShowCal()
         }

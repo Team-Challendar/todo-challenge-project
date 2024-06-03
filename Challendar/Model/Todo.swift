@@ -24,7 +24,7 @@ class Todo {
     public var percentage: Double = 0
     public var images: [UIImage]?
     
-    init(id: UUID? = nil, title: String, memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Bool], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil) {
+    init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Bool] = [], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil) {
         self.id = id
         self.title = title
         self.memo = memo

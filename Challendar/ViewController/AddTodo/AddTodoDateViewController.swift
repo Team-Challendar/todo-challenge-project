@@ -3,29 +3,36 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class AddTodoEndViewController: BaseViewController {
+class AddTodoDateViewController: BaseViewController {
     
-    let titleLabel = EditTitleLabel(text: "언제까지 할까요")
+    let titleLabel = EditTitleLabel(text: "기한을 선택해주세요")
     let titleView = EmptyView()
     let dateView = DateView()
-    let confirmButton = ConfirmButton()
+    let confirmButton = CustomButton()
     var dispose = DisposeBag()
-    var endDate : EndDate?
+    var newTodo : Todo?
+    var dateRange : DateRange? {
+        didSet{
+            if dateRange != .manual {
+                confirmButton.changeTitle(title: "다음")
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar(checkFirst: false)
         setupNotificationCenter()
+        configureNavigationBar(checkFirst: false)
     }
     
     func setupNotificationCenter(){
-        NotificationCenter.default.addObserver(self, selector: #selector(endDateChanged), name: NSNotification.Name("endDate"), object: endDate)
+        NotificationCenter.default.addObserver(self, selector: #selector(startDateChanged), name: NSNotification.Name("dateRange"), object: dateRange)
     }
-    
     override func configureUI(){
         confirmButton.changeTitle(title: "할일 등록")
         confirmButton.highLightState()
     }
+    
     override func configureConstraint(){
         [titleLabel, titleView,confirmButton].forEach{
             self.view.addSubview($0)
@@ -56,7 +63,7 @@ class AddTodoEndViewController: BaseViewController {
     override func configureUtil(){
         confirmButton.rx.tap
             .subscribe(onNext: {[weak self] _ in
-                self?.dismiss(animated: true)
+                print("NEXT")
             })
             .disposed(by: self.dispose)
         
@@ -75,13 +82,11 @@ class AddTodoEndViewController: BaseViewController {
     private func titleViewDidTapped(){
         let bottomSheetVC = BottomSheetViewController()
         bottomSheetVC.modalPresentationStyle = .overFullScreen
-        bottomSheetVC.dateBottomSheet.endDate = EndDate.none
         self.present(bottomSheetVC, animated: false,completion: nil)
     }
-    
-    @objc func endDateChanged(notification : Notification) {
-        guard let data = notification.object as? EndDate else {return}
-        self.endDate = data
+    @objc func startDateChanged(notification : Notification) {
+        guard let data = notification.object as? DateRange else {return}
+        self.dateRange = data
         self.dateView.textLabel.text = data.rawValue
     }
 }

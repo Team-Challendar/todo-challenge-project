@@ -16,7 +16,7 @@ extension TodoModel {
         return NSFetchRequest<TodoModel>(entityName: "TodoModel")
     }
 
-    @NSManaged public var id: UUID
+    @NSManaged public var id: UUID?
     @NSManaged public var title: String
     @NSManaged public var memo: String?
     @NSManaged public var startDate: Date?

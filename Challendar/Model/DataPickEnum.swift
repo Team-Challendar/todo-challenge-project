@@ -1,37 +1,23 @@
 import UIKit
 
 
-enum StartDate: String , CaseIterable {
-    case none = "나중에 정할래요"
-    case today = "오늘부터"
-    case manual = "직접 입력"
-
-    var date: Date? {
-        switch self {
-        case .none:
-            return nil
-        case .today:
-            return Date()
-        case .manual:
-            return nil
-        }
-    }
-    
-}
-
-enum EndDate : String, CaseIterable {
-    case none = "나중에 정할래요"
+enum DateRange: String , CaseIterable {
     case today = "오늘까지"
-    case manual = "직접 입력"
-    
+    case tomorrow = "내일까지"
+    case week = "7일이내"
+    case manual = "기간 직접 입력"
+
     var date: Date? {
         switch self {
-        case .none:
-            return nil
         case .today:
-            return Date()
+            return Date.today()
+        case .tomorrow:
+            return Date.tomorrow()
+        case . week:
+            return Date.week()
         case .manual:
             return nil
         }
     }
+    
 }
