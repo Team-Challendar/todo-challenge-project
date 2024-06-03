@@ -1,7 +1,7 @@
 import UIKit
 
-struct TodoModel {
-    var name: String
+struct TodoModel2 {
+    var name: String                    // 
     var description: String?
     var startDate: Date?
     var endDate: Date?
@@ -23,7 +23,7 @@ func createDate(year: Int, month: Int, day: Int) -> Date? {
 }
 
 // 더미 데이터 생성
-let todo1 = TodoModel(
+let todo1 = TodoModel2(
     name: "스위프트 배우기",
     description: "Udemy에서 스위프트 프로그래밍 과정 완료하기",
     startDate: createDate(year: 2024, month: 6, day: 2),
@@ -35,7 +35,7 @@ let todo1 = TodoModel(
     image: UIImage(named: "swift")
 )
 
-let todo2 = TodoModel(
+let todo2 = TodoModel2(
     name: "책 읽기",
     description: "'아주 작은 습관의 힘' 읽기",
     startDate: createDate(year: 2024, month: 4, day: 10),
@@ -47,7 +47,7 @@ let todo2 = TodoModel(
     image: UIImage(named: "book")
 )
 
-let todo3 = TodoModel(
+let todo3 = TodoModel2(
     name: "운동 - 유산소",
     description: "아침에 20분 동안 달리기",
     startDate: createDate(year: 2024, month: 5, day: 1),
@@ -59,7 +59,7 @@ let todo3 = TodoModel(
     image: UIImage(named: "exercise")
 )
 
-let todo4 = TodoModel(
+let todo4 = TodoModel2(
     name: "명상",
     description: "매일 10분 명상하기",
     startDate: createDate(year: 2024, month: 4, day: 10),
@@ -71,7 +71,7 @@ let todo4 = TodoModel(
     image: UIImage(named: "meditation")
 )
 
-let todo5 = TodoModel(
+let todo5 = TodoModel2(
     name: "프로젝트 작업",
     description: "클라이언트 프로젝트 완료하기",
     startDate: createDate(year: 2024, month: 6, day: 1),
@@ -83,7 +83,7 @@ let todo5 = TodoModel(
     image: UIImage(named: "project")
 )
 
-let todo6 = TodoModel(
+let todo6 = TodoModel2(
     name: "운동 - 하체",
     description: "어덕션 3set, 스탠딩 어브덕션 3set, 하이바 스쿼트 4set, 글루트 3set, 레그컬 3set, 덤벨스티프 3set",
     startDate: createDate(year: 2024, month: 5, day: 1),

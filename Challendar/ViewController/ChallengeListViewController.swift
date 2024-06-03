@@ -3,7 +3,7 @@ import SnapKit
 
 class ChallengeListViewController: BaseViewController {
 
-    private var todoItems: [TodoModel] = todos
+    private var todoItems: [TodoModel2] = todos
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
