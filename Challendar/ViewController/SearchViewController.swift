@@ -11,22 +11,22 @@ import SnapKit
 class SearchViewController: UIViewController {
     
     private var items: [TodoModel] = todos
-    private var filteredItems: [TodoModel] = []
+    private var filteredChallengeItems: [TodoModel] = []
+    private var filteredNonChallengeItems: [TodoModel] = []
     private var previousIndexPath: IndexPath?
     private var selectedIndexPath: IndexPath?
     
     private var searchBar: UISearchBar!
     private var collectionView: UICollectionView!
+    private var customCancelButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackground()
-        
-        searchBarConfigure() // 서치바 설정
-        
+        searchBarConfigure()
         setupCollectionView()
         setupLayout()
-        filteredItems = items  // 초기화
+        filterItems(with: "")
         reload()
     }
     
@@ -50,27 +50,23 @@ class SearchViewController: UIViewController {
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        // 아이템 크기 설정 (높이 고정: 75, 너비는 섹션에 맞추기)
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(75))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
-        // 그룹 크기 설정 (높이 고정: 75, 너비는 섹션에 맞추기)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(75))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(16) // 아이템 사이 간격 16
+        group.interItemSpacing = .fixed(8)
         
-        // 섹션 설정
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        section.interGroupSpacing = 16 // 그룹 사이 간격 16
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
+        section.interGroupSpacing = 8
         
-        // 섹션 헤더 설정
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(32))
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
         section.boundarySupplementaryItems = [header]
         
-        // 레이아웃 설정
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
@@ -80,72 +76,86 @@ class SearchViewController: UIViewController {
     }
     
     private func searchBarConfigure() {
-        // UISearchBar 객체를 생성하고 설정
         searchBar = UISearchBar()
-        searchBar.delegate = self // 델리게이트를 설정하여 이벤트 처리
-        searchBar.placeholder = "검색어를 입력해주세요" // 플레이스홀더 텍스트 설정
-        searchBar.setValue("취소", forKey: "cancelButtonText") // 취소 버튼의 텍스트를 "취소"로 설정
-        searchBar.showsCancelButton = false // 취소 버튼을 기본적으로 숨김
-        
-        // 서치바를 네비게이션 바의 titleView로 설정
+        searchBar.delegate = self
+        searchBar.placeholder = "검색어를 입력해주세요"
         navigationItem.titleView = searchBar
+        searchBarTextFieldConfigure()
         
-        searchBarTextFieldConfigure() // 서치바의 텍스트 필드를 커스텀하기 위한 메소드 호출
+        // Create a custom button view for the cancel button
+        let cancelBtn = UIView()
+        cancelBtn.frame = CGRect(x: 0, y: 0, width: 48, height: 40)
+        cancelBtn.isUserInteractionEnabled = true
+        cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        
+        let cancelText = UILabel()
+        cancelText.text = "취소"
+        cancelText.font = .pretendardSemiBold(size: 16)
+        cancelText.textColor = .white
+        cancelBtn.addSubview(cancelText)
+        cancelText.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            cancelText.leadingAnchor.constraint(equalTo: cancelBtn.leadingAnchor, constant: 8),
+            cancelText.trailingAnchor.constraint(equalTo: cancelBtn.trailingAnchor, constant: -8),
+            cancelText.centerYAnchor.constraint(equalTo: cancelBtn.centerYAnchor)
+        ])
+        // 취소 기능 확정 후 작성
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
+//        cancelBtn.addGestureRecognizer(tapGesture)
+        
+        customCancelButton = UIBarButtonItem(customView: cancelBtn)
     }
+    // 취소 기능 확정 후 수정
+//    @objc func cancelButtonTap() {
+//        searchBar.setShowsCancelButton(false, animated: true)
+//        navigationItem.rightBarButtonItem = nil // Hide the custom cancel button
+//        updateSearchTextFieldConstraints(showingCancelButton: false)
+//    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true) // Hide default cancel button
+        navigationItem.rightBarButtonItem = customCancelButton // Show custom cancel button
+        updateSearchTextFieldConstraints(showingCancelButton: true)
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        navigationItem.rightBarButtonItem = nil // Hide the custom cancel button
+        updateSearchTextFieldConstraints(showingCancelButton: false)
+    }
+
     
     private func searchBarTextFieldConfigure() {
-        // 서치바의 텍스트 필드에 대한 설정
         guard let searchTextField = searchBar.value(forKey: "searchField") as? UITextField else {
             return
         }
         
-        searchTextField.backgroundColor = .challendarBlack80 // 배경색을 설정
-        searchTextField.font = .pretendardMedium(size: 18) // 폰트 크기 설정
-        searchTextField.layer.borderColor = UIColor.init(white: 1, alpha: 0.02).cgColor // 테두리 색상 설정
-        searchTextField.layer.borderWidth = 1 // 테두리 두께 설정
-        searchTextField.layer.cornerRadius = 12 // 테두리 모서리 둥글게 설정
-        searchTextField.clipsToBounds = true // 코너 둥글게 설정을 적용
-        searchTextField.tintColor = .challendarBlack80 // 틴트 색상 설정
-        searchTextField.textColor = .white // 타이핑되는 글씨 색상 설정
+        searchTextField.backgroundColor = .challendarBlack80
+        searchTextField.font = .pretendardMedium(size: 18)
+        searchTextField.layer.borderColor = UIColor.init(white: 1, alpha: 0.02).cgColor
+        searchTextField.layer.borderWidth = 1
+        searchTextField.layer.cornerRadius = 12
+        searchTextField.clipsToBounds = true
+        searchTextField.tintColor = .challendarBlack80
+        searchTextField.textColor = .white
         
-//        let deleteButton = UIView()
-//        deleteButton.frame = CGRect(x: 0, y: 0, width: 48, height: 36)
-//        deleteButton.isUserInteractionEnabled = true // Enable user interaction
-//
-//        // Create the label for the button
-//        let cancelText = UILabel()
-//        cancelText.text = "취소"
-//        cancelText.font = UIFont(name: "Pretendard-SemiBold", size: 16)
-//        cancelText.textColor = UIColor(red: 0.04, green: 0.04, blue: 0.04, alpha: 1.00)
-//        deleteButton.addSubview(cancelText)
-//
-//        // Add constraints to the label
-//        cancelText.snp.makeConstraints {
-//            $0.edges.equalToSuperview().inset(8)
-//        }
-//
-//        // Add a tap gesture recognizer to the deleteButton
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
-//        deleteButton.addGestureRecognizer(tapGesture)
-        
-        // 플레이스홀더 텍스트 색상 설정
         if let placeholderText = searchBar.placeholder {
             searchTextField.attributedPlaceholder = NSAttributedString(
                 string: placeholderText,
                 attributes: [
-                    NSAttributedString.Key.font: UIFont.pretendardRegular(size: 18), // 커스텀 폰트 사용
-                    NSAttributedString.Key.foregroundColor: UIColor.challendarBlack60 // 텍스트 색상 설정
+                    NSAttributedString.Key.font: UIFont.pretendardRegular(size: 18),
+                    NSAttributedString.Key.foregroundColor: UIColor.challendarBlack60
                 ]
             )
         }
-
+        
         if let image = UIImage(systemName: "magnifyingglass") {
             setLeftImage(image, for: searchTextField)
         } else {
             print("Image not found")
         }
         
-        // searchTextField 크기 조정
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             searchTextField.topAnchor.constraint(equalTo: searchBar.topAnchor, constant: 4),
@@ -155,14 +165,10 @@ class SearchViewController: UIViewController {
         ])
     }
     
-//    @objc func cancelButtonTap() {
-//        navigationController?.dismiss(animated: false)
-//    }
-//    
     private func setLeftImage(_ image: UIImage, for textField: UITextField) {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 8, y: 0, width: 22, height: 22) // 좌측 패딩 8
+        imageView.frame = CGRect(x: 8, y: 0, width: 22, height: 22)
         imageView.tintColor = .challendarBlack60
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 22))
         paddingView.addSubview(imageView)
@@ -174,12 +180,12 @@ class SearchViewController: UIViewController {
         guard let searchTextField = searchBar.value(forKey: "searchField") as? UITextField else {
             return
         }
-
+        
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.deactivate(searchTextField.constraints)
-
+        
         let trailingConstant: CGFloat = showingCancelButton ? -56 : -16
-
+        
         NSLayoutConstraint.activate([
             searchTextField.topAnchor.constraint(equalTo: searchBar.topAnchor, constant: 4),
             searchTextField.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: -4),
@@ -188,54 +194,45 @@ class SearchViewController: UIViewController {
         ])
     }
     
+    private func filterItems(with searchText: String) {
+        if searchText.isEmpty {
+            filteredChallengeItems = items.filter { $0.isChallenge == true }
+            filteredNonChallengeItems = items.filter { $0.isChallenge == false }
+        } else {
+            filteredChallengeItems = items.filter { $0.isChallenge == true && $0.name.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredNonChallengeItems = items.filter { $0.isChallenge == false && $0.name.range(of: searchText, options: .caseInsensitive) != nil }
+        }
+        reload() // 필터링 후 데이터 리로드
+    }
+    
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2 // 완료 투두와 미완료 투두 두 섹션
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return filteredItems.filter { $0.progress == 1.0 }.count
-        } else {
-            return filteredItems.filter { $0.progress! < 1.0 }.count
-        }
+        return section == 0 ? filteredChallengeItems.count : filteredNonChallengeItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
-        let item: TodoModel
-        if indexPath.section == 0 {
-            item = filteredItems.filter { $0.progress == 1.0 }[indexPath.row]
-        } else {
-            item = filteredItems.filter { $0.progress! < 1.0 }[indexPath.row]
-        }
-        cell.titleLabel.text = item.name
-        cell.dateLabel.text = formatDate(item.endDate)
-        cell.contentView.backgroundColor = .challendarBlack80
-        cell.layer.cornerRadius = 20
-        cell.layer.masksToBounds = true
-        
+        let item = indexPath.section == 0 ? filteredChallengeItems[indexPath.row] : filteredNonChallengeItems[indexPath.row]
+        cell.configure(with: item)
         return cell
     }
-    
-    func formatDate(_ date: Date?) -> String {
-            guard let date = date else { return "날짜 없음" }
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy. MM. dd."
-            return dateFormatter.string(from: date)
-        }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
         
-        let itemCount = (indexPath.section == 0) ? filteredItems.filter { $0.progress == 1.0 }.count : filteredItems.filter { $0.progress! < 1.0 }.count
+        let itemCount = (indexPath.section == 0) ? filteredChallengeItems.count : filteredNonChallengeItems.count
         header.isHidden = (itemCount == 0)
         
         if !header.isHidden {
-            header.sectionLabel.text = indexPath.section == 0 ? "완료 투두" : "미완료 투두"
+            header.sectionLabel.text = indexPath.section == 0 ? "챌린지 투두" : "일반 투두"
             header.sectionLabel.textColor = .challendarBlack60
+            header.sectionLabel.font = .pretendardSemiBold(size: 14)
         }
         
         return header
@@ -258,60 +255,28 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
 }
 
 extension SearchViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filterItems(with: searchText)
-        self.reload()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        searchBar.text = ""
-        searchBar.setShowsCancelButton(false, animated: true)
-        updateSearchTextFieldConstraints(showingCancelButton: false)
-        filterItems(with: "")
-        self.reload()
-    }
-    
-    private func filterItems(with searchText: String) {
-        if searchText.isEmpty {
-            filteredItems = items
-        } else {
-            filteredItems = items.filter { $0.name.range(of: searchText, options: .caseInsensitive) != nil }
+    class SearchSectionHeader: UICollectionReusableView {
+        let sectionLabel: UILabel = {
+            let label = UILabel()
+            label.font = .pretendardMedium(size: 16)
+            label.textColor = .challendarBlack60
+            label.translatesAutoresizingMaskIntoConstraints = false
+            return label
+        }()
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            addSubview(sectionLabel)
+            NSLayoutConstraint.activate([
+                sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+                sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+                sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+                sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            ])
         }
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(true, animated: true)
-        updateSearchTextFieldConstraints(showingCancelButton: true)
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
-        updateSearchTextFieldConstraints(showingCancelButton: false)
-    }
-}
-
-class SearchSectionHeader: UICollectionReusableView {
-    let sectionLabel: UILabel = {
-        let label = UILabel()
-        label.font = .pretendardMedium(size: 16)
-        label.textColor = .challendarBlack60
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(sectionLabel)
-        NSLayoutConstraint.activate([
-            sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
-        ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
     }
 }
