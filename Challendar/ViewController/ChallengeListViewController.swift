@@ -8,13 +8,12 @@ class ChallengeListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureFloatingButton()
-        
         // isChallenge가 true인 투두만 items 배열에 추가
         todoItems = todos.filter { $0.isChallenge == true }
 
         setupCollectionView()
         setupLayout()
+        configureFloatingButton()
     }
     
     private func setupLayout() {

@@ -1,15 +1,15 @@
 import UIKit
 
 struct TodoModel2 {
-    var name: String                    // 
-    var description: String?
+    var name: String                    // -> title
+    var description: String?            // -> memo
     var startDate: Date?
     var endDate: Date?
-    var totalDays: Int?
-    var dailyCompletionStatus: [Bool?]?
+    var totalDays: Int?                 // X
+    var dailyCompletionStatus: [Bool?]? // -> completed
     var isChallenge: Bool?
-    var progress: Double?
-    var image: UIImage?
+    var progress: Double?               // -> percentage
+    var image: UIImage?                 // [UIImage]
 }
 
 // 날짜를 생성하는 함수
