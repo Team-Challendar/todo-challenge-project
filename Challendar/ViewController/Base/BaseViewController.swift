@@ -15,9 +15,11 @@ class BaseViewController: UIViewController {
         configureUI()
         configureConstraint()
         configureUtil()
+        configureNotificationCenter()
     }
     
     func configureUI(){}
     func configureConstraint(){}
     func configureUtil(){}
+    func configureNotificationCenter(){}
 }

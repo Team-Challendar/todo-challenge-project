@@ -15,12 +15,13 @@ class SuccessViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar(checkFirst: true)
+        configureNavigationBarForSuccess()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            NotificationCenter.default.post(name: NSNotification.Name("DismissSuccessView"), object: nil, userInfo: nil)
             self.dismiss(animated: true)
         })
     }
