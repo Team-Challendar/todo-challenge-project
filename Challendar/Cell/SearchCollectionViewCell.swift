@@ -85,21 +85,22 @@ class SearchCollectionViewCell: UICollectionViewCell {
         checkButton.isSelected.toggle()
     }
       
-    func configure(with item: TodoModel2) {
-        titleLabel.text = item.name
+    func configure(with item: Todo) {
+        titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         contentView.backgroundColor = .challendarBlack80
 
-        if let progress = item.progress, progress == 1.0 {
+        let progress = item.percentage
+        if progress == 1.0 {
             checkButton.isSelected = true
-            titleLabel.attributedText = NSAttributedString(string: item.name, attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+            titleLabel.attributedText = NSAttributedString(string: item.title, attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue])
             titleLabel.textColor = .challendarBlack60
             dateLabel.alpha = 0.3
             stateLabel.alpha = 0.3
         } else {
             checkButton.isSelected = false
-            titleLabel.attributedText = NSAttributedString(string: item.name, attributes: [:])
+            titleLabel.attributedText = NSAttributedString(string: item.title, attributes: [:])
             dateLabel.alpha = 1.0
             stateLabel.alpha = 1.0
         }

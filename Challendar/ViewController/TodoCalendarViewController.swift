@@ -15,5 +15,19 @@ class TodoCalendarViewController: BaseViewController {
         configureFloatingButton()
     }
 
+    override func configureNotificationCenter(){
+        super.configureNotificationCenter()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.dismissedFromSuccess(_:)),
+            name: NSNotification.Name("DismissSuccessView"),
+            object: nil
+        )
+    }
+    
+    @objc func dismissedFromSuccess(_ notification: Notification) {
+        
+    }
+    
 }
 

@@ -24,6 +24,7 @@ class TabBarViewController: RAMAnimatedTabBarController {
         configure()
     }
     
+    
     func configure(){
         configureBackground()
         self.navs = createNav(with: tabs)

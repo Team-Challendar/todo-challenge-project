@@ -2,21 +2,29 @@ import UIKit
 import SnapKit
 
 class ChallengeListViewController: BaseViewController {
-
-    private var todoItems: [TodoModel2] = todos
+    
+    private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureFloatingButton()
-        
         // isChallenge가 true인 투두만 items 배열에 추가
-        todoItems = todos.filter { $0.isChallenge == true }
-
+        todoItems = todoItems.filter { $0.isChallenge == true }
         setupCollectionView()
         setupLayout()
+        configureFloatingButton()
+        
     }
     
+    override func configureNotificationCenter(){
+        super.configureNotificationCenter()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.dismissedFromSuccess(_:)),
+            name: NSNotification.Name("DismissSuccessView"),
+            object: nil
+        )
+    }
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -60,6 +68,13 @@ class ChallengeListViewController: BaseViewController {
         section.boundarySupplementaryItems = [header]
         
         return section
+    }
+    
+    @objc func dismissedFromSuccess(_ notification: Notification) {
+        self.todoItems = CoreDataManager.shared.fetchTodos()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 }
 

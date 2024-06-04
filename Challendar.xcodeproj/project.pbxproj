@@ -68,7 +68,6 @@
 		14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F342C0A4B0F00819B27 /* CALayerExtension.swift */; };
 		14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */; };
 		14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F382C0A4B3600819B27 /* UIViewExtension.swift */; };
-		2EE276872C09AE6900529138 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE276862C09AE6900529138 /* Dummy.swift */; };
 		DEDEE2892C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE2852C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift */; };
 		DEDEE28A2C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE2862C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift */; };
 		DEDEE28B2C0DEA20006AD1C6 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE2872C0DEA20006AD1C6 /* SearchCollectionViewCell.swift */; };
@@ -138,7 +137,6 @@
 		14C97F342C0A4B0F00819B27 /* CALayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
 		14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		14C97F382C0A4B3600819B27 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
-		2EE276862C09AE6900529138 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		DEDEE2852C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeCollectionViewCell.swift; sourceTree = "<group>"; };
 		DEDEE2862C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfCircleChartViewCell.swift; sourceTree = "<group>"; };
 		DEDEE2872C0DEA20006AD1C6 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -234,7 +232,6 @@
 				14C97F262C09D7B400819B27 /* DayModel.swift */,
 				14C3FA152C0C8B0F00ACAFB6 /* Todo.swift */,
 				14C3FA172C0C900400ACAFB6 /* SelectedDateTypeEnum.swift */,
-				2EE276862C09AE6900529138 /* Dummy.swift */,
 				14AAA90A2C0E231C0085E22F /* Speech.swift */,
 			);
 			path = Model;
@@ -461,11 +458,9 @@
 				DEDEE28F2C0DEA47006AD1C6 /* DateBottomSheetCollectionViewCell.swift in Sources */,
 				14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */,
 				1472ADA52C082A0F00145668 /* TodoCalendarViewController.swift in Sources */,
-				2EE276872C09AE6900529138 /* Dummy.swift in Sources */,
 				1472ADD82C083AD400145668 /* SearchViewController.swift in Sources */,
 				1472ADE02C083F5D00145668 /* TabModel.swift in Sources */,
 				14C97F272C09D7B400819B27 /* DayModel.swift in Sources */,
-				14C97F2E2C0A377C00819B27 /* CalendarCell.swift in Sources */,
 				14AAA9052C0E08A00085E22F /* SuccessViewController.swift in Sources */,
 				149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */,
 				1472ADF92C087B5900145668 /* EditTitleLabel.swift in Sources */,

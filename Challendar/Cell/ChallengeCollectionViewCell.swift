@@ -143,16 +143,14 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         checkButton.isSelected.toggle()
     }
       
-    func configure(with item: TodoModel2) {
-        titleLabel.text = item.name
+    func configure(with item: Todo) {
+        titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         contentView.backgroundColor = .challendarBlack80
         
         // 차트를 업데이트
-        if let dailyCompletionStatus = item.dailyCompletionStatus {
-            updateChart(with: dailyCompletionStatus)
-        }
+        updateChart(with: item.completed )
     }
 
     private func formatDate(_ date: Date?) -> String {

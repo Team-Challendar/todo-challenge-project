@@ -56,7 +56,7 @@ class CoreDataManager {
     }
     
     // Read
-    func fetchTodos() -> [Todo]? {
+    func fetchTodos() -> [Todo] {
         let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
         
         // 날짜 내림차순 정렬 요청
@@ -70,7 +70,7 @@ class CoreDataManager {
                     if let imageData = model.images, let decodedData = try? JSONDecoder().decode([Data].self, from: imageData) {
                         return decodedData.compactMap { UIImage(data: $0) }
                     }
-                    return nil
+                    return []
                 }()
                 
                 return Todo(
@@ -87,7 +87,7 @@ class CoreDataManager {
             }
         } catch {
             print("Failed to fetch todos: \(error)")
-            return nil
+            return []
         }
     }
     

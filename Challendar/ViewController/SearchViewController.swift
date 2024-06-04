@@ -10,9 +10,9 @@ import SnapKit
 
 class SearchViewController: BaseViewController {
 
-    private var items: [TodoModel2] = todos
-    private var filteredChallengeItems: [TodoModel2] = []
-    private var filteredNonChallengeItems: [TodoModel2] = []
+    private var items: [Todo] = CoreDataManager.shared.fetchTodos()
+    private var filteredChallengeItems: [Todo] = []
+    private var filteredNonChallengeItems: [Todo] = []
     private var previousIndexPath: IndexPath?
     private var selectedIndexPath: IndexPath?
     
@@ -28,9 +28,18 @@ class SearchViewController: BaseViewController {
         setupLayout()
         filterItems(with: "")
         reload()
-        CoreDataManager.shared.deleteAllTodos()
     }
     
+    
+    override func configureNotificationCenter(){
+        super.configureNotificationCenter()
+        NotificationCenter.default.addObserver(
+                  self,
+                  selector: #selector(self.dismissedFromSuccess(_:)),
+                  name: NSNotification.Name("DismissSuccessView"),
+                  object: nil
+              )
+    }
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -199,11 +208,19 @@ class SearchViewController: BaseViewController {
             filteredChallengeItems = items.filter { $0.isChallenge == true }
             filteredNonChallengeItems = items.filter { $0.isChallenge == false }
         } else {
-            filteredChallengeItems = items.filter { $0.isChallenge == true && $0.name.range(of: searchText, options: .caseInsensitive) != nil }
-            filteredNonChallengeItems = items.filter { $0.isChallenge == false && $0.name.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredChallengeItems = items.filter { $0.isChallenge == true && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredNonChallengeItems = items.filter { $0.isChallenge == false && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
         reload() // 필터링 후 데이터 리로드
     }
+    
+    @objc func dismissedFromSuccess(_ notification: Notification) {
+        self.items = CoreDataManager.shared.fetchTodos()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -231,7 +248,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
         
-        let item : TodoModel2
+        let item : Todo
         if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty{
             item = indexPath.section == 0 ? filteredChallengeItems[indexPath.row] : filteredNonChallengeItems[indexPath.row]
         } else if !filteredChallengeItems.isEmpty {
