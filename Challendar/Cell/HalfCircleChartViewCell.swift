@@ -10,7 +10,7 @@ import SwiftUI
 
 // 챌린지 반원 차트 뷰
 struct ChallengeChartView: View {
-    var todoProgress: [TodoModel]
+    var todoProgress: [TodoModel2]
     
     private var progress: Double {
         let total = Double(todoProgress.count)
@@ -109,7 +109,7 @@ class HalfCircleChartViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with todoProgress: [TodoModel]) {
+    func configure(with todoProgress: [TodoModel2]) {
         let chartView = ChallengeChartView(todoProgress: todoProgress)
         halfCircleHostingController?.rootView = chartView
     }

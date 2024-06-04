@@ -60,6 +60,10 @@ class CoreDataManager {
     func fetchTodos() -> [TodoModel]? {
         let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
         
+        // 날짜 내림차순 정렬 요청
+        let dateOrder = NSSortDescriptor(key: "startDate", ascending: false)
+        fetchRequest.sortDescriptors = [dateOrder]
+        
         do {
             let todos = try context.fetch(fetchRequest)
             return todos

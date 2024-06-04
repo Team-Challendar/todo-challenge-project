@@ -85,7 +85,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         checkButton.isSelected.toggle()
     }
       
-    func configure(with item: TodoModel) {
+    func configure(with item: TodoModel2) {
         titleLabel.text = item.name
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)

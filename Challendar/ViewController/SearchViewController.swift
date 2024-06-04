@@ -10,9 +10,9 @@ import SnapKit
 
 class SearchViewController: BaseViewController {
 
-    private var items: [TodoModel] = todos
-    private var filteredChallengeItems: [TodoModel] = []
-    private var filteredNonChallengeItems: [TodoModel] = []
+    private var items: [TodoModel2] = todos
+    private var filteredChallengeItems: [TodoModel2] = []
+    private var filteredNonChallengeItems: [TodoModel2] = []
     private var previousIndexPath: IndexPath?
     private var selectedIndexPath: IndexPath?
     
@@ -230,7 +230,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
         
-        let item : TodoModel
+        let item : TodoModel2
         if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty{
             item = indexPath.section == 0 ? filteredChallengeItems[indexPath.row] : filteredNonChallengeItems[indexPath.row]
         } else if !filteredChallengeItems.isEmpty {

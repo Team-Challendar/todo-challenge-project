@@ -173,10 +173,10 @@
 		1472AD9F2C082A0F00145668 /* Challendar */ = {
 			isa = PBXGroup;
 			children = (
-				DEDEE2882C0DEA20006AD1C6 /* Cell */,
 				14C3FA192C0C9EA700ACAFB6 /* Challendar.entitlements */,
 				14C3FA0D2C0C7CFF00ACAFB6 /* Manager */,
 				1472ADED2C0850C200145668 /* Component */,
+				DEDEE2882C0DEA20006AD1C6 /* Cell */,
 				1472ADB92C082B2E00145668 /* Model */,
 				1472ADB82C082B1B00145668 /* Util */,
 				1472ADB72C082B0B00145668 /* ViewController */,
