@@ -18,6 +18,12 @@ class SuccessViewController: BaseViewController {
         configureNavigationBar(checkFirst: true)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            self.dismiss(animated: true)
+        })
+    }
     override func configureUI() {
         dimmedView.backgroundColor = UIColor.challendarBlack90.withAlphaComponent(dimmedViewAlpha)
         if isChallenge {

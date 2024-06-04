@@ -41,6 +41,24 @@ class BottomSheetViewController: UIViewController {
                 self?.hideLayoutShowChallenge()
             }).disposed(by: self.dispose)
         
+        dateBottomSheet.laterButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                CoreDataManager.shared.createTodo(newTodo: (self?.newTodo)!)
+                let rootView = self?.presentingViewController
+                let root = rootView?.presentingViewController
+                let successViewController = SuccessViewController()
+                successViewController.isChallenge = false
+                let navigationController = UINavigationController(rootViewController: successViewController)
+                navigationController.modalTransitionStyle = .coverVertical
+                navigationController.modalPresentationStyle = .overFullScreen
+                self?.dismiss(animated: false, completion: {
+                    rootView?.dismiss(animated: false, completion: {
+                        root?.present(navigationController, animated: true)
+                    })
+                })
+            })
+            .disposed(by: self.dispose)
+        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         dateBottomSheet.addGestureRecognizer(panGesture)
         
@@ -49,6 +67,8 @@ class BottomSheetViewController: UIViewController {
                 self?.hideCalShowBottom()
             })
             .disposed(by: self.dispose)
+        
+        
         
         dateBottomSheet.newTodo = self.newTodo
         calenderView.newTodo = self.newTodo

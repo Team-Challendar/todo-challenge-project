@@ -14,16 +14,29 @@ class ChallengeCheckViewController: BaseViewController {
     var dimmedView = UIView()
     var newTodo: Todo?
     var challengePopUp = ChallengePopUpView()
+    var dispose = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar(checkFirst: false)
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
         showLayout()
-        newTodo?.description()
+    }
+    override func configureUtil() {
+        super.configureUtil()
+        challengePopUp.laterButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.newTodo?.isChallenge = false
+                self?.showSuccessVC()
+            }).disposed(by: self.dispose)
+        
+        challengePopUp.challengeButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.newTodo?.isChallenge = true
+                self?.showSuccessVC()
+            }).disposed(by: self.dispose)
     }
     override func configureUI() {
         super.configureUI()
@@ -46,9 +59,6 @@ class ChallengeCheckViewController: BaseViewController {
             
         }
     }
-//    override func configureUtil() {
-//        <#code#>
-//    }
     
     private func showLayout(){
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear,  animations: {
@@ -57,5 +67,17 @@ class ChallengeCheckViewController: BaseViewController {
         }, completion: nil)
     }
     
-
+    
+    func showSuccessVC(){
+        CoreDataManager.shared.createTodo(newTodo: (self.newTodo)!)
+        let rootView = self.presentingViewController
+        let successViewController = SuccessViewController()
+        successViewController.isChallenge = self.newTodo!.isChallenge
+        let navigationController = UINavigationController(rootViewController: successViewController)
+        navigationController.modalTransitionStyle = .coverVertical
+        navigationController.modalPresentationStyle = .overFullScreen
+        self.dismiss(animated: false, completion: {
+            rootView?.present(navigationController, animated: true)
+        })
+    }
 }

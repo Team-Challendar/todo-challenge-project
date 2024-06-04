@@ -4,7 +4,6 @@ import RxSwift
 import RxCocoa
 
 class AddTodoDateViewController: BaseViewController {
-    let coreDataManager = CoreDataManager.shared
     let titleLabel = EditTitleLabel(text: "기한을 선택해주세요")
     let titleView = EmptyView()
     let dateView = DateView()
@@ -91,7 +90,7 @@ class AddTodoDateViewController: BaseViewController {
     }
     private func confirmButtonTapped(){
         if self.dateRange == nil {
-            self.coreDataManager.createTodo(newTodo: self.newTodo!)
+            CoreDataManager.shared.createTodo(newTodo: self.newTodo!)
             let rootView = self.presentingViewController
             let successViewController = SuccessViewController()
             successViewController.isChallenge = false
