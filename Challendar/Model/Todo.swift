@@ -15,8 +15,7 @@ class Todo {
     public var endDate: Date? {
         didSet{
             guard let startDate = startDate else {return}
-            completed = [Bool](repeating: false, count: endDate?.daysBetween(startDate) ?? 0)
-            print(completed.count)
+            completed = [Bool](repeating: false, count: (endDate?.daysBetween(startDate) ?? 0) + 1)
         }
     }
     public var completed: [Bool] = []
@@ -34,5 +33,18 @@ class Todo {
         self.isChallenge = isChallenge
         self.percentage = percentage
         self.images = images
+    }
+    
+    func description(){
+        print("----------")
+        print("title: \(self.title)")
+        print("memo: \(String(describing: self.memo))")
+        print("startDate: \(String(describing: self.startDate))")
+        print("endDate: \(String(describing: self.endDate))")
+        print("completed.count: \(self.completed.count)")
+        print("isChallenge: \(self.isChallenge)")
+        print("percentage: \(self.percentage)")
+        print("images.count:\(String(describing: self.images?.count))")
+        print("----------")
     }
 }

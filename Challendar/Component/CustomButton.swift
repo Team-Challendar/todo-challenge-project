@@ -44,6 +44,7 @@ class CustomButton: UIButton {
     }
     func laterState(){
         changeTitle(title: "나중에 정할래요")
+        self.isEnabled = true
         self.setTitleColor(.challendarGreen100, for: .normal)
         self.backgroundColor = .clear
         self.layer.borderColor = UIColor.challendarGreen100.cgColor
@@ -51,6 +52,7 @@ class CustomButton: UIButton {
     }
     
     func applyState(){
+        self.isEnabled = true
         changeTitle(title: "적용하기")
         self.setTitleColor(.challendarBlack100, for: .normal)
         self.backgroundColor = .challendarGreen100
@@ -60,5 +62,23 @@ class CustomButton: UIButton {
         changeTitle(title: "적용하기")
         self.setTitleColor(.challendarNonApply, for: .normal)
         self.backgroundColor = .challendarNonApplyBackground
+    }
+    
+    func laterMediumState() {
+        changeTitle(title: "나중에")
+        self.layer.cornerRadius = 12
+        self.isEnabled = true
+        self.setTitleColor(.challendarGreen100, for: .normal)
+        self.backgroundColor = .clear
+        self.layer.borderColor = UIColor.challendarGreen100.cgColor
+        self.layer.borderWidth = 1
+    }
+    
+    func challengeState(){
+        self.isEnabled = true
+        self.layer.cornerRadius = 12
+        changeTitle(title: "도전!")
+        self.setTitleColor(.challendarBlack100, for: .normal)
+        self.backgroundColor = .challendarGreen100
     }
 }

@@ -4,20 +4,13 @@ import RxSwift
 import RxCocoa
 
 class AddTodoDateViewController: BaseViewController {
-    
     let titleLabel = EditTitleLabel(text: "기한을 선택해주세요")
     let titleView = EmptyView()
     let dateView = DateView()
     let confirmButton = CustomButton()
     var dispose = DisposeBag()
     var newTodo : Todo?
-    var dateRange : DateRange? {
-        didSet{
-            if dateRange != .manual {
-                confirmButton.changeTitle(title: "다음")
-            }
-        }
-    }
+    var dateRange : DateRange?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,10 +55,11 @@ class AddTodoDateViewController: BaseViewController {
     }
     override func configureUtil(){
         confirmButton.rx.tap
-            .subscribe(onNext: {[weak self] _ in
-                print("NEXT")
+            .subscribe(onNext: { [weak self] _ in
+                self?.confirmButtonTapped()
             })
             .disposed(by: self.dispose)
+        
         
         let gesture:UITapGestureRecognizer = UITapGestureRecognizer()
         gesture.numberOfTapsRequired = 1
@@ -74,13 +68,18 @@ class AddTodoDateViewController: BaseViewController {
         gesture.rx.event
             .bind(
                 onNext: { [weak self] recongnizer in
-            self?.titleViewDidTapped()
+                    self?.titleViewDidTapped()
                 }).disposed(by: self.dispose)
         
     }
     
     private func titleViewDidTapped(){
         let bottomSheetVC = BottomSheetViewController()
+        bottomSheetVC.rootViewVC = self
+        bottomSheetVC.newTodo = self.newTodo
+        if let dateRange = dateRange {
+            bottomSheetVC.dateRange = dateRange
+        }
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         self.present(bottomSheetVC, animated: false,completion: nil)
     }
@@ -89,6 +88,30 @@ class AddTodoDateViewController: BaseViewController {
         self.dateRange = data
         self.dateView.textLabel.text = data.rawValue
     }
+    private func confirmButtonTapped(){
+        if self.dateRange == nil {
+            CoreDataManager.shared.createTodo(newTodo: self.newTodo!)
+            let rootView = self.presentingViewController
+            let successViewController = SuccessViewController()
+            successViewController.isChallenge = false
+            let navigationController = UINavigationController(rootViewController: successViewController)
+            navigationController.modalTransitionStyle = .coverVertical
+            navigationController.modalPresentationStyle = .overFullScreen
+            self.dismiss(animated: false, completion: {
+                rootView?.present(navigationController, animated: true)
+            })
+        }else if self.dateRange == .manual{
+            print("기간 직접 입력 오류")
+        }else{
+            self.newTodo?.startDate = Date()
+            self.newTodo?.endDate = self.dateRange?.date
+            let challengeCheckViewController = ChallengeCheckViewController()
+            challengeCheckViewController.newTodo = self.newTodo
+            self.navigationController?.pushViewController(challengeCheckViewController, animated: true)
+        }
+    }
+    
+    
 }
 
 

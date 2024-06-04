@@ -2,7 +2,7 @@ import UIKit
 import CoreData
 
 class CoreDataManager {
-
+    
     static let shared = CoreDataManager()
     
     private init() {}
@@ -35,7 +35,7 @@ class CoreDataManager {
     // MARK: - CRUD Operations
     
     // Create
-    func createTodo(newTodo: Todo) -> TodoModel? {
+    func createTodo(newTodo: Todo) {
         let todo = TodoModel(context: context)
         todo.id = UUID()
         todo.title = newTodo.title
@@ -53,11 +53,10 @@ class CoreDataManager {
         }
         
         saveContext()
-        return todo
     }
     
     // Read
-    func fetchTodos() -> [TodoModel]? {
+    func fetchTodos() -> [Todo]? {
         let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
         
         // 날짜 내림차순 정렬 요청
@@ -65,15 +64,34 @@ class CoreDataManager {
         fetchRequest.sortDescriptors = [dateOrder]
         
         do {
-            let todos = try context.fetch(fetchRequest)
-            return todos
+            let todoModels = try context.fetch(fetchRequest)
+            return todoModels.map { model in
+                let images: [UIImage]? = {
+                    if let imageData = model.images, let decodedData = try? JSONDecoder().decode([Data].self, from: imageData) {
+                        return decodedData.compactMap { UIImage(data: $0) }
+                    }
+                    return nil
+                }()
+                
+                return Todo(
+                    id: model.id,
+                    title: model.title,
+                    memo: model.memo,
+                    startDate: model.startDate,
+                    endDate: model.endDate,
+                    completed: model.completed,
+                    isChallenge: model.isChallenge,
+                    percentage: model.percentage,
+                    images: images
+                )
+            }
         } catch {
             print("Failed to fetch todos: \(error)")
             return nil
         }
     }
     
-    func fetchTodoById(id: UUID) -> TodoModel? {
+    private func fetchTodoById(id: UUID) -> TodoModel? {
         let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         
@@ -131,5 +149,17 @@ class CoreDataManager {
         
         context.delete(todoToDelete)
         saveContext()
+    }
+    
+    func deleteAllTodos() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TodoModel.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(deleteRequest)
+            saveContext()
+        } catch {
+            print("Failed to delete all todos: \(error)")
+        }
     }
 }

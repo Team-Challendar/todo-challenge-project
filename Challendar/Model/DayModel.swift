@@ -8,7 +8,7 @@ class Day {
     var percentage : Double
     var toDo: [Todo]
     
-    
+// 해당하는 ID 혹은
     init(date: Date, listCount: Int, completedListCount: Int, percentage: Double, todo: [Todo]) {
         self.date = date
         self.listCount = listCount

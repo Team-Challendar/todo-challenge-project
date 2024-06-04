@@ -28,6 +28,7 @@ class SearchViewController: BaseViewController {
         setupLayout()
         filterItems(with: "")
         reload()
+        CoreDataManager.shared.deleteAllTodos()
     }
     
     private func setupLayout() {
