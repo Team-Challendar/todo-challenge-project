@@ -29,10 +29,14 @@ class SearchCollectionViewCell: UICollectionViewCell {
     
     private func setupViews() {
         contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = true
+        contentView.layer.masksToBounds = false
         contentView.backgroundColor = .challendarBlack80
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        contentView.layer.shadowColor = UIColor.black.cgColor
+        contentView.layer.shadowOpacity = 0.16
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        contentView.layer.shadowRadius = 4
         
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -42,13 +46,13 @@ class SearchCollectionViewCell: UICollectionViewCell {
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.textColor = .challendarGreen100
+        dateLabel.textColor = .challendarBlack60
         dateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(dateLabel)
         
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
-        stateLabel.textColor = .challendarBlack60
+        stateLabel.textColor = .challendarGreen100
         stateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(stateLabel)
         
@@ -60,8 +64,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         contentView.addSubview(checkButton)
-        
-      
         
         NSLayoutConstraint.activate([
             
@@ -84,13 +86,13 @@ class SearchCollectionViewCell: UICollectionViewCell {
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
     }
-      
+    
     func configure(with item: Todo) {
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         contentView.backgroundColor = .challendarBlack80
-
+        
         let progress = item.percentage
         if progress == 1.0 {
             checkButton.isSelected = true
@@ -105,27 +107,32 @@ class SearchCollectionViewCell: UICollectionViewCell {
             stateLabel.alpha = 1.0
         }
     }
+    
+    private func formatDate(_ date: Date?) -> String {
+        guard let date = date else { return "날짜 없음" }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy. MM. dd."
+        return dateFormatter.string(from: date)
+    }
+    
+    private func calculateState(startDate: Date?, endDate: Date?) -> String {
+        guard let startDate = startDate, let endDate = endDate else { return "날짜 없음" }
+        let today = Date()
+        let calendar = Calendar.current
+        
+        if today > endDate {
+            return "종료됨"
+        } else if today < startDate {
+            return "예정됨"
+        }
+        
+        let components = calendar.dateComponents([.day], from: startDate, to: today)
+        if let day = components.day {
+            return "\(day + 1)일차"
+        } else {
+            return "날짜 없음"
+        }
+    }
+}
 
-      private func formatDate(_ date: Date?) -> String {
-          guard let date = date else { return "날짜 없음" }
-          let dateFormatter = DateFormatter()
-          dateFormatter.dateFormat = "yyyy. MM. dd"
-          return dateFormatter.string(from: date)
-      }
-      
-      private func calculateState(startDate: Date?, endDate: Date?) -> String {
-          guard let startDate = startDate, let endDate = endDate else { return "날짜 없음" }
-          let today = Date()
-          
-          if today > endDate {
-              return "종료됨,"
-          } else if today < startDate {
-              return "내일부터,"
-          } else if Calendar.current.isDateInToday(startDate) {
-              return "오늘부터,"
-          } else {
-              return "진행 중,"
-          }
-      }
-  }
 // 체크 버튼 누를 시 셀 리로드.
