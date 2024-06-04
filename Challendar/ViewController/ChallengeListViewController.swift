@@ -13,7 +13,6 @@ class ChallengeListViewController: BaseViewController {
         setupCollectionView()
         setupLayout()
         configureFloatingButton()
-        
     }
     
     override func configureNotificationCenter(){
