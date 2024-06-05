@@ -15,7 +15,8 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     var dateLabel: UILabel!
     var stateLabel: UILabel!
     var progressBar: UIProgressView!
-
+    var todoItem: Todo? // Todo 항목을 저장할 속성
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -27,12 +28,16 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        titleLabel.attributedText = nil
+    }
+    
     private func setupViews() {
         contentView.layer.cornerRadius = 20
         contentView.layer.masksToBounds = false
         contentView.backgroundColor = .challendarBlack80
         contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowOpacity = 0.16
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -46,7 +51,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.textColor = .challendarBlack60    // 컬러 : challendarGray100
+        dateLabel.textColor = .challendarBlack60
         dateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(dateLabel)
         
@@ -59,11 +64,11 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         progressBar = UIProgressView(progressViewStyle: .default)
         progressBar.translatesAutoresizingMaskIntoConstraints = false
         progressBar.progressTintColor = .challendarGreen100
-        progressBar.trackTintColor = .challendarBlack60     // 컬러 : challendarBlack70
+        progressBar.trackTintColor = .challendarBlack60
         contentView.addSubview(progressBar)
                
         checkButton = UIButton(type: .system)
-        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)    // 컬러 : challendarGray100
+        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
         checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
@@ -72,8 +77,6 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(checkButton)
         
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 75),
-            
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             
@@ -90,7 +93,6 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             
             checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
-            
         ])
         contentView.bringSubviewToFront(checkButton)
         progressBar.layer.cornerRadius = progressBar.frame.height / 2
@@ -99,21 +101,33 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
         updateTitleLabel()
+        
+        guard let item = todoItem else { return }
+        item.toggleTodaysCompletedState()
+        updateTodoCompletion(for: item)
+        
+        // Notification으로 챌린지 리스트 뷰에 변경됨을 알림
+        NotificationCenter.default.post(name: NSNotification.Name("TodoCompletedStateChanged"), object: nil)
     }
-      
+    
     func configure(with item: Todo) {
+        self.todoItem = item
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         progressBar.progress = Float(item.percentage / 100)
         contentView.backgroundColor = .challendarBlack80
+        
+        // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
+        checkButton.isSelected = item.todayCompleted()
         updateTitleLabel()
     }
-
+    
     private func updateTitleLabel() {
         if checkButton.isSelected {
             if let title = titleLabel.text {
-                titleLabel.attributedText = title.strikeThrough(color: .gray) // 컬러 : challendarGray100
+                titleLabel.attributedText = title.strikeThrough()
+                titleLabel.textColor = .challendarBlack60
             }
         } else {
             if let title = titleLabel.text {
@@ -148,14 +162,8 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             return "날짜 없음"
         }
     }
-}
-
-// CellExtension 파일 만들어서 옮겨야하나..
-extension String {
-    func strikeThrough(color: UIColor) -> NSAttributedString {
-        let attributeString = NSMutableAttributedString(string: self)
-        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
-        attributeString.addAttribute(.foregroundColor, value: color, range: NSMakeRange(0, attributeString.length))
-        return attributeString
+    
+    private func updateTodoCompletion(for item: Todo) {
+        CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newCompleted: item.completed)
     }
 }

@@ -99,7 +99,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
     private func updateTitleLabel() {
         if checkButton.isSelected {
             if let title = titleLabel.text {
-                titleLabel.attributedText = title.strikeThrough(color: .gray)
+                titleLabel.attributedText = title.strikeThrough()
+                titleLabel.textColor = .challendarBlack60
             }
         } else {
             if let title = titleLabel.text {

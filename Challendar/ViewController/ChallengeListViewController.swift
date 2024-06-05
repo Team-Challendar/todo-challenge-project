@@ -1,5 +1,5 @@
 //
-//  ChallengeCollectionViewCell.swift
+//  ChallengeListViewController.swift
 //  Challendar
 //
 //  Created by 서혜림 on 6/3/24.
@@ -24,6 +24,14 @@ class ChallengeListViewController: BaseViewController {
         setupCollectionView()
         setupLayout()
         configureFloatingButton()
+        
+        // NotificationCenter 등록
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(todoCompletedStateChanged(_:)),
+            name: NSNotification.Name("TodoCompletedStateChanged"),
+            object: nil
+        )
     }
     
     override func configureNotificationCenter() {
@@ -35,6 +43,14 @@ class ChallengeListViewController: BaseViewController {
             object: nil
         )
     }
+    
+    @objc func todoCompletedStateChanged(_ notification: Notification) {
+        filterTodos()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+
     
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
@@ -93,23 +109,25 @@ class ChallengeListViewController: BaseViewController {
         let today = Date()
         let filteredItems = CoreDataManager.shared.fetchTodos().filter { $0.isChallenge == true }
         
-        completedTodos = filteredItems.filter { $0.todayCompleted(date: today) }
-        incompleteTodos = filteredItems.filter { !$0.todayCompleted(date: today) && $0.startDate ?? today <= today }
-        upcomingTodos = filteredItems.filter { $0.startDate ?? today > today }
+        completedTodos = filteredItems.filter { $0.todayCompleted(date: today) && ($0.endDate ?? today) >= today }
+        incompleteTodos = filteredItems.filter { !$0.todayCompleted(date: today) && $0.startDate ?? today <= today && ($0.endDate ?? today) >= today }
+        upcomingTodos = filteredItems.filter { $0.startDate ?? today > today && ($0.endDate ?? today) >= today }
     }
-    
+
     // 최신순
     private func sortByRecentStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         upcomingTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
+    
     // 등록순
     private func sortByOldestStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
         upcomingTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
     }
+    
     // 기한 임박
     private func sortByNearestEndDate() {
         completedTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
@@ -151,7 +169,8 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     private enum SectionType {
         case completed, incomplete, upcoming
     }
-    //  섹션 인덱스로 각 섹션 타입 반환
+    
+    // 섹션 인덱스로 각 섹션 타입 반환
     private func getSectionType(for section: Int) -> SectionType {
         var index = 0
         if !completedTodos.isEmpty {
@@ -165,19 +184,36 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         if !upcomingTodos.isEmpty {
             if index == section { return .upcoming }
         }
-        fatalError("Invalid section")
+        print("Invalid section: \(section)")
+        return .incomplete // 기본값을 반환하거나 적절한 오류 처리를 합니다.
     }
-    //  각 섹션 투두 항목들 반환
+
+    
+    // 각 섹션 투두 항목들 반환
     private func getTodoItem(for indexPath: IndexPath) -> Todo {
         switch getSectionType(for: indexPath.section) {
         case .completed:
+            guard completedTodos.indices.contains(indexPath.item) else {
+                print("Invalid indexPath: \(indexPath)")
+                return Todo() // 기본값을 반환하거나 적절한 오류 처리를 합니다.
+            }
             return completedTodos[indexPath.item]
         case .incomplete:
+            guard incompleteTodos.indices.contains(indexPath.item) else {
+                print("Invalid indexPath: \(indexPath)")
+                return Todo() // 기본값을 반환하거나 적절한 오류 처리를 합니다.
+            }
             return incompleteTodos[indexPath.item]
         case .upcoming:
+            guard upcomingTodos.indices.contains(indexPath.item) else {
+                print("Invalid indexPath: \(indexPath)")
+                return Todo() // 기본값을 반환하거나 적절한 오류 처리를 합니다.
+            }
             return upcomingTodos[indexPath.item]
         }
     }
+
+    
     // 각 섹션 헤더 반환
     private func getSectionHeaderTitle(for section: Int) -> String {
         switch getSectionType(for: section) {
