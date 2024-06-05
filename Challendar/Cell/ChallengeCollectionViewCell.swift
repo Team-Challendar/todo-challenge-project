@@ -14,7 +14,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     var titleLabel: UILabel!
     var dateLabel: UILabel!
     var stateLabel: UILabel!
-    var progressBar: UIView!
+    var progressBar: UIProgressView!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +46,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.textColor = .challendarBlack60
+        dateLabel.textColor = .challendarBlack60    // 컬러 : challendarGray100
         dateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(dateLabel)
         
@@ -56,12 +56,14 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         stateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(stateLabel)
         
-        progressBar = UIView()
+        progressBar = UIProgressView(progressViewStyle: .default)
         progressBar.translatesAutoresizingMaskIntoConstraints = false
+        progressBar.progressTintColor = .challendarGreen100
+        progressBar.trackTintColor = .challendarBlack60     // 컬러 : challendarBlack70
         contentView.addSubview(progressBar)
-        
+               
         checkButton = UIButton(type: .system)
-        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
+        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)    // 컬러 : challendarGray100
         checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
@@ -91,8 +93,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             
         ])
         contentView.bringSubviewToFront(checkButton)
-        progressBar.backgroundColor = .red
-        progressBar.layer.cornerRadius = 2 // 타원이 조금 뾰족해보임
+        progressBar.layer.cornerRadius = progressBar.frame.height / 2
     }
     
     @objc private func checkButtonTapped() {
@@ -104,6 +105,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
+        progressBar.progress = Float(item.percentage / 100)
         contentView.backgroundColor = .challendarBlack80
         updateTitleLabel()
     }
@@ -111,7 +113,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     private func updateTitleLabel() {
         if checkButton.isSelected {
             if let title = titleLabel.text {
-                titleLabel.attributedText = title.strikeThrough(color: .gray)
+                titleLabel.attributedText = title.strikeThrough(color: .gray) // 컬러 : challendarGray100
             }
         } else {
             if let title = titleLabel.text {
