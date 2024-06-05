@@ -40,7 +40,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .white
+        titleLabel.textColor = .challendarWhite100
         titleLabel.font = .pretendardMedium(size: 20)
         contentView.addSubview(titleLabel)
         
@@ -61,7 +61,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(progressBar)
         
         checkButton = UIButton(type: .system)
-        checkButton.setImage(.done0.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .normal)
+        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
         checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
@@ -88,14 +88,16 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             
             checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
+            
         ])
         contentView.bringSubviewToFront(checkButton)
         progressBar.backgroundColor = .red
-        progressBar.layer.cornerRadius = 4
+        progressBar.layer.cornerRadius = 2 // 타원이 조금 뾰족해보임
     }
     
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
+        updateTitleLabel()
     }
       
     func configure(with item: Todo) {
@@ -103,6 +105,20 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         contentView.backgroundColor = .challendarBlack80
+        updateTitleLabel()
+    }
+
+    private func updateTitleLabel() {
+        if checkButton.isSelected {
+            if let title = titleLabel.text {
+                titleLabel.attributedText = title.strikeThrough(color: .gray)
+            }
+        } else {
+            if let title = titleLabel.text {
+                titleLabel.attributedText = NSAttributedString(string: title)
+            }
+            titleLabel.textColor = .challendarWhite100
+        }
     }
 
     private func formatDate(_ date: Date?) -> String {
@@ -129,5 +145,15 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         } else {
             return "날짜 없음"
         }
+    }
+}
+
+// CellExtension 파일 만들어서 옮겨야하나..
+extension String {
+    func strikeThrough(color: UIColor) -> NSAttributedString {
+        let attributeString = NSMutableAttributedString(string: self)
+        attributeString.addAttribute(.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
+        attributeString.addAttribute(.foregroundColor, value: color, range: NSMakeRange(0, attributeString.length))
+        return attributeString
     }
 }

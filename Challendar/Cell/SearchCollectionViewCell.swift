@@ -40,7 +40,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .white
+        titleLabel.textColor = .challendarWhite100
         titleLabel.font = .pretendardMedium(size: 20)
         contentView.addSubview(titleLabel)
         
@@ -85,26 +85,27 @@ class SearchCollectionViewCell: UICollectionViewCell {
     
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
+        updateTitleLabel()
     }
-    
+      
     func configure(with item: Todo) {
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         contentView.backgroundColor = .challendarBlack80
-        
-        let progress = item.percentage
-        if progress == 1.0 {
-            checkButton.isSelected = true
-            titleLabel.attributedText = NSAttributedString(string: item.title, attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue])
-            titleLabel.textColor = .challendarBlack60
-            dateLabel.alpha = 0.3
-            stateLabel.alpha = 0.3
+        updateTitleLabel()
+    }
+
+    private func updateTitleLabel() {
+        if checkButton.isSelected {
+            if let title = titleLabel.text {
+                titleLabel.attributedText = title.strikeThrough(color: .gray)
+            }
         } else {
-            checkButton.isSelected = false
-            titleLabel.attributedText = NSAttributedString(string: item.title, attributes: [:])
-            dateLabel.alpha = 1.0
-            stateLabel.alpha = 1.0
+            if let title = titleLabel.text {
+                titleLabel.attributedText = NSAttributedString(string: title)
+            }
+            titleLabel.textColor = .challendarWhite100
         }
     }
     
