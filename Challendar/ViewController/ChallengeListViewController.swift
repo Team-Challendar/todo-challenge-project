@@ -9,6 +9,7 @@ class ChallengeListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // isChallenge가 true인 투두만 items 배열에 추가
+        configureTitleNavigationBar(title: "챌린지 리스트")
         todoItems = todoItems.filter { $0.isChallenge == true }
         setupCollectionView()
         setupLayout()

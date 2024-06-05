@@ -11,6 +11,9 @@ class TodoViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureFloatingButton()
+        configureTitleNavigationBar(title: "할 일 목록")
+        
     }
 
     override func configureNotificationCenter(){
@@ -28,3 +31,6 @@ class TodoViewController: BaseViewController {
     }
     
 }
+
+
+
