@@ -101,7 +101,7 @@ class SearchViewController: BaseViewController {
         let cancelText = UILabel()
         cancelText.text = "취소"
         cancelText.font = .pretendardSemiBold(size: 16)
-        cancelText.textColor = .white
+        cancelText.textColor = .challendarWhite100
         cancelBtn.addSubview(cancelText)
         cancelText.translatesAutoresizingMaskIntoConstraints = false
         
@@ -147,7 +147,7 @@ class SearchViewController: BaseViewController {
         searchTextField.layer.cornerRadius = 12
         searchTextField.clipsToBounds = true
         searchTextField.tintColor = .challendarBlack80
-        searchTextField.textColor = .white
+        searchTextField.textColor = .challendarWhite100
         
         if let placeholderText = searchBar.placeholder {
             searchTextField.attributedPlaceholder = NSAttributedString(
@@ -211,11 +211,30 @@ class SearchViewController: BaseViewController {
             filteredChallengeItems = items.filter { $0.isChallenge == true && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredNonChallengeItems = items.filter { $0.isChallenge == false && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
+        
+        // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
+        sortByRecentStartDate()
         reload() // 필터링 후 데이터 리로드
     }
-    
+    // 최신순
+    private func sortByRecentStartDate() {
+        filteredChallengeItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+        filteredNonChallengeItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+    }
+    // 등록순
+    private func sortByOldestStartDate() {
+        filteredChallengeItems.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+        filteredNonChallengeItems.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+    }
+    // 기한 임박
+    private func sortByNearestEndDate() {
+        filteredChallengeItems.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+        filteredNonChallengeItems.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+    }
+
     @objc func dismissedFromSuccess(_ notification: Notification) {
         self.items = CoreDataManager.shared.fetchTodos()
+        filterItems(with: "")
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }

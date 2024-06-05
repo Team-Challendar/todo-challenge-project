@@ -1,21 +1,31 @@
+//
+//  ChallengeCollectionViewCell.swift
+//  Challendar
+//
+//  Created by 서혜림 on 6/3/24.
+//
+
 import UIKit
 import SnapKit
 
 class ChallengeListViewController: BaseViewController {
     
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
+    private var completedTodos: [Todo] = []         // 완료 투두
+    private var incompleteTodos: [Todo] = []        // 미완료 투두
+    private var upcomingTodos: [Todo] = []          // 예정 투두
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // isChallenge가 true인 투두만 items 배열에 추가
-        todoItems = todoItems.filter { $0.isChallenge == true }
+        filterTodos()
+        sortByRecentStartDate()
         setupCollectionView()
         setupLayout()
         configureFloatingButton()
     }
     
-    override func configureNotificationCenter(){
+    override func configureNotificationCenter() {
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(
             self,
@@ -24,6 +34,7 @@ class ChallengeListViewController: BaseViewController {
             object: nil
         )
     }
+    
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -70,35 +81,121 @@ class ChallengeListViewController: BaseViewController {
     }
     
     @objc func dismissedFromSuccess(_ notification: Notification) {
-        self.todoItems = CoreDataManager.shared.fetchTodos()
+        filterTodos()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
+    }
+    
+    // 오늘 기준으로 투두를 필터링
+    private func filterTodos() {
+        let today = Date()
+        let filteredItems = CoreDataManager.shared.fetchTodos().filter { $0.isChallenge == true }
+        completedTodos = filteredItems.filter { $0.todayCompleted(date: today) }
+        incompleteTodos = filteredItems.filter { !$0.todayCompleted(date: today) && $0.startDate ?? today <= today }
+        upcomingTodos = filteredItems.filter { $0.startDate ?? today > today }
+    }
+    
+    // 최신순으로 정렬
+    private func sortByRecentStartDate() {
+        completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+        incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+        upcomingTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
 }
 
 extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        var numberOfSections = 0
+        if !completedTodos.isEmpty {
+            numberOfSections += 1
+        }
+        if !incompleteTodos.isEmpty {
+            numberOfSections += 1
+        }
+        if !upcomingTodos.isEmpty {
+            numberOfSections += 1
+        }
+        return numberOfSections
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return todoItems.count
+        if !completedTodos.isEmpty && !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
+            if section == 0 {
+                return completedTodos.count
+            } else if section == 1 {
+                return incompleteTodos.count
+            } else {
+                return upcomingTodos.count
+            }
+        } else if !completedTodos.isEmpty && !incompleteTodos.isEmpty {
+            return section == 0 ? completedTodos.count : incompleteTodos.count
+        } else if !completedTodos.isEmpty && !upcomingTodos.isEmpty {
+            return section == 0 ? completedTodos.count : upcomingTodos.count
+        } else if !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
+            return section == 0 ? incompleteTodos.count : upcomingTodos.count
+        } else if !completedTodos.isEmpty {
+            return completedTodos.count
+        } else if !incompleteTodos.isEmpty {
+            return incompleteTodos.count
+        } else {
+            return upcomingTodos.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
-        cell.configure(with: todoItems[indexPath.item])
+        let todo: Todo
+        if !completedTodos.isEmpty && !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
+            if indexPath.section == 0 {
+                todo = completedTodos[indexPath.item]
+            } else if indexPath.section == 1 {
+                todo = incompleteTodos[indexPath.item]
+            } else {
+                todo = upcomingTodos[indexPath.item]
+            }
+        } else if !completedTodos.isEmpty && !incompleteTodos.isEmpty {
+            todo = indexPath.section == 0 ? completedTodos[indexPath.item] : incompleteTodos[indexPath.item]
+        } else if !completedTodos.isEmpty && !upcomingTodos.isEmpty {
+            todo = indexPath.section == 0 ? completedTodos[indexPath.item] : upcomingTodos[indexPath.item]
+        } else if !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
+            todo = indexPath.section == 0 ? incompleteTodos[indexPath.item] : upcomingTodos[indexPath.item]
+        } else if !completedTodos.isEmpty {
+            todo = completedTodos[indexPath.item]
+        } else if !incompleteTodos.isEmpty {
+            todo = incompleteTodos[indexPath.item]
+        } else {
+            todo = upcomingTodos[indexPath.item]
+        }
+        cell.configure(with: todo)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
-            header.sectionLabel.text = "챌린지 투두"
-            return header
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
+        
+        if !completedTodos.isEmpty && !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
+            if indexPath.section == 0 {
+                header.sectionLabel.text = "오늘 완료된 목록"
+            } else if indexPath.section == 1 {
+                header.sectionLabel.text = "지금 도전 중!"
+            } else {
+                header.sectionLabel.text = "예정된 목록"
+            }
+        } else if !completedTodos.isEmpty && !incompleteTodos.isEmpty {
+            header.sectionLabel.text = indexPath.section == 0 ? "오늘 완료된 목록" : "지금 도전 중!"
+        } else if !completedTodos.isEmpty && !upcomingTodos.isEmpty {
+            header.sectionLabel.text = indexPath.section == 0 ? "오늘 완료된 목록" : "예정된 목록"
+        } else if !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
+            header.sectionLabel.text = indexPath.section == 0 ? "지금 도전 중!" : "예정된 목록"
+        } else if !completedTodos.isEmpty {
+            header.sectionLabel.text = "오늘 완료된 목록"
+        } else if !incompleteTodos.isEmpty {
+            header.sectionLabel.text = "지금 도전 중!"
+        } else {
+            header.sectionLabel.text = "예정된 목록"
         }
-        return UICollectionReusableView()
+        return header
     }
 }
 
