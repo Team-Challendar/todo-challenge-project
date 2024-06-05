@@ -177,7 +177,7 @@ class SearchViewController: BaseViewController {
     private func setLeftImage(_ image: UIImage, for textField: UITextField) {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 8, y: 0, width: 22, height: 22)
+        imageView.frame = CGRect(x: 8, y: 0, width: 24, height: 24)
         imageView.tintColor = .challendarBlack60
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 22))
         paddingView.addSubview(imageView)
@@ -243,58 +243,30 @@ class SearchViewController: BaseViewController {
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    // 비어있지 않은 배열의 수 반환
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        var numberOfSection = 0
-        if !filteredChallengeItems.isEmpty{
-            numberOfSection += 1
-        }
-        if !filteredNonChallengeItems.isEmpty{
-            numberOfSection += 1
-        }
-        return numberOfSection
+        return [filteredChallengeItems, filteredNonChallengeItems].filter { !$0.isEmpty }.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty {
-            return section == 0 ? filteredChallengeItems.count : filteredNonChallengeItems.count
-        } else if !filteredChallengeItems.isEmpty {
-            return filteredChallengeItems.count
-        } else {
-            return filteredNonChallengeItems.count
-        }
+        return getItems(for: section).count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
-        
-        let item : Todo
-        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty{
-            item = indexPath.section == 0 ? filteredChallengeItems[indexPath.row] : filteredNonChallengeItems[indexPath.row]
-        } else if !filteredChallengeItems.isEmpty {
-            item = filteredChallengeItems[indexPath.row]
-        }else{
-            item = filteredNonChallengeItems[indexPath.row]
-        }
+        let item = getItems(for: indexPath.section)[indexPath.row]
         cell.configure(with: item)
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
-        
-        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty {
-            header.sectionLabel.text = indexPath.section == 0 ? "챌린지 투두" : "일반 투두"
-        } else if !filteredChallengeItems.isEmpty {
-            header.sectionLabel.text = "챌린지 투두"
-        } else {
-            header.sectionLabel.text = "일반 투두"
-        }
+        header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         header.sectionLabel.textColor = .challendarBlack60
         header.sectionLabel.font = .pretendardSemiBold(size: 14)
-        
         return header
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let previousIndexPath = selectedIndexPath
         selectedIndexPath = indexPath
@@ -308,6 +280,16 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         if let previousIndexPath = previousIndexPath {
             collectionView.reloadItems(at: [previousIndexPath])
         }
+    }
+    //  각 섹션 투두 항목들 반환
+    private func getItems(for section: Int) -> [Todo] {
+        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems].enumerated().filter { !$0.element.isEmpty }
+        return nonEmptySections[section].element
+    }
+    // 각 섹션 헤더 반환
+    private func getSectionHeaderTitle(for section: Int) -> String {
+        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems].enumerated().filter { !$0.element.isEmpty }
+        return nonEmptySections[section].offset == 0 ? "챌린지 투두" : "일반 투두"
     }
 }
 

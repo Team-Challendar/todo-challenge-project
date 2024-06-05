@@ -19,6 +19,7 @@ class ChallengeListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         filterTodos()
+        // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
         sortByRecentStartDate()
         setupCollectionView()
         setupLayout()
@@ -87,115 +88,106 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
-    // 오늘 기준으로 투두를 필터링
+    // 오늘 기준 투두 필터링
     private func filterTodos() {
         let today = Date()
         let filteredItems = CoreDataManager.shared.fetchTodos().filter { $0.isChallenge == true }
+        
         completedTodos = filteredItems.filter { $0.todayCompleted(date: today) }
         incompleteTodos = filteredItems.filter { !$0.todayCompleted(date: today) && $0.startDate ?? today <= today }
         upcomingTodos = filteredItems.filter { $0.startDate ?? today > today }
     }
     
-    // 최신순으로 정렬
+    // 최신순
     private func sortByRecentStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         upcomingTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
+    // 등록순
+    private func sortByOldestStartDate() {
+        completedTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+        incompleteTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+        upcomingTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+    }
+    // 기한 임박
+    private func sortByNearestEndDate() {
+        completedTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+        incompleteTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+        upcomingTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+    }
 }
 
 extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    // 비어있지 않은 배열의 수 반환
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        var numberOfSections = 0
-        if !completedTodos.isEmpty {
-            numberOfSections += 1
-        }
-        if !incompleteTodos.isEmpty {
-            numberOfSections += 1
-        }
-        if !upcomingTodos.isEmpty {
-            numberOfSections += 1
-        }
-        return numberOfSections
+        return [completedTodos, incompleteTodos, upcomingTodos].filter { !$0.isEmpty }.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if !completedTodos.isEmpty && !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
-            if section == 0 {
-                return completedTodos.count
-            } else if section == 1 {
-                return incompleteTodos.count
-            } else {
-                return upcomingTodos.count
-            }
-        } else if !completedTodos.isEmpty && !incompleteTodos.isEmpty {
-            return section == 0 ? completedTodos.count : incompleteTodos.count
-        } else if !completedTodos.isEmpty && !upcomingTodos.isEmpty {
-            return section == 0 ? completedTodos.count : upcomingTodos.count
-        } else if !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
-            return section == 0 ? incompleteTodos.count : upcomingTodos.count
-        } else if !completedTodos.isEmpty {
+        switch getSectionType(for: section) {
+        case .completed:
             return completedTodos.count
-        } else if !incompleteTodos.isEmpty {
+        case .incomplete:
             return incompleteTodos.count
-        } else {
+        case .upcoming:
             return upcomingTodos.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
-        let todo: Todo
-        if !completedTodos.isEmpty && !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
-            if indexPath.section == 0 {
-                todo = completedTodos[indexPath.item]
-            } else if indexPath.section == 1 {
-                todo = incompleteTodos[indexPath.item]
-            } else {
-                todo = upcomingTodos[indexPath.item]
-            }
-        } else if !completedTodos.isEmpty && !incompleteTodos.isEmpty {
-            todo = indexPath.section == 0 ? completedTodos[indexPath.item] : incompleteTodos[indexPath.item]
-        } else if !completedTodos.isEmpty && !upcomingTodos.isEmpty {
-            todo = indexPath.section == 0 ? completedTodos[indexPath.item] : upcomingTodos[indexPath.item]
-        } else if !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
-            todo = indexPath.section == 0 ? incompleteTodos[indexPath.item] : upcomingTodos[indexPath.item]
-        } else if !completedTodos.isEmpty {
-            todo = completedTodos[indexPath.item]
-        } else if !incompleteTodos.isEmpty {
-            todo = incompleteTodos[indexPath.item]
-        } else {
-            todo = upcomingTodos[indexPath.item]
-        }
+        let todo = getTodoItem(for: indexPath)
         cell.configure(with: todo)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
-        
-        if !completedTodos.isEmpty && !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
-            if indexPath.section == 0 {
-                header.sectionLabel.text = "오늘 완료된 목록"
-            } else if indexPath.section == 1 {
-                header.sectionLabel.text = "지금 도전 중!"
-            } else {
-                header.sectionLabel.text = "예정된 목록"
-            }
-        } else if !completedTodos.isEmpty && !incompleteTodos.isEmpty {
-            header.sectionLabel.text = indexPath.section == 0 ? "오늘 완료된 목록" : "지금 도전 중!"
-        } else if !completedTodos.isEmpty && !upcomingTodos.isEmpty {
-            header.sectionLabel.text = indexPath.section == 0 ? "오늘 완료된 목록" : "예정된 목록"
-        } else if !incompleteTodos.isEmpty && !upcomingTodos.isEmpty {
-            header.sectionLabel.text = indexPath.section == 0 ? "지금 도전 중!" : "예정된 목록"
-        } else if !completedTodos.isEmpty {
-            header.sectionLabel.text = "오늘 완료된 목록"
-        } else if !incompleteTodos.isEmpty {
-            header.sectionLabel.text = "지금 도전 중!"
-        } else {
-            header.sectionLabel.text = "예정된 목록"
-        }
+        header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         return header
+    }
+    
+    private enum SectionType {
+        case completed, incomplete, upcoming
+    }
+    //  섹션 인덱스로 각 섹션 타입 반환
+    private func getSectionType(for section: Int) -> SectionType {
+        var index = 0
+        if !completedTodos.isEmpty {
+            if index == section { return .completed }
+            index += 1
+        }
+        if !incompleteTodos.isEmpty {
+            if index == section { return .incomplete }
+            index += 1
+        }
+        if !upcomingTodos.isEmpty {
+            if index == section { return .upcoming }
+        }
+        fatalError("Invalid section")
+    }
+    //  각 섹션 투두 항목들 반환
+    private func getTodoItem(for indexPath: IndexPath) -> Todo {
+        switch getSectionType(for: indexPath.section) {
+        case .completed:
+            return completedTodos[indexPath.item]
+        case .incomplete:
+            return incompleteTodos[indexPath.item]
+        case .upcoming:
+            return upcomingTodos[indexPath.item]
+        }
+    }
+    // 각 섹션 헤더 반환
+    private func getSectionHeaderTitle(for section: Int) -> String {
+        switch getSectionType(for: section) {
+        case .completed:
+            return "오늘 완료된 목록"
+        case .incomplete:
+            return "지금 도전 중!"
+        case .upcoming:
+            return "예정된 목록"
+        }
     }
 }
 
