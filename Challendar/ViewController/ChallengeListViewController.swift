@@ -5,6 +5,7 @@ class ChallengeListViewController: BaseViewController {
     
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
     private var collectionView: UICollectionView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +43,7 @@ class ChallengeListViewController: BaseViewController {
         collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
+        
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
