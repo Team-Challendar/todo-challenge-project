@@ -16,6 +16,8 @@ class Todo {
         didSet{
             guard let startDate = startDate else {return}
             completed = [Bool](repeating: false, count: (endDate?.daysBetween(startDate) ?? 0) + 1)
+            print("Completed Count: \(completed.count)")
+            print("DaysBetween: \(endDate?.daysBetween(startDate))")
         }
     }
     public var completed: [Bool] = []
@@ -49,13 +51,15 @@ class Todo {
     }
     
     //MARK: - 오늘기준으로 Todo의 completed 값 리턴, 매개변수 추가 안할시에는 자동으로 오늘 기준
-    func todayCompleted(date: Date = Date()) -> Bool{
+    func todayCompleted(date: Date = Date()) -> Bool?{
         if let startDate = startDate, let endDate = endDate{
             if (date.isBetween(startDate, endDate)){
                 return self.completed[date.daysBetween(startDate)]
+            }else{
+                return nil
             }
         }
-        return false
+        return nil
     }
     
     //MARK: - 오늘기준으로 Todo의 completed 배열을 toggle

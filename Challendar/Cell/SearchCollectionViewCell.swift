@@ -66,9 +66,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(checkButton)
         
         NSLayoutConstraint.activate([
-            
             contentView.heightAnchor.constraint(equalToConstant: 75),
-            
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             

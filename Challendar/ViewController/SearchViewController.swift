@@ -288,6 +288,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        items[indexPath.item].toggleTodaysCompletedState()
         let previousIndexPath = selectedIndexPath
         selectedIndexPath = indexPath
         

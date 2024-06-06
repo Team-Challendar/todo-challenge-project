@@ -42,6 +42,10 @@ extension Date {
         return abs(days)
     }
     
+    func addingDays(_ days: Int) -> Date? {
+        return Calendar.current.date(byAdding: .day, value: days, to: self)
+    }
+    
     static func today() -> Date {
         let now = Date()
         let calendar = Calendar.current
