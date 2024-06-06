@@ -15,6 +15,7 @@ class ChallengeListViewController: BaseViewController {
     private var incompleteTodos: [Todo] = []        // 미완료 투두
     private var upcomingTodos: [Todo] = []          // 예정 투두
     private var collectionView: UICollectionView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,6 +84,7 @@ class ChallengeListViewController: BaseViewController {
         collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
+        
     }
     
     // 컬렉션뷰 레이아웃 생성

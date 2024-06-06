@@ -20,7 +20,6 @@ class CalendarCell: FSCalendarCell {
         super.init(frame: frame)
         setView()
         setConstraint()
-        
     }
     
     func setView(){

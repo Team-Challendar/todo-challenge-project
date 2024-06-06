@@ -73,6 +73,15 @@
 		14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F342C0A4B0F00819B27 /* CALayerExtension.swift */; };
 		14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */; };
 		14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F382C0A4B3600819B27 /* UIViewExtension.swift */; };
+		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
+		B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */; };
+		B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */; };
+		B90CAA712C10C9AC00926B53 /* DailyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA702C10C9AC00926B53 /* DailyCollectionViewCell.swift */; };
+		B90CAA732C10C9B600926B53 /* CarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA722C10C9B600926B53 /* CarouselCell.swift */; };
+		B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA762C10D60000926B53 /* DailyViewController.swift */; };
+		B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */; };
+		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
+		B90CAA832C11856700926B53 /* DropdownButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA822C11856700926B53 /* DropdownButtonView.swift */; };
 		2E738AC12C1082E0006F4A26 /* CellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* CellExtension.swift */; };
 		DEDEE2892C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE2852C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift */; };
 		DEDEE28A2C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE2862C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift */; };
@@ -148,6 +157,15 @@
 		14C97F342C0A4B0F00819B27 /* CALayerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerExtension.swift; sourceTree = "<group>"; };
 		14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		14C97F382C0A4B3600819B27 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
+		B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerBtnView.swift; sourceTree = "<group>"; };
+		B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YZCenterFlowLayout.swift; sourceTree = "<group>"; };
+		B90CAA702C10C9AC00926B53 /* DailyCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyCollectionViewCell.swift; sourceTree = "<group>"; };
+		B90CAA722C10C9B600926B53 /* CarouselCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselCell.swift; sourceTree = "<group>"; };
+		B90CAA762C10D60000926B53 /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
+		B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCollectionViewCell.swift; sourceTree = "<group>"; };
+		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
+		B90CAA822C11856700926B53 /* DropdownButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownButtonView.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* CellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellExtension.swift; sourceTree = "<group>"; };
 		DEDEE2852C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChallengeCollectionViewCell.swift; sourceTree = "<group>"; };
 		DEDEE2862C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfCircleChartViewCell.swift; sourceTree = "<group>"; };
@@ -218,6 +236,7 @@
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
 				1472ADDB2C083B1000145668 /* TodoViewController.swift */,
 				1472ADE92C0840AD00145668 /* TabBarViewController.swift */,
+				B90CAA762C10D60000926B53 /* DailyViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -291,6 +310,11 @@
 				14C97F222C09ACF300819B27 /* DateBottomSheet.swift */,
 				14C97F282C09DB5600819B27 /* DateCalendarView.swift */,
 				14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */,
+				B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */,
+				B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */,
+				B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */,
+				B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */,
+				B90CAA822C11856700926B53 /* DropdownButtonView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -375,6 +399,9 @@
 				DEDEE28C2C0DEA47006AD1C6 /* DateBottomSheetCollectionViewCell.swift */,
 				DEDEE28E2C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift */,
 				14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */,
+				B90CAA702C10C9AC00926B53 /* DailyCollectionViewCell.swift */,
+				B90CAA722C10C9B600926B53 /* CarouselCell.swift */,
+				B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -486,16 +513,20 @@
 				14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */,
 				1472ADA52C082A0F00145668 /* TodoCalendarViewController.swift in Sources */,
 				1472ADD82C083AD400145668 /* SearchViewController.swift in Sources */,
+				B90CAA832C11856700926B53 /* DropdownButtonView.swift in Sources */,
 				1472ADE02C083F5D00145668 /* TabModel.swift in Sources */,
 				14C97F272C09D7B400819B27 /* DayModel.swift in Sources */,
+				B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */,
 				14BB8F042C1013E000FA92E8 /* TodoCalendarCell.swift in Sources */,
 				14AAA9052C0E08A00085E22F /* SuccessViewController.swift in Sources */,
 				149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */,
 				14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */,
+				B90CAA732C10C9B600926B53 /* CarouselCell.swift in Sources */,
 				1472ADF92C087B5900145668 /* EditTitleLabel.swift in Sources */,
 				14C97F152C098C6200819B27 /* AddTodoDateViewController.swift in Sources */,
 				1472ADFB2C08868100145668 /* AddPhotoButton.swift in Sources */,
 				1472ADF52C086D4800145668 /* CustomButton.swift in Sources */,
+				B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */,
 				14AAA90B2C0E231D0085E22F /* Speech.swift in Sources */,
 				149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */,
 				1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */,
@@ -510,19 +541,24 @@
 				1472ADDC2C083B1000145668 /* TodoViewController.swift in Sources */,
 				DEDEE28A2C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift in Sources */,
 				DEDEE2892C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift in Sources */,
+				B90CAA712C10C9AC00926B53 /* DailyCollectionViewCell.swift in Sources */,
+				B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */,
 				DEDEE2902C0DEA47006AD1C6 /* CalendarCell.swift in Sources */,
+				B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				2E738AC12C1082E0006F4A26 /* CellExtension.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
 				14C6AFE32C0F12AA0016B80C /* SettingViewController.swift in Sources */,
+				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
 				14AAA9072C0E1F110085E22F /* ChallengeCheckViewController.swift in Sources */,
 				14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */,
 				14C97F232C09ACF300819B27 /* DateBottomSheet.swift in Sources */,
 				DEDEE2912C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift in Sources */,
 				14C3FA182C0C900400ACAFB6 /* SelectedDateTypeEnum.swift in Sources */,
+				B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */,
 				14C97F212C09A71800819B27 /* DateView.swift in Sources */,
 				14C97F1D2C09A4C800819B27 /* BottomSheetViewController.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,

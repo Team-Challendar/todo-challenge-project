@@ -8,7 +8,11 @@
 import UIKit
 import SnapKit
 
-class TodoCalendarViewController: BaseViewController {
+class TodoCalendarViewController: BaseViewController, PeriodPickerButtonViewDelegate  {
+    
+   
+    private let periodBtnView = PeriodPickerButtonView() // 기간피커
+    
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
     private var completedTodo : [Todo] = []
     private var inCompletedTodo: [Todo] = []
@@ -23,6 +27,35 @@ class TodoCalendarViewController: BaseViewController {
         super.viewDidLoad()
         configureFloatingButton()
         configureTitleNavigationBar(title: "월간")
+//         configureNoticationCenter()
+        
+//         periodBtnView.delegate = self
+        
+//         view.addSubview(periodBtnView) // 기간피커
+        
+//         periodBtnView.snp.makeConstraints { make in
+//             make.width.equalTo(131)
+//             make.height.equalTo(133)
+//             make.left.equalToSuperview().offset(16) // x 좌표 설정
+//             make.top.equalToSuperview().offset(104) // y 좌표 설정
+//         }
+//     }
+
+//     func didTapdailyButton() {
+//           let weeklyVC = DailyViewController() // 주간 뷰컨트롤러 인스턴스 생성
+//           self.navigationController?.pushViewController(weeklyVC, animated: true)
+//       }
+    
+    
+//     func configureNoticationCenter(){
+//         NotificationCenter.default.addObserver(
+//                   self,
+//                   selector: #selector(self.dismissedFromSuccess(_:)),
+//                   name: NSNotification.Name("DismissSuccessView"),
+//                   object: nil
+//               )
+//         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("month"), object: changedMonth)
+//         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("date"), object: changedMonth)
     }
     private func filterTodoitems(date: Date = Date()){
         self.todoItems = todoItems.filter({
