@@ -19,14 +19,21 @@ class TodoCalendarViewController: BaseViewController  {
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
-        filterTodoitems()
+        filterTodoitems(date: currentDate ?? Date())
         configureCollectionView()
         super.viewDidLoad()
         configureFloatingButton()
-        configureTitleNavigationBar(title: "월간")
+        let button = configureCalendarButtonNavigationBar(title: "월간")
+        button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
         periodBtnView.delegate = self
     }
-
+    @objc func titleTouched(){
+        print("HELLO")
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        filterTodoitems(date: currentDate ?? Date())
+    }
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(
@@ -35,12 +42,13 @@ class TodoCalendarViewController: BaseViewController  {
             name: NSNotification.Name("DismissSuccessView"),
             object: nil
         )
-        NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("month"), object: changedMonth)
-        NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("date"), object: changedMonth)
+        NotificationCenter.default.addObserver(self, selector: #selector(monthChanged(notification:)), name: NSNotification.Name("month"), object: changedMonth)
+        NotificationCenter.default.addObserver(self, selector: #selector(dateChanged(notification:)), name: NSNotification.Name("date"), object: currentDate)
+        NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
     }
-    private func filterTodoitems(date: Date = Date().localDate()){
+    private func filterTodoitems(date: Date = Date()){
         self.todoItems = todoItems.filter({
-            $0.startDate != nil
+            $0.startDate != nil && $0.isChallenge == false
         })
         completedTodo = todoItems.filter({
             $0.todayCompleted(date: date) == true
@@ -53,7 +61,7 @@ class TodoCalendarViewController: BaseViewController  {
     override func configureUI() {
         super.configureUI()
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview()
@@ -72,7 +80,9 @@ class TodoCalendarViewController: BaseViewController  {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .red
-        collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.register(TodoCalendarViewCell.self, forCellWithReuseIdentifier: TodoCalendarViewCell.identifier)
         collectionView.register(TodoCalendarCell.self, forCellWithReuseIdentifier: TodoCalendarCell.identifier)
         collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
@@ -132,14 +142,20 @@ class TodoCalendarViewController: BaseViewController  {
     }
     @objc func monthChanged(notification : Notification){
         guard let month = notification.object as? Date else {return}
-        self.currentDate = month.addingDays(1)!
+        self.currentDate = month
         self.filterTodoitems(date: month.addingDays(1)!)
         collectionView.reloadData()
     }
     @objc func dateChanged(notification : Notification){
         guard let date = notification.object as? Date else {return}
-        self.currentDate = date.addingDays(1)
+        self.currentDate = date
         self.filterTodoitems(date:  self.currentDate!)
+        collectionView.reloadData()
+    }
+    
+    @objc func coreDataUpdated(){
+        todoItems = CoreDataManager.shared.fetchTodos()
+        self.filterTodoitems(date:  self.currentDate ?? Date())
         collectionView.reloadData()
     }
 }
@@ -168,12 +184,12 @@ extension TodoCalendarViewController: UICollectionViewDataSource, UICollectionVi
             cell.configureCalenderView(days: self.days)
             return cell
         case 1:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
-            cell.configure(with: inCompletedTodo[indexPath.item])
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarViewCell.identifier, for: indexPath) as! TodoCalendarViewCell
+            cell.configure(with: inCompletedTodo[indexPath.item], date: self.currentDate ?? Date())
             return cell
         case 2:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
-            cell.configure(with: completedTodo[indexPath.item])
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarViewCell.identifier, for: indexPath) as! TodoCalendarViewCell
+            cell.configure(with: completedTodo[indexPath.item], date: self.currentDate ?? Date())
             return cell
         default:
             return UICollectionViewCell()

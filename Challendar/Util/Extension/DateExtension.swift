@@ -1,15 +1,22 @@
 import Foundation
 
 extension Date {
-    func localDate() -> Date {
-        let timeZoneOffset = Double(TimeZone.current.secondsFromGMT(for: self))
-        guard let localDate = Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: self) else {return Date()}
-        
-        return localDate
-    }
-    func startOfDay() -> Date {
+    func startOfDay() -> Date? {
         let calendar = Calendar.current
-        return calendar.startOfDay(for: self)
+        var components = calendar.dateComponents([.year, .month, .day], from: self)
+        components.hour = 0
+        components.minute = 0
+        components.second = 0
+        return calendar.date(from: components)
+    }
+    
+    func endOfDay() -> Date? {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .day], from: self)
+        components.hour = 23
+        components.minute = 59
+        components.second = 59
+        return calendar.date(from: components)
     }
     
     func dateToString () -> String{
@@ -58,7 +65,7 @@ extension Date {
         let startOfDay1 = self.startOfDay()
         let startOfDay2 = otherDate.startOfDay()
         
-        let components = calendar.dateComponents([.day], from: startOfDay1, to: startOfDay2)
+        let components = calendar.dateComponents([.day], from: startOfDay1!, to: startOfDay2!)
         return abs(components.day ?? 0)
     }
     
@@ -66,52 +73,36 @@ extension Date {
         return Calendar.current.date(byAdding: .day, value: days, to: self)
     }
     
-    static func today() -> Date {
-        let now = Date()
+    func today() -> Date? {
         let calendar = Calendar.current
-        var components = calendar.dateComponents([.year, .month, .day], from: now)
+        var components = calendar.dateComponents([.year, .month, .day], from: self)
         components.hour = 23
         components.minute = 59
-        if let targetDate = calendar.date(from: components) {
-            return targetDate
-        } else {
-            return Date()
-        }
+        components.second = 59
+        return calendar.date(from: components)
     }
     
-    static func week() -> Date{
-        let now = Date()
+    func sevenDaysFromNow() -> Date? {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day, .weekday], from: now)
-        if let nextSunday = calendar.date(byAdding: .day, value: 7, to: now) {
-            var sundayComponents = calendar.dateComponents([.year, .month, .day], from: nextSunday)
-            sundayComponents.hour = 23
-            sundayComponents.minute = 59
-            if let targetDate = calendar.date(from: sundayComponents) {
-                return targetDate
-            } else {
-                return Date()
-            }
-        } else {
-            return Date()
+        if let dateInSevenDays = calendar.date(byAdding: .day, value: 7, to: self) {
+            var components = calendar.dateComponents([.year, .month, .day], from: dateInSevenDays)
+            components.hour = 23
+            components.minute = 59
+            components.second = 59
+            return calendar.date(from: components)
         }
+        return nil
     }
     
-    static func tomorrow() -> Date{
-        let now = Date()
+    func tomorrow() -> Date? {
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day, .weekday], from: now)
-        if let nextDay = calendar.date(byAdding: .day, value: 1, to: now) {
-            var tomorrowComponents = calendar.dateComponents([.year, .month, .day], from: nextDay)
-            tomorrowComponents.hour = 23
-            tomorrowComponents.minute = 59
-            if let targetDate = calendar.date(from: tomorrowComponents) {
-                return targetDate
-            } else {
-                return Date()
-            }
-        } else {
-            return Date()
+        if let dateTomorrow = calendar.date(byAdding: .day, value: 1, to: self) {
+            var components = calendar.dateComponents([.year, .month, .day], from: dateTomorrow)
+            components.hour = 23
+            components.minute = 59
+            components.second = 59
+            return calendar.date(from: components)
         }
+        return nil
     }
 }

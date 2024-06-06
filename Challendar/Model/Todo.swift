@@ -15,12 +15,17 @@ class Todo {
     public var endDate: Date? {
         didSet{
             guard let startDate = startDate else {return}
-            completed = [Bool](repeating: false, count: (endDate?.daysBetween(startDate) ?? 0) + 1)
-            print("Completed Count: \(completed.count)")
-            print("DaysBetween: \(endDate?.daysBetween(startDate))")
+            completed = [Bool](repeating: false, count: ((endDate?.daysBetween(startDate) ?? 0) + 1))
+            print(DateFormatter.dateFormatterALL.string(from: startDate))
+            print(DateFormatter.dateFormatterALL.string(from: endDate!))
+            print(completed.count)
         }
     }
-    public var completed: [Bool] = []
+    public var completed: [Bool] = []{
+        didSet{
+            percentage = Double(completed.filter{$0 == true}.count) / Double( completed.count)
+        }
+    }
     public var isChallenge: Bool = false
     public var percentage: Double = 0
     public var images: [UIImage]?
@@ -51,10 +56,9 @@ class Todo {
     }
     
     //MARK: - 오늘기준으로 Todo의 completed 값 리턴, 매개변수 추가 안할시에는 자동으로 오늘 기준
-    func todayCompleted(date: Date = Date().localDate()) -> Bool?{
+    func todayCompleted(date: Date = Date()) -> Bool?{
         if let startDate = startDate, let endDate = endDate{
             if (date.isBetween(startDate, endDate)){
-                print(date.daysBetween(startDate))
                 return self.completed[date.daysBetween(startDate)]
             }else{
                 return nil
@@ -68,7 +72,7 @@ class Todo {
         if let startDate = startDate, let endDate = endDate{
             if (Date.isTodayBetween(startDate, endDate)){
                 let today = Date()
-                self.completed[today.daysBetween(startDate)] = !self.completed[today.daysBetween(startDate)]
+                self.completed[today.daysBetween(startDate)].toggle()
             }
         }
     }
@@ -76,7 +80,7 @@ class Todo {
     func toggleDatesCompletedState(date: Date){
         if let startDate = startDate, let endDate = endDate{
             if (date.isBetween(startDate, endDate)){
-                self.completed[date.daysBetween(startDate)] = !self.completed[date.daysBetween(startDate)]
+                self.completed[date.daysBetween(startDate)].toggle()
             }
         }
     }

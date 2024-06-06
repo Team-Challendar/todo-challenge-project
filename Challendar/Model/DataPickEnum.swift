@@ -10,11 +10,11 @@ enum DateRange: String , CaseIterable {
     var date: Date? {
         switch self {
         case .today:
-            return Date.today()
+            return Date().today()
         case .tomorrow:
-            return Date.tomorrow()
+            return Date().tomorrow()
         case . week:
-            return Date.week()
+            return Date().sevenDaysFromNow()
         case .manual:
             return nil
         }

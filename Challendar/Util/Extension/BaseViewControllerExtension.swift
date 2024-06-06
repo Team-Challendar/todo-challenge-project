@@ -2,6 +2,7 @@ import UIKit
 import SnapKit
 
 extension BaseViewController{
+    
     func configureFloatingButton(){
         let floatingButton = FloatingButton()
         view.addSubview(floatingButton)
@@ -33,8 +34,47 @@ extension BaseViewController{
         configureSettingButtonNavigationBar()
     }
     
-    func configureCalendarButtonNavigationBar(title: String){
+    func configureCalendarButtonNavigationBar(title: String) -> UIButton {
+        let arrow = UIImageView()
+        arrow.image = .arrowDown
+        arrow.contentMode = .scaleAspectFit
         
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .pretendardSemiBold(size: 26)
+        titleLabel.textColor = .challendarWhite100
+        titleLabel.backgroundColor = .clear
+        
+        let button = UIButton(type: .system)
+        button.backgroundColor = .clear
+        
+        [arrow, titleLabel].forEach {
+            button.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(4)
+        }
+        titleLabel.sizeToFit()
+        arrow.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(4)
+            $0.size.equalTo(24)
+        }
+        
+        button.snp.makeConstraints {
+            $0.height.equalTo(34)
+            $0.width.equalTo(45 + 4 + 24 + 5)
+        }
+        
+        let titleBarButtonItem = UIBarButtonItem(customView: button)
+        self.navigationItem.leftBarButtonItem = titleBarButtonItem
+        
+        configureSettingButtonNavigationBar()
+        
+        return button
     }
     func configureBackAndTitleNavigationBar(title: String) {
         let view = UIView()

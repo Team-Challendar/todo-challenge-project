@@ -127,7 +127,7 @@ class DateCalendarView: UIView {
     private func configureUtil(){
         confirmButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                self?.delegate?.dateSetFromCal(startDate: self?.firstDate?.localDate(), endDate: self?.lastDate?.localDate())
+                self?.delegate?.dateSetFromCal(startDate: self?.firstDate?.startOfDay(), endDate: self?.lastDate?.endOfDay())
             }).disposed(by: self.disposeBag)
     }
 }

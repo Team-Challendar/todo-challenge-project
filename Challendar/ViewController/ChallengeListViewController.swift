@@ -21,7 +21,8 @@ class ChallengeListViewController: BaseViewController {
         super.viewDidLoad()
         configureFloatingButton()
         filterTodos()
-        sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
+        sortByRecentStartDate()    // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
+        configureTitleNavigationBar(title: "챌린지 리스트")
     }
     
     override func configureUI(){

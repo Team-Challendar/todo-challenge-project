@@ -31,11 +31,11 @@ class TabBarViewController: RAMAnimatedTabBarController {
         self.navs = createNav(with: tabs)
         self.setViewControllers(self.navs, animated: true)
         guard let items = tabBar.items as? [RAMAnimatedTabBarItem] else { return }
-        items.forEach{
-            let oldCenter = $0.iconView!.icon.frame.origin.x
-            $0.iconView!.icon.frame = CGRect(x: $0.iconView!.icon.frame.origin.x, y: $0.iconView!.icon.frame.origin.y + 2, width: 24, height: 24)
-            $0.iconView!.icon.frame.origin.x = oldCenter
-        }
+//        items.forEach{
+//            let oldCenter = $0.iconView!.icon.frame.origin.x
+//            $0.iconView!.icon.frame = CGRect(x: $0.iconView!.icon.frame.origin.x, y: $0.iconView!.icon.frame.origin.y + 2, width: 24, height: 24)
+//            $0.iconView!.icon.frame.origin.x = oldCenter
+//        }
         let standard = UITabBarAppearance()
         standard.backgroundColor = .challendarBlack90
         self.tabBar.standardAppearance = standard
