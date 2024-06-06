@@ -18,28 +18,34 @@ class ChallengeListViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        filterTodos()
-        // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
-        sortByRecentStartDate()
-        setupCollectionView()
-        setupLayout()
         configureFloatingButton()
-        
-        // NotificationCenter 등록
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(todoCompletedStateChanged(_:)),
-            name: NSNotification.Name("TodoCompletedStateChanged"),
-            object: nil
-        )
+        filterTodos()
+        sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
     }
     
-    override func configureNotificationCenter() {
+    override func configureUI(){
+        super.configureUI()
+        setupCollectionView()
+    }
+    
+    override func configureConstraint(){
+        super.configureConstraint()
+        setupLayout()
+    }
+    
+    override func configureNotificationCenter(){
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.dismissedFromSuccess(_:)),
             name: NSNotification.Name("DismissSuccessView"),
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(todoCompletedStateChanged(_:)),
+            name: NSNotification.Name("TodoCompletedStateChanged"),
             object: nil
         )
     }
@@ -50,8 +56,15 @@ class ChallengeListViewController: BaseViewController {
             self.collectionView.reloadData()
         }
     }
-
     
+    @objc func dismissedFromSuccess(_ notification: Notification) {
+        filterTodos()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    // 레이아웃 설정
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -61,6 +74,7 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
+    // 컬렉션뷰 설정
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
@@ -71,12 +85,14 @@ class ChallengeListViewController: BaseViewController {
         view.addSubview(collectionView)
     }
     
+    // 컬렉션뷰 레이아웃 생성
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             return self.createTodoSection()
         }
     }
     
+    // 투두 섹션 생성
     private func createTodoSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -97,13 +113,6 @@ class ChallengeListViewController: BaseViewController {
         return section
     }
     
-    @objc func dismissedFromSuccess(_ notification: Notification) {
-        filterTodos()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-    
     // 오늘 기준 투두 필터링
     private func filterTodos() {
         let today = Date()
@@ -113,7 +122,7 @@ class ChallengeListViewController: BaseViewController {
         incompleteTodos = filteredItems.filter { !$0.todayCompleted(date: today) && $0.startDate ?? today <= today && ($0.endDate ?? today) >= today }
         upcomingTodos = filteredItems.filter { $0.startDate ?? today > today && ($0.endDate ?? today) >= today }
     }
-
+    
     // 최신순
     private func sortByRecentStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
@@ -154,8 +163,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
         let todo = getTodoItem(for: indexPath)
         cell.configure(with: todo)
@@ -190,7 +197,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         print("Invalid section: \(section)")
         return .incomplete // 기본값을 반환하거나 적절한 오류 처리를 합니다.
     }
-
     
     // 각 섹션 투두 항목들 반환
     private func getTodoItem(for indexPath: IndexPath) -> Todo {
@@ -215,7 +221,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
             return upcomingTodos[indexPath.item]
         }
     }
-
     
     // 각 섹션 헤더 반환
     private func getSectionHeaderTitle(for section: Int) -> String {
