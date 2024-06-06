@@ -8,6 +8,7 @@ extension Date {
         dateformatter.timeZone = TimeZone.current
         return dateformatter.string(from: date)
     }
+    
     func isSameMonth(as date: Date) -> Bool {
         let calendar = Calendar.current
         
@@ -58,7 +59,6 @@ extension Date {
         }
     }
     
-    
     static func week() -> Date{
         let now = Date()
         let calendar = Calendar.current
@@ -94,6 +94,4 @@ extension Date {
            return Date()
         }
     }
-    
-    
 }

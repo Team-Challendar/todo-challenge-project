@@ -18,7 +18,7 @@ class TodoCalendarViewController: BaseViewController, PeriodPickerButtonViewDele
     private var inCompletedTodo: [Todo] = []
     var days : [Day] = []
     var changedMonth : Date?
-    var currentDate : Date = Date()
+    var currentDate : Date?
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
@@ -27,35 +27,35 @@ class TodoCalendarViewController: BaseViewController, PeriodPickerButtonViewDele
         super.viewDidLoad()
         configureFloatingButton()
         configureTitleNavigationBar(title: "월간")
-        configureNoticationCenter()
+//         configureNoticationCenter()
         
-        periodBtnView.delegate = self
+//         periodBtnView.delegate = self
         
-        view.addSubview(periodBtnView) // 기간피커
+//         view.addSubview(periodBtnView) // 기간피커
         
-        periodBtnView.snp.makeConstraints { make in
-            make.width.equalTo(131)
-            make.height.equalTo(133)
-            make.left.equalToSuperview().offset(16) // x 좌표 설정
-            make.top.equalToSuperview().offset(104) // y 좌표 설정
-        }
-    }
+//         periodBtnView.snp.makeConstraints { make in
+//             make.width.equalTo(131)
+//             make.height.equalTo(133)
+//             make.left.equalToSuperview().offset(16) // x 좌표 설정
+//             make.top.equalToSuperview().offset(104) // y 좌표 설정
+//         }
+//     }
 
-    func didTapdailyButton() {
-          let weeklyVC = DailyViewController() // 주간 뷰컨트롤러 인스턴스 생성
-          self.navigationController?.pushViewController(weeklyVC, animated: true)
-      }
+//     func didTapdailyButton() {
+//           let weeklyVC = DailyViewController() // 주간 뷰컨트롤러 인스턴스 생성
+//           self.navigationController?.pushViewController(weeklyVC, animated: true)
+//       }
     
     
-    func configureNoticationCenter(){
-        NotificationCenter.default.addObserver(
-                  self,
-                  selector: #selector(self.dismissedFromSuccess(_:)),
-                  name: NSNotification.Name("DismissSuccessView"),
-                  object: nil
-              )
-        NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("month"), object: changedMonth)
-        NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("date"), object: changedMonth)
+//     func configureNoticationCenter(){
+//         NotificationCenter.default.addObserver(
+//                   self,
+//                   selector: #selector(self.dismissedFromSuccess(_:)),
+//                   name: NSNotification.Name("DismissSuccessView"),
+//                   object: nil
+//               )
+//         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("month"), object: changedMonth)
+//         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("date"), object: changedMonth)
     }
     private func filterTodoitems(date: Date = Date()){
         self.todoItems = todoItems.filter({
@@ -77,6 +77,8 @@ class TodoCalendarViewController: BaseViewController, PeriodPickerButtonViewDele
             name: NSNotification.Name("DismissSuccessView"),
             object: nil
         )
+        NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("month"), object: changedMonth)
+        NotificationCenter.default.addObserver(self, selector: #selector(dateChanged), name: NSNotification.Name("date"), object: currentDate)
     }
     
     override func configureUI() {
@@ -126,7 +128,7 @@ class TodoCalendarViewController: BaseViewController, PeriodPickerButtonViewDele
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))
         let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
+//        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
         section.boundarySupplementaryItems = [header]
         
         return section
@@ -148,7 +150,7 @@ class TodoCalendarViewController: BaseViewController, PeriodPickerButtonViewDele
     }
     @objc func dismissedFromSuccess(_ notification: Notification) {
         todoItems = CoreDataManager.shared.fetchTodos()
-        filterTodoitems(date: currentDate)
+        filterTodoitems(date: currentDate ?? Date())
         collectionView.reloadData()
     }
     @objc func monthChanged(notification : Notification){
@@ -159,8 +161,8 @@ class TodoCalendarViewController: BaseViewController, PeriodPickerButtonViewDele
     }
     @objc func dateChanged(notification : Notification){
         guard let date = notification.object as? Date else {return}
-        self.currentDate = date
-        self.filterTodoitems(date: date)
+        self.currentDate = date.addingDays(1)
+        self.filterTodoitems(date:  self.currentDate!)
         collectionView.reloadData()
     }
 }
