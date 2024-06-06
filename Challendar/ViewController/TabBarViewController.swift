@@ -12,17 +12,16 @@ class TabBarViewController: RAMAnimatedTabBarController {
     var tabsItem = [RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem()]
     var navs : [UINavigationController] = []
     var tabs : [TabModel] = [
-        TabModel(title: "챌린지", image: UIImage(systemName: "flag")!,selectedImage:UIImage(systemName: "flag.fill")!, vc: ChallengeListViewController()),
-        TabModel(title: "투두", image: UIImage(systemName: "flag")!,selectedImage:UIImage(systemName: "flag.fill")!, vc: TodoViewController()),
-        TabModel(title: "투두캘린더", image: UIImage(systemName: "flag")!,selectedImage:UIImage(systemName: "flag.fill")!, vc: TodoCalandarViewController()),
-        TabModel(title: "검색", image: UIImage(systemName: "flag")!,selectedImage:UIImage(systemName: "flag.fill")!, vc: SearchViewController()),
+        TabModel(title: "도전", image: .challenge0,selectedImage: . challenge1, vc: ChallengeListViewController()),
+        TabModel(title: "할 일", image: .task0,selectedImage: .task1, vc: TodoViewController()),
+        TabModel(title: "계획", image: .plan0,selectedImage: .plan1, vc: TodoCalendarViewController()),
+        TabModel(title: "검색", image: .search0,selectedImage: .search1, vc: SearchViewController()),
     ]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        // Do any additional setup after loading the view.
     }
     
     
@@ -51,9 +50,9 @@ class TabBarViewController: RAMAnimatedTabBarController {
             tabsItem[index] = RAMAnimatedTabBarItem(title: "", image: tab.image, selectedImage: tab.selectedImage)
             tabsItem[index].animation = CustomBounceAnimation(selectedImage: tab.selectedImage, deSelectedImage: tab.image)
             tabsItem[index].iconColor = .challendarBlack60
-            tabsItem[index].textFontSize = 5
+            tabsItem[index].textFontSize = 12
             nav.tabBarItem = tabsItem[index]
-            nav.tabBarItem.title = nil
+            nav.tabBarItem.title = tab.title
             navs.append(nav)
         }
         return navs

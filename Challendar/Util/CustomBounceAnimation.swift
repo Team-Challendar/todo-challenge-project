@@ -14,16 +14,22 @@ class CustomBounceAnimation : RAMItemAnimation {
     override func playAnimation(_ icon: UIImageView, textLabel: UILabel) {
         playBounceAnimation(icon)
         icon.tintColor = .challendarWhite100
+        textLabel.textColor = .challendarWhite100
+        textLabel.font = .pretendardSemiBold(size: 12)
         icon.image = selectedImage
     }
     
     override func deselectAnimation(_ icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
         icon.tintColor = .challendarBlack60
+        textLabel.textColor = .challendarBlack60
+        textLabel.font = .pretendardSemiBold(size: 12)
         icon.image = deSelectedImage
     }
     
     override func selectedState(_ icon: UIImageView, textLabel: UILabel) {
         icon.tintColor = .challendarWhite100
+        textLabel.textColor = .challendarWhite100
+        textLabel.font = .pretendardSemiBold(size: 12)
         icon.image = selectedImage
     }
     
