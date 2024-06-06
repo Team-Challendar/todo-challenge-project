@@ -118,8 +118,8 @@ class ChallengeListViewController: BaseViewController {
         let today = Date()
         let filteredItems = CoreDataManager.shared.fetchTodos().filter { $0.isChallenge == true }
         
-        completedTodos = filteredItems.filter { $0.todayCompleted(date: today) && ($0.endDate ?? today) >= today }
-        incompleteTodos = filteredItems.filter { !$0.todayCompleted(date: today) && $0.startDate ?? today <= today && ($0.endDate ?? today) >= today }
+        completedTodos = filteredItems.filter { $0.todayCompleted(date: today) ?? false && ($0.endDate ?? today) >= today }
+        incompleteTodos = filteredItems.filter { !($0.todayCompleted(date: today) ?? false) && $0.startDate ?? today <= today && ($0.endDate ?? today) >= today }
         upcomingTodos = filteredItems.filter { $0.startDate ?? today > today && ($0.endDate ?? today) >= today }
     }
     

@@ -119,7 +119,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .challendarBlack80
         
         // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
-        checkButton.isSelected = item.todayCompleted()
+        checkButton.isSelected = item.todayCompleted() ?? false
         updateTitleLabel()
     }
     

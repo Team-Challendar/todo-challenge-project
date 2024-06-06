@@ -20,6 +20,15 @@ class SearchViewController: BaseViewController {
     private var collectionView: UICollectionView!
     private var customCancelButton: UIBarButtonItem!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if searchBar.text != "" && searchBar.text != nil{
+            filterItems(with: searchBar.text!)
+        }else{
+            filterItems(with: "")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         filterItems(with: "")
