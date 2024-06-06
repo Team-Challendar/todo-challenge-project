@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class SearchViewController: BaseViewController {
-
+    
     private var items: [Todo] = CoreDataManager.shared.fetchTodos()
     private var filteredChallengeItems: [Todo] = []
     private var filteredNonChallengeItems: [Todo] = []
@@ -22,24 +22,40 @@ class SearchViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureBackground()
-        searchBarConfigure()
-        setupCollectionView()
-        setupLayout()
         filterItems(with: "")
         reload()
     }
     
+    override func configureUI() {
+        super.configureUI()
+        configureBackground()
+        searchBarConfigure()
+        setupCollectionView()
+    }
     
-    override func configureNotificationCenter(){
+    override func configureConstraint() {
+        super.configureConstraint()
+        setupLayout()
+    }
+    
+    override func configureNotificationCenter() {
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(
-                  self,
-                  selector: #selector(self.dismissedFromSuccess(_:)),
-                  name: NSNotification.Name("DismissSuccessView"),
-                  object: nil
-              )
+            self,
+            selector: #selector(self.dismissedFromSuccess(_:)),
+            name: NSNotification.Name("DismissSuccessView"),
+            object: nil
+        )
     }
+    
+    @objc func dismissedFromSuccess(_ notification: Notification) {
+        self.items = CoreDataManager.shared.fetchTodos()
+        filterItems(with: "")
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -53,8 +69,10 @@ class SearchViewController: BaseViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(UICollectionReusableView.self,forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Empty")
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Empty")
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        // 챌린지 투두용 셀 등록
+        collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "challengeCell")
         collectionView.register(SearchSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
@@ -101,7 +119,7 @@ class SearchViewController: BaseViewController {
         let cancelText = UILabel()
         cancelText.text = "취소"
         cancelText.font = .pretendardSemiBold(size: 16)
-        cancelText.textColor = .white
+        cancelText.textColor = .challendarWhite100
         cancelBtn.addSubview(cancelText)
         cancelText.translatesAutoresizingMaskIntoConstraints = false
         
@@ -116,6 +134,7 @@ class SearchViewController: BaseViewController {
         
         customCancelButton = UIBarButtonItem(customView: cancelBtn)
     }
+    
     // 취소 기능 확정 후 수정
     //    @objc func cancelButtonTap() {
     //        searchBar.setShowsCancelButton(false, animated: true)
@@ -147,7 +166,7 @@ class SearchViewController: BaseViewController {
         searchTextField.layer.cornerRadius = 12
         searchTextField.clipsToBounds = true
         searchTextField.tintColor = .challendarBlack80
-        searchTextField.textColor = .white
+        searchTextField.textColor = .challendarWhite100
         
         if let placeholderText = searchBar.placeholder {
             searchTextField.attributedPlaceholder = NSAttributedString(
@@ -177,7 +196,7 @@ class SearchViewController: BaseViewController {
     private func setLeftImage(_ image: UIImage, for textField: UITextField) {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 8, y: 0, width: 22, height: 22)
+        imageView.frame = CGRect(x: 8, y: 0, width: 24, height: 24)
         imageView.tintColor = .challendarBlack60
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 22))
         paddingView.addSubview(imageView)
@@ -211,68 +230,60 @@ class SearchViewController: BaseViewController {
             filteredChallengeItems = items.filter { $0.isChallenge == true && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredNonChallengeItems = items.filter { $0.isChallenge == false && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
+        
+        // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
+        sortByRecentStartDate()
         reload() // 필터링 후 데이터 리로드
     }
     
-    @objc func dismissedFromSuccess(_ notification: Notification) {
-        self.items = CoreDataManager.shared.fetchTodos()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+    // 최신순
+    private func sortByRecentStartDate() {
+        filteredChallengeItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+        filteredNonChallengeItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
     
+    // 등록순
+    private func sortByOldestStartDate() {
+        filteredChallengeItems.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+        filteredNonChallengeItems.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+    }
+    
+    // 기한 임박
+    private func sortByNearestEndDate() {
+        filteredChallengeItems.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+        filteredNonChallengeItems.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+    }
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    // 비어있지 않은 배열의 수 반환
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        var numberOfSection = 0
-        if !filteredChallengeItems.isEmpty{
-            numberOfSection += 1
-        }
-        if !filteredNonChallengeItems.isEmpty{
-            numberOfSection += 1
-        }
-        return numberOfSection
+        return [filteredChallengeItems, filteredNonChallengeItems].filter { !$0.isEmpty }.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty {
-            return section == 0 ? filteredChallengeItems.count : filteredNonChallengeItems.count
-        } else if !filteredChallengeItems.isEmpty {
-            return filteredChallengeItems.count
-        } else {
-            return filteredNonChallengeItems.count
-        }
+        return getTodoItem(for: section).count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
+        let item = getTodoItem(for: indexPath.section)[indexPath.row]
         
-        let item : Todo
-        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty{
-            item = indexPath.section == 0 ? filteredChallengeItems[indexPath.row] : filteredNonChallengeItems[indexPath.row]
-        } else if !filteredChallengeItems.isEmpty {
-            item = filteredChallengeItems[indexPath.row]
-        }else{
-            item = filteredNonChallengeItems[indexPath.row]
+        if item.isChallenge {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
+            cell.configure(with: item)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
+            cell.configure(with: item)
+            return cell
         }
-        cell.configure(with: item)
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
-        
-        if !filteredChallengeItems.isEmpty && !filteredNonChallengeItems.isEmpty {
-            header.sectionLabel.text = indexPath.section == 0 ? "챌린지 투두" : "일반 투두"
-        } else if !filteredChallengeItems.isEmpty {
-            header.sectionLabel.text = "챌린지 투두"
-        } else {
-            header.sectionLabel.text = "일반 투두"
-        }
+        header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         header.sectionLabel.textColor = .challendarBlack60
         header.sectionLabel.font = .pretendardSemiBold(size: 14)
-        
         return header
     }
     
@@ -291,35 +302,47 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             collectionView.reloadItems(at: [previousIndexPath])
         }
     }
+    
+    // 각 섹션 투두 항목들 반환
+    private func getTodoItem(for section: Int) -> [Todo] {
+        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems].enumerated().filter { !$0.element.isEmpty }
+        return nonEmptySections[section].element
+    }
+    
+    // 각 섹션 헤더 반환
+    private func getSectionHeaderTitle(for section: Int) -> String {
+        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems].enumerated().filter { !$0.element.isEmpty }
+        return nonEmptySections[section].offset == 0 ? "챌린지 투두" : "일반 투두"
+    }
 }
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterItems(with: searchText)
     }
+}
+
+class SearchSectionHeader: UICollectionReusableView {
+    let sectionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .pretendardMedium(size: 16)
+        label.textColor = .challendarBlack60
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    class SearchSectionHeader: UICollectionReusableView {
-        let sectionLabel: UILabel = {
-            let label = UILabel()
-            label.font = .pretendardMedium(size: 16)
-            label.textColor = .challendarBlack60
-            label.translatesAutoresizingMaskIntoConstraints = false
-            return label
-        }()
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            addSubview(sectionLabel)
-            NSLayoutConstraint.activate([
-                sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-                sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-                sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-                sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
-            ])
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubview(sectionLabel)
+        NSLayoutConstraint.activate([
+            sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+        ])
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
