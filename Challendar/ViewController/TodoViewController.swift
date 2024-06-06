@@ -127,4 +127,3 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
         return section == 0 ? 50 : 10 // Increased spacing after the first section
     }
 }
-
