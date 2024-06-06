@@ -10,14 +10,16 @@ import SnapKit
 import FSCalendar
 
 class TodoCalendarView: UIView {
-    var dayModelForCurrentPage : [Day] = []
-    
-//    [Day(date: Date(), listCount: 5, completedListCount: 4, percentage: 100, todo: []),
-//     Day(date: Date().addingDays(7)!, listCount: 5, completedListCount: 4, percentage: 80, todo: []),
-//     Day(date: Date().addingDays(1)!, listCount: 5, completedListCount: 4, percentage: 20, todo: []),
-//     Day(date: Date().addingDays(2)!, listCount: 5, completedListCount: 4, percentage: 60, todo: []),
-//     Day(date: Date().addingDays(-1)!, listCount: 5, completedListCount: 4, percentage: 40, todo: []),
-//    ]
+    var dayModelForCurrentPage : [Day]? {
+        didSet{
+            dayModelForCurrentPage?.forEach{
+                print("DATE: \(DateFormatter.dateFormatterDay.string(from: $0.date))")
+                $0.toDo.forEach{
+                    print("Title: \($0.title)")
+                }
+            }
+        }
+    }
     var calendarView = FSCalendar(frame: .zero)
     var calendarLabel = UILabel()
     var prevButton = UIButton()
@@ -136,7 +138,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         self.layoutIfNeeded()
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        NotificationCenter.default.post(name: NSNotification.Name("month"), object: date, userInfo: nil)
+        NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
     }
     func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
@@ -144,14 +146,14 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
         updateLabel(date)
-        NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
+        NotificationCenter.default.post(name: NSNotification.Name("month"), object: date, userInfo: nil)
         calendar.reloadData()
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         if !date.isSameMonth(as: calendar.currentPage){
             return .challendarCalendarPlaceholder
         }else{
-            if let day = dayModelForCurrentPage.first(where: {
+            if let day = dayModelForCurrentPage?.first(where: {
                 $0.date.isSameDay(as: date)
             }){
                 if day.date.isSameDay(as: Date()){
@@ -183,7 +185,7 @@ extension TodoCalendarView : FSCalendarDataSource {
         
         guard let cell = calendar.dequeueReusableCell(withIdentifier: TodoCalendarFSCell.identifier, for: date, at: position) as? TodoCalendarFSCell else { return FSCalendarCell() }
         
-        if let day = dayModelForCurrentPage.first(where: {
+        if let day = dayModelForCurrentPage?.first(where: {
             $0.date.isSameDay(as: date) && date.isSameMonth(as: calendar.currentPage)
         }){
             cell.setViewWithData(day: day)

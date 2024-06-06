@@ -16,6 +16,8 @@ class Todo {
         didSet{
             guard let startDate = startDate else {return}
             completed = [Bool](repeating: false, count: (endDate?.daysBetween(startDate) ?? 0) + 1)
+            print("Completed Count: \(completed.count)")
+            print("DaysBetween: \(endDate?.daysBetween(startDate))")
         }
     }
     public var completed: [Bool] = []
