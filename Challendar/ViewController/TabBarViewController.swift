@@ -22,6 +22,7 @@ class TabBarViewController: RAMAnimatedTabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+//        CoreDataManager.shared.deleteAllTodos()
     }
     
     

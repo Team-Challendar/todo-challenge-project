@@ -10,16 +10,7 @@ import SnapKit
 import FSCalendar
 
 class TodoCalendarView: UIView {
-    var dayModelForCurrentPage : [Day]? {
-        didSet{
-            dayModelForCurrentPage?.forEach{
-                print("DATE: \(DateFormatter.dateFormatterDay.string(from: $0.date))")
-                $0.toDo.forEach{
-                    print("Title: \($0.title)")
-                }
-            }
-        }
-    }
+    var dayModelForCurrentPage : [Day]?
     var calendarView = FSCalendar(frame: .zero)
     var calendarLabel = UILabel()
     var prevButton = UIButton()

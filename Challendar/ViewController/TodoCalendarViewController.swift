@@ -26,10 +26,7 @@ class TodoCalendarViewController: BaseViewController  {
         configureTitleNavigationBar(title: "월간")
         periodBtnView.delegate = self
     }
-    
 
-    
-    
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(
@@ -41,7 +38,7 @@ class TodoCalendarViewController: BaseViewController  {
         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("month"), object: changedMonth)
         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("date"), object: changedMonth)
     }
-    private func filterTodoitems(date: Date = Date()){
+    private func filterTodoitems(date: Date = Date().localDate()){
         self.todoItems = todoItems.filter({
             $0.startDate != nil
         })
@@ -53,7 +50,6 @@ class TodoCalendarViewController: BaseViewController  {
         })
         days = Day.generateDaysForMonth(date: date, todos: self.todoItems)
     }
-    
     override func configureUI() {
         super.configureUI()
         collectionView.snp.makeConstraints { make in
@@ -62,14 +58,14 @@ class TodoCalendarViewController: BaseViewController  {
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview()
         }
-        view.addSubview(periodBtnView) // 기간피커
-        
-        periodBtnView.snp.makeConstraints { make in
-            make.width.equalTo(131)
-            make.height.equalTo(133)
-            make.left.equalToSuperview().offset(16) // x 좌표 설정
-            make.top.equalToSuperview().offset(104) // y 좌표 설정
-        }
+//        view.addSubview(periodBtnView) // 기간피커
+//        
+//        periodBtnView.snp.makeConstraints { make in
+//            make.width.equalTo(131)
+//            make.height.equalTo(133)
+//            make.left.equalToSuperview().offset(16) // x 좌표 설정
+//            make.top.equalToSuperview().offset(104) // y 좌표 설정
+//        }
     }
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())

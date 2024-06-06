@@ -41,8 +41,8 @@ class Todo {
         print("----------")
         print("title: \(self.title)")
         print("memo: \(String(describing: self.memo))")
-        print("startDate: \(String(describing: self.startDate))")
-        print("endDate: \(String(describing: self.endDate))")
+        print("startDate: \(self.startDate)")
+        print("endDate: \(self.endDate)")
         print("completed.count: \(self.completed.count)")
         print("isChallenge: \(self.isChallenge)")
         print("percentage: \(self.percentage)")
@@ -51,9 +51,10 @@ class Todo {
     }
     
     //MARK: - 오늘기준으로 Todo의 completed 값 리턴, 매개변수 추가 안할시에는 자동으로 오늘 기준
-    func todayCompleted(date: Date = Date()) -> Bool?{
+    func todayCompleted(date: Date = Date().localDate()) -> Bool?{
         if let startDate = startDate, let endDate = endDate{
             if (date.isBetween(startDate, endDate)){
+                print(date.daysBetween(startDate))
                 return self.completed[date.daysBetween(startDate)]
             }else{
                 return nil

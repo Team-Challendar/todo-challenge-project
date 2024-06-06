@@ -1,12 +1,30 @@
 import Foundation
 
 extension Date {
-    static func currentTimeZone (date: Date) -> String{
+    func localDate() -> Date {
+        let timeZoneOffset = Double(TimeZone.current.secondsFromGMT(for: self))
+        guard let localDate = Calendar.current.date(byAdding: .second, value: Int(timeZoneOffset), to: self) else {return Date()}
+        
+        return localDate
+    }
+    func startOfDay() -> Date {
+        let calendar = Calendar.current
+        return calendar.startOfDay(for: self)
+    }
+    
+    func dateToString () -> String{
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "yyyy년MM월dd일"
+        dateformatter.dateFormat = "yyyy년MM월dd일 HH:mm"
         dateformatter.locale = Locale(identifier: "ko_KR")
         dateformatter.timeZone = TimeZone.current
-        return dateformatter.string(from: date)
+        return dateformatter.string(from: self)
+    }
+    static func stringToDate(string : String) -> Date{
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "yyyy년MM월dd일 HH:mm"
+        dateformatter.locale = Locale(identifier: "ko_KR")
+        dateformatter.timeZone = TimeZone.current
+        return dateformatter.date(from: string)!
     }
     
     func isSameMonth(as date: Date) -> Bool {
@@ -36,10 +54,12 @@ extension Date {
     }
     
     func daysBetween(_ otherDate: Date) -> Int {
-        let secondsInDay: TimeInterval = 86400
-        let timeInterval = self.timeIntervalSince(otherDate)
-        let days = Int(timeInterval / secondsInDay)
-        return abs(days)
+        let calendar = Calendar.current
+        let startOfDay1 = self.startOfDay()
+        let startOfDay2 = otherDate.startOfDay()
+        
+        let components = calendar.dateComponents([.day], from: startOfDay1, to: startOfDay2)
+        return abs(components.day ?? 0)
     }
     
     func addingDays(_ days: Int) -> Date? {
@@ -73,7 +93,7 @@ extension Date {
                 return Date()
             }
         } else {
-           return Date()
+            return Date()
         }
     }
     
@@ -91,7 +111,7 @@ extension Date {
                 return Date()
             }
         } else {
-           return Date()
+            return Date()
         }
     }
 }
