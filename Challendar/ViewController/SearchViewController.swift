@@ -252,11 +252,11 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return getItems(for: section).count
+        return getTodoItem(for: section).count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = getItems(for: indexPath.section)[indexPath.row]
+        let item = getTodoItem(for: indexPath.section)[indexPath.row]
         
         if item.isChallenge {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
@@ -292,7 +292,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         }
     }
     //  각 섹션 투두 항목들 반환
-    private func getItems(for section: Int) -> [Todo] {
+    private func getTodoItem(for section: Int) -> [Todo] {
         let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems].enumerated().filter { !$0.element.isEmpty }
         return nonEmptySections[section].element
     }

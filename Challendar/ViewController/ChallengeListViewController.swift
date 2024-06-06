@@ -154,6 +154,8 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
         let todo = getTodoItem(for: indexPath)
         cell.configure(with: todo)
@@ -173,12 +175,13 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     // 섹션 인덱스로 각 섹션 타입 반환
     private func getSectionType(for section: Int) -> SectionType {
         var index = 0
-        if !completedTodos.isEmpty {
-            if index == section { return .completed }
-            index += 1
-        }
+        
         if !incompleteTodos.isEmpty {
             if index == section { return .incomplete }
+            index += 1
+        }
+        if !completedTodos.isEmpty {
+            if index == section { return .completed }
             index += 1
         }
         if !upcomingTodos.isEmpty {
