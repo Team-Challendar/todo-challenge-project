@@ -8,9 +8,10 @@
 import UIKit
 import SnapKit
 
-class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DropdownButtonViewDelegate {
     
     private let pickerBtnView = PickerBtnView()
+    private let dropdownButtonView = DropdownButtonView()
     private var collectionView: UICollectionView!
 
     override func viewDidLoad() {
@@ -24,10 +25,25 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
             make.width.equalTo(77)
             make.height.equalTo(133)
             make.left.equalToSuperview().offset(300)
-            make.top.equalToSuperview().offset(134) 
+            make.top.equalToSuperview().offset(134)
+        }
+        
+        view.addSubview(dropdownButtonView)
+        dropdownButtonView.delegate = self
+        
+        dropdownButtonView.snp.makeConstraints { make in
+            make.width.equalTo(150)
+            make.height.equalTo(44)
+            make.top.equalToSuperview().offset(90) // Adjust this value as needed
+            make.right.equalToSuperview().offset(-16)
         }
         
         setupCollectionView()
+    }
+    
+    func didSelectOption(_ option: String) {
+        // Handle the dropdown option selection
+        print("Selected option: \(option)")
     }
 
     private func setupCollectionView() {
@@ -42,7 +58,7 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(pickerBtnView.snp.bottom).offset(10) // Adjusted spacing from picker
+            make.top.equalTo(dropdownButtonView.snp.bottom).offset(10) // Adjusted spacing from picker
             make.left.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview()
         }
