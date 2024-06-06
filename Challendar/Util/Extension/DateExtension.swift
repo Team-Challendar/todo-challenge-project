@@ -8,6 +8,7 @@ extension Date {
         dateformatter.timeZone = TimeZone.current
         return dateformatter.string(from: date)
     }
+    
     func isSameMonth(as date: Date) -> Bool {
         let calendar = Calendar.current
         
@@ -15,6 +16,15 @@ extension Date {
         let dateComponents = calendar.dateComponents([.year, .month], from: date)
         
         return selfComponents.year == dateComponents.year && selfComponents.month == dateComponents.month
+    }
+    
+    func isBetween(_ startDate: Date, _ endDate: Date) -> Bool {
+        return self >= startDate && self <= endDate
+    }
+    
+    static func isTodayBetween(_ startDate: Date, _ endDate: Date) -> Bool {
+        let today = Date()
+        return today.isBetween(startDate, endDate)
     }
     
     func isSameDay(as date: Date) -> Bool {
@@ -44,7 +54,6 @@ extension Date {
             return Date()
         }
     }
-    
     
     static func week() -> Date{
         let now = Date()
@@ -81,6 +90,4 @@ extension Date {
            return Date()
         }
     }
-    
-    
 }
