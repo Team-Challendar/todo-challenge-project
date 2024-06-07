@@ -64,8 +64,6 @@ class PeriodPickerButtonView: UIView {
         button.contentHorizontalAlignment = .center
         return button
     }()
-     
-    
     
     private let topSeparator: UIView = {
         let view = UIView()
@@ -85,21 +83,28 @@ class PeriodPickerButtonView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
-        setupActions()
+        configureUI()
+        configureConstraint()
+        configureUtil()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupView() {
+    private func configureUI() {
         addSubview(button1)
         addSubview(button2)
         addSubview(button3)
         addSubview(topSeparator)
         addSubview(bottomSeparator)
         
+        layer.cornerRadius = 12
+        clipsToBounds = true
+        backgroundColor = .black // 챌린지100으로 추후 수정
+    }
+    
+    private func configureConstraint() {
         button1.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(44)
@@ -128,16 +133,15 @@ class PeriodPickerButtonView: UIView {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(0.2) // 얇은 실선의 높이
         }
-        
-        layer.cornerRadius = 12
-        clipsToBounds = true
-        backgroundColor = .black // 챌린지100으로 추후 수정
+    }
+    
+    private func configureUtil() {
+        setupActions()
     }
     
     private func setupActions() {
         button1.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         button2.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-     //   button3.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         button3.addTarget(self, action: #selector(dailyButtonTapped), for: .touchUpInside)
     }
     
@@ -148,9 +152,10 @@ class PeriodPickerButtonView: UIView {
     @objc private func buttonTapped(_ sender: UIButton) {
         buttons.forEach {
             $0.isSelected = false
-            $0.tintColor = .challendarBlack60 // 기본 색상으로 되돌림 ** 현재 누른 뒤에 하얀색이 그대로 유지되고 있다.. 이런.
+            $0.tintColor = .challendarBlack60 // 기본 색상으로 되돌림
         }
         sender.isSelected = true
         sender.tintColor = .white // 선택된 버튼 색상 변경
     }
 }
+

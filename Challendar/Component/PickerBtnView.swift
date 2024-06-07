@@ -48,21 +48,28 @@ class PickerBtnView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupView()
-        setupActions()
+        configureUI()
+        configureConstraint()
+        configureUtil()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupView() {
+    private func configureUI() {
         addSubview(button1)
         addSubview(button2)
         addSubview(button3)
-        addSubview(topSeparator)
+        addSubview(topSeparator)//addborder로 수정 
         addSubview(bottomSeparator)
         
+        layer.cornerRadius = 12
+        clipsToBounds = true
+        backgroundColor = .black
+    }
+    
+    private func configureConstraint() {
         button1.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.height.equalTo(44)
@@ -91,10 +98,10 @@ class PickerBtnView: UIView {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(0.2) // 얇은 실선의 높이
         }
-        
-        layer.cornerRadius = 12
-        clipsToBounds = true
-        backgroundColor = .black
+    }
+    
+    private func configureUtil() {
+        setupActions()
     }
     
     private func setupActions() {

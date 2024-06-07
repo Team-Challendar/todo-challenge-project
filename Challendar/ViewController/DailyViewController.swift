@@ -43,7 +43,7 @@ class DailyViewController: BaseViewController {
     }
 }
 
-// UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout 구현을 extension으로 분리
+// UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout 을 extension으로 분리
 extension DailyViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     // 콜렉션뷰에 3개의 섹션을 선언
