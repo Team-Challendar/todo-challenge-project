@@ -9,13 +9,14 @@ import UIKit
 import RAMAnimatedTabBarController
 
 class TabBarViewController: RAMAnimatedTabBarController {
-    var tabsItem = [RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem()]
+    var tabsItem = [RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem()]
     var navs : [UINavigationController] = []
     var tabs : [TabModel] = [
         TabModel(title: "도전", image: .challenge0,selectedImage: . challenge1, vc: ChallengeListViewController()),
         TabModel(title: "할 일", image: .task0,selectedImage: .task1, vc: TodoViewController()),
         TabModel(title: "계획", image: .plan0,selectedImage: .plan1, vc: TodoCalendarViewController()),
         TabModel(title: "검색", image: .search0,selectedImage: .search1, vc: SearchViewController()),
+        TabModel(title: "세부", image: .close0,selectedImage: .close1, vc: ChallengeListDetailViewController()),
     ]
     
     
