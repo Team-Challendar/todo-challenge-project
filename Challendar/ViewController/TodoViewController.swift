@@ -8,44 +8,60 @@
 import UIKit
 import SnapKit
 
-class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, DropdownButtonViewDelegate {
+class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     private let pickerBtnView = PickerBtnView()
     private let dropdownButtonView = DropdownButtonView()
     private var collectionView: UICollectionView!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func configureUI() {
+        super.configureUI()
         configureFloatingButton()
         configureTitleNavigationBar(title: "할 일 목록")
         view.backgroundColor = .challendarBlack90
         view.addSubview(pickerBtnView)
+        view.addSubview(dropdownButtonView)
+        setupCollectionView()
+    }
+    
+    override func configureConstraint() {
+        super.configureConstraint()
         
         pickerBtnView.snp.makeConstraints { make in
             make.width.equalTo(77)
             make.height.equalTo(133)
-            make.left.equalToSuperview().offset(300)
+            make.leading.equalToSuperview().offset(300)
             make.top.equalToSuperview().offset(134)
         }
-        
-        view.addSubview(dropdownButtonView)
-        dropdownButtonView.delegate = self
         
         dropdownButtonView.snp.makeConstraints { make in
             make.width.equalTo(150)
             make.height.equalTo(44)
             make.top.equalToSuperview().offset(90) // Adjust this value as needed
-            make.right.equalToSuperview().offset(-16)
+            make.trailing.equalToSuperview().offset(-16)
         }
         
-        setupCollectionView()
-    }
-    
-    func didSelectOption(_ option: String) {
-        // Handle the dropdown option selection
-        print("Selected option: \(option)")
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(dropdownButtonView.snp.bottom).offset(10) // Adjusted spacing from picker
+            make.left.right.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview()
+        }
     }
 
+    override func configureNotificationCenter() {
+        super.configureNotificationCenter()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.dismissedFromSuccess(_:)),
+            name: NSNotification.Name("DismissSuccessView"),
+            object: nil
+        )
+    }
+
+    @objc func dismissedFromSuccess(_ notification: Notification) {
+        // 알림 수신시 수행할 작업
+    }
+    
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -57,25 +73,6 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
         collectionView.register(TodoSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TodoSectionHeader.identifier)
         
         view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(dropdownButtonView.snp.bottom).offset(10) // Adjusted spacing from picker
-            make.left.right.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview()
-        }
-    }
-
-    override func configureNotificationCenter(){
-        super.configureNotificationCenter()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.dismissedFromSuccess(_:)),
-            name: NSNotification.Name("DismissSuccessView"),
-            object: nil
-        )
-    }
-    
-    @objc func dismissedFromSuccess(_ notification: Notification) {
-        // 알림 수신시 수행할 작업
     }
     
     // UICollectionViewDataSource 메서드
@@ -119,7 +116,7 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
     
     // 셀 크기 설정
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width - 32, height: 75) // left and right insets of 16
+        return CGSize(width: 361, height: 75) // Adjusted to specified width and height
     }
 
     // 셀 간 간격 설정
@@ -127,3 +124,11 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
         return section == 0 ? 50 : 10 // Increased spacing after the first section
     }
 }
+
+extension TodoViewController: DropdownButtonViewDelegate {
+    func didSelectOption(_ option: String) {
+        // Handle the dropdown option selection
+        print("Selected option: \(option)")
+    }
+}
+
