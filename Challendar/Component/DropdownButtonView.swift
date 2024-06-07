@@ -12,15 +12,14 @@ class DropdownButtonView: UIView {
     private let button: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("최신순", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.challendarBlack60, for: .normal)
         button.titleLabel?.font = .pretendardMedium(size: 14)
-        button.tintColor = .challendarBlack60
-        button.setImage(UIImage(named: "arrowDown")?.resizeImage(to: CGSize(width: 16, height: 16)), for: .normal) 
+        button.tintColor = .challendarGrey50
+        button.setImage(UIImage(named: "arrowDown")?.resizeImage(to: CGSize(width: 16, height: 16)), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.gray.cgColor // 얇은 회색선 추가
-        button.layer.cornerRadius = 12 // 둥근 모서리 추가
-
+        button.layer.borderColor = UIColor.challendarBlack60.cgColor
+        button.layer.cornerRadius = 12
         return button
     }()
     
@@ -30,16 +29,30 @@ class DropdownButtonView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupButton()
-        setupTableView()
+        configureUI()
+        configureConstraint()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupButton() {
+    func configureUI() {
         addSubview(button)
+        button.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
+        
+        tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.isHidden = true
+        tableView.layer.cornerRadius = 5
+        tableView.backgroundColor = .black
+        tableView.separatorStyle = .none
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        addSubview(tableView)
+    }
+    
+    func configureConstraint() {
         button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             button.widthAnchor.constraint(equalToConstant: 69),
@@ -50,19 +63,6 @@ class DropdownButtonView: UIView {
             button.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         
-        button.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
-    }
-    
-    private func setupTableView() {
-        tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.isHidden = true
-        tableView.layer.cornerRadius = 5
-        tableView.backgroundColor = .black
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 5),
@@ -112,4 +112,3 @@ extension UIImage {
         return resizedImage
     }
 }
-

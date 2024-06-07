@@ -64,6 +64,10 @@ class TodoViewController: BaseViewController {
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 0)
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 8
+        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         
@@ -94,15 +98,15 @@ extension TodoViewController: DropdownButtonViewDelegate {
 
 class TodoCollectionViewDelegate: NSObject, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 361, height: 75)
+        return CGSize(width: 361, height: 75) // 셀의 너비를 361로 설정
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return section == 0 ? 50 : 10 // Increased spacing after the first section
+        return 8 // 각 셀 사이의 간격을 8로 설정
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 25)
+        return CGSize(width: collectionView.frame.width, height: 33) // 헤더 높이를 33으로 설정 (셀과 8만큼 떨어짐)
     }
 }
 
@@ -125,6 +129,13 @@ class TodoCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         }
         
         cell.titleLabel.text = "할 일 \(indexPath.item + 1)"
+        cell.contentView.layer.cornerRadius = 20
+        cell.contentView.layer.masksToBounds = true
+        cell.titleLabel.font = .pretendardMedium(size: 18)
+        cell.titleLabel.snp.updateConstraints { make in
+            make.leading.equalToSuperview().offset(24)
+            make.centerY.equalToSuperview()
+        }
         return cell
     }
     
@@ -134,9 +145,7 @@ class TodoCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         }
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TodoSectionHeader.identifier, for: indexPath) as! TodoSectionHeader
-        header.titleLabel.text = indexPath.section == 0 ? "할 일" : "완료된 목록"
-        
+        header.headerLabel.text = indexPath.section == 0 ? "할 일" : "완료된 목록"
         return header
     }
 }
-
