@@ -8,11 +8,13 @@
 import UIKit
 import SnapKit
 
-class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class TodoViewController: BaseViewController {
     
     private let pickerBtnView = PickerBtnView()
     private let dropdownButtonView = DropdownButtonView()
     private var collectionView: UICollectionView!
+    private var collectionViewDelegate: TodoCollectionViewDelegate!
+    private var collectionViewDataSource: TodoCollectionViewDataSource!
 
     override func configureUI() {
         super.configureUI()
@@ -67,15 +69,42 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
         layout.scrollDirection = .vertical
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        
+        collectionViewDelegate = TodoCollectionViewDelegate()
+        collectionViewDataSource = TodoCollectionViewDataSource()
+        
+        collectionView.delegate = collectionViewDelegate
+        collectionView.dataSource = collectionViewDataSource
+        
         collectionView.register(TodoCollectionViewCell.self, forCellWithReuseIdentifier: "TodoCollectionViewCell")
         collectionView.register(TodoSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TodoSectionHeader.identifier)
         
         view.addSubview(collectionView)
     }
+}
+
+extension TodoViewController: DropdownButtonViewDelegate {
+    func didSelectOption(_ option: String) {
+        // Handle the dropdown option selection
+        print("Selected option: \(option)")
+    }
+}
+
+class TodoCollectionViewDelegate: NSObject, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 361, height: 75) // Adjusted to specified width and height
+    }
     
-    // UICollectionViewDataSource 메서드
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return section == 0 ? 50 : 10 // Increased spacing after the first section
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 25)
+    }
+}
+
+class TodoCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
@@ -97,7 +126,6 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
         return cell
     }
     
-    // 헤더 뷰 구성
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
@@ -107,28 +135,6 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
         header.titleLabel.text = indexPath.section == 0 ? "할 일" : "완료된 목록"
         
         return header
-    }
-    
-    // 헤더 크기 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 25)
-    }
-    
-    // 셀 크기 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 361, height: 75) // Adjusted to specified width and height
-    }
-
-    // 셀 간 간격 설정
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return section == 0 ? 50 : 10 // Increased spacing after the first section
-    }
-}
-
-extension TodoViewController: DropdownButtonViewDelegate {
-    func didSelectOption(_ option: String) {
-        // Handle the dropdown option selection
-        print("Selected option: \(option)")
     }
 }
 
