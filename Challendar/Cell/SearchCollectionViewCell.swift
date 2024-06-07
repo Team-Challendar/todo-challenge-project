@@ -10,15 +10,15 @@ import SnapKit
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
+    var checkButton: UIButton!
     var titleLabel: UILabel!
     var dateLabel: UILabel!
     var stateLabel: UILabel!
-    var checkButton: UIButton!
+    var todoItem: Todo? // Todo 항목을 저장할 속성
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -27,12 +27,16 @@ class SearchCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        titleLabel.attributedText = nil
+    }
+    
     private func setupViews() {
         contentView.layer.cornerRadius = 20
         contentView.layer.masksToBounds = false
         contentView.backgroundColor = .challendarBlack80
         contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowOpacity = 0.16
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -55,7 +59,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         stateLabel.textColor = .challendarGreen100
         stateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(stateLabel)
-        
+               
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
         checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
@@ -66,34 +70,42 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(checkButton)
         
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 75),
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             
-            stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
             stateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
+            stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
+           
             dateLabel.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
+            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
             
             checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
         ])
+        contentView.bringSubviewToFront(checkButton)
     }
     
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
         updateTitleLabel()
+        
+        guard let item = todoItem else { return }
+        item.toggleTodaysCompletedState()
+        updateTodoCompletion(for: item)
     }
-      
+    
     func configure(with item: Todo) {
+        self.todoItem = item
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         contentView.backgroundColor = .challendarBlack80
+        
+        // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
+        checkButton.isSelected = item.todayCompleted() ?? false
         updateTitleLabel()
     }
-
+    
     private func updateTitleLabel() {
         if checkButton.isSelected {
             if let title = titleLabel.text {
@@ -107,7 +119,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
             titleLabel.textColor = .challendarWhite100
         }
     }
-    
+
     private func formatDate(_ date: Date?) -> String {
         guard let date = date else { return "날짜 없음" }
         let dateFormatter = DateFormatter()
@@ -133,6 +145,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
             return "날짜 없음"
         }
     }
+    
+    private func updateTodoCompletion(for item: Todo) {
+        CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newCompleted: item.completed)
+    }
 }
-
-// 체크 버튼 누를 시 셀 리로드.
