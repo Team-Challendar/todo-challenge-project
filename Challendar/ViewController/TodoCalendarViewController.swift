@@ -27,8 +27,6 @@ class TodoCalendarViewController: BaseViewController  {
         periodBtnView.delegate = self
     }
     
-
-    
     
     override func configureNotificationCenter(){
         super.configureNotificationCenter()

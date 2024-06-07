@@ -1,10 +1,3 @@
-//
-//  TodoListViewController.swift
-//  Challendar
-//
-//  Created by Sam.Lee on 5/30/24.
-//
-
 import UIKit
 import SnapKit
 
@@ -21,9 +14,13 @@ class TodoViewController: BaseViewController {
         configureFloatingButton()
         configureTitleNavigationBar(title: "할 일 목록")
         view.backgroundColor = .challendarBlack90
-        view.addSubview(pickerBtnView)
-        view.addSubview(dropdownButtonView)
+        
         setupCollectionView()
+        
+        view.addSubview(dropdownButtonView)
+        view.addSubview(pickerBtnView)
+        pickerBtnView.isHidden = true // 처음에는 숨김 상태로 설정
+        dropdownButtonView.delegate = self // 델리게이트 설정
     }
     
     override func configureConstraint() {
@@ -37,14 +34,14 @@ class TodoViewController: BaseViewController {
         }
         
         dropdownButtonView.snp.makeConstraints { make in
-            make.width.equalTo(150)
-            make.height.equalTo(44)
-            make.top.equalToSuperview().offset(90) // Adjust this value as needed
-            make.trailing.equalToSuperview().offset(-16)
+            make.width.equalTo(69)
+            make.height.equalTo(24)
+            make.top.equalToSuperview().offset(106)
+            make.trailing.equalToSuperview().offset(-18)
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(dropdownButtonView.snp.bottom).offset(10) // Adjusted spacing from picker
+            make.top.equalTo(dropdownButtonView.snp.bottom).offset(10)
             make.left.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview()
         }
@@ -87,12 +84,17 @@ extension TodoViewController: DropdownButtonViewDelegate {
     func didSelectOption(_ option: String) {
         // Handle the dropdown option selection
         print("Selected option: \(option)")
+        pickerBtnView.isHidden.toggle() // 드롭다운 항목 선택 시 pickerBtnView의 숨김 상태를 토글
+    }
+    
+    func dropdownButtonTapped() {
+        pickerBtnView.isHidden.toggle() // 버튼 클릭 시 pickerBtnView의 숨김 상태를 토글
     }
 }
 
 class TodoCollectionViewDelegate: NSObject, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 361, height: 75) // Adjusted to specified width and height
+        return CGSize(width: 361, height: 75)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

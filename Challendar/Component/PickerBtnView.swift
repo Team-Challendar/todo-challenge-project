@@ -1,13 +1,5 @@
-//
-//  PickerBtnView.swift
-//  Challendar
-//
-//  Created by 채나연 on 6/5/24.
-//
-
 import UIKit
 import SnapKit
-
 
 class PickerBtnView: UIView {
     
@@ -102,7 +94,7 @@ class PickerBtnView: UIView {
         
         layer.cornerRadius = 12
         clipsToBounds = true
-        backgroundColor = .black // 챌린지100으로 추후 수정
+        backgroundColor = .black
     }
     
     private func setupActions() {
@@ -116,3 +108,4 @@ class PickerBtnView: UIView {
         sender.isSelected = true
     }
 }
+
