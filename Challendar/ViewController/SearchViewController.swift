@@ -22,11 +22,7 @@ class SearchViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if searchBar.text != "" && searchBar.text != nil{
-            filterItems(with: searchBar.text!)
-        }else{
-            filterItems(with: "")
-        }
+        filterItems(with: searchBar.text ?? "")
     }
     
     override func viewDidLoad() {
@@ -49,20 +45,12 @@ class SearchViewController: BaseViewController {
     
     override func configureNotificationCenter() {
         super.configureNotificationCenter()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.dismissedFromSuccess(_:)),
-            name: NSNotification.Name("DismissSuccessView"),
-            object: nil
-        )
+        NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
     }
     
-    @objc func dismissedFromSuccess(_ notification: Notification) {
-        self.items = CoreDataManager.shared.fetchTodos()
-        filterItems(with: "")
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+    @objc func coreDataUpdated(_ notification: Notification) {
+        filterItems(with: searchBar.text ?? "")
+        reload()
     }
     
     private func setupLayout() {
@@ -232,6 +220,7 @@ class SearchViewController: BaseViewController {
     }
     
     private func filterItems(with searchText: String) {
+        self.items = CoreDataManager.shared.fetchTodos()
         if searchText.isEmpty {
             filteredChallengeItems = items.filter { $0.isChallenge == true }
             filteredNonChallengeItems = items.filter { $0.isChallenge == false }

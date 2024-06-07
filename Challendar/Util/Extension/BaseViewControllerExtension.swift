@@ -191,7 +191,6 @@ extension BaseViewController{
         self.present(navigationController, animated: true)
     }
     @objc func closeButtonTappedForSuccess(){
-        NotificationCenter.default.post(name: NSNotification.Name("DismissSuccessView"), object: nil, userInfo: nil)
         self.dismiss(animated: true, completion: nil)
     }
 }

@@ -66,15 +66,10 @@ class TodoViewController: BaseViewController, UICollectionViewDelegate, UICollec
 
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.dismissedFromSuccess(_:)),
-            name: NSNotification.Name("DismissSuccessView"),
-            object: nil
-        )
+        NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
     }
     
-    @objc func dismissedFromSuccess(_ notification: Notification) {
+    @objc func coreDataUpdated(_ notification: Notification) {
         // 알림 수신시 수행할 작업
     }
     

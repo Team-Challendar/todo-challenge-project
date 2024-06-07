@@ -17,6 +17,7 @@ class TodoCalendarViewController: BaseViewController  {
     var changedMonth : Date?
     var currentDate : Date?
     private var collectionView: UICollectionView!
+    private var isFirstSectionExpanded = true
     
     override func viewDidLoad() {
         filterTodoitems(date: currentDate ?? Date())
@@ -27,22 +28,13 @@ class TodoCalendarViewController: BaseViewController  {
         button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
         periodBtnView.delegate = self
     }
-    @objc func titleTouched(){
-        print("HELLO")
-    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         filterTodoitems(date: currentDate ?? Date())
     }
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.dismissedFromSuccess(_:)),
-            name: NSNotification.Name("DismissSuccessView"),
-            object: nil
-        )
-        NotificationCenter.default.addObserver(self, selector: #selector(monthChanged(notification:)), name: NSNotification.Name("month"), object: changedMonth)
         NotificationCenter.default.addObserver(self, selector: #selector(dateChanged(notification:)), name: NSNotification.Name("date"), object: currentDate)
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
     }
@@ -66,14 +58,14 @@ class TodoCalendarViewController: BaseViewController  {
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview()
         }
-//        view.addSubview(periodBtnView) // 기간피커
-//        
-//        periodBtnView.snp.makeConstraints { make in
-//            make.width.equalTo(131)
-//            make.height.equalTo(133)
-//            make.left.equalToSuperview().offset(16) // x 좌표 설정
-//            make.top.equalToSuperview().offset(104) // y 좌표 설정
-//        }
+        //        view.addSubview(periodBtnView) // 기간피커
+        //
+        //        periodBtnView.snp.makeConstraints { make in
+        //            make.width.equalTo(131)
+        //            make.height.equalTo(133)
+        //            make.left.equalToSuperview().offset(16) // x 좌표 설정
+        //            make.top.equalToSuperview().offset(104) // y 좌표 설정
+        //        }
     }
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
@@ -122,11 +114,11 @@ class TodoCalendarViewController: BaseViewController  {
     }
     
     private func createSpecialSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(404))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(isFirstSectionExpanded ? 404 : 174))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(404))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(isFirstSectionExpanded ? 404 : 174))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
@@ -134,17 +126,6 @@ class TodoCalendarViewController: BaseViewController  {
         section.interGroupSpacing = 8
         
         return section
-    }
-    @objc func dismissedFromSuccess(_ notification: Notification) {
-        todoItems = CoreDataManager.shared.fetchTodos()
-        filterTodoitems(date: currentDate ?? Date())
-        collectionView.reloadData()
-    }
-    @objc func monthChanged(notification : Notification){
-        guard let month = notification.object as? Date else {return}
-        self.currentDate = month
-        self.filterTodoitems(date: month.addingDays(1)!)
-        collectionView.reloadData()
     }
     @objc func dateChanged(notification : Notification){
         guard let date = notification.object as? Date else {return}
@@ -157,6 +138,16 @@ class TodoCalendarViewController: BaseViewController  {
         todoItems = CoreDataManager.shared.fetchTodos()
         self.filterTodoitems(date:  self.currentDate ?? Date())
         collectionView.reloadData()
+    }
+    @objc func titleTouched() {
+        NotificationCenter.default.post(name: NSNotification.Name("CalendarToggle"), object: nil, userInfo: nil)
+        isFirstSectionExpanded.toggle() // Toggle the state
+        
+        // Scroll to the top
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        
+        // Update the layout with animation after scrolling to the top
+        self.collectionView.setCollectionViewLayout(self.createCompositionalLayout(), animated: false)
     }
 }
 extension TodoCalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {

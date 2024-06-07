@@ -31,6 +31,7 @@ class TodoCalendarView: UIView {
     
     func configureNotificationCenter(){
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataChanged), name: NSNotification.Name("CoreDataChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(calendarToggle), name: NSNotification.Name("CalendarToggle"), object: nil)
     }
     
     private func configureUI(){
@@ -111,7 +112,7 @@ class TodoCalendarView: UIView {
         if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: calendarView.currentPage) {
             calendarView.setCurrentPage(previousMonth, animated: true)
             updateLabel(previousMonth)
-            NotificationCenter.default.post(name: NSNotification.Name("month"), object: previousMonth, userInfo: nil)
+            NotificationCenter.default.post(name: NSNotification.Name("date"), object: previousMonth, userInfo: nil)
             calendarView.reloadData()
         }
     }
@@ -120,7 +121,7 @@ class TodoCalendarView: UIView {
         if let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: calendarView.currentPage) {
             calendarView.setCurrentPage(nextMonth, animated: true)
             updateLabel(nextMonth)
-            NotificationCenter.default.post(name: NSNotification.Name("month"), object: nextMonth, userInfo: nil)
+            NotificationCenter.default.post(name: NSNotification.Name("date"), object: nextMonth, userInfo: nil)
             calendarView.reloadData()
         }
     }
@@ -131,12 +132,25 @@ class TodoCalendarView: UIView {
     @objc func coreDataChanged(){
         calendarView.reloadData()
     }
+    
+    @objc func calendarToggle(){
+        print(calendarView.scope)
+        if calendarView.scope == .month {
+            calendarView.scope = .week
+        }else{
+            calendarView.scope = .month
+        }
+        calendarView.reloadData()
+    }
 }
 
 extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        calendar.snp.makeConstraints{
-            $0.edges.equalToSuperview()
+        calendarView.snp.updateConstraints{
+            $0.bottom.equalToSuperview().inset(10)
+            $0.leading.equalToSuperview().inset(20)
+            $0.top.equalTo(calendarLabel.snp.bottom).offset(8)
+            $0.trailing.equalToSuperview().inset(19)
         }
         self.layoutIfNeeded()
     }
@@ -150,13 +164,39 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
         updateLabel(date)
-        NotificationCenter.default.post(name: NSNotification.Name("month"), object: date, userInfo: nil)
+        NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
         calendar.reloadData()
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-        if !date.isSameMonth(as: calendar.currentPage){
-            return .challendarCalendarPlaceholder
-        }else{
+        switch calendar.scope{
+        case .month:
+            if !date.isSameMonth(as: calendar.currentPage){
+                return .challendarCalendarPlaceholder
+            }else{
+                if let day = dayModelForCurrentPage?.first(where: {
+                    $0.date.isSameDay(as: date)
+                }){
+                    if day.date.isSameDay(as: Date()){
+                        return .challendarWhite100
+                    }else{
+                        switch day.percentage{
+                        case 0:
+                            if day.date < Date(){
+                                return .challendarPastDay
+                            }else{
+                                return .challendarWhite100
+                            }
+                            
+                        default:
+                            return .challendarBlack100
+                        }
+                    }
+                }
+                else{
+                    return .challendarWhite100
+                }
+            }
+        case .week:
             if let day = dayModelForCurrentPage?.first(where: {
                 $0.date.isSameDay(as: date)
             }){
@@ -179,7 +219,10 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
             else{
                 return .challendarWhite100
             }
+        @unknown default:
+            return .challendarWhite100
         }
+        
     }
     
 }

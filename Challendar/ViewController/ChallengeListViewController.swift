@@ -37,12 +37,7 @@ class ChallengeListViewController: BaseViewController {
     
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.dismissedFromSuccess(_:)),
-            name: NSNotification.Name("DismissSuccessView"),
-            object: nil
-        )
+        NotificationCenter.default.addObserver(self, selector: #selector(coreDataChanged), name: NSNotification.Name("CoreDataChanged"), object: nil)
         
         NotificationCenter.default.addObserver(
             self,
@@ -59,7 +54,7 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
-    @objc func dismissedFromSuccess(_ notification: Notification) {
+    @objc func coreDataChanged() {
         filterTodos()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
