@@ -140,15 +140,31 @@ class TodoCalendarViewController: BaseViewController  {
         collectionView.reloadData()
     }
     @objc func titleTouched() {
-        NotificationCenter.default.post(name: NSNotification.Name("CalendarToggle"), object: nil, userInfo: nil)
         isFirstSectionExpanded.toggle() // Toggle the state
         
         // Scroll to the top
-        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
         
-        // Update the layout with animation after scrolling to the top
-        self.collectionView.setCollectionViewLayout(self.createCompositionalLayout(), animated: false)
+        // Perform batch updates to ensure smooth layout change
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // Slight delay to ensure scroll is completed
+            self.collectionView.performBatchUpdates({
+                // Invalidate the layout to ensure it gets recalculated
+                let context = UICollectionViewLayoutInvalidationContext()
+                context.invalidateItems(at: [IndexPath(item: 0, section: 0)])
+                self.collectionView.collectionViewLayout.invalidateLayout(with: context)
+            }, completion: { _ in
+                // Set the new layout without animation
+                self.collectionView.setCollectionViewLayout(self.createCompositionalLayout(), animated: false)
+                
+                // Animate the change smoothly
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.collectionView.layoutIfNeeded()
+                })
+            })
+        }
+        NotificationCenter.default.post(name: NSNotification.Name("CalendarToggle"), object: nil, userInfo: nil)
     }
+
 }
 extension TodoCalendarViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {

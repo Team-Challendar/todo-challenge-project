@@ -18,7 +18,6 @@ class BottomSheetViewController: UIViewController {
     var calenderView = DateCalendarView()
     var dateRange : DateRange?
     var newTodo: Todo?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()

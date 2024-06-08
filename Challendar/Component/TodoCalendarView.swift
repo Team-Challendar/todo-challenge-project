@@ -134,13 +134,12 @@ class TodoCalendarView: UIView {
     }
     
     @objc func calendarToggle(){
-        print(calendarView.scope)
         if calendarView.scope == .month {
             calendarView.scope = .week
         }else{
             calendarView.scope = .month
         }
-        calendarView.reloadData()
+//        calendarView.reloadData()
     }
 }
 
