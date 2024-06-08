@@ -92,6 +92,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
         guard let item = todoItem else { return }
         item.toggleTodaysCompletedState()
         updateTodoCompletion(for: item)
+        
+        print("Todo \(item.title) completed status updated: \(item.completed)")
     }
     
     func configure(with item: Todo) {

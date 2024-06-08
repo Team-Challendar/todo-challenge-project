@@ -8,15 +8,19 @@
 import UIKit
 import SnapKit
 
+// 챌린지 투두 리스트를 보여주는 페이지
 class ChallengeListViewController: BaseViewController {
+    
     
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
     private var completedTodos: [Todo] = []         // 완료 투두
     private var incompleteTodos: [Todo] = []        // 미완료 투두
     private var upcomingTodos: [Todo] = []          // 예정 투두
+    private var emptyMainMsg: UILabel!
+    private var emptySubMsg: UILabel!
+    private var emptyImage: UIImage!
     private var collectionView: UICollectionView!
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureFloatingButton()
@@ -24,42 +28,31 @@ class ChallengeListViewController: BaseViewController {
         sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
     }
     
-    override func configureUI(){
+    override func configureUI() {
         super.configureUI()
         setupCollectionView()
     }
     
-    override func configureConstraint(){
+    override func configureConstraint() {
         super.configureConstraint()
         setupLayout()
     }
     
-    override func configureNotificationCenter(){
+    override func configureNotificationCenter() {
         super.configureNotificationCenter()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.dismissedFromSuccess(_:)),
-            name: NSNotification.Name("DismissSuccessView"),
-            object: nil
-        )
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(todoCompletedStateChanged(_:)),
-            name: NSNotification.Name("TodoCompletedStateChanged"),
+            selector: #selector(coreDataChanged(_:)),
+            name: NSNotification.Name("CoreDataChanged"),
             object: nil
         )
     }
     
-    @objc func todoCompletedStateChanged(_ notification: Notification) {
+    @objc func coreDataChanged(_ notification: Notification) {
+        self.todoItems = CoreDataManager.shared.fetchTodos()
         filterTodos()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-    
-    @objc func dismissedFromSuccess(_ notification: Notification) {
-        filterTodos()
+        sortByRecentStartDate()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
@@ -80,11 +73,11 @@ class ChallengeListViewController: BaseViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "enabledCell")
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
-        
     }
     
     // 컬렉션뷰 레이아웃 생성
@@ -94,35 +87,26 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
-    // 투두 섹션 생성
-    private func createTodoSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
-        section.interGroupSpacing = 8
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
-        section.boundarySupplementaryItems = [header]
-        
-        return section
-    }
-    
     // 오늘 기준 투두 필터링
     private func filterTodos() {
         let today = Date()
-        let filteredItems = CoreDataManager.shared.fetchTodos().filter { $0.isChallenge == true }
+        let filteredItems = CoreDataManager.shared.fetchTodos().filter {
+            $0.isChallenge && ($0.endDate ?? today) >= today
+        }
         
-        completedTodos = filteredItems.filter { $0.todayCompleted(date: today) ?? false && ($0.endDate ?? today) >= today }
-        incompleteTodos = filteredItems.filter { !($0.todayCompleted(date: today) ?? false) && $0.startDate ?? today <= today && ($0.endDate ?? today) >= today }
-        upcomingTodos = filteredItems.filter { $0.startDate ?? today > today && ($0.endDate ?? today) >= today }
+        completedTodos = filteredItems.filter {
+            ($0.todayCompleted(date: today) ?? false)
+        }
+        
+        incompleteTodos = filteredItems.filter {
+            guard let startDate = $0.startDate else { return false }
+            return !($0.todayCompleted(date: today) ?? false) && startDate <= today
+        }
+        
+        upcomingTodos = filteredItems.filter {
+            guard let startDate = $0.startDate else { return false }
+            return startDate > today
+        }
     }
     
     // 최신순
@@ -165,14 +149,24 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
         let todo = getTodoItem(for: indexPath)
-        cell.configure(with: todo)
-        return cell
+        let today = Date()
+        
+        if let startDate = todo.startDate, startDate > today {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "enabledCell", for: indexPath) as! SearchCollectionViewCell
+            cell.configure(with: todo)
+            cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
+            cell.configure(with: todo)
+            cell.contentView.alpha = 1.0
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         return header
     }
@@ -251,9 +245,9 @@ class ChallengeSectionHeader: UICollectionReusableView {
         addSubview(sectionLabel)
         NSLayoutConstraint.activate([
             sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -0)
         ])
     }
     
