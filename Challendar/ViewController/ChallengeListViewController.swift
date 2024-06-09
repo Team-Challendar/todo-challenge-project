@@ -11,28 +11,33 @@ import SnapKit
 // 챌린지 투두 리스트를 보여주는 페이지
 class ChallengeListViewController: BaseViewController {
     
-    
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
     private var completedTodos: [Todo] = []         // 완료 투두
     private var incompleteTodos: [Todo] = []        // 미완료 투두
     private var upcomingTodos: [Todo] = []          // 예정 투두
+    private var emptyMainLabel: UILabel!
+    private var emptySubLabel: UILabel!
+    private var emptyImage: UIImageView!
     private var collectionView: UICollectionView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureFloatingButton()
         filterTodos()
+        updateEmptyStateVisibility()
         sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
     }
     
     override func configureUI() {
         super.configureUI()
+        setupEmptyStateViews()
         setupCollectionView()
     }
     
     override func configureConstraint() {
         super.configureConstraint()
         setupLayout()
+        setupEmptyStateConstraints()
     }
     
     override func configureNotificationCenter() {
@@ -52,6 +57,7 @@ class ChallengeListViewController: BaseViewController {
         sortByRecentStartDate()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.updateEmptyStateVisibility()
         }
     }
     
@@ -125,6 +131,54 @@ class ChallengeListViewController: BaseViewController {
         completedTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
         incompleteTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
         upcomingTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+    }
+    
+    // 비어있는 상태 UI 설정
+    private func setupEmptyStateViews() {
+        emptyMainLabel = UILabel()
+        emptyMainLabel.text = "리스트가 없어요..."
+        emptyMainLabel.font = .pretendardSemiBold(size: 20)
+        emptyMainLabel.textColor = .challendarWhite100
+        view.addSubview(emptyMainLabel)
+        
+        emptySubLabel = UILabel()
+        emptySubLabel.text = "작성하기 버튼을 눌러 등록해주세요."
+        emptySubLabel.font = .pretendardMedium(size: 13)
+        emptySubLabel.textColor = .challendarGrey50
+        view.addSubview(emptySubLabel)
+        
+        // If you want to use the emptyImage
+         emptyImage = UIImageView()
+         emptyImage.image = UIImage(named: "SurprisedFace")
+         view.addSubview(emptyImage)
+    }
+    
+    // 비어있는 상태 제약 조건 설정
+    private func setupEmptyStateConstraints() {
+        emptyMainLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(emptySubLabel.snp.top).offset(-8)
+        }
+        
+        emptySubLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(emptyImage.snp.top).offset(-32)
+        }
+        
+        // If you want to use the emptyImage
+         emptyImage.snp.makeConstraints { make in
+             make.width.height.equalTo(100)
+             make.centerX.equalToSuperview()
+             make.centerY.equalToSuperview()
+        }
+    }
+    
+    // 비어있는 상태 가시성 업데이트
+    private func updateEmptyStateVisibility() {
+        let isEmpty = todoItems.isEmpty
+        emptyMainLabel.isHidden = !isEmpty
+        emptySubLabel.isHidden = !isEmpty
+        emptyImage.isHidden = !isEmpty
     }
 }
 
