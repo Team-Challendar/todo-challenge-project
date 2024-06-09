@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class TodoViewController: BaseViewController {
+class TodoViewController: BaseViewController, DropdownButtonViewDelegate {
     
     private let pickerBtnView = PickerBtnView()
     private let dropdownButtonView = DropdownButtonView()
@@ -28,7 +28,7 @@ class TodoViewController: BaseViewController {
         
         pickerBtnView.snp.makeConstraints { make in
             make.width.equalTo(77)
-            make.height.equalTo(133)
+            make.height.equalTo(133) // 원래 높이로 복구
             make.leading.equalToSuperview().offset(300)
             make.top.equalToSuperview().offset(134)
         }
@@ -36,7 +36,7 @@ class TodoViewController: BaseViewController {
         dropdownButtonView.snp.makeConstraints { make in
             make.width.equalTo(69)
             make.height.equalTo(24)
-            make.top.equalToSuperview().offset(106)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8) // 네비게이션 바 하단에서 8만큼 떨어지도록 설정
             make.trailing.equalToSuperview().offset(-18)
         }
         
@@ -64,7 +64,7 @@ class TodoViewController: BaseViewController {
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 24, right: 0) // 섹션 인셋을 원래대로 복구
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
         
@@ -82,9 +82,7 @@ class TodoViewController: BaseViewController {
         
         view.addSubview(collectionView)
     }
-}
 
-extension TodoViewController: DropdownButtonViewDelegate {
     func didSelectOption(_ option: String) {
         // Handle the dropdown option selection
         print("Selected option: \(option)")
@@ -106,7 +104,7 @@ class TodoCollectionViewDelegate: NSObject, UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 33) // 헤더 높이를 33으로 설정 (셀과 8만큼 떨어짐)
+        return CGSize(width: collectionView.frame.width, height: 25) // 헤더 높이를 25로 설정
     }
 }
 
@@ -146,6 +144,13 @@ class TodoCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TodoSectionHeader.identifier, for: indexPath) as! TodoSectionHeader
         header.headerLabel.text = indexPath.section == 0 ? "할 일" : "완료된 목록"
+        
+        header.headerLabel.snp.remakeConstraints { make in
+            make.top.equalToSuperview().offset(-2)
+            make.leading.equalToSuperview() // leading을 superview에 맞추도록 설정
+        }
+        
         return header
     }
 }
+
