@@ -211,7 +211,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: todo)
-            cell.contentView.alpha = 1.0
             return cell
         }
     }

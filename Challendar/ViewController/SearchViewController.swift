@@ -23,17 +23,20 @@ class SearchViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        reloadData() // 데이터 다시 로드
         if let searchText = searchBar.text, !searchText.isEmpty {
             filterItems(with: searchText)
         } else {
             filterItems(with: "")
         }
+        self.collectionView.reloadData() // 데이터 리로드
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         filterItems(with: "")
-        reload()
+        reloadData()
     }
     
     override func configureUI() {
@@ -60,7 +63,7 @@ class SearchViewController: BaseViewController {
     }
     
     @objc func coreDataChanged(_ notification: Notification) {
-        self.items = CoreDataManager.shared.fetchTodos()
+        reloadData() // 데이터 다시 로드
         if let searchText = searchBar.text, !searchText.isEmpty {
             filterItems(with: searchText)
         } else {
@@ -85,7 +88,7 @@ class SearchViewController: BaseViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Empty")
-        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "defaultCell")
         // 챌린지 투두용 셀 등록
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "challengeCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
@@ -99,9 +102,11 @@ class SearchViewController: BaseViewController {
         }
     }
     
-    private func reload() {
+    private func reloadData() {
+        self.items = CoreDataManager.shared.fetchTodos()
         self.collectionView.reloadData()
     }
+
     
     private func searchBarConfigure() {
         searchBar = UISearchBar()
@@ -233,7 +238,7 @@ class SearchViewController: BaseViewController {
         
         // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
         sortByRecentStartDate()
-        reload() // 필터링 후 데이터 리로드
+        reloadData() // 필터링 후 데이터 리로드
     }
 
     // 최신순
@@ -316,17 +321,22 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = getTodoItem(for: indexPath.section)[indexPath.row]
+        let today = Date()
         
-        if item.isChallenge {
+        if let startDate = item.startDate, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
+            cell.configure(with: item)
+            cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            return cell
+        } else if item.isChallenge {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: item)
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: item)
             return cell
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
