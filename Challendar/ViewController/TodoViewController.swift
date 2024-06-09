@@ -145,12 +145,13 @@ class TodoCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TodoSectionHeader.identifier, for: indexPath) as! TodoSectionHeader
         header.headerLabel.text = indexPath.section == 0 ? "할 일" : "완료된 목록"
         
-        header.headerLabel.snp.remakeConstraints { make in
-            make.top.equalToSuperview().offset(-2)
-            make.leading.equalToSuperview() // leading을 superview에 맞추도록 설정
+        // 두 번째 섹션에서만 지우기 버튼을 표시
+        if indexPath.section == 1 {
+            header.showDeleteButton()
+        } else {
+            header.hideDeleteButton()
         }
         
         return header
     }
 }
-
