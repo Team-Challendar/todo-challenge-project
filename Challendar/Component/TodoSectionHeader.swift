@@ -39,8 +39,8 @@ class TodoSectionHeader: UICollectionReusableView {
     
     private func configureConstraints() {
         headerLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview() // leading을 superview에 맞추도록 설정
-            make.centerY.equalToSuperview().offset(-9) // 위치를 위로 9픽셀 올림
+            make.leading.equalToSuperview() 
+            make.centerY.equalToSuperview().offset(-5)
         }
         
         deleteButton.snp.makeConstraints { make in
