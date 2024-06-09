@@ -10,11 +10,11 @@ import SnapKit
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
-    var checkButton: UIButton!
-    var titleLabel: UILabel!
-    var dateLabel: UILabel!
-    var stateLabel: UILabel!
-    var todoItem: Todo? // Todo 항목을 저장할 속성
+    var checkButton: UIButton!      // 체크버튼
+    var titleLabel: UILabel!        // 투두 이름
+    var dateLabel: UILabel!         // 종료 날짜
+    var stateLabel: UILabel!        // 진행 여부
+    var todoItem: Todo?             // Todo 항목을 저장할 속성
     
     override init(frame: CGRect) {
         super.init(frame: frame)

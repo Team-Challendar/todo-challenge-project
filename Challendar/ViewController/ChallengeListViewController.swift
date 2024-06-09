@@ -16,9 +16,6 @@ class ChallengeListViewController: BaseViewController {
     private var completedTodos: [Todo] = []         // 완료 투두
     private var incompleteTodos: [Todo] = []        // 미완료 투두
     private var upcomingTodos: [Todo] = []          // 예정 투두
-    private var emptyMainMsg: UILabel!
-    private var emptySubMsg: UILabel!
-    private var emptyImage: UIImage!
     private var collectionView: UICollectionView!
 
     override func viewDidLoad() {
