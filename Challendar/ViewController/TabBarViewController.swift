@@ -14,7 +14,7 @@ class TabBarViewController: RAMAnimatedTabBarController {
     var tabs : [TabModel] = [
         TabModel(title: "도전", image: .challenge0,selectedImage: . challenge1, vc: ChallengeListViewController()),
         TabModel(title: "할 일", image: .task0,selectedImage: .task1, vc: TodoViewController()),
-        TabModel(title: "계획", image: .plan0,selectedImage: .plan1, vc: TodoCalendarViewController()),
+        TabModel(title: "계획", image: .plan0,selectedImage: .plan1, vc: TodoCalendarViewDifferableViewController()),
         TabModel(title: "검색", image: .search0,selectedImage: .search1, vc: SearchViewController()),
     ]
     

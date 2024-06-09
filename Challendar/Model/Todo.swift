@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Todo {
+class Todo : Hashable{
     public var id : UUID?
     public var title: String
     public var memo: String?
@@ -83,5 +83,14 @@ class Todo {
                 self.completed[date.daysBetween(startDate)].toggle()
             }
         }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    // Equatable 프로토콜을 준수하도록 구현
+    static func ==(lhs: Todo, rhs: Todo) -> Bool {
+        return lhs.id == rhs.id
     }
 }

@@ -11,7 +11,7 @@ import FSCalendar
 
 class TodoCalendarView: UIView {
     var dayModelForCurrentPage : [Day]?
-    var calendarView = FSCalendar(frame: .zero)
+    var calendar = FSCalendar(frame: .zero)
     var calendarLabel = UILabel()
     var prevButton = UIButton()
     var nextButton = UIButton()
@@ -35,7 +35,7 @@ class TodoCalendarView: UIView {
     }
     
     private func configureUI(){
-        calendarView.scope = .month
+        calendar.scope = .month
         calendarLabel.text = DateFormatter.dateFormatter.string(from: Date())
         calendarLabel.font = .pretendardBold(size: 22)
         calendarLabel.backgroundColor = .clear
@@ -49,45 +49,46 @@ class TodoCalendarView: UIView {
         nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         
         self.layer.cornerRadius = 20
+        self.layer.cornerCurve = .continuous
         self.backgroundColor = .challendarBlack80
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
-        calendarView.locale = Locale(identifier: "ko_KR")
-        calendarView.appearance.headerTitleColor = .clear
-        calendarView.headerHeight = 0
+        calendar.locale = Locale(identifier: "ko_KR")
+        calendar.appearance.headerTitleColor = .clear
+        calendar.headerHeight = 0
         
         //MARK: -캘린더 관련
-        calendarView.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
-        calendarView.backgroundColor = .challendarBlack80
-        calendarView.weekdayHeight = 44
-        calendarView.appearance.weekdayTextColor = .challendarWhite100
-        calendarView.appearance.titleWeekendColor = .challendarWhite100
-        calendarView.appearance.selectionColor = .clear
-        calendarView.appearance.titleSelectionColor  = .red
-        calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
-        calendarView.appearance.todayColor = .clear
-        calendarView.scrollDirection = .horizontal
-        calendarView.calendarWeekdayView.weekdayLabels[0].textColor = .challendarWeekend
-        calendarView.calendarWeekdayView.weekdayLabels.forEach{
+        calendar.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
+        calendar.backgroundColor = .challendarBlack80
+        calendar.weekdayHeight = 44
+        calendar.appearance.weekdayTextColor = .challendarWhite100
+        calendar.appearance.titleWeekendColor = .challendarWhite100
+        calendar.appearance.selectionColor = .clear
+        calendar.appearance.titleSelectionColor  = .red
+        calendar.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
+        calendar.appearance.todayColor = .clear
+        calendar.scrollDirection = .horizontal
+        calendar.calendarWeekdayView.weekdayLabels[0].textColor = .challendarWeekend
+        calendar.calendarWeekdayView.weekdayLabels.forEach{
             $0.adjustTextPosition(top: -4, right: 0)
         }
-        calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .challendarWeekend
-        calendarView.placeholderType = .fillSixRows
-        calendarView.allowsMultipleSelection = false
-        calendarView.delegate = self
-        calendarView.dataSource = self
+        calendar.calendarWeekdayView.weekdayLabels[6].textColor = .challendarWeekend
+        calendar.placeholderType = .fillSixRows
+        calendar.allowsMultipleSelection = false
+        calendar.delegate = self
+        calendar.dataSource = self
         
     }
     
     private func configureConstraint(){
-        [calendarView,calendarLabel,prevButton,nextButton].forEach{
+        [calendar,calendarLabel,prevButton,nextButton].forEach{
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        calendarView.snp.makeConstraints{
-            $0.bottom.equalToSuperview().inset(10)
+        calendar.snp.makeConstraints{
+            $0.height.equalTo(332)
             $0.leading.equalToSuperview().inset(20)
             $0.top.equalTo(calendarLabel.snp.bottom).offset(8)
             $0.trailing.equalToSuperview().inset(19)
@@ -109,20 +110,39 @@ class TodoCalendarView: UIView {
     }
     
     @objc func prevButtonClicked(){
-        if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: calendarView.currentPage) {
-            calendarView.setCurrentPage(previousMonth, animated: true)
-            updateLabel(previousMonth)
-            NotificationCenter.default.post(name: NSNotification.Name("date"), object: previousMonth, userInfo: nil)
-            calendarView.reloadData()
+        if calendar.scope == .month{
+            if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: calendar.currentPage) {
+                calendar.setCurrentPage(previousMonth, animated: true)
+                updateLabel(previousMonth)
+                NotificationCenter.default.post(name: NSNotification.Name("date"), object: previousMonth, userInfo: nil)
+                calendar.reloadData()
+            }
+        }else{
+            if let prevWeek = Calendar.current.date(byAdding: .day, value: -7, to: calendar.currentPage) {
+                calendar.setCurrentPage(prevWeek, animated: true)
+                updateLabel(prevWeek)
+                NotificationCenter.default.post(name: NSNotification.Name("date"), object: prevWeek, userInfo: nil)
+                calendar.reloadData()
+            }
         }
+        
     }
     
     @objc func nextButtonClicked(){
-        if let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: calendarView.currentPage) {
-            calendarView.setCurrentPage(nextMonth, animated: true)
-            updateLabel(nextMonth)
-            NotificationCenter.default.post(name: NSNotification.Name("date"), object: nextMonth, userInfo: nil)
-            calendarView.reloadData()
+        if calendar.scope == .month{
+            if let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: calendar.currentPage) {
+                calendar.setCurrentPage(nextMonth, animated: true)
+                updateLabel(nextMonth)
+                NotificationCenter.default.post(name: NSNotification.Name("date"), object: nextMonth, userInfo: nil)
+                calendar.reloadData()
+            }
+        }else{
+            if let nextWeek = Calendar.current.date(byAdding: .day, value: 7, to: calendar.currentPage) {
+                calendar.setCurrentPage(nextWeek, animated: true)
+                updateLabel(nextWeek)
+                NotificationCenter.default.post(name: NSNotification.Name("date"), object: nextWeek, userInfo: nil)
+                calendar.reloadData()
+            }
         }
     }
     
@@ -130,31 +150,43 @@ class TodoCalendarView: UIView {
         calendarLabel.text = DateFormatter.dateFormatter.string(from: date)
     }
     @objc func coreDataChanged(){
-        calendarView.reloadData()
+        calendar.reloadData()
     }
     
     @objc func calendarToggle(){
-        if calendarView.scope == .month {
-            calendarView.scope = .week
+        if calendar.scope == .month {
+            calendar.scope = .week
         }else{
-            calendarView.scope = .month
+            calendar.scope = .month
         }
-//        calendarView.reloadData()
+        //        calendarView.reloadData()
     }
 }
 
 extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
-        calendarView.snp.updateConstraints{
-            $0.bottom.equalToSuperview().inset(10)
-            $0.leading.equalToSuperview().inset(20)
-            $0.top.equalTo(calendarLabel.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().inset(19)
+        //        calendarView.snp.updateConstraints{
+        //            $0.bottom.equalToSuperview().inset(10)
+        //            $0.leading.equalToSuperview().inset(20)
+        //            $0.top.equalTo(calendarLabel.snp.bottom).offset(8)
+        //            $0.trailing.equalToSuperview().inset(19)
+        //        }
+        
+        UIView.animate(withDuration: 0.5) {
+            if calendar.scope == .month {
+                calendar.snp.updateConstraints{
+                    $0.height.equalTo(332)
+                }
+            }else{
+                calendar.snp.updateConstraints{
+                    $0.height.equalTo(102)
+                }
+            }
+            self.layoutIfNeeded()
         }
-        self.layoutIfNeeded()
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-//        print(DateFormatter.dateFormatterALL.string(from: date))
+        //        print(DateFormatter.dateFormatterALL.string(from: date))
         NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
     }
     func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -238,7 +270,7 @@ extension TodoCalendarView : FSCalendarDataSource {
         }
         
         return cell
-
+        
     }
 }
 

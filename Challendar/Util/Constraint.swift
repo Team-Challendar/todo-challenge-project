@@ -39,3 +39,9 @@ public let calendarCircleSize = 30
 
 // MARK: - ChallengeCheckViewController 에서 사용하는 Constraint
 public let popUpHeight = 311
+
+
+// MARK: - TodoCalendarViewController 에서 사용하는 Constraint
+var initialCalendarHeight: CGFloat = 404
+var minCalendarHeight: CGFloat = 174
+var maxCalendarHeight: CGFloat = 404
