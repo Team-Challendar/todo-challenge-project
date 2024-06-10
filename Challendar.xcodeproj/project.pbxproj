@@ -76,7 +76,6 @@
 		14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */; };
 		14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F382C0A4B3600819B27 /* UIViewExtension.swift */; };
 		14E1EF8A2C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */; };
-		2E738AC12C1082E0006F4A26 /* CellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* CellExtension.swift */; };
 		2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
@@ -168,7 +167,6 @@
 		14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		14C97F382C0A4B3600819B27 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarViewDifferableViewController.swift; sourceTree = "<group>"; };
-		2E738AC02C1082E0006F4A26 /* CellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellExtension.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
@@ -329,7 +327,6 @@
 				14C97F282C09DB5600819B27 /* DateCalendarView.swift */,
 				14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */,
 				B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */,
-				B90CAA822C11856700926B53 /* DropdownButtonView.swift */,
 				B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */,
 				B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */,
 				B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */,
@@ -404,7 +401,6 @@
 				149228F92C0B065200D63368 /* UIViewControllerExtension.swift */,
 				149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */,
 				149228FD2C0B1CE500D63368 /* DateExtension.swift */,
-				2E738AC02C1082E0006F4A26 /* CellExtension.swift */,
 				149FEFAE2C122C2300CDDC23 /* UILabelExtension.swift */,
 				2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */,
 			);
@@ -577,7 +573,7 @@
 				B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
-				2E738AC12C1082E0006F4A26 /* CellExtension.swift in Sources */,
+				2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */,
 				2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
@@ -741,11 +737,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				DEVELOPMENT_TEAM = 27X8924SNC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Challendar/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -762,7 +756,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = debug;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -776,11 +769,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				DEVELOPMENT_TEAM = 27X8924SNC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Challendar/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -797,7 +788,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = debug;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
