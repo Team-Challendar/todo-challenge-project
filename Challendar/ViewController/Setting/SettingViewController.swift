@@ -11,7 +11,7 @@ class SettingViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureBackAndTitleNavigationBar(title: "설정")
+        configureBackAndTitleNavigationBar(title: "설정", checkSetting: true)
     }
 
 }

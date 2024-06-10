@@ -127,6 +127,7 @@ class CoreDataManager {
         }
         if let newCompleted = newCompleted {
             todoToUpdate.completed = newCompleted
+            todoToUpdate.percentage = Double(newCompleted.filter{$0 == true}.count) / Double( newCompleted.count)
         }
         if let newIsChallenge = newIsChallenge {
             todoToUpdate.isChallenge = newIsChallenge

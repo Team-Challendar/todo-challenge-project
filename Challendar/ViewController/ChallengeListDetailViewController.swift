@@ -14,36 +14,26 @@ import FSCalendar
 class ChallengeListDetailViewController: BaseViewController {
     
     // DayModel 데이터 연결부
-    private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
-    private var completedTodo : [Todo] = []
-    private var inCompletedTodo: [Todo] = []
-    var days : [Day] = []
     var changedMonth : Date?
     var currentDate : Date = Date()
     private var collectionView: UICollectionView!
 //    var newTodo: Todo? = challenge
     var newTodo: Todo? = CoreDataManager.shared.fetchTodos().last
-
+    
+    
+    
     override func viewDidLoad() {
-//        filterTodoitems()
         configureCollectionView()
         super.viewDidLoad()
         configureFloatingButton()
         configureCollectionView()
+        configureBackAndTitleNavigationBar(title: newTodo!.title, checkSetting: false)
+        
     }
     
 //    추후 추가될 todoitems section
     private func filterTodoitems(date: Date = Date()){
-        self.todoItems = todoItems.filter({
-            $0.startDate != nil
-        })
-        completedTodo = todoItems.filter({
-            $0.todayCompleted(date: date) == true
-        })
-        inCompletedTodo = todoItems.filter({
-            $0.todayCompleted(date: date) == false
-        })
-        days = Day.generateDaysForMonth(date: date, todos: self.todoItems)
+        
     }
     
     override func configureNotificationCenter(){
@@ -155,6 +145,16 @@ class ChallengeListDetailViewController: BaseViewController {
         
         return section
     }
+    
+    func createDate(year: Int, month: Int, day: Int) -> Date? {
+        let calendar = Calendar.current
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        components.day = day
+        return calendar.date(from: components)
+    }
+    
 }
 
 extension ChallengeListDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -177,11 +177,17 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
         switch indexPath.section {
         case 0:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HalfCircleChartViewCell.identifier, for: indexPath) as? HalfCircleChartViewCell else { return UICollectionViewCell() }
-            cell.configure(with: self.todoItems)
+            if let newTodo = newTodo {
+                cell.configureDetail(with: newTodo)
+            }
+            
             return cell
         case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCalendarCell.identifier, for: indexPath) as? DetailCalendarCell else { return UICollectionViewCell() }
-            cell.configureCalenderView(days: self.days)
+            if let newTodo = newTodo {
+                cell.configureCalenderView(todo: newTodo)
+            }
+            
             return cell
         default:
             return UICollectionViewCell()
@@ -207,14 +213,7 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
 
 // 더미 데이터
 
-//func createDate(year: Int, month: Int, day: Int) -> Date? {
-//    let calendar = Calendar.current
-//    var components = DateComponents()
-//    components.year = year
-//    components.month = month
-//    components.day = day
-//    return calendar.date(from: components)
-//}
+
 
 //    func createDate() -> Date.locale {
 //        // Calendar와 DateComponents를 이용해 startDate와 endDate를 생성

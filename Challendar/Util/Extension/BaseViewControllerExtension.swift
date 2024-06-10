@@ -76,7 +76,7 @@ extension BaseViewController{
         
         return button
     }
-    func configureBackAndTitleNavigationBar(title: String) {
+    func configureBackAndTitleNavigationBar(title: String, checkSetting: Bool) {
         let view = UIView()
         let titleLabel = UILabel()
         titleLabel.text = title
@@ -110,12 +110,18 @@ extension BaseViewController{
         
         closeImageView.isUserInteractionEnabled = true
         var tapGesture = UITapGestureRecognizer()
-        tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+        if checkSetting {
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+        }else{
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(backButtonTapped))
+        }
+        
         
         closeImageView.addGestureRecognizer(tapGesture)
         view.translatesAutoresizingMaskIntoConstraints = false
         let titleBarButtonItem = UIBarButtonItem(customView: view)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem
+        self.configureSettingButtonNavigationBar()
     }
     func configureNavigationBar(checkFirst: Bool){
         let closeImageView = UIImageView()

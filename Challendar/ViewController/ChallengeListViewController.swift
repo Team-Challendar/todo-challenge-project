@@ -250,6 +250,12 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         return header
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let todo = getTodoItem(for: indexPath)
+        let detailVC = ChallengeListDetailViewController()
+        detailVC.newTodo = todo
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
     private enum SectionType {
         case completed, incomplete, upcoming
     }
