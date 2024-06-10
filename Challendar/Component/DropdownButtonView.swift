@@ -1,14 +1,8 @@
-//
-//  DropdownButtonView.swift
-//  Challendar
-//
-//  Created by 채나연 on 6/6/24.
-//
-
 import UIKit
 
 protocol DropdownButtonViewDelegate: AnyObject {
     func didSelectOption(_ option: String)
+    func dropdownButtonTapped()
 }
 
 class DropdownButtonView: UIView {
@@ -18,16 +12,14 @@ class DropdownButtonView: UIView {
     private let button: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("최신순", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.challendarBlack60, for: .normal)
         button.titleLabel?.font = .pretendardMedium(size: 14)
-        button.tintColor = .challendarBlack60
-        
-        // Create the chevron.down image with a smaller size
-        let configuration = UIImage.SymbolConfiguration(pointSize: 12, weight: .medium)
-        let chevronImage = UIImage(systemName: "chevron.down", withConfiguration: configuration)
-        
-        button.setImage(chevronImage, for: .normal)
+        button.tintColor = .challendarGrey50
+        button.setImage(UIImage(named: "arrowDown")?.resizeImage(to: CGSize(width: 16, height: 16)), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.challendarBlack60.cgColor
+        button.layer.cornerRadius = 12
         return button
     }()
     
@@ -37,27 +29,18 @@ class DropdownButtonView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupButton()
-        setupTableView()
+        configureUI()
+        configureConstraint()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupButton() {
+    func configureUI() {
         addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor),
-            button.topAnchor.constraint(equalTo: topAnchor),
-            button.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
         button.addTarget(self, action: #selector(toggleDropdown), for: .touchUpInside)
-    }
-    
-    private func setupTableView() {
+        
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -67,21 +50,32 @@ class DropdownButtonView: UIView {
         tableView.separatorStyle = .none
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         addSubview(tableView)
+    }
+    
+    func configureConstraint() {
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 69),
+            button.heightAnchor.constraint(equalToConstant: 24),
+            button.leadingAnchor.constraint(equalTo: leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: trailingAnchor),
+            button.topAnchor.constraint(equalTo: topAnchor),
+            button.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 5),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            tableView.heightAnchor.constraint(equalToConstant: 0)
+            tableView.heightAnchor.constraint(equalToConstant: 132)
         ])
     }
     
     @objc private func toggleDropdown() {
         isOpen.toggle()
         tableView.isHidden = !isOpen
-        tableView.snp.updateConstraints { make in
-            make.height.equalTo(isOpen ? 132 : 0)
-        }
+        delegate?.dropdownButtonTapped() // 드롭다운 버튼이 눌렸을 때 델리게이트 호출
     }
 }
 
@@ -105,10 +99,16 @@ extension DropdownButtonView: UITableViewDelegate, UITableViewDataSource {
         button.setTitle(option, for: .normal)
         isOpen = false
         tableView.isHidden = true
-        tableView.snp.updateConstraints { make in
-            make.height.equalTo(0)
-        }
         delegate?.didSelectOption(option)
     }
 }
 
+extension UIImage {
+    func resizeImage(to size: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        draw(in: CGRect(origin: .zero, size: size))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return resizedImage
+    }
+}
