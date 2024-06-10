@@ -45,7 +45,7 @@ class DateCalendarView: UIView {
         calendarLabel.text = DateFormatter.dateFormatter.string(from: Date())
         calendarLabel.font = .pretendardMedium(size: 20)
         calendarLabel.backgroundColor = .clear
-        calendarLabel.textColor = .challendarWhite100
+        calendarLabel.textColor = .challendarWhite
         
         prevButton.setImage(.arrowLeftNew, for: .normal)
         prevButton.backgroundColor = .clear
@@ -69,8 +69,8 @@ class DateCalendarView: UIView {
         calendarView.backgroundColor = .challendarBlack80
         calendarView.weekdayHeight = 46
         calendarView.rowHeight = 46
-        calendarView.appearance.weekdayTextColor = .challendarWhite100
-        calendarView.appearance.titleWeekendColor = .challendarWhite100
+        calendarView.appearance.weekdayTextColor = .challendarWhite
+        calendarView.appearance.titleWeekendColor = .challendarWhite
         calendarView.appearance.selectionColor = .clear
         calendarView.appearance.titleSelectionColor = .challendarBlack100
         calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
@@ -212,7 +212,7 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         if datesRange.contains(where: { $0 == date }){
             return .challendarBlack100
         }else{
-            return .challendarWhite100
+            return .challendarWhite
         }
     }
 }

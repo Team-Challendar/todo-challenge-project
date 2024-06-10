@@ -39,7 +39,7 @@ class TodoCalendarView: UIView {
         calendarLabel.text = DateFormatter.dateFormatter.string(from: Date())
         calendarLabel.font = .pretendardBold(size: 22)
         calendarLabel.backgroundColor = .clear
-        calendarLabel.textColor = .challendarWhite100
+        calendarLabel.textColor = .challendarWhite
         
         prevButton.setImage(.arrowLeftNew, for: .normal)
         prevButton.backgroundColor = .clear
@@ -62,8 +62,8 @@ class TodoCalendarView: UIView {
         calendar.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
         calendar.backgroundColor = .challendarBlack80
         calendar.weekdayHeight = 44
-        calendar.appearance.weekdayTextColor = .challendarWhite100
-        calendar.appearance.titleWeekendColor = .challendarWhite100
+        calendar.appearance.weekdayTextColor = .challendarWhite
+        calendar.appearance.titleWeekendColor = .challendarWhite
         calendar.appearance.selectionColor = .clear
         calendar.appearance.titleSelectionColor  = .red
         calendar.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
@@ -208,14 +208,14 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     $0.date.isSameDay(as: date)
                 }){
                     if day.date.isSameDay(as: Date()){
-                        return .challendarWhite100
+                        return .challendarWhite
                     }else{
                         switch day.percentage{
                         case 0:
                             if day.date < Date(){
                                 return .challendarPastDay
                             }else{
-                                return .challendarWhite100
+                                return .challendarWhite
                             }
                             
                         default:
@@ -224,7 +224,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     }
                 }
                 else{
-                    return .challendarWhite100
+                    return .challendarWhite
                 }
             }
         case .week:
@@ -232,14 +232,14 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 $0.date.isSameDay(as: date)
             }){
                 if day.date.isSameDay(as: Date()){
-                    return .challendarWhite100
+                    return .challendarWhite
                 }else{
                     switch day.percentage{
                     case 0:
                         if day.date < Date(){
                             return .challendarPastDay
                         }else{
-                            return .challendarWhite100
+                            return .challendarWhite
                         }
                         
                     default:
@@ -248,10 +248,10 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 }
             }
             else{
-                return .challendarWhite100
+                return .challendarWhite
             }
         @unknown default:
-            return .challendarWhite100
+            return .challendarWhite
         }
         
     }

@@ -26,7 +26,7 @@ class DateBottomSheetCollectionViewCell: UICollectionViewCell {
     func configureUI(text: String, checked: Bool){
         textLabel.text = text
         textLabel.font = .pretendardRegular(size: 16)
-        textLabel.textColor = .challendarWhite100
+        textLabel.textColor = .challendarWhite
         textLabel.sizeToFit()
         if checked {
             imageView.image = UIImage.check2

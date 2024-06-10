@@ -22,7 +22,7 @@ class EditTitleLabel: UILabel {
     private func setup(text: String) {
         self.text = text
         self.font = .pretendardSemiBold(size: 24)
-        self.textColor = .challendarWhite100
+        self.textColor = .challendarWhite
         self.sizeToFit()
     }
 

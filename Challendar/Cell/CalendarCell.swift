@@ -101,7 +101,7 @@ class CalendarCell: FSCalendarCell {
             todayView.isHidden = false
             todayView.backgroundColor = .systemRed
             self.titleLabel.backgroundColor = .clear
-            self.titleLabel.textColor = .challendarWhite100
+            self.titleLabel.textColor = .challendarWhite
         }else{
             todayView.isHidden = false
             todayView.backgroundColor = .challendarBlack100

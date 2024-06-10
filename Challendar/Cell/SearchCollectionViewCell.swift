@@ -44,7 +44,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = .challendarWhite100
+        titleLabel.textColor = .challendarWhite
         titleLabel.font = .pretendardMedium(size: 20)
         contentView.addSubview(titleLabel)
         
@@ -118,7 +118,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
             if let title = titleLabel.text {
                 titleLabel.attributedText = NSAttributedString(string: title)
             }
-            titleLabel.textColor = .challendarWhite100
+            titleLabel.textColor = .challendarWhite
         }
     }
 

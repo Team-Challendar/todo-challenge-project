@@ -34,7 +34,7 @@ class SuccessViewController: BaseViewController {
             textLabel.text = "할 일을 등록했어요!"
         }
         textLabel.font = .pretendardSemiBold(size: 20)
-        textLabel.textColor = .challendarWhite100
+        textLabel.textColor = .challendarWhite
         textLabel.backgroundColor = .clear
         imageView.backgroundColor = .clear
     }

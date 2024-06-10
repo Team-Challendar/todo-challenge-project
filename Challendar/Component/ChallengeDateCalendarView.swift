@@ -41,7 +41,7 @@ class ChallengeDateCalendarView: UIView {
         calendarLabel.text = DateFormatter.dateFormatter.string(from: Date())
         calendarLabel.font = .pretendardBold(size: 22)
         calendarLabel.backgroundColor = .clear
-        calendarLabel.textColor = .challendarWhite100
+        calendarLabel.textColor = .challendarWhite
         
         prevButton.setImage(.arrowLeftNew, for: .normal)
         prevButton.backgroundColor = .clear
@@ -66,10 +66,10 @@ class ChallengeDateCalendarView: UIView {
         calendarView.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
         calendarView.backgroundColor = .challendarBlack80
         calendarView.weekdayHeight = 44
-        calendarView.appearance.weekdayTextColor = .challendarWhite100
-        calendarView.appearance.titleWeekendColor = .challendarWhite100
+        calendarView.appearance.weekdayTextColor = .challendarWhite
+        calendarView.appearance.titleWeekendColor = .challendarWhite
         calendarView.appearance.selectionColor = .clear
-        calendarView.appearance.titleSelectionColor = .challendarBlack100
+        calendarView.appearance.titleSelectionColor = .challendarBlack
         calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
         calendarView.appearance.todayColor = .clear
         calendarView.scrollDirection = .horizontal
@@ -162,14 +162,14 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
                 $0.date.isSameDay(as: date)
             }){
                 if day.date.isSameDay(as: Date()){
-                    return .challendarWhite100
+                    return .challendarWhite
                 }else{
                     switch day.percentage{
                     case 0:
                         if day.date < Date(){
                             return .challendarPastDay
                         }else{
-                            return .challendarWhite100
+                            return .challendarWhite
                         }
                         
                     default:
@@ -178,7 +178,7 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
                 }
             }
             else{
-                return .challendarWhite100
+                return .challendarWhite
             }
         }
     }

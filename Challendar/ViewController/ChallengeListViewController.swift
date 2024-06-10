@@ -168,7 +168,7 @@ class ChallengeListViewController: BaseViewController {
         emptyMainLabel = UILabel()
         emptyMainLabel.text = "리스트가 없어요..."
         emptyMainLabel.font = .pretendardSemiBold(size: 20)
-        emptyMainLabel.textColor = .challendarWhite100
+        emptyMainLabel.textColor = .challendarWhite
         view.addSubview(emptyMainLabel)
         
         emptySubLabel = UILabel()

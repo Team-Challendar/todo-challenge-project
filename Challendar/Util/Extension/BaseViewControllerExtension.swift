@@ -27,7 +27,7 @@ extension BaseViewController{
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = .pretendardSemiBold(size: 26)
-        titleLabel.textColor = .challendarWhite100
+        titleLabel.textColor = .challendarWhite
         titleLabel.backgroundColor = .clear
         let titleBarButtonItem = UIBarButtonItem(customView: titleLabel)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem
@@ -42,7 +42,7 @@ extension BaseViewController{
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = .pretendardSemiBold(size: 26)
-        titleLabel.textColor = .challendarWhite100
+        titleLabel.textColor = .challendarWhite
         titleLabel.backgroundColor = .clear
         
         let button = UIButton(type: .system)
@@ -81,7 +81,7 @@ extension BaseViewController{
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = .pretendardSemiBold(size: 26)
-        titleLabel.textColor = .challendarWhite100
+        titleLabel.textColor = .challendarWhite
         titleLabel.backgroundColor = .clear
         
         let closeImageView = UIImageView()

@@ -45,7 +45,7 @@ class ChallengePopUpView: UIView {
         
         titleLabel.text = "도전 목록에 추가 하시겠어요?"
         titleLabel.font = .pretendardSemiBold(size: 20)
-        titleLabel.textColor = .challendarWhite100
+        titleLabel.textColor = .challendarWhite
         titleLabel.textAlignment = .center
         
         subTitleLabel.text = Speech.list.randomElement()?.text

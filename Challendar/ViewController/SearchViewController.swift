@@ -122,7 +122,7 @@ class SearchViewController: BaseViewController {
         let cancelText = UILabel()
         cancelText.text = "취소"
         cancelText.font = .pretendardSemiBold(size: 16)
-        cancelText.textColor = .challendarWhite100
+        cancelText.textColor = .challendarWhite
         cancelBtn.addSubview(cancelText)
         cancelText.translatesAutoresizingMaskIntoConstraints = false
         
@@ -169,7 +169,7 @@ class SearchViewController: BaseViewController {
         searchTextField.layer.cornerRadius = 12
         searchTextField.clipsToBounds = true
         searchTextField.tintColor = .challendarBlack80
-        searchTextField.textColor = .challendarWhite100
+        searchTextField.textColor = .challendarWhite
         
         if let placeholderText = searchBar.placeholder {
             searchTextField.attributedPlaceholder = NSAttributedString(
