@@ -29,8 +29,9 @@ class Todo : Hashable{
     public var isChallenge: Bool = false
     public var percentage: Double = 0
     public var images: [UIImage]?
+    public var iscompleted = false
     
-    init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Bool] = [], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil) {
+    init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Bool] = [], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil, iscompleted : Bool = false) {
         self.id = id
         self.title = title
         self.memo = memo
@@ -40,6 +41,7 @@ class Todo : Hashable{
         self.isChallenge = isChallenge
         self.percentage = percentage
         self.images = images
+        self.iscompleted = iscompleted
     }
     
     func description(){
@@ -52,6 +54,7 @@ class Todo : Hashable{
         print("isChallenge: \(self.isChallenge)")
         print("percentage: \(self.percentage)")
         print("images.count:\(String(describing: self.images?.count))")
+        print("isCompleted: \(self.iscompleted)")
         print("----------")
     }
     
