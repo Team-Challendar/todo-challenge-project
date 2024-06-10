@@ -1,15 +1,13 @@
-//
-//  PickerBtnView.swift
-//  Challendar
-//
-//  Created by 채나연 on 6/5/24.
-//
-
 import UIKit
 import SnapKit
 
+protocol PickerBtnViewDelegate: AnyObject {
+    func didTapDailyButton()
+}
 
 class PickerBtnView: UIView {
+    
+    weak var delegate: PickerBtnViewDelegate?
     
     private let button1: UIButton = {
         let button = UIButton()
@@ -102,17 +100,26 @@ class PickerBtnView: UIView {
         
         layer.cornerRadius = 12
         clipsToBounds = true
-        backgroundColor = .black // 챌린지100으로 추후 수정
+        backgroundColor = .black
     }
     
     private func setupActions() {
         button1.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         button2.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        button3.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        button3.addTarget(self, action: #selector(dailyButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func dailyButtonTapped() {
+        delegate?.didTapDailyButton()
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
-        buttons.forEach { $0.isSelected = false }
+        buttons.forEach {
+            $0.isSelected = false
+            $0.tintColor = .challendarBlack60 // 기본 색상으로 되돌림
+        }
         sender.isSelected = true
+        sender.tintColor = .white // 선택된 버튼 색상 변경
     }
 }
+

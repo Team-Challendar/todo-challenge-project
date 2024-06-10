@@ -8,56 +8,58 @@
 import UIKit
 import SnapKit
 
+// 챌린지 투두 리스트를 보여주는 페이지
 class ChallengeListViewController: BaseViewController {
     
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
     private var completedTodos: [Todo] = []         // 완료 투두
     private var incompleteTodos: [Todo] = []        // 미완료 투두
     private var upcomingTodos: [Todo] = []          // 예정 투두
+    private var emptyMainLabel: UILabel!
+    private var emptySubLabel: UILabel!
+    private var emptyImage: UIImageView!
     private var collectionView: UICollectionView!
-
+//    private var resetBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureFloatingButton()
         filterTodos()
-        sortByRecentStartDate()    // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
         configureTitleNavigationBar(title: "챌린지 리스트")
+        updateEmptyStateVisibility()
+        sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
     }
     
-    override func configureUI(){
+    override func configureUI() {
         super.configureUI()
+        setupEmptyStateViews()
         setupCollectionView()
+//        setupResetButton()
     }
     
-    override func configureConstraint(){
+    override func configureConstraint() {
         super.configureConstraint()
         setupLayout()
+        setupEmptyStateConstraints()
     }
     
-    override func configureNotificationCenter(){
+    override func configureNotificationCenter() {
         super.configureNotificationCenter()
-        NotificationCenter.default.addObserver(self, selector: #selector(coreDataChanged), name: NSNotification.Name("CoreDataChanged"), object: nil)
-        
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(todoCompletedStateChanged(_:)),
-            name: NSNotification.Name("TodoCompletedStateChanged"),
+            selector: #selector(coreDataChanged(_:)),
+            name: NSNotification.Name("CoreDataChanged"),
             object: nil
         )
     }
     
-    @objc func todoCompletedStateChanged(_ notification: Notification) {
+    @objc func coreDataChanged(_ notification: Notification) {
+        self.todoItems = CoreDataManager.shared.fetchTodos()
         filterTodos()
+        sortByRecentStartDate()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
-        }
-    }
-    
-    @objc func coreDataChanged() {
-        filterTodos()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+            self.updateEmptyStateVisibility()
         }
     }
     
@@ -71,54 +73,73 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
+    // 임시 리셋버튼
+//    private func setupResetButton() {
+//        resetBtn = UIButton(type: .system)
+//        resetBtn.setTitle("Reset All", for: .normal)
+//        resetBtn.setTitleColor(.white, for: .normal)
+//        resetBtn.backgroundColor = .red
+//        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+//        view.addSubview(resetBtn)
+//        
+//        resetBtn.snp.makeConstraints { make in
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+//            make.centerX.equalToSuperview()
+//            make.width.equalTo(200)
+//            make.height.equalTo(50)
+//        }
+//    }
+    
+    @objc private func resetButtonTapped() {
+        CoreDataManager.shared.deleteAllTodos()
+        self.todoItems = CoreDataManager.shared.fetchTodos()
+        filterTodos()
+        sortByRecentStartDate()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.updateEmptyStateVisibility()
+        }
+    }
+
     // 컬렉션뷰 설정
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "enabledCell")
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
-        
     }
     
     // 컬렉션뷰 레이아웃 생성
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            return self.createTodoSection()
+            return self.createTodoSection(itemHeight: .absolute(75))
         }
-    }
-    
-    // 투두 섹션 생성
-    private func createTodoSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
-        section.interGroupSpacing = 8
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
-        section.boundarySupplementaryItems = [header]
-        
-        return section
     }
     
     // 오늘 기준 투두 필터링
     private func filterTodos() {
         let today = Date()
-        let filteredItems = CoreDataManager.shared.fetchTodos().filter { $0.isChallenge == true }
+        let filteredItems = CoreDataManager.shared.fetchTodos().filter {
+            $0.isChallenge && ($0.endDate ?? today) >= today
+        }
         
-        completedTodos = filteredItems.filter { $0.todayCompleted(date: today) ?? false && ($0.endDate ?? today) >= today }
-        incompleteTodos = filteredItems.filter { !($0.todayCompleted(date: today) ?? false) && $0.startDate ?? today <= today && ($0.endDate ?? today) >= today }
-        upcomingTodos = filteredItems.filter { $0.startDate ?? today > today && ($0.endDate ?? today) >= today }
+        completedTodos = filteredItems.filter {
+            ($0.todayCompleted(date: today) ?? false)
+        }
+        
+        incompleteTodos = filteredItems.filter {
+            guard let startDate = $0.startDate else { return false }
+            return !($0.todayCompleted(date: today) ?? false) && startDate <= today
+        }
+        
+        upcomingTodos = filteredItems.filter {
+            guard let startDate = $0.startDate else { return false }
+            return startDate > today
+        }
     }
     
     // 최신순
@@ -141,6 +162,53 @@ class ChallengeListViewController: BaseViewController {
         incompleteTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
         upcomingTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
     }
+    
+    // 비어있는 상태 UI 설정
+    private func setupEmptyStateViews() {
+        emptyMainLabel = UILabel()
+        emptyMainLabel.text = "리스트가 없어요..."
+        emptyMainLabel.font = .pretendardSemiBold(size: 20)
+        emptyMainLabel.textColor = .challendarWhite100
+        view.addSubview(emptyMainLabel)
+        
+        emptySubLabel = UILabel()
+        emptySubLabel.text = "작성하기 버튼을 눌러 등록해주세요."
+        emptySubLabel.font = .pretendardMedium(size: 13)
+        emptySubLabel.textColor = .challendarGrey50
+        view.addSubview(emptySubLabel)
+        
+        // If you want to use the emptyImage
+         emptyImage = UIImageView()
+         emptyImage.image = UIImage(named: "SurprisedFace")
+         view.addSubview(emptyImage)
+    }
+    
+    // 비어있는 상태 제약 조건 설정
+    private func setupEmptyStateConstraints() {
+        emptyMainLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(emptySubLabel.snp.top).offset(-8)
+        }
+        
+        emptySubLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(emptyImage.snp.top).offset(-32)
+        }
+        
+         emptyImage.snp.makeConstraints { make in
+             make.width.height.equalTo(100)
+             make.centerX.equalToSuperview()
+             make.centerY.equalToSuperview()
+        }
+    }
+    
+    // 비어있는 상태 가시성 업데이트
+    private func updateEmptyStateVisibility() {
+        let isEmpty = todoItems.isEmpty
+        emptyMainLabel.isHidden = !isEmpty
+        emptySubLabel.isHidden = !isEmpty
+        emptyImage.isHidden = !isEmpty
+    }
 }
 
 extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -161,14 +229,23 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
         let todo = getTodoItem(for: indexPath)
-        cell.configure(with: todo)
-        return cell
+        let today = Date()
+        
+        if let startDate = todo.startDate, startDate > today {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "enabledCell", for: indexPath) as! SearchCollectionViewCell
+            cell.configure(with: todo)
+            cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
+            cell.configure(with: todo)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         return header
     }
@@ -247,9 +324,9 @@ class ChallengeSectionHeader: UICollectionReusableView {
         addSubview(sectionLabel)
         NSLayoutConstraint.activate([
             sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
             sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -0)
         ])
     }
     

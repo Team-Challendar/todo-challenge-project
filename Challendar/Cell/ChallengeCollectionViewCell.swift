@@ -80,16 +80,16 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             
+            stateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
+            
             progressBar.centerYAnchor.constraint(equalTo: stateLabel.centerYAnchor),
-            progressBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            progressBar.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
             progressBar.widthAnchor.constraint(equalToConstant: 24),
             progressBar.heightAnchor.constraint(equalToConstant: 6),
             
-            stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            stateLabel.leadingAnchor.constraint(equalTo: progressBar.trailingAnchor, constant: 4),
-            
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            dateLabel.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
+            dateLabel.leadingAnchor.constraint(equalTo: progressBar.trailingAnchor, constant: 4),
             
             checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
@@ -106,8 +106,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         item.toggleTodaysCompletedState()
         updateTodoCompletion(for: item)
         
-        // Notification으로 챌린지 리스트 뷰에 변경됨을 알림
-        NotificationCenter.default.post(name: NSNotification.Name("TodoCompletedStateChanged"), object: nil)
+        print("Todo \(item.title) completed status updated: \(item.completed)")
     }
     
     func configure(with item: Todo) {
