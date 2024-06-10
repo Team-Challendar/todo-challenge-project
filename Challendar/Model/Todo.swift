@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Todo {
+class Todo : Hashable{
     public var id : UUID?
     public var title: String
     public var memo: String?
@@ -15,12 +15,17 @@ class Todo {
     public var endDate: Date? {
         didSet{
             guard let startDate = startDate else {return}
-            completed = [Bool](repeating: false, count: (endDate?.daysBetween(startDate) ?? 0) + 1)
-            print("Completed Count: \(completed.count)")
-            print("DaysBetween: \(endDate?.daysBetween(startDate))")
+            completed = [Bool](repeating: false, count: ((endDate?.daysBetween(startDate) ?? 0) + 1))
+            print(DateFormatter.dateFormatterALL.string(from: startDate))
+            print(DateFormatter.dateFormatterALL.string(from: endDate!))
+            print(completed.count)
         }
     }
-    public var completed: [Bool] = []
+    public var completed: [Bool] = []{
+        didSet{
+            percentage = Double(completed.filter{$0 == true}.count) / Double( completed.count)
+        }
+    }
     public var isChallenge: Bool = false
     public var percentage: Double = 0
     public var images: [UIImage]?
@@ -41,8 +46,8 @@ class Todo {
         print("----------")
         print("title: \(self.title)")
         print("memo: \(String(describing: self.memo))")
-        print("startDate: \(String(describing: self.startDate))")
-        print("endDate: \(String(describing: self.endDate))")
+        print("startDate: \(self.startDate)")
+        print("endDate: \(self.endDate)")
         print("completed.count: \(self.completed.count)")
         print("isChallenge: \(self.isChallenge)")
         print("percentage: \(self.percentage)")
@@ -67,7 +72,7 @@ class Todo {
         if let startDate = startDate, let endDate = endDate{
             if (Date.isTodayBetween(startDate, endDate)){
                 let today = Date()
-                self.completed[today.daysBetween(startDate)] = !self.completed[today.daysBetween(startDate)]
+                self.completed[today.daysBetween(startDate)].toggle()
             }
         }
     }
@@ -75,8 +80,17 @@ class Todo {
     func toggleDatesCompletedState(date: Date){
         if let startDate = startDate, let endDate = endDate{
             if (date.isBetween(startDate, endDate)){
-                self.completed[date.daysBetween(startDate)] = !self.completed[date.daysBetween(startDate)]
+                self.completed[date.daysBetween(startDate)].toggle()
             }
         }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    // Equatable 프로토콜을 준수하도록 구현
+    static func ==(lhs: Todo, rhs: Todo) -> Bool {
+        return lhs.id == rhs.id
     }
 }

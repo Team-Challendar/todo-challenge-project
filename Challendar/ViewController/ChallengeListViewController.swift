@@ -25,6 +25,7 @@ class ChallengeListViewController: BaseViewController {
         super.viewDidLoad()
         configureFloatingButton()
         filterTodos()
+        configureTitleNavigationBar(title: "챌린지 리스트")
         updateEmptyStateVisibility()
         sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
     }
@@ -44,7 +45,6 @@ class ChallengeListViewController: BaseViewController {
     
     override func configureNotificationCenter() {
         super.configureNotificationCenter()
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(coreDataChanged(_:)),

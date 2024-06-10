@@ -52,8 +52,6 @@ class SearchViewController: BaseViewController {
     }
     
     override func configureNotificationCenter() {
-        super.configureNotificationCenter()
-        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(coreDataChanged(_:)),
@@ -228,6 +226,7 @@ class SearchViewController: BaseViewController {
     }
     
     private func filterItems(with searchText: String) {
+        self.items = CoreDataManager.shared.fetchTodos()
         if searchText.isEmpty {
             filteredChallengeItems = items.filter { $0.isChallenge == true }
             filteredNonChallengeItems = items.filter { $0.isChallenge == false }

@@ -69,8 +69,6 @@ class ChallengeCheckViewController: BaseViewController {
     
     
     func showSuccessVC(){
-        print(newTodo?.startDate)
-        print(newTodo?.endDate)
         CoreDataManager.shared.createTodo(newTodo: (self.newTodo)!)
         let rootView = self.presentingViewController
         let successViewController = SuccessViewController()

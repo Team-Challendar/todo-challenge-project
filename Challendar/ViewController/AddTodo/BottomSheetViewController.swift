@@ -18,7 +18,6 @@ class BottomSheetViewController: UIViewController {
     var calenderView = DateCalendarView()
     var dateRange : DateRange?
     var newTodo: Todo?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
@@ -210,7 +209,7 @@ class BottomSheetViewController: UIViewController {
             hideBottomShowCal()
         }else{
             self.dateRange = data
-            self.newTodo?.startDate = Date()
+            self.newTodo?.startDate = Date().startOfDay()
             self.newTodo?.endDate = data.date
         }
     }

@@ -55,7 +55,10 @@ extension Day {
             }
 
             let listCount = dailyTodos.count
-            let completedListCount = dailyTodos.filter { $0.completed.contains(true) }.count
+
+            let completedListCount = dailyTodos.filter {
+                $0.completed[currentDate.daysBetween($0.startDate!)] == true
+            }.count
             let percentage = listCount > 0 ? Double(completedListCount) / Double(listCount) * 100.0 : 0.0
 
             let day = Day(date: currentDate, listCount: listCount, completedListCount: completedListCount, percentage: percentage, todo: dailyTodos)

@@ -14,7 +14,7 @@ class TabBarViewController: RAMAnimatedTabBarController {
     var tabs : [TabModel] = [
         TabModel(title: "도전", image: .challenge0,selectedImage: . challenge1, vc: ChallengeListViewController()),
         TabModel(title: "할 일", image: .task0,selectedImage: .task1, vc: TodoViewController()),
-        TabModel(title: "계획", image: .plan0,selectedImage: .plan1, vc: TodoCalendarViewController()),
+        TabModel(title: "계획", image: .plan0,selectedImage: .plan1, vc: TodoCalendarViewDifferableViewController()),
         TabModel(title: "검색", image: .search0,selectedImage: .search1, vc: SearchViewController()),
         TabModel(title: "세부", image: .close0,selectedImage: .close1, vc: ChallengeListDetailViewController()),
     ]
@@ -23,6 +23,7 @@ class TabBarViewController: RAMAnimatedTabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+//        CoreDataManager.shared.deleteAllTodos()
     }
     
     
@@ -31,11 +32,11 @@ class TabBarViewController: RAMAnimatedTabBarController {
         self.navs = createNav(with: tabs)
         self.setViewControllers(self.navs, animated: true)
         guard let items = tabBar.items as? [RAMAnimatedTabBarItem] else { return }
-        items.forEach{
-            let oldCenter = $0.iconView!.icon.frame.origin.x
-            $0.iconView!.icon.frame = CGRect(x: $0.iconView!.icon.frame.origin.x, y: $0.iconView!.icon.frame.origin.y + 2, width: 24, height: 24)
-            $0.iconView!.icon.frame.origin.x = oldCenter
-        }
+//        items.forEach{
+//            let oldCenter = $0.iconView!.icon.frame.origin.x
+//            $0.iconView!.icon.frame = CGRect(x: $0.iconView!.icon.frame.origin.x, y: $0.iconView!.icon.frame.origin.y + 2, width: 24, height: 24)
+//            $0.iconView!.icon.frame.origin.x = oldCenter
+//        }
         let standard = UITabBarAppearance()
         standard.backgroundColor = .challendarBlack90
         self.tabBar.standardAppearance = standard

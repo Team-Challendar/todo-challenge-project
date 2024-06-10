@@ -103,7 +103,7 @@ class AddTodoDateViewController: BaseViewController {
         }else if self.dateRange == .manual{
             print("기간 직접 입력 오류")
         }else{
-            self.newTodo?.startDate = Date()
+            self.newTodo?.startDate = Date().startOfDay()
             self.newTodo?.endDate = self.dateRange?.date
             let challengeCheckViewController = ChallengeCheckViewController()
             challengeCheckViewController.newTodo = self.newTodo
