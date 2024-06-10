@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import FSCalendar
 
 class ChallengeListDetailViewController: BaseViewController {
     
@@ -20,7 +21,8 @@ class ChallengeListDetailViewController: BaseViewController {
     var changedMonth : Date?
     var currentDate : Date = Date()
     private var collectionView: UICollectionView!
-    
+//    var newTodo: Todo? = challenge
+    var newTodo: Todo? = CoreDataManager.shared.fetchTodos().last
 
     override func viewDidLoad() {
 //        filterTodoitems()
@@ -202,3 +204,41 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
         return UICollectionReusableView()
     }
 }
+
+// 더미 데이터
+
+//func createDate(year: Int, month: Int, day: Int) -> Date? {
+//    let calendar = Calendar.current
+//    var components = DateComponents()
+//    components.year = year
+//    components.month = month
+//    components.day = day
+//    return calendar.date(from: components)
+//}
+
+//    func createDate() -> Date.locale {
+//        // Calendar와 DateComponents를 이용해 startDate와 endDate를 생성
+//        let calendar = Calendar.current
+//
+//        // 6월 1일의 날짜를 만듭니다.
+//        var startDateComponents = DateComponents()
+//        startDateComponents.year = 2024
+//        startDateComponents.month = 6
+//        startDateComponents.day = 1
+//        let startDate = calendar.date(from: startDateComponents)!
+//
+//        // 6월 30일의 날짜를 만듭니다.
+//        var endDateComponents = DateComponents()
+//        endDateComponents.year = 2024
+//        endDateComponents.month = 6
+//        endDateComponents.day = 30
+//        let endDate = calendar.date(from: endDateComponents)!
+//    }
+    
+//let challenge: Todo =
+//Todo(title: "6/1~6/30", memo: "메모", startDate: createDate(year: 2024, month: 6, day: 1), endDate: createDate(year: 2024, month: 6, day: 30), completed: [true, true, true, true, true, true, true, true, false, true, false, true, true, true, true, true, true, false, true, false, true, true, true, true, true, true, false, true, false, true], isChallenge: true, percentage: 20)
+//        Todo(title: <#T##String#>, memo: <#T##String?#>, startDate: <#T##Date?#>, endDate: <#T##Date?#>, completed: <#T##[Bool]#>, isChallenge: <#T##Bool#>, percentage: <#T##Double#>, images: <#T##[UIImage]?#>)
+        
+        
+//    let challengeDay: Day = Day(date: <#T##Date#>, listCount: <#T##Int#>, completedListCount: <#T##Int#>, percentage: <#T##Double#>, todo: )
+

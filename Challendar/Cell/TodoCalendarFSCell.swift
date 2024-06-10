@@ -76,6 +76,23 @@ class TodoCalendarFSCell: FSCalendarCell {
             return .clear
         }
     }
+    
+    func setViewByComplete(day: Day) {
+//        circleView.backgroundColor = colorByComplete(completed: challenge.completed)
+    }
+    
+    private func colorByComplete(completed: [Bool]) -> [UIColor] {
+        var dateColor: [UIColor] = []
+        for complete in completed {
+            if complete == true {
+                dateColor.append(.challendarGreen100)
+            } else {
+                dateColor.append(.clear)
+            }
+        }
+        return dateColor
+    }
+    
     required init(coder aDecoder: NSCoder!) {
         fatalError("init(coder:) has not been implemented")
     }

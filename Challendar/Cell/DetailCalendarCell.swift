@@ -9,10 +9,9 @@ import UIKit
 import SnapKit
 import FSCalendar
 
-class DetailCalendarCell: FSCalendarCell {
+class DetailCalendarCell: UICollectionViewCell {
     static var identifier = "DetailCalendarCell"
-    var calanderView = TodoCalendarView()
-//    private var challengeDateCalendarView: UIView = ChallengeDateCalendarView()
+    var calanderView = ChallengeDateCalendarView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,6 +19,7 @@ class DetailCalendarCell: FSCalendarCell {
     }
     
     required init?(coder: NSCoder) {
+        super.init(coder: coder)
         fatalError("init(coder:) has not been implemented")
     }
     
