@@ -98,7 +98,7 @@ class SearchViewController: BaseViewController {
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            return self.createTodoSection()
+            return self.createTodoSection(itemHeight: .estimated(75))
         }
     }
     
