@@ -19,6 +19,7 @@ class ChallengeListViewController: BaseViewController {
     private var emptySubLabel: UILabel!
     private var emptyImage: UIImageView!
     private var collectionView: UICollectionView!
+//    private var resetBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,7 @@ class ChallengeListViewController: BaseViewController {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
+//        setupResetButton()
     }
     
     override func configureConstraint() {
@@ -71,6 +73,34 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
+    // 임시 리셋버튼
+//    private func setupResetButton() {
+//        resetBtn = UIButton(type: .system)
+//        resetBtn.setTitle("Reset All", for: .normal)
+//        resetBtn.setTitleColor(.white, for: .normal)
+//        resetBtn.backgroundColor = .red
+//        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+//        view.addSubview(resetBtn)
+//        
+//        resetBtn.snp.makeConstraints { make in
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+//            make.centerX.equalToSuperview()
+//            make.width.equalTo(200)
+//            make.height.equalTo(50)
+//        }
+//    }
+    
+    @objc private func resetButtonTapped() {
+        CoreDataManager.shared.deleteAllTodos()
+        self.todoItems = CoreDataManager.shared.fetchTodos()
+        filterTodos()
+        sortByRecentStartDate()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.updateEmptyStateVisibility()
+        }
+    }
+
     // 컬렉션뷰 설정
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
@@ -86,7 +116,7 @@ class ChallengeListViewController: BaseViewController {
     // 컬렉션뷰 레이아웃 생성
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            return self.createTodoSection()
+            return self.createTodoSection(itemHeight: .absolute(75))
         }
     }
     
@@ -165,7 +195,6 @@ class ChallengeListViewController: BaseViewController {
             make.bottom.equalTo(emptyImage.snp.top).offset(-32)
         }
         
-        // If you want to use the emptyImage
          emptyImage.snp.makeConstraints { make in
              make.width.height.equalTo(100)
              make.centerX.equalToSuperview()
