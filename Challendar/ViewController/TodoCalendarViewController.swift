@@ -27,8 +27,6 @@ class TodoCalendarViewController: BaseViewController  {
         periodBtnView.delegate = self
     }
     
-
-    
     
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
@@ -66,7 +64,7 @@ class TodoCalendarViewController: BaseViewController  {
         
         periodBtnView.snp.makeConstraints { make in
             make.width.equalTo(131)
-            make.height.equalTo(133)
+//            make.height.equalTo(133)
             make.left.equalToSuperview().offset(16) // x 좌표 설정
             make.top.equalToSuperview().offset(104) // y 좌표 설정
         }
