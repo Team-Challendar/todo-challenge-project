@@ -8,6 +8,59 @@
 import UIKit
 import SwiftUI
 
+// SwiftUI를 UIHostingController 이용해 만든 Cell
+class HalfCircleChartViewCell: UICollectionViewCell {
+    static var identifier = "HalfCircleChartViewCell"
+    private var halfCircleHostingController: UIHostingController<ChallengeChartView>?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupViews()
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupViews() {
+        contentView.layer.cornerRadius = 20
+        contentView.layer.masksToBounds = true
+        contentView.backgroundColor = .challendarBlack80
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        
+
+        NSLayoutConstraint.activate([
+            contentView.heightAnchor.constraint(equalToConstant: 206),
+        ])
+        setupChartView()
+    }
+    
+    private func setupChartView() {
+        let chartView = ChallengeChartView(todoProgress: [])
+        halfCircleHostingController = UIHostingController(rootView: chartView)
+        
+        guard let halfCircleHostingController = halfCircleHostingController else { return }
+        
+        halfCircleHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        halfCircleHostingController.view.backgroundColor = .clear
+        contentView.addSubview(halfCircleHostingController.view)
+        
+        NSLayoutConstraint.activate([
+            halfCircleHostingController.view.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            halfCircleHostingController.view.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            
+        ])
+    }
+    
+    func configure(with todoProgress: [Todo]) {
+        let chartView = ChallengeChartView(todoProgress: todoProgress)
+        halfCircleHostingController?.rootView = chartView
+    }
+}
+
 // 챌린지 반원 차트 뷰
 struct ChallengeChartView: View {
     var todoProgress: [Todo]
@@ -61,56 +114,5 @@ struct ChallengeChartView: View {
         }
         .frame(width: 220, height: 110)
         .padding(0)
-    }
-}
-class HalfCircleChartViewCell: UICollectionViewCell {
-    
-    private var halfCircleHostingController: UIHostingController<ChallengeChartView>?
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupViews() {
-        contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .challendarBlack80
-        contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
-        
-
-        NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 206),
-        ])
-        setupChartView()
-    }
-    
-    private func setupChartView() {
-        let chartView = ChallengeChartView(todoProgress: [])
-        halfCircleHostingController = UIHostingController(rootView: chartView)
-        
-        guard let halfCircleHostingController = halfCircleHostingController else { return }
-        
-        halfCircleHostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        halfCircleHostingController.view.backgroundColor = .clear
-        contentView.addSubview(halfCircleHostingController.view)
-        
-        NSLayoutConstraint.activate([
-            halfCircleHostingController.view.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            halfCircleHostingController.view.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            
-        ])
-    }
-    
-    func configure(with todoProgress: [Todo]) {
-        let chartView = ChallengeChartView(todoProgress: todoProgress)
-        halfCircleHostingController?.rootView = chartView
     }
 }
