@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+// 투두 검색 기능이 있는 페이지
 class SearchViewController: BaseViewController {
     
     private var items: [Todo] = CoreDataManager.shared.fetchTodos()
@@ -22,17 +23,20 @@ class SearchViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if searchBar.text != "" && searchBar.text != nil{
-            filterItems(with: searchBar.text!)
-        }else{
+        reloadData() // 데이터 다시 로드
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            filterItems(with: searchText)
+        } else {
             filterItems(with: "")
         }
+        self.collectionView.reloadData() // 데이터 리로드
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         filterItems(with: "")
-        reload()
+        reloadData()
     }
     
     override func configureUI() {
@@ -49,17 +53,22 @@ class SearchViewController: BaseViewController {
     
     override func configureNotificationCenter() {
         super.configureNotificationCenter()
+        
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(self.dismissedFromSuccess(_:)),
-            name: NSNotification.Name("DismissSuccessView"),
+            selector: #selector(coreDataChanged(_:)),
+            name: NSNotification.Name("CoreDataChanged"),
             object: nil
         )
     }
     
-    @objc func dismissedFromSuccess(_ notification: Notification) {
-        self.items = CoreDataManager.shared.fetchTodos()
-        filterItems(with: "")
+    @objc func coreDataChanged(_ notification: Notification) {
+        reloadData() // 데이터 다시 로드
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            filterItems(with: searchText)
+        } else {
+            filterItems(with: "")
+        }
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
@@ -79,38 +88,25 @@ class SearchViewController: BaseViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Empty")
-        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "defaultCell")
         // 챌린지 투두용 셀 등록
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "challengeCell")
-        collectionView.register(SearchSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(75))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(75))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
-        section.interGroupSpacing = 8
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
-        section.boundarySupplementaryItems = [header]
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
+        return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+            return self.createTodoSection()
+        }
     }
     
-    private func reload() {
+    private func reloadData() {
+        self.items = CoreDataManager.shared.fetchTodos()
         self.collectionView.reloadData()
     }
+
     
     private func searchBarConfigure() {
         searchBar = UISearchBar()
@@ -242,25 +238,74 @@ class SearchViewController: BaseViewController {
         
         // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
         sortByRecentStartDate()
-        reload() // 필터링 후 데이터 리로드
+        reloadData() // 필터링 후 데이터 리로드
     }
-    
+
     // 최신순
     private func sortByRecentStartDate() {
-        filteredChallengeItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
-        filteredNonChallengeItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+        filteredChallengeItems.sort {
+            let completedComparison = compareCompleted($0, $1)
+            if completedComparison != .orderedSame {
+                return completedComparison == .orderedAscending
+            }
+            return ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast)
+        }
+        filteredNonChallengeItems.sort {
+            let completedComparison = compareCompleted($0, $1)
+            if completedComparison != .orderedSame {
+                return completedComparison == .orderedAscending
+            }
+            return ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast)
+        }
     }
-    
+
     // 등록순
     private func sortByOldestStartDate() {
-        filteredChallengeItems.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
-        filteredNonChallengeItems.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
+        filteredChallengeItems.sort {
+            let completedComparison = compareCompleted($0, $1)
+            if completedComparison != .orderedSame {
+                return completedComparison == .orderedAscending
+            }
+            return ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast)
+        }
+        filteredNonChallengeItems.sort {
+            let completedComparison = compareCompleted($0, $1)
+            if completedComparison != .orderedSame {
+                return completedComparison == .orderedAscending
+            }
+            return ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast)
+        }
     }
-    
+
     // 기한 임박
     private func sortByNearestEndDate() {
-        filteredChallengeItems.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
-        filteredNonChallengeItems.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
+        filteredChallengeItems.sort {
+            let completedComparison = compareCompleted($0, $1)
+            if completedComparison != .orderedSame {
+                return completedComparison == .orderedAscending
+            }
+            return ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture)
+        }
+        filteredNonChallengeItems.sort {
+            let completedComparison = compareCompleted($0, $1)
+            if completedComparison != .orderedSame {
+                return completedComparison == .orderedAscending
+            }
+            return ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture)
+        }
+    }
+
+    private func compareCompleted(_ todo1: Todo, _ todo2: Todo) -> ComparisonResult {
+        let completed1 = todo1.todayCompleted() ?? false
+        let completed2 = todo2.todayCompleted() ?? false
+        
+        if completed1 && !completed2 {
+            return .orderedDescending
+        } else if !completed1 && completed2 {
+            return .orderedAscending
+        } else {
+            return .orderedSame
+        }
     }
 }
 
@@ -276,23 +321,27 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = getTodoItem(for: indexPath.section)[indexPath.row]
+        let today = Date()
         
-        if item.isChallenge {
+        if let startDate = item.startDate, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
+            cell.configure(with: item)
+            cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            return cell
+        } else if item.isChallenge {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: item)
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: item)
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SearchSectionHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
-        header.sectionLabel.textColor = .challendarBlack60
-        header.sectionLabel.font = .pretendardSemiBold(size: 14)
         return header
     }
     
@@ -328,30 +377,5 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterItems(with: searchText)
-    }
-}
-
-class SearchSectionHeader: UICollectionReusableView {
-    let sectionLabel: UILabel = {
-        let label = UILabel()
-        label.font = .pretendardMedium(size: 16)
-        label.textColor = .challendarBlack60
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(sectionLabel)
-        NSLayoutConstraint.activate([
-            sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
-        ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

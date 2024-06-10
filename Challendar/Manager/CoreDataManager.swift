@@ -21,16 +21,16 @@ class CoreDataManager {
         return persistentContainer.viewContext
     }
     
-    func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
+//    func saveContext() {
+//        if context.hasChanges {
+//            do {
+//                try context.save()
+//            } catch {
+//                let nserror = error as NSError
+//                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+//            }
+//        }
+//    }
     
     // MARK: - CRUD Operations
     
@@ -54,6 +54,19 @@ class CoreDataManager {
         
         saveContext()
     }
+    
+    // Save context
+      func saveContext() {
+          if context.hasChanges {
+              do {
+                  try context.save()
+                  NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+              } catch {
+                  let nserror = error as NSError
+                  fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+              }
+          }
+      }
     
     // Read
     func fetchTodos() -> [Todo] {
