@@ -326,6 +326,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: item)
             cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            cell.isUserInteractionEnabled = true
             return cell
         } else if item.isChallenge {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
