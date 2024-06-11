@@ -47,8 +47,8 @@ class TodoViewController: BaseViewController, DropdownButtonViewDelegate {
         super.configureConstraint()
 
         pickerBtnView.snp.makeConstraints { make in
-            make.width.equalTo(77)
-            make.height.equalTo(133) // 원래 높이로 복구
+            make.width.equalTo(96)
+            make.height.equalTo(88.5)
             make.leading.equalToSuperview().offset(300)
             make.top.equalToSuperview().offset(134)
         }
@@ -168,6 +168,9 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
 //            return header
 //        }
         header.showDeleteButton()
+        if header.sectionLabel.text == "할 일" {
+            header.hideDeleteButton()
+        }
         return header
     }
 
@@ -198,14 +201,14 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
 
     // 지우기 버튼 눌렀을 때, 각 섹션의 인덱스에 따라 완료, 미완료 항목에 해당하는 투두를 deleteTodoById로 삭제합니다.
     func didTapDeleteButton(in section: Int) {
-        let nonEmptySections = [completedTodos, incompleteTodos].enumerated().filter { !$0.element.isEmpty }
+        let nonEmptySections = [ incompleteTodos, completedTodos ].enumerated().filter { !$0.element.isEmpty }
         let sectionIndex = nonEmptySections[section].offset
 
         let todosToDelete: [Todo]
         if sectionIndex == 0 {
-            todosToDelete = completedTodos
-        } else {
             todosToDelete = incompleteTodos
+        } else {
+            todosToDelete = completedTodos
         }
 
         for todo in todosToDelete {
