@@ -21,7 +21,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
     var editContainer : UIView!
     var editButton : UIButton!
     var enrollChallengeContainer : UIView!
-    var enrollChallengeButton : UIView!
+    private let buttonConfig = UIButton.Configuration.filled()
+    private lazy var enrollChallengeButton = UIButton(configuration: buttonConfig)
     var swipeLeft : Bool = false
     var swipeRight : Bool = false
     var todoItem: Todo? // Todo 항목을 저장할 속성
@@ -57,13 +58,40 @@ class TodoCalendarViewCell: UICollectionViewCell {
         container.backgroundColor = .secondary850
         container.layer.cornerRadius = 20
         container.clipsToBounds = true
+        
         deleteContainer = UIView()
         deleteContainer.backgroundColor = .alertRed
+        deleteContainer.layer.cornerRadius = 20
+        deleteContainer.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
+        deleteButton = UIButton()
+        deleteButton.setImage(UIImage(named: "trash")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        deleteButton.backgroundColor = .clear
+        deleteButton.layer.cornerRadius = 20
+        deleteButton.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
+        
         editContainer = UIView()
         editContainer.backgroundColor = .alertIOrange
+        editButton = UIButton()
+        editButton.setImage(UIImage(named: "edit")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        editButton.backgroundColor = .clear
+        
         enrollChallengeContainer = UIView()
         enrollChallengeContainer.backgroundColor = .primary200
-        [enrollChallengeContainer, editContainer, deleteContainer, container].forEach {
+        enrollChallengeContainer.layer.cornerRadius = 20
+        enrollChallengeContainer.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
+        enrollChallengeButton = UIButton()
+        enrollChallengeButton.titleLabel?.font = .pretendardMedium(size: 20)
+        enrollChallengeButton.setTitle("챌린지 등록하기", for: .normal)
+        enrollChallengeButton.setTitleColor(.secondary900, for: .normal)
+        enrollChallengeButton.setTitleColor(.challendarWhite, for: .highlighted)
+        enrollChallengeButton.setImage(UIImage(named: "challengeOff")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        enrollChallengeButton.setImage(UIImage(named: "challengeOn")?.withRenderingMode(.alwaysOriginal), for: .highlighted)
+        enrollChallengeButton.configuration?.imagePadding = 4
+        enrollChallengeButton.backgroundColor = .clear
+        enrollChallengeButton.layer.cornerRadius = 20
+        enrollChallengeButton.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
+        
+        [enrollChallengeContainer, enrollChallengeButton, deleteContainer, deleteButton, editContainer, editButton, container].forEach {
             self.contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -77,21 +105,21 @@ class TodoCalendarViewCell: UICollectionViewCell {
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.textColor = .challendarBlack60
+        dateLabel.textColor = .secondary600
         dateLabel.font = .pretendardMedium(size: 12)
         container.addSubview(dateLabel)
         container.bringSubviewToFront(dateLabel)
         
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
-        stateLabel.textColor = .challendarGreen100
+        stateLabel.textColor = .primary200
         stateLabel.font = .pretendardMedium(size: 12)
         container.addSubview(stateLabel)
         container.bringSubviewToFront(stateLabel)
                
         checkButton = UIButton(type: .system)
-        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
-        checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
+        checkButton.setImage(.done0.withTintColor(.secondary600, renderingMode: .alwaysOriginal), for: .normal)
+        checkButton.setImage(.done2.withTintColor(.primary200, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
         checkButton.translatesAutoresizingMaskIntoConstraints = false
@@ -99,26 +127,46 @@ class TodoCalendarViewCell: UICollectionViewCell {
         container.addSubview(checkButton)
         container.bringSubviewToFront(checkButton)
         
-        
         container.snp.makeConstraints {
             $0.leading.top.bottom.equalToSuperview()
             $0.trailing.equalToSuperview()
         }
+        
         deleteContainer.snp.makeConstraints {
             $0.leading.equalTo(editContainer.snp.trailing).offset(-74)
             $0.trailing.equalToSuperview()
             $0.top.bottom.equalToSuperview()
         }
+        deleteButton.snp.makeConstraints {
+            $0.leading.equalTo(deleteContainer.snp.leading).offset(25)
+            $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
+            $0.top.equalTo(deleteContainer.snp.top).offset(25.5)
+            $0.bottom.equalTo(deleteContainer.snp.bottom).offset(-25.5)
+        }
+        
         editContainer.snp.makeConstraints {
-            $0.leading.equalTo(container.snp.trailing).offset(-37)
-            $0.trailing.equalToSuperview()
+            $0.leading.equalTo(container.snp.trailing).offset(-20)
+            $0.trailing.equalTo(deleteContainer.snp.leading).offset(0)
             $0.top.bottom.equalToSuperview()
         }
+        editButton.snp.makeConstraints {
+            $0.leading.equalTo(editContainer.snp.leading).offset(45)
+            $0.trailing.equalTo(editContainer.snp.trailing).offset(-25)
+            $0.top.equalTo(editContainer.snp.top).offset(25.5)
+            $0.bottom.equalTo(editContainer.snp.bottom).offset(-25.5)
+        }
+        
         enrollChallengeContainer.snp.makeConstraints {
-            $0.trailing.equalTo(container.snp.leading).offset(204)
+            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.leading.equalToSuperview()
             $0.top.bottom.equalToSuperview()
         }
+        enrollChallengeButton.snp.makeConstraints {
+            $0.trailing.equalTo(container.snp.leading).offset(25)
+            $0.leading.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+        }
+
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(container.snp.top).offset(16.5)
             make.leading.equalTo(container.snp.leading).offset(24)
@@ -180,8 +228,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
                 print("swipeLeft false")
             } else if self.swipeLeft == false {
                 self.container.snp.updateConstraints {
-                    $0.trailing.equalToSuperview().offset(150)
-                    $0.leading.equalToSuperview().offset(150)
+                    $0.trailing.equalToSuperview().offset(185)
+                    $0.leading.equalToSuperview().offset(185)
                 }
                 self.swipeRight = true
                 print("swipeRight true")
