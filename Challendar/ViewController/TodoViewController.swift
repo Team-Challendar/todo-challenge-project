@@ -31,7 +31,7 @@ class TodoViewController: BaseViewController{
     
     override func configureUI() {
         super.configureUI()
-        view.backgroundColor = .challendarBlack90
+        view.backgroundColor = .secondary900
         pickerBtnView.isHidden = true // 처음에는 숨김 상태로 설정 // 델리게이트 설정
     }
     
@@ -41,8 +41,8 @@ class TodoViewController: BaseViewController{
         pickerBtnView.snp.makeConstraints { make in
             make.width.equalTo(96)
             make.height.equalTo(88.5)
-            make.leading.equalToSuperview().offset(300)
-            make.top.equalToSuperview().offset(134)
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(98)
         }
         
         collectionView.snp.makeConstraints { make in
@@ -66,7 +66,7 @@ class TodoViewController: BaseViewController{
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.register(TodoCollectionViewCell.self, forCellWithReuseIdentifier: "TodoCollectionViewCell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .secondary900
         collectionView.delegate = self
         collectionView.dataSource = self
         view.addSubview(collectionView)
@@ -92,7 +92,7 @@ class TodoViewController: BaseViewController{
             !$0.iscompleted
         }
     }
-    // 혜림님 이야기대로 수정
+
     private func sortByRecentStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
@@ -103,7 +103,6 @@ class TodoViewController: BaseViewController{
         print("Selected option: \(option)")
         pickerBtnView.isHidden.toggle()
     }
-    
     
     @objc func titleTouched(){
         pickerBtnView.isHidden.toggle()
@@ -144,15 +143,6 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         header.section = indexPath.section
         header.delegate = self
-        
-        //        switch indexPath.section {
-        //        case 0:
-        //            header.hideDeleteButton()
-        //        case 1:
-        //            header.showDeleteButton()
-        //        default:
-        //            return header
-        //        }
         header.showDeleteButton()
         if header.sectionLabel.text == "할 일" {
             header.hideDeleteButton()
