@@ -15,6 +15,15 @@ class TodoCalendarViewCell: UICollectionViewCell {
     var titleLabel: UILabel!
     var dateLabel: UILabel!
     var stateLabel : UILabel!
+    var container : UIView!
+    var deleteContainer : UIView!
+    var deleteButton : UIButton!
+    var editContainer : UIView!
+    var editButton : UIButton!
+    var enrollChallengeContainer : UIView!
+    var enrollChallengeButton : UIView!
+    var swipeLeft : Bool = false
+    var swipeRight : Bool = false
     var todoItem: Todo? // Todo 항목을 저장할 속성
     var currentDate : Date?
     
@@ -35,8 +44,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
     
     private func setupViews() {
         contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = false
-        contentView.backgroundColor = .challendarBlack80
+        contentView.clipsToBounds = true
+        contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         contentView.layer.shadowColor = UIColor.black.cgColor
@@ -44,23 +53,41 @@ class TodoCalendarViewCell: UICollectionViewCell {
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
         contentView.layer.shadowRadius = 4
         
+        container = UIView()
+        container.backgroundColor = .secondary850
+        container.layer.cornerRadius = 20
+        container.clipsToBounds = true
+        deleteContainer = UIView()
+        deleteContainer.backgroundColor = .alertRed
+        editContainer = UIView()
+        editContainer.backgroundColor = .alertIOrange
+        enrollChallengeContainer = UIView()
+        enrollChallengeContainer.backgroundColor = .primary200
+        [enrollChallengeContainer, editContainer, deleteContainer, container].forEach {
+            self.contentView.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .challendarWhite
         titleLabel.font = .pretendardMedium(size: 20)
-        contentView.addSubview(titleLabel)
+        container.addSubview(titleLabel)
+        container.bringSubviewToFront(titleLabel)
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textColor = .challendarBlack60
         dateLabel.font = .pretendardMedium(size: 12)
-        contentView.addSubview(dateLabel)
+        container.addSubview(dateLabel)
+        container.bringSubviewToFront(dateLabel)
         
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
         stateLabel.textColor = .challendarGreen100
         stateLabel.font = .pretendardMedium(size: 12)
-        contentView.addSubview(stateLabel)
+        container.addSubview(stateLabel)
+        container.bringSubviewToFront(stateLabel)
                
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
@@ -69,22 +96,98 @@ class TodoCalendarViewCell: UICollectionViewCell {
         checkButton.isHidden = false
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-        contentView.addSubview(checkButton)
-        contentView.bringSubviewToFront(checkButton)
-        NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 75),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            
-            stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            stateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            dateLabel.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
-            
-            checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
-        ])
+        container.addSubview(checkButton)
+        container.bringSubviewToFront(checkButton)
+        
+        
+        container.snp.makeConstraints {
+            $0.leading.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+        deleteContainer.snp.makeConstraints {
+            $0.leading.equalTo(editContainer.snp.trailing).offset(-74)
+            $0.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+        }
+        editContainer.snp.makeConstraints {
+            $0.leading.equalTo(container.snp.trailing).offset(-37)
+            $0.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+        }
+        enrollChallengeContainer.snp.makeConstraints {
+            $0.trailing.equalTo(container.snp.leading).offset(204)
+            $0.leading.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(container.snp.top).offset(16.5)
+            make.leading.equalTo(container.snp.leading).offset(24)
+        }
+        
+        stateLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            make.leading.equalTo(container.snp.leading).offset(24)
+        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            make.leading.equalTo(stateLabel.snp.trailing).offset(4)
+        }
+        
+        checkButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel.snp.centerY)
+            make.trailing.equalTo(container.snp.trailing).offset(-24)
+        }
+        
+        let swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeCellLeft))
+        swipeGestureLeft.direction = .left
+        self.addGestureRecognizer(swipeGestureLeft)
+        
+        let swipeGestureRight = UISwipeGestureRecognizer(target: self, action:  #selector(didSwipeCellRight))
+        swipeGestureRight.direction = .right
+        self.addGestureRecognizer(swipeGestureRight)
+    }
+    
+    @objc func didSwipeCellLeft() {
+        UIView.animate(withDuration: 0.3) {
+            if self.swipeRight == true {
+                self.container.snp.updateConstraints {
+                    $0.leading.equalToSuperview().offset(0)
+                    $0.trailing.equalToSuperview().offset(0)
+                }
+                self.swipeRight = false
+                print("swipeRight false")
+            } else if self.swipeRight == false {
+                self.container.snp.updateConstraints {
+                    $0.trailing.equalToSuperview().offset(-148)
+                    $0.leading.equalToSuperview().offset(-148)
+                }
+                self.swipeLeft = true
+                print("swipeLeft true")
+            }
+            self.layoutIfNeeded()
+        }
+    }
+    
+    @objc func didSwipeCellRight() {
+        UIView.animate(withDuration: 0.3) {
+            if self.swipeLeft ==  true {
+                self.container.snp.updateConstraints {
+                    $0.leading.equalToSuperview().offset(0)
+                    $0.trailing.equalToSuperview().offset(0)
+                }
+                self.swipeLeft = false
+                print("swipeLeft false")
+            } else if self.swipeLeft == false {
+                self.container.snp.updateConstraints {
+                    $0.trailing.equalToSuperview().offset(150)
+                    $0.leading.equalToSuperview().offset(150)
+                }
+                self.swipeRight = true
+                print("swipeRight true")
+            }
+            self.layoutIfNeeded()
+        }
     }
     
     @objc private func checkButtonTapped() {
