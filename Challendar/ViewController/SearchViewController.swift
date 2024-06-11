@@ -14,6 +14,8 @@ class SearchViewController: BaseViewController {
     private var items: [Todo] = CoreDataManager.shared.fetchTodos()
     private var filteredChallengeItems: [Todo] = []
     private var filteredNonChallengeItems: [Todo] = []
+    private var filteredNoDeadlineItems: [Todo] = []
+    private var filteredCompletedItems: [Todo] = []
     private var previousIndexPath: IndexPath?
     private var selectedIndexPath: IndexPath?
     
@@ -24,18 +26,10 @@ class SearchViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadData() // 데이터 다시 로드
-        if let searchText = searchBar.text, !searchText.isEmpty {
-            filterItems(with: searchText)
-        } else {
-            filterItems(with: "")
-        }
-        self.collectionView.reloadData() // 데이터 리로드
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        filterItems(with: "")
         reloadData()
     }
     
@@ -62,14 +56,6 @@ class SearchViewController: BaseViewController {
     
     @objc func coreDataChanged(_ notification: Notification) {
         reloadData() // 데이터 다시 로드
-        if let searchText = searchBar.text, !searchText.isEmpty {
-            filterItems(with: searchText)
-        } else {
-            filterItems(with: "")
-        }
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
     }
     
     private func setupLayout() {
@@ -87,8 +73,8 @@ class SearchViewController: BaseViewController {
         collectionView.delegate = self
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Empty")
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "defaultCell")
-        // 챌린지 투두용 셀 등록
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "challengeCell")
+        collectionView.register(TodoCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
@@ -102,9 +88,13 @@ class SearchViewController: BaseViewController {
     
     private func reloadData() {
         self.items = CoreDataManager.shared.fetchTodos()
+        if let searchText = searchBar.text, !searchText.isEmpty {
+            filterItems(with: searchText)
+        } else {
+            filterItems(with: "")
+        }
         self.collectionView.reloadData()
     }
-
     
     private func searchBarConfigure() {
         searchBar = UISearchBar()
@@ -131,19 +121,20 @@ class SearchViewController: BaseViewController {
             cancelText.trailingAnchor.constraint(equalTo: cancelBtn.trailingAnchor, constant: -8),
             cancelText.centerYAnchor.constraint(equalTo: cancelBtn.centerYAnchor)
         ])
-        // 취소 기능 확정 후 작성
-        //        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
-        //        cancelBtn.addGestureRecognizer(tapGesture)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
+        cancelBtn.addGestureRecognizer(tapGesture)
         
         customCancelButton = UIBarButtonItem(customView: cancelBtn)
     }
     
-    // 취소 기능 확정 후 수정
-    //    @objc func cancelButtonTap() {
-    //        searchBar.setShowsCancelButton(false, animated: true)
-    //        navigationItem.rightBarButtonItem = nil // Hide the custom cancel button
-    //        updateSearchTextFieldConstraints(showingCancelButton: false)
-    //    }
+    @objc func cancelButtonTap() {
+        searchBar.setShowsCancelButton(false, animated: true)
+        navigationItem.rightBarButtonItem = nil // Hide the custom cancel button
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        filterItems(with: "")
+    }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true) // Hide default cancel button
@@ -164,7 +155,7 @@ class SearchViewController: BaseViewController {
         
         searchTextField.backgroundColor = .challendarBlack80
         searchTextField.font = .pretendardMedium(size: 18)
-        searchTextField.layer.borderColor = UIColor.init(white: 1, alpha: 0.02).cgColor
+        searchTextField.layer.borderColor = UIColor(white: 1, alpha: 0.02).cgColor
         searchTextField.layer.borderWidth = 1
         searchTextField.layer.cornerRadius = 12
         searchTextField.clipsToBounds = true
@@ -226,74 +217,53 @@ class SearchViewController: BaseViewController {
     }
     
     private func filterItems(with searchText: String) {
-        self.items = CoreDataManager.shared.fetchTodos()
         if searchText.isEmpty {
-            filteredChallengeItems = items.filter { $0.isChallenge == true }
-            filteredNonChallengeItems = items.filter { $0.isChallenge == false }
+            filteredChallengeItems = items.filter { $0.isChallenge && !($0.todayCompleted() ?? false) }
+            filteredNonChallengeItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate != nil }
+//            filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil && !$0.iscompleted }
+//            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) || $0.iscompleted }
         } else {
-            filteredChallengeItems = items.filter { $0.isChallenge == true && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
-            filteredNonChallengeItems = items.filter { $0.isChallenge == false && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredChallengeItems = items.filter { $0.isChallenge && !($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredNonChallengeItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate != nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+//            filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil && !$0.iscompleted && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+//            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) || $0.iscompleted && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
         
         // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
         sortByRecentStartDate()
-        reloadData() // 필터링 후 데이터 리로드
+        self.collectionView.reloadData() // 필터링 후 데이터 리로드
     }
 
     // 최신순
     private func sortByRecentStartDate() {
-        filteredChallengeItems.sort {
-            let completedComparison = compareCompleted($0, $1)
-            if completedComparison != .orderedSame {
-                return completedComparison == .orderedAscending
+        
+        
+        func sortItems(_ items: inout [Todo]) {
+            items.sort {
+                let isBetweenDates1 = Date.isTodayBetween($0.startDate ?? Date.distantPast, $0.endDate ?? Date.distantFuture)
+                let isBetweenDates2 = Date.isTodayBetween($1.startDate ?? Date.distantPast, $1.endDate ?? Date.distantFuture)
+                
+                if isBetweenDates1 && !isBetweenDates2 {
+                    return true
+                } else if !isBetweenDates1 && isBetweenDates2 {
+                    return false
+                }
+                
+                let completedComparison = compareCompleted($0, $1)
+                if completedComparison != .orderedSame {
+                    return completedComparison == .orderedAscending
+                }
+                
+                return ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast)
             }
-            return ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast)
         }
-        filteredNonChallengeItems.sort {
-            let completedComparison = compareCompleted($0, $1)
-            if completedComparison != .orderedSame {
-                return completedComparison == .orderedAscending
-            }
-            return ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast)
-        }
+        
+        sortItems(&filteredChallengeItems)
+        sortItems(&filteredNonChallengeItems)
+        filteredNoDeadlineItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+        filteredCompletedItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
-
-    // 등록순
-    private func sortByOldestStartDate() {
-        filteredChallengeItems.sort {
-            let completedComparison = compareCompleted($0, $1)
-            if completedComparison != .orderedSame {
-                return completedComparison == .orderedAscending
-            }
-            return ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast)
-        }
-        filteredNonChallengeItems.sort {
-            let completedComparison = compareCompleted($0, $1)
-            if completedComparison != .orderedSame {
-                return completedComparison == .orderedAscending
-            }
-            return ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast)
-        }
-    }
-
-    // 기한 임박
-    private func sortByNearestEndDate() {
-        filteredChallengeItems.sort {
-            let completedComparison = compareCompleted($0, $1)
-            if completedComparison != .orderedSame {
-                return completedComparison == .orderedAscending
-            }
-            return ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture)
-        }
-        filteredNonChallengeItems.sort {
-            let completedComparison = compareCompleted($0, $1)
-            if completedComparison != .orderedSame {
-                return completedComparison == .orderedAscending
-            }
-            return ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture)
-        }
-    }
-
+    
     private func compareCompleted(_ todo1: Todo, _ todo2: Todo) -> ComparisonResult {
         let completed1 = todo1.todayCompleted() ?? false
         let completed2 = todo2.todayCompleted() ?? false
@@ -311,7 +281,7 @@ class SearchViewController: BaseViewController {
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     // 비어있지 않은 배열의 수 반환
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return [filteredChallengeItems, filteredNonChallengeItems].filter { !$0.isEmpty }.count
+        return [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].filter { !$0.isEmpty }.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -321,7 +291,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = getTodoItem(for: indexPath.section)[indexPath.row]
         let today = Date()
-        
+
         if let startDate = item.startDate, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: item)
@@ -332,9 +302,14 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: item)
             return cell
+        } else if item.endDate == nil { // 기한 없는 투두
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TodoCollectionViewCell
+            cell.configure(with: item)
+            return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: item)
+            cell.contentView.alpha = 1.0
             return cell
         }
     }
@@ -363,14 +338,25 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     
     // 각 섹션 투두 항목들 반환
     private func getTodoItem(for section: Int) -> [Todo] {
-        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems].enumerated().filter { !$0.element.isEmpty }
+        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].enumerated().filter { !$0.element.isEmpty }
         return nonEmptySections[section].element
     }
     
     // 각 섹션 헤더 반환
     private func getSectionHeaderTitle(for section: Int) -> String {
-        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems].enumerated().filter { !$0.element.isEmpty }
-        return nonEmptySections[section].offset == 0 ? "챌린지 투두" : "일반 투두"
+        let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].enumerated().filter { !$0.element.isEmpty }
+        switch nonEmptySections[section].offset {
+        case 0:
+            return "챌린지 투두"
+        case 1:
+            return "일반 투두"
+        case 2:
+            return "기한 없는 투두"
+        case 3:
+            return "완료 항목"
+        default:
+            return ""
+        }
     }
 }
 
