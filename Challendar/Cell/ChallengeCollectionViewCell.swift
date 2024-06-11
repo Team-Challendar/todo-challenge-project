@@ -29,6 +29,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         titleLabel.attributedText = nil
     }
     
@@ -114,9 +115,9 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
-        progressBar.progress = Float(item.percentage / 100)
+        progressBar.progress = Float(item.percentage)
         contentView.backgroundColor = .challendarBlack80
-        
+
         // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
         checkButton.isSelected = item.todayCompleted() ?? false
         updateTitleLabel()

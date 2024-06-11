@@ -18,7 +18,7 @@ class ChallengeListViewController: BaseViewController {
     private var emptySubLabel: UILabel!
     private var emptyImage: UIImageView!
     private var collectionView: UICollectionView!
-//    private var resetBtn: UIButton!
+    private var resetBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ class ChallengeListViewController: BaseViewController {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
-//        setupResetButton()
+        setupResetButton()
     }
     
     override func configureConstraint() {
@@ -73,21 +73,21 @@ class ChallengeListViewController: BaseViewController {
     }
     
     // 임시 리셋버튼
-//    private func setupResetButton() {
-//        resetBtn = UIButton(type: .system)
-//        resetBtn.setTitle("Reset All", for: .normal)
-//        resetBtn.setTitleColor(.white, for: .normal)
-//        resetBtn.backgroundColor = .red
-//        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
-//        view.addSubview(resetBtn)
-//
-//        resetBtn.snp.makeConstraints { make in
-//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
-//            make.centerX.equalToSuperview()
-//            make.width.equalTo(200)
-//            make.height.equalTo(50)
-//        }
-//    }
+    private func setupResetButton() {
+        resetBtn = UIButton(type: .system)
+        resetBtn.setTitle("Reset All", for: .normal)
+        resetBtn.setTitleColor(.white, for: .normal)
+        resetBtn.backgroundColor = .red
+        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+        view.addSubview(resetBtn)
+
+        resetBtn.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            make.height.equalTo(50)
+        }
+    }
     
     @objc private func resetButtonTapped() {
         CoreDataManager.shared.deleteAllTodos()
@@ -176,7 +176,6 @@ class ChallengeListViewController: BaseViewController {
         emptySubLabel.textColor = .challendarGrey50
         view.addSubview(emptySubLabel)
         
-        // If you want to use the emptyImage
          emptyImage = UIImageView()
          emptyImage.image = UIImage(named: "SurprisedFace")
          view.addSubview(emptyImage)
@@ -201,13 +200,14 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
-    // 비어있는 상태 가시성 업데이트
+    // 비어있는 상태 업데이트
     private func updateEmptyStateVisibility() {
-        let isEmpty = todoItems.isEmpty
+        let isEmpty = completedTodos.isEmpty && incompleteTodos.isEmpty && upcomingTodos.isEmpty
         emptyMainLabel.isHidden = !isEmpty
         emptySubLabel.isHidden = !isEmpty
         emptyImage.isHidden = !isEmpty
     }
+
 }
 
 extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
