@@ -108,8 +108,6 @@ class ChallengeDateCalendarView: UIView {
         if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: calendarView.currentPage) {
             calendarView.setCurrentPage(previousMonth, animated: true)
             updateLabel(previousMonth)
-            //변경
-//            NotificationCenter.default.post(name: NSNotification.Name("month"), object: previousMonth, userInfo: nil)
             calendarView.reloadData()
         }
     }
@@ -118,8 +116,6 @@ class ChallengeDateCalendarView: UIView {
         if let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: calendarView.currentPage) {
             calendarView.setCurrentPage(nextMonth, animated: true)
             updateLabel(nextMonth)
-            //변경
-//            NotificationCenter.default.post(name: NSNotification.Name("month"), object: nextMonth, userInfo: nil)
             calendarView.reloadData()
         }
     }
@@ -137,16 +133,10 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
         self.layoutIfNeeded()
     }
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        //변경
-//            NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
-    }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
         updateLabel(date)
-        //변경
-//        NotificationCenter.default.post(name: NSNotification.Name("month"), object: date, userInfo: nil)
         calendar.reloadData()
     }
     
