@@ -105,7 +105,7 @@ class ChallengeListDetailViewController: BaseViewController {
         collectionView.register(HalfCircleChartViewCell.self, forCellWithReuseIdentifier: HalfCircleChartViewCell.identifier)
         // Calendar cell
         collectionView.register(DetailCalendarCell.self, forCellWithReuseIdentifier: DetailCalendarCell.identifier)
-        collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
     }
@@ -190,7 +190,7 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
             
             switch indexPath.section {
             case 0:
