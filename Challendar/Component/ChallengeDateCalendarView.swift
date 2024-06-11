@@ -144,7 +144,7 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-            NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
+//            NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {

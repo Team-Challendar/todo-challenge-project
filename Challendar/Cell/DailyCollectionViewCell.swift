@@ -9,6 +9,7 @@ import SnapKit
 
 class DailyCollectionViewCell: UICollectionViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    static var identifier = "DailyCollectionViewCell"
     // 상단 캐로셀 컬렉션 뷰 설정
     var testCollectionView: UICollectionView = {
         let layout = YZCenterFlowLayout()

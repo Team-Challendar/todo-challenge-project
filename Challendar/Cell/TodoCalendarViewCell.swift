@@ -7,14 +7,19 @@
 
 import UIKit
 import SnapKit
+import Lottie
 
 class TodoCalendarViewCell: UICollectionViewCell {
     static var identifier = "TodoCalendarViewCell"
-    
+    let animation = LottieAnimation.named("checkBoxAnimation")
+    var animationView : LottieAnimationView!
     var checkButton: UIButton!
     var titleLabel: UILabel!
     var dateLabel: UILabel!
     var stateLabel : UILabel!
+    var container : UIView!
+    var deleteContainer : UIView!
+    
     var todoItem: Todo? // Todo 항목을 저장할 속성
     var currentDate : Date?
     
@@ -34,8 +39,10 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
+        
+        
         contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = false
+        contentView.clipsToBounds = true
         contentView.backgroundColor = .challendarBlack80
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -44,23 +51,33 @@ class TodoCalendarViewCell: UICollectionViewCell {
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
         contentView.layer.shadowRadius = 4
         
+        container = UIView()
+        container.backgroundColor = .challendarBlack80
+        container.layer.cornerRadius = 20
+        container.clipsToBounds = true
+        deleteContainer = UIView()
+        deleteContainer.backgroundColor = .red
+        [deleteContainer,container].forEach{
+            self.contentView.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .challendarWhite
         titleLabel.font = .pretendardMedium(size: 20)
-        contentView.addSubview(titleLabel)
+        container.addSubview(titleLabel)
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.textColor = .challendarBlack60
         dateLabel.font = .pretendardMedium(size: 12)
-        contentView.addSubview(dateLabel)
+        container.addSubview(dateLabel)
         
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
         stateLabel.textColor = .challendarGreen100
         stateLabel.font = .pretendardMedium(size: 12)
-        contentView.addSubview(stateLabel)
+        container.addSubview(stateLabel)
                
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
@@ -69,31 +86,84 @@ class TodoCalendarViewCell: UICollectionViewCell {
         checkButton.isHidden = false
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-        contentView.addSubview(checkButton)
-        contentView.bringSubviewToFront(checkButton)
-        NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 75),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            
-            stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            stateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            dateLabel.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
-            
-            checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
-        ])
+        container.addSubview(checkButton)
+        animationView = LottieAnimationView(animation: animation)
+        container.addSubview(animationView)
+        
+        container.bringSubviewToFront(checkButton)
+        
+        
+        
+        container.snp.makeConstraints{
+            $0.leading.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+        deleteContainer.snp.makeConstraints{
+            $0.leading.equalTo(container.snp.trailing).offset(-20)
+            $0.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(container.snp.top).offset(16.5)
+            make.leading.equalTo(container.snp.leading).offset(24)
+        }
+
+        stateLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            make.leading.equalTo(container.snp.leading).offset(24)
+        }
+
+        dateLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            make.leading.equalTo(stateLabel.snp.trailing).offset(4)
+        }
+
+        checkButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel.snp.centerY)
+            make.trailing.equalTo(container.snp.trailing).offset(-24)
+        }
+        
+        animationView.snp.makeConstraints{
+            $0.center.equalTo(checkButton)
+            $0.size.equalTo(96)
+        }
+        let swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeCellLeft))
+        swipeGestureLeft.direction = .left
+        self.addGestureRecognizer(swipeGestureLeft)
+        
+        let swipeGestureRight = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeCellRight))
+        swipeGestureRight.direction = .right
+        self.addGestureRecognizer(swipeGestureRight)
+        
+    }
+    @objc func didSwipeCellLeft(){
+        UIView.animate(withDuration: 0.3) {
+            self.container.snp.updateConstraints {
+                $0.trailing.equalToSuperview().offset(-50)
+            }
+            self.layoutIfNeeded()
+        }
+    }
+    
+    @objc func didSwipeCellRight(){
+        UIView.animate(withDuration: 0.3) {
+            self.container.snp.updateConstraints {
+                $0.trailing.equalToSuperview().offset(0)
+            }
+            self.layoutIfNeeded()
+        }
     }
     
     @objc private func checkButtonTapped() {
+        animationView.play()
         checkButton.isSelected.toggle()
         updateTitleLabel()
         guard let item = todoItem else { return }
+//        print(self.currentDate?.dateToString())
         item.toggleDatesCompletedState(date: self.currentDate!)
-        updateTodoCompletion(for: item)
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            self.updateTodoCompletion(for: item)
+        })
         // Notification으로 챌린지 리스트 뷰에 변경됨을 알림
     }
     
@@ -102,9 +172,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
-        currentDate = date
+        self.currentDate = date
         contentView.backgroundColor = .challendarBlack80
-        
         // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
         checkButton.isSelected = item.todayCompleted(date: date) ?? false
         updateTitleLabel()

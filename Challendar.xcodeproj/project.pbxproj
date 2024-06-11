@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		141744D92C1821C8002335F7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 141744D82C1821C8002335F7 /* Lottie */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADA52C082A0F00145668 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
@@ -199,6 +200,7 @@
 				1472ADE82C08406D00145668 /* RAMAnimatedTabBarController in Frameworks */,
 				14C97F2C2C0A1D1600819B27 /* FSCalendar in Frameworks */,
 				1472ADD62C08369700145668 /* SnapKit in Frameworks */,
+				141744D92C1821C8002335F7 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +451,7 @@
 				1472ADE42C08404D00145668 /* RxSwift */,
 				1472ADE72C08406D00145668 /* RAMAnimatedTabBarController */,
 				14C97F2B2C0A1D1600819B27 /* FSCalendar */,
+				141744D82C1821C8002335F7 /* Lottie */,
 			);
 			productName = Challendar;
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
@@ -483,6 +486,7 @@
 				1472ADE12C08404D00145668 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				1472ADE62C08406D00145668 /* XCRemoteSwiftPackageReference "animated-tab-bar" */,
 				14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			productRefGroup = 1472AD9E2C082A0F00145668 /* Products */;
 			projectDirPath = "";
@@ -818,6 +822,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.3;
+			};
+		};
 		1472ADD42C08369700145668 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -853,6 +865,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		141744D82C1821C8002335F7 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
 		1472ADD52C08369700145668 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1472ADD42C08369700145668 /* XCRemoteSwiftPackageReference "SnapKit" */;

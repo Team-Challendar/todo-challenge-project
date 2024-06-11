@@ -90,6 +90,7 @@ class AddTodoDateViewController: BaseViewController {
     }
     private func confirmButtonTapped(){
         if self.dateRange == nil {
+            self.newTodo?.startDate = Date()
             CoreDataManager.shared.createTodo(newTodo: self.newTodo!)
             let rootView = self.presentingViewController
             let successViewController = SuccessViewController()

@@ -157,9 +157,9 @@ class TodoCalendarView: UIView {
         guard let state = notification.object as? currentCalendar else {return}
         currentState = state
         switch currentState {
-        case .month:
+        case .calendar:
             calendar.setScope(.month, animated: true)
-        case .week:
+        case .daily:
             calendar.setScope(.week, animated: true)
         default:
             return

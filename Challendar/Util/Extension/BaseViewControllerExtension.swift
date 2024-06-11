@@ -41,7 +41,7 @@ extension BaseViewController{
         
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = .pretendardSemiBold(size: 26)
+        titleLabel.font = .pretendardSemiBold(size: 18)
         titleLabel.textColor = .challendarWhite
         titleLabel.backgroundColor = .clear
         
@@ -66,7 +66,7 @@ extension BaseViewController{
         
         button.snp.makeConstraints {
             $0.height.equalTo(34)
-            $0.width.equalTo(45 + 4 + 24 + 5)
+            $0.width.equalTo(60)
         }
         
         let titleBarButtonItem = UIBarButtonItem(customView: button)

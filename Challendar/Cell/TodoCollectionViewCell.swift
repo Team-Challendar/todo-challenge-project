@@ -48,9 +48,6 @@ class TodoCollectionViewCell: UICollectionViewCell {
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         contentView.addSubview(checkButton)
-        
-      
-        
         NSLayoutConstraint.activate([
             
             contentView.heightAnchor.constraint(equalToConstant: 75),
