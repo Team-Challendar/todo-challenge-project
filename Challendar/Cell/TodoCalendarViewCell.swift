@@ -1,5 +1,5 @@
 //
-//  ChallengeCollectionViewCell.swift
+//  TodoCalendarViewCell.swift
 //  Challendar
 //
 //  Created by 서혜림 on 6/3/24.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Lottie
 
-protocol CollectionViewCellDelegate: AnyObject {
+protocol TodoCalendarCollectionViewCellDelegate: AnyObject {
     func editContainerTapped(in cell: TodoCalendarViewCell)
 }
 
@@ -19,20 +19,19 @@ class TodoCalendarViewCell: UICollectionViewCell {
     var animationView : LottieAnimationView!
     var checkButton: UIButton!
     var titleLabel: UILabel!
-    var dateLabel: UILabel!
-    var stateLabel : UILabel!
-    var container : UIView!
-    var deleteContainer : UIView!
-    var deleteButtonImage : UIImageView!
-    var editContainer : UIView!
-    var editButtonImage : UIImageView!
-    var enrollChallengeContainer : UIView!
+    private var dateLabel: UILabel!
+    private var stateLabel : UILabel!
+    private var container : UIView!
+    private var deleteContainer : UIView!
+    private var deleteButtonImage : UIImageView!
+    private var editContainer : UIView!
+    private var editButtonImage : UIImageView!
+    private var enrollChallengeContainer : UIView!
     private let buttonConfig = UIButton.Configuration.filled()
     private lazy var enrollChallengeButton = UIButton(configuration: buttonConfig)
-    var swipeLeft : Bool = false
-    var swipeRight : Bool = false
-    weak var delegate: CollectionViewCellDelegate?
-
+    private var swipeLeft : Bool = false
+    private var swipeRight : Bool = false
+    weak var delegate: TodoCalendarCollectionViewCellDelegate?
     var todoItem: Todo? // Todo 항목을 저장할 속성
     var currentDate : Date?
     
@@ -179,21 +178,21 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview()
             $0.top.bottom.equalToSuperview()
         }
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(container.snp.top).offset(16.5)
-            make.leading.equalTo(container.snp.leading).offset(24)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(container.snp.top).offset(16.5)
+            $0.leading.equalTo(container.snp.leading).offset(24)
         }
-        stateLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(container.snp.bottom).offset(-16.5)
-            make.leading.equalTo(container.snp.leading).offset(24)
+        stateLabel.snp.makeConstraints {
+            $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            $0.leading.equalTo(container.snp.leading).offset(24)
         }
-        dateLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(container.snp.bottom).offset(-16.5)
-            make.leading.equalTo(stateLabel.snp.trailing).offset(4)
+        dateLabel.snp.makeConstraints {
+            $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            $0.leading.equalTo(stateLabel.snp.trailing).offset(4)
         }
-        checkButton.snp.makeConstraints { make in
-            make.centerY.equalTo(titleLabel.snp.centerY)
-            make.trailing.equalTo(container.snp.trailing).offset(-24)
+        checkButton.snp.makeConstraints {
+            $0.centerY.equalTo(titleLabel.snp.centerY)
+            $0.trailing.equalTo(container.snp.trailing).offset(-24)
         }
         animationView.snp.makeConstraints{
             $0.center.equalTo(checkButton)
@@ -257,7 +256,11 @@ class TodoCalendarViewCell: UICollectionViewCell {
         guard let item = todoItem else { return }
         item.isChallenge = true
         self.enrollChallenge(for: item)
-        print("등록")
+        self.container.snp.updateConstraints {
+            $0.leading.equalToSuperview().offset(0)
+            $0.trailing.equalToSuperview().offset(0)
+        }
+        self.swipeLeft = false
     }
     private func enrollChallenge(for item: Todo) {
         CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newIsChallenge: item.isChallenge)
@@ -271,7 +274,11 @@ class TodoCalendarViewCell: UICollectionViewCell {
     @objc func deleteContainerTapped(_ sender: UITapGestureRecognizer) {
         guard let item = todoItem else { return }
         self.deleteTodo(for: item)
-        print("delete")
+        self.container.snp.updateConstraints {
+            $0.leading.equalToSuperview().offset(0)
+            $0.trailing.equalToSuperview().offset(0)
+        }
+        self.swipeLeft = false
     }
     private func deleteTodo(for item: Todo) {
         CoreDataManager.shared.deleteTodoById(id: item.id ?? UUID())
@@ -284,7 +291,11 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     @objc func editContainerTapped(_ sender: UITapGestureRecognizer) {
         delegate?.editContainerTapped(in: self)
-        print("edit")
+        self.container.snp.updateConstraints {
+            $0.leading.equalToSuperview().offset(0)
+            $0.trailing.equalToSuperview().offset(0)
+        }
+        self.swipeLeft = false
     }
     
     @objc private func checkButtonTapped() {

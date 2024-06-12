@@ -331,7 +331,7 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
     
 }
 
-extension TodoCalendarViewDifferableViewController : CollectionViewCellDelegate {
+extension TodoCalendarViewDifferableViewController : TodoCalendarCollectionViewCellDelegate {
     func editContainerTapped(in cell: TodoCalendarViewCell) {
         let editVC = EditTodoTitleViewController()
         editVC.todoId = cell.todoItem?.id
@@ -339,7 +339,6 @@ extension TodoCalendarViewDifferableViewController : CollectionViewCellDelegate 
         editVC.modalPresentationStyle = .fullScreen
         self.present(editVC, animated: true, completion: nil)
     }
-    
 }
 
 extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDelegate {
