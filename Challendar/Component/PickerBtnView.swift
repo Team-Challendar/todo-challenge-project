@@ -3,6 +3,8 @@ import SnapKit
 
 protocol PickerBtnViewDelegate: AnyObject {
     func didTapDailyButton()
+    func didTapLatestOrderButton()
+    func didTapRegisteredOrderButton()
 }
 
 class PickerBtnView: UIView {
@@ -18,7 +20,7 @@ class PickerBtnView: UIView {
         return button
     }()
     
-    private let recentOrderBtn: UIButton = {
+    private let latestOrderBtn: UIButton = {
         let button = UIButton()
         button.setTitle("최신순", for: .normal)
         button.setTitleColor(.secondary700, for: .normal)
@@ -35,7 +37,7 @@ class PickerBtnView: UIView {
     }()
     
     private var buttons: [UIButton] {
-        return [registeredOrderBtn, recentOrderBtn]
+        return [registeredOrderBtn, latestOrderBtn]
     }
     
     override init(frame: CGRect) {
@@ -50,7 +52,7 @@ class PickerBtnView: UIView {
     
     private func setupView() {
         addSubview(registeredOrderBtn)
-        addSubview(recentOrderBtn)
+        addSubview(latestOrderBtn)
         addSubview(separator)
         
         registeredOrderBtn.snp.makeConstraints { make in
@@ -58,14 +60,14 @@ class PickerBtnView: UIView {
             make.height.equalTo(44)
         }
         
-        recentOrderBtn.snp.makeConstraints { make in
+        latestOrderBtn.snp.makeConstraints { make in
             make.top.equalTo(registeredOrderBtn.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(44)
         }
         
         separator.snp.makeConstraints { make in
-            make.top.equalTo(recentOrderBtn.snp.top)
+            make.top.equalTo(latestOrderBtn.snp.top)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(0.5)
         }
@@ -78,7 +80,7 @@ class PickerBtnView: UIView {
     private func setupActions() {
         //   button1.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         registeredOrderBtn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        recentOrderBtn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        latestOrderBtn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
@@ -91,9 +93,11 @@ class PickerBtnView: UIView {
         sender.tintColor = .challendarWhite // 선택된 버튼 색상 변경
         sender.backgroundColor = .secondary850 // 선택된 버튼 배경색 변경
         
-        if sender == recentOrderBtn {
-            delegate?.didTapDailyButton()
+        if sender == latestOrderBtn {
+            delegate?.didTapLatestOrderButton()
+        } else if sender == registeredOrderBtn {
+            delegate?.didTapRegisteredOrderButton()
         }
     }
+    
 }
-

@@ -1,8 +1,9 @@
-
 import UIKit
 import SnapKit
 
-class TodoViewController: BaseViewController{
+
+
+class TodoViewController: BaseViewController, PickerBtnViewDelegate {
     
     private let pickerBtnView = PickerBtnView()
     private var todoItems: [Todo] = []
@@ -16,8 +17,11 @@ class TodoViewController: BaseViewController{
         configureFloatingButton()
         button = configureCalendarButtonNavigationBar(title: "최신순")
         button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
+        pickerBtnView.delegate = self
         loadData()
     }
+    
+    
     
     // 리로드
     private func loadData() {
@@ -40,6 +44,7 @@ class TodoViewController: BaseViewController{
         view.addSubview(pickerBtnView)
         pickerBtnView.snp.makeConstraints { make in
             make.width.equalTo(96)
+            //  make.height.equalTo(0) // 초기 높이를 0으로 설정
             make.height.equalTo(88.5)
             make.leading.equalToSuperview().offset(16)
             make.top.equalToSuperview().offset(98)
@@ -51,6 +56,7 @@ class TodoViewController: BaseViewController{
             make.bottom.equalToSuperview()
         }
     }
+    
     
     override func configureNotificationCenter() {
         super.configureNotificationCenter()
@@ -78,7 +84,6 @@ class TodoViewController: BaseViewController{
             return self.createTodoSection(itemHeight: .absolute(75))
         }
     }
-    
     // iscompleted 값으로 필터링
     private func filterTodos() {
         let filteredItems = todoItems.filter {
@@ -92,10 +97,27 @@ class TodoViewController: BaseViewController{
             !$0.iscompleted
         }
     }
-
+    
     private func sortByRecentStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
+    }
+    
+    
+    // PickerBtnViewDelegate 메소드 구현
+    func didTapDailyButton() {
+        // Implement this function if needed
+    }
+    
+    func didTapLatestOrderButton() {
+        todoItems.reverse()
+        completedTodos.reverse()
+        incompleteTodos.reverse()
+        collectionView.reloadData()
+    }
+    
+    func didTapRegisteredOrderButton() {
+        loadData() // 데이터를 다시 불러와서 원래 순서로 복원
     }
     
     func didSelectOption(_ option: String) {
@@ -107,6 +129,8 @@ class TodoViewController: BaseViewController{
     @objc func titleTouched(){
         pickerBtnView.isHidden.toggle()
     }
+    
+    
 }
 
 extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, SectionHeaderDelegate {
