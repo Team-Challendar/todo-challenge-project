@@ -15,9 +15,9 @@ class EditTodoTitleViewController: BaseViewController {
     // 기한 질문 UI 컴포넌트
     let dateAskLabel = EditTitleLabel(text: "기한을 선택해주세요")
     let dateAskView = EmptyView()
-    let dateview = DateView()
+    let dateView = DateView()
     var newTodo : Todo?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,9 +36,11 @@ class EditTodoTitleViewController: BaseViewController {
         
         
         titleView.addSubview(todoTextField)
+        dateAskView.addSubview(dateView) // 나연님 짱..
         
-        [titleLabel, titleView, dateAskLabel, dateAskView, dateView].forEach{
+        [titleLabel, titleView, dateAskLabel, dateAskView].forEach{
             self.view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
         titleLabel.snp.makeConstraints{
@@ -67,39 +69,11 @@ class EditTodoTitleViewController: BaseViewController {
             $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(horizontalPadding)
         }
         
-//        dateView.snp.makeConstraints {
-//            $0.leading.trailing.equalToSuperview().inset(dateLabelHorizontalPadding)
-//            $0.top.bottom.equalToSuperview().inset(dateLabelVerticalPadding)
-//        }
-//            $0.top.equalTo(dateAskLabel.snp.bottom).offset(24)
-//            $0.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-//            $0.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        dateView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(dateLabelHorizontalPadding)
+            $0.top.bottom.equalToSuperview().inset(dateLabelVerticalPadding)
         }
-            
-        }
+    }
+}
 
-
-//func configureNavigationBar(checkFirst: Bool){
-//        let closeImageView = UIImageView()
-//        closeImageView.snp.makeConstraints{
-//            $0.width.height.equalTo(24)
-//        }
-//        closeImageView.contentMode = .scaleAspectFill
-//        closeImageView.isUserInteractionEnabled = true
-//        var tapGesture = UITapGestureRecognizer()
-//        if checkFirst {
-//            tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped)) // 닫기 -> 수정버튼으로 변경
-//            closeImageView.image = .closeL
-//        }else{
-//            tapGesture = UITapGestureRecognizer(target: self, action: #selector(backButtonTapped))  // 뒤로가기 유지
-//            closeImageView.image = .arrowLeftL
-//        }
-//        closeImageView.addGestureRecognizer(tapGesture)
-//        closeImageView.backgroundColor = .clear
-//        closeImageView.translatesAutoresizingMaskIntoConstraints = false
-//        let closeBarButtonItem = UIBarButtonItem(customView: closeImageView)
-//        
-//        self.navigationItem.leftBarButtonItem = closeBarButtonItem
-//    }
-    
 
