@@ -79,6 +79,7 @@ class SearchViewController: BaseViewController {
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "Empty")
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "defaultCell")
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "challengeCell")
+        collectionView.register(TodoCalendarViewCell.self, forCellWithReuseIdentifier: "calendarCell")
         collectionView.register(TodoCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
@@ -137,11 +138,11 @@ class SearchViewController: BaseViewController {
     }
     
     @objc func cancelButtonTap() {
-//        searchBar.setShowsCancelButton(false, animated: true)
-//        navigationItem.rightBarButtonItem = nil
-//        searchBar.text = ""
-//        searchBar.resignFirstResponder()
-//        filterItems(with: "")
+        //        searchBar.setShowsCancelButton(false, animated: true)
+        //        navigationItem.rightBarButtonItem = nil
+        //        searchBar.text = ""
+        //        searchBar.resignFirstResponder()
+        //        filterItems(with: "")
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -161,13 +162,13 @@ class SearchViewController: BaseViewController {
             return
         }
         
-        searchTextField.backgroundColor = .secondary800
+        searchTextField.backgroundColor = .secondary850
         searchTextField.font = .pretendardMedium(size: 18)
         searchTextField.layer.borderColor = UIColor(white: 1, alpha: 0.02).cgColor
         searchTextField.layer.borderWidth = 1
         searchTextField.layer.cornerRadius = 12
         searchTextField.clipsToBounds = true
-        searchTextField.tintColor = .secondary800
+        searchTextField.tintColor = .challendarGreen200
         searchTextField.textColor = .challendarWhite
         
         if let placeholderText = searchBar.placeholder {
@@ -175,7 +176,7 @@ class SearchViewController: BaseViewController {
                 string: placeholderText,
                 attributes: [
                     NSAttributedString.Key.font: UIFont.pretendardRegular(size: 18),
-                    NSAttributedString.Key.foregroundColor: UIColor.secondary600
+                    NSAttributedString.Key.foregroundColor: UIColor.secondary800
                 ]
             )
         }
@@ -266,15 +267,11 @@ class SearchViewController: BaseViewController {
             filteredNonChallengeItems = []
             filteredNoDeadlineItems = []
             filteredCompletedItems = []
-            //            filteredChallengeItems = items.filter { $0.isChallenge && !($0.todayCompleted() ?? false) }
-            //            filteredNonChallengeItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate != nil }
-            //            filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil }
-            //            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) || $0.iscompleted }
         } else {
             filteredChallengeItems = items.filter { $0.isChallenge && !($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredNonChallengeItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate != nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
-            //            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) || $0.iscompleted && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
         
         // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
@@ -339,23 +336,30 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         let item = getTodoItem(for: indexPath.section)[indexPath.row]
         let today = Date()
         
-        if let startDate = item.startDate, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
+        // 도전 예정
+        if let startDate = item.startDate, item.isChallenge == true, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: item)
-            cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            cell.contentView.alpha = 0.2
             cell.isUserInteractionEnabled = false
             return cell
-        } else if item.isChallenge {
+        } else if item.isChallenge {    // 도전 항목
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: item)
             return cell
-        } else if item.endDate == nil { // 기한 없는 투두
+        } else if let startDate = item.startDate, item.isChallenge == false, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendarCell", for: indexPath) as! TodoCalendarViewCell
+            cell.configure(with: item, date: today)
+            cell.contentView.alpha = 0.2
+            cell.isUserInteractionEnabled = false
+            return cell
+        } else if item.endDate == nil { // 할 일 항목
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TodoCollectionViewCell
-//            cell.configure(with: item)
+            cell.configure(with: item)
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
-            cell.configure(with: item)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendarCell", for: indexPath) as! TodoCalendarViewCell
+            cell.configure(with: item, date: today)
             cell.contentView.alpha = 1.0
             return cell
         }
@@ -368,20 +372,19 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        items[indexPath.item].toggleTodaysCompletedState()
-        let previousIndexPath = selectedIndexPath
-        selectedIndexPath = indexPath
+        let item = getTodoItem(for: indexPath.section)[indexPath.row]
         
-        if previousIndexPath == indexPath {
-            selectedIndexPath = nil
+        item.toggleTodaysCompletedState()
+        
+        CoreDataManager.shared.updateTodoById(id: item.id!, newCompleted: item.completed)
+        
+        if let searchText = searchBar.text {
+            filterItems(with: searchText)
         }
         
-        collectionView.reloadItems(at: [indexPath])
-        
-        if let previousIndexPath = previousIndexPath {
-            collectionView.reloadItems(at: [previousIndexPath])
-        }
+        collectionView.reloadData()
     }
+    
     
     private func getTodoItem(for section: Int) -> [Todo] {
         let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].enumerated().filter { !$0.element.isEmpty }
