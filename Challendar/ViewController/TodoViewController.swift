@@ -41,7 +41,7 @@ class TodoViewController: BaseViewController, PickerBtnViewDelegate {
     override func configureUI() {
         super.configureUI()
         view.backgroundColor = .secondary900
-        pickerBtnView.isHidden = true // 처음에는 숨김 상태로 설정 // 델리게이트 설정
+//        pickerBtnView.isHidden = true // 처음에는 숨김 상태로 설정 // 델리게이트 설정
     }
     
     override func configureConstraint() {
@@ -125,14 +125,23 @@ class TodoViewController: BaseViewController, PickerBtnViewDelegate {
         loadData() // 데이터를 다시 불러와서 원래 순서로 복원
     }
     
-    func didSelectOption(_ option: String) {
-        // 드롭다운 옵션 선택 시 처리
-        print("Selected option: \(option)")
-        pickerBtnView.isHidden.toggle()
-    }
+//    func didSelectOption(_ option: String) {
+//        // 드롭다운 옵션 선택 시 처리
+//        print("Selected option: \(option)")
+//        pickerBtnView.isHidden.toggle()
+//    }
     
     @objc func titleTouched(){
-        pickerBtnView.isHidden.toggle()
+//        pickerBtnView.isHidden.toggle()
+//        
+        if self.pickerBtnView.frame.height > 0 {
+            UIView.animate(withDuration: 0.3) {
+                self.pickerBtnView.snp.updateConstraints { make in
+                    make.height.equalTo(88.5)
+                }
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     @objc func dismissPicker() {
@@ -145,7 +154,6 @@ class TodoViewController: BaseViewController, PickerBtnViewDelegate {
              }
          }
      }
-    
 }
 
 extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, SectionHeaderDelegate {
