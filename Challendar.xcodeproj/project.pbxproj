@@ -89,6 +89,7 @@
 		B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA762C10D60000926B53 /* DailyViewController.swift */; };
 		B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */; };
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
+		B9EFF5E92C19801E00503165 /* EditTodoViewController copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF5E82C19801E00503165 /* EditTodoViewController copy.swift */; };
 		DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */; };
 		DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */; };
 		DE6EBEA52C0F187E002F6800 /* ChallengeListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */; };
@@ -181,6 +182,7 @@
 		B90CAA762C10D60000926B53 /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
+		B9EFF5E82C19801E00503165 /* EditTodoViewController copy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EditTodoViewController copy.swift"; path = "Challendar/ViewController/AddTodo/EditTodoViewController copy.swift"; sourceTree = SOURCE_ROOT; };
 		DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCalendarCell.swift; sourceTree = "<group>"; };
 		DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeDateCalendarView.swift; path = Challendar/Component/ChallengeDateCalendarView.swift; sourceTree = SOURCE_ROOT; };
 		DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListDetailViewController.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 		1472ADB72C082B0B00145668 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				B9EFF5E72C197FE400503165 /* EditTodo */,
 				14C6AFE62C0F14E00016B80C /* Setting */,
 				149228F42C0B023900D63368 /* Base */,
 				14C97F132C098BE500819B27 /* AddTodo */,
@@ -411,6 +414,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		B9EFF5E72C197FE400503165 /* EditTodo */ = {
+			isa = PBXGroup;
+			children = (
+				B9EFF5E82C19801E00503165 /* EditTodoViewController copy.swift */,
+			);
+			path = EditTodo;
+			sourceTree = "<group>";
+		};
 		DEDEE2882C0DEA20006AD1C6 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -546,6 +557,7 @@
 				1472ADD82C083AD400145668 /* SearchViewController.swift in Sources */,
 				1472ADE02C083F5D00145668 /* TabModel.swift in Sources */,
 				14C97F272C09D7B400819B27 /* DayModel.swift in Sources */,
+				B9EFF5E92C19801E00503165 /* EditTodoViewController copy.swift in Sources */,
 				B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */,
 				14BB8F042C1013E000FA92E8 /* TodoCalendarCell.swift in Sources */,
 				DE6EBEA52C0F187E002F6800 /* ChallengeListDetailViewController.swift in Sources */,
@@ -580,8 +592,6 @@
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
 				141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */,
-				2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */,
-				2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
