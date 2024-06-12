@@ -24,7 +24,7 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
     let dateView = DateView()
     
     var newTodo: Todo?
-    var todoId: UUID? // 전달받은 투두의 ID를 저장할 변수
+    var todoId: UUID?
     
     override func viewDidLoad() {
         super.viewDidLoad()
