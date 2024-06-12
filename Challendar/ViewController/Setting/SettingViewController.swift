@@ -13,5 +13,18 @@ class SettingViewController: BaseViewController {
         super.viewDidLoad()
         configureBackAndTitleNavigationBar(title: "설정", checkSetting: true)
     }
+    
+    override func configureUI() {
+        super.configureUI()
+    }
+    
+    override func configureConstraint() {
+        super.configureConstraint()
+    }
+    
+    override func configureUtil() {
+        super.configureUtil()
+    }
+    
 
 }

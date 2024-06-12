@@ -23,6 +23,7 @@ class SuccessViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
             self.dismiss(animated: true)
         })
+        
     }
     override func configureUI() {
         dimmedView.backgroundColor = UIColor.secondary900.withAlphaComponent(dimmedViewAlpha)

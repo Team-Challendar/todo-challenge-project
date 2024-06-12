@@ -62,6 +62,7 @@ class CustomButton: UIButton {
     }
     
     func nonApplyState(){
+        self.isEnabled = false
         changeTitle(title: "적용하기")
         self.setTitleColor(.secondary800, for: .normal)
         self.backgroundColor = .secondary700
