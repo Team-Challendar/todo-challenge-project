@@ -248,7 +248,13 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         
         return header
     }
-    
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let todo = getTodoItem(for: indexPath)
+        let detailVC = ChallengeListDetailViewController()
+        detailVC.newTodo = todo
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
     func didTapDeleteButton(in section: Int) {
         let nonEmptySections = [completedTodos, incompleteTodos, upcomingTodos].enumerated().filter { !$0.element.isEmpty }
         let sectionIndex = nonEmptySections[section].offset
@@ -271,7 +277,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         
         loadData()
     }
-    
     private enum SectionType {
         case completed, incomplete, upcoming
     }
