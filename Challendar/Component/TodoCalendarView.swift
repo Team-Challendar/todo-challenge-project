@@ -16,6 +16,7 @@ class TodoCalendarView: UIView {
     var prevButton = UIButton()
     var nextButton = UIButton()
     var currentState : currentCalendar?
+    var selectedDate : Date?
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureUI()
@@ -40,7 +41,7 @@ class TodoCalendarView: UIView {
         calendarLabel.font = .pretendardBold(size: 22)
         calendarLabel.backgroundColor = .clear
         calendarLabel.textColor = .challendarWhite
-        
+        updateLabel(Date())
         prevButton.setImage(.arrowLeftNew, for: .normal)
         prevButton.backgroundColor = .clear
         prevButton.addTarget(self, action: #selector(prevButtonClicked), for: .touchUpInside)
@@ -65,7 +66,7 @@ class TodoCalendarView: UIView {
         calendar.appearance.weekdayTextColor = .challendarWhite
         calendar.appearance.titleWeekendColor = .challendarWhite
         calendar.appearance.selectionColor = .clear
-        calendar.appearance.titleSelectionColor  = .red
+        calendar.appearance.titleSelectionColor  = .none
         calendar.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
         calendar.appearance.todayColor = .clear
         calendar.scrollDirection = .horizontal
@@ -78,7 +79,6 @@ class TodoCalendarView: UIView {
         calendar.allowsMultipleSelection = false
         calendar.delegate = self
         calendar.dataSource = self
-        
     }
     
     private func configureConstraint(){
@@ -115,6 +115,7 @@ class TodoCalendarView: UIView {
                 calendar.setCurrentPage(previousMonth, animated: true)
                 updateLabel(previousMonth)
                 NotificationCenter.default.post(name: NSNotification.Name("date"), object: previousMonth, userInfo: nil)
+                selectedDate = previousMonth
                 calendar.reloadData()
             }
         }else{
@@ -122,6 +123,7 @@ class TodoCalendarView: UIView {
                 calendar.setCurrentPage(prevWeek, animated: true)
                 updateLabel(prevWeek)
                 NotificationCenter.default.post(name: NSNotification.Name("date"), object: prevWeek, userInfo: nil)
+                selectedDate = prevWeek
                 calendar.reloadData()
             }
         }
@@ -134,6 +136,7 @@ class TodoCalendarView: UIView {
                 calendar.setCurrentPage(nextMonth, animated: true)
                 updateLabel(nextMonth)
                 NotificationCenter.default.post(name: NSNotification.Name("date"), object: nextMonth, userInfo: nil)
+                selectedDate = nextMonth
                 calendar.reloadData()
             }
         }else{
@@ -141,14 +144,22 @@ class TodoCalendarView: UIView {
                 calendar.setCurrentPage(nextWeek, animated: true)
                 updateLabel(nextWeek)
                 NotificationCenter.default.post(name: NSNotification.Name("date"), object: nextWeek, userInfo: nil)
+                selectedDate = nextWeek
                 calendar.reloadData()
             }
         }
     }
     
-    func updateLabel(_ date: Date){
-        calendarLabel.text = DateFormatter.dateFormatter.string(from: date)
+    func updateLabel(_ date: Date) {
+        let dateString = DateFormatter.dateFormatter.string(from: date)
+        let attributedString = NSMutableAttributedString(string: dateString)
+        
+        let lastFourRange = NSRange(location: dateString.count - 4, length: 4)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.secondary800, range: lastFourRange)
+        
+        calendarLabel.attributedText = attributedString
     }
+
     @objc func coreDataChanged(){
         calendar.reloadData()
     }
@@ -157,14 +168,13 @@ class TodoCalendarView: UIView {
         guard let state = notification.object as? currentCalendar else {return}
         currentState = state
         switch currentState {
-        case .month:
+        case .calendar:
             calendar.setScope(.month, animated: true)
-        case .week:
+        case .daily:
             calendar.setScope(.week, animated: true)
         default:
             return
         }
-//        calendar.reloadData()
     }
 }
 
@@ -192,6 +202,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         //        print(DateFormatter.dateFormatterALL.string(from: date))
+        selectedDate = date
         NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
     }
     func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -206,39 +217,15 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         switch calendar.scope{
         case .month:
+            if date.isSameDay(as: selectedDate ?? Date()) {
+                return .challendarWhite
+            }
             if !date.isSameMonth(as: calendar.currentPage){
                 return .challendarCalendarPlaceholder
             }else{
                 if let day = dayModelForCurrentPage?.first(where: {
                     $0.date.isSameDay(as: date)
                 }){
-                    if day.date.isSameDay(as: Date()){
-                        return .challendarWhite
-                    }else{
-                        switch day.percentage{
-                        case 0:
-                            if day.date < Date(){
-                                return .challendarPastDay
-                            }else{
-                                return .challendarWhite
-                            }
-                            
-                        default:
-                            return .challendarBlack100
-                        }
-                    }
-                }
-                else{
-                    return .challendarWhite
-                }
-            }
-        case .week:
-            if let day = dayModelForCurrentPage?.first(where: {
-                $0.date.isSameDay(as: date)
-            }){
-                if day.date.isSameDay(as: Date()){
-                    return .challendarWhite
-                }else{
                     switch day.percentage{
                     case 0:
                         if day.date < Date(){
@@ -251,6 +238,29 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                         return .challendarBlack100
                     }
                 }
+                else{
+                    return .challendarWhite
+                }
+            }
+        case .week:
+            if date.isSameDay(as: selectedDate ?? Date()) {
+                return .challendarWhite
+            }
+            if let day = dayModelForCurrentPage?.first(where: {
+                $0.date.isSameDay(as: date)
+            }){
+                switch day.percentage{
+                case 0:
+                    if day.date < Date(){
+                        return .challendarPastDay
+                    }else{
+                        return .challendarWhite
+                    }
+                    
+                default:
+                    return .challendarBlack100
+                }
+                
             }
             else{
                 return .challendarWhite
@@ -272,8 +282,19 @@ extension TodoCalendarView : FSCalendarDataSource {
             $0.date.isSameDay(as: date) && date.isSameMonth(as: calendar.currentPage)
         }){
             cell.setViewWithData(day: day)
+            if let selectedDate = selectedDate {
+                if date.isSameDay(as: selectedDate){
+                    cell.selectDate()
+                }
+            }else{
+                if date.isSameDay(as: Date()){
+                    cell.selectDate()
+                }
+            }
         }
-        
+        if date.isSameDay(as: Date()){
+            cell.setTodayView()
+        }
         return cell
         
     }

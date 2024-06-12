@@ -145,7 +145,6 @@ private extension YZCenterFlowLayout {
         }
         
         // Debug: 간격 확인
-        print("minimumLineSpacing: \(self.minimumLineSpacing)")
     }
     
     func transformLayoutAttributes(_ attributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

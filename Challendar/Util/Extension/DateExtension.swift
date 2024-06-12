@@ -19,6 +19,23 @@ extension Date {
         return calendar.date(from: components)
     }
     
+    func formatDateToDayString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.calendar = Calendar.current
+        dateFormatter.dateFormat = "d" // Day of the month
+        return dateFormatter.string(from: self)
+    }
+    
+    
+    func formatDateWeekdayString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.calendar = Calendar.current
+        dateFormatter.locale = Locale(identifier: "ko_KR") // Set the locale to Korean
+        dateFormatter.dateFormat = "EEEE" // Full weekday name and day of the month
+        
+        return dateFormatter.string(from: self)
+    }
+    
     func dateToString () -> String{
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy년MM월dd일 HH:mm"
