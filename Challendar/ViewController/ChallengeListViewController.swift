@@ -22,7 +22,8 @@ class ChallengeListViewController: BaseViewController {
     private var emptyImage: UIImageView!
     
     private var dateView: UIView!
-    private var todayLabel: UILabel!
+    private var dayLabel: UILabel!
+    private var yearLabel: UILabel!
     private var collectionView: UICollectionView!
     private var resetBtn: UIButton!
     
@@ -37,6 +38,7 @@ class ChallengeListViewController: BaseViewController {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
+        setupDateView()
 //        setupResetButton()
     }
     
@@ -74,11 +76,52 @@ class ChallengeListViewController: BaseViewController {
     
     // 레이아웃 설정
     private func setupLayout() {
-        collectionView.snp.makeConstraints { make in
+        dateView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(44)
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(dateView.snp.bottom).offset(8)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.bottom.equalToSuperview()
+        }
+    }
+    
+    private func setupDateView() {
+        dateView = UIView()
+        dateView.backgroundColor = .clear
+        view.addSubview(dateView)
+        
+        let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "M월 d일"
+            let todayString = dateFormatter.string(from: Date())
+        
+         let yearFormatter = DateFormatter()
+         yearFormatter.dateFormat = "yyyy년"
+         let YearString = yearFormatter.string(from: Date())
+            
+        
+        dayLabel = UILabel()
+        dayLabel.text = todayString
+        dayLabel.font = .pretendardSemiBold(size: 16)
+        dayLabel.textColor = .secondary700
+        dateView.addSubview(dayLabel)
+        
+        yearLabel = UILabel()
+        yearLabel.text = YearString
+        yearLabel.font = .pretendardSemiBold(size: 16)
+        yearLabel.textColor = .secondary800
+        dateView.addSubview(yearLabel)
+        
+        dayLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview()
+        }
+        yearLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(dayLabel.snp.trailing).offset(7)
         }
     }
     
@@ -218,11 +261,14 @@ class ChallengeListViewController: BaseViewController {
     }
     
     private func checkIfAllChallengesCompleted() {
-//        if incompleteTodos.isEmpty && !todoItems.isEmpty {
-//            let successViewController = ChallengeSuccessViewController()
-//            successViewController.modalPresentationStyle = .fullScreen
-//            present(successViewController, animated: true, completion: nil)
-//        }
+        if incompleteTodos.isEmpty {
+            let successViewController = ChallengeSuccessViewController()
+            successViewController.modalPresentationStyle = .fullScreen
+//            let navigationController = UINavigationController(rootViewController: successViewController)
+//            navigationController.modalTransitionStyle = .coverVertical
+//            navigationController.modalPresentationStyle = .overFullScreen
+            self.present(successViewController, animated: true, completion: nil)
+        }
     }
 }
 
