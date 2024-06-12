@@ -74,7 +74,6 @@ class PeriodPickerButtonView: UIView {
         return view
     }()
     
-    
     private var buttonViews: [UIView] {
         return [buttonView1, buttonView2]
     }
@@ -94,7 +93,6 @@ class PeriodPickerButtonView: UIView {
     private func configureUI() {
         addSubview(buttonView1)
         addSubview(buttonView2)
-        
         layer.cornerRadius = 14
         layer.cornerCurve = .continuous
         clipsToBounds = true
@@ -137,7 +135,6 @@ class PeriodPickerButtonView: UIView {
     private func setupActions() {
         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(calButtonTapped))
         buttonView1.addGestureRecognizer(tapGesture1)
-        
         let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(dailyButtonTapped))
         buttonView2.addGestureRecognizer(tapGesture2)
     }

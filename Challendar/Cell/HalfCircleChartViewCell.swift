@@ -12,7 +12,7 @@ import SwiftUI
 class HalfCircleChartViewCell: UICollectionViewCell {
     static var identifier = "HalfCircleChartViewCell"
     private var halfCircleHostingController: UIHostingController<ChallengeChartView>?
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -31,7 +31,7 @@ class HalfCircleChartViewCell: UICollectionViewCell {
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         
-
+        
         NSLayoutConstraint.activate([
             contentView.heightAnchor.constraint(equalToConstant: 206),
         ])
@@ -59,16 +59,30 @@ class HalfCircleChartViewCell: UICollectionViewCell {
         let chartView = ChallengeChartView(todoProgress: todoProgress)
         halfCircleHostingController?.rootView = chartView
     }
+    
+    func configureDetail(with todo: Todo){
+        let chartView = ChallengeChartView(percentage: todo.percentage)
+        halfCircleHostingController?.rootView = chartView
+    }
+
 }
 
 // 챌린지 반원 차트 뷰
 struct ChallengeChartView: View {
-    var todoProgress: [Todo]
+    var todoProgress: [Todo]?
+    var percentage: Double?
     
     private var progress: Double {
-        let total = Double(todoProgress.count)
-        let completed = todoProgress.filter { $0.percentage == 1.0 }.count
-        return total == 0 ? 0 : Double(completed) / total
+        if let todoProgress = todoProgress {
+            let total = Double(todoProgress.count)
+            let completed = todoProgress.filter { $0.percentage == 1.0 }.count
+            return total == 0 ? 0 : Double(completed) / total
+        }else if let percentage = percentage{
+            print(percentage)
+            return percentage
+        }else{
+            return 0
+        }
     }
     
     var trackLineWidth: CGFloat = 20

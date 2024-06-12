@@ -10,20 +10,11 @@ import SnapKit
 import FSCalendar
 
 class ChallengeDateCalendarView: UIView {
-    var dayModelForCurrentPage : [Day]? {
-        didSet{
-            dayModelForCurrentPage?.forEach{
-                print("DATE: \(DateFormatter.dateFormatterDay.string(from: $0.date))")
-                $0.toDo.forEach{
-                    print("Title: \($0.title)")
-                }
-            }
-        }
-    }
     var calendarView = FSCalendar(frame: .zero)
     var calendarLabel = UILabel()
     var prevButton = UIButton()
     var nextButton = UIButton()
+    var currentTodo : Todo?
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -54,13 +45,14 @@ class ChallengeDateCalendarView: UIView {
         nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         
         self.layer.cornerRadius = 20
+        self.layer.cornerCurve = .continuous
         self.backgroundColor = .challendarBlack80
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
         calendarView.locale = Locale(identifier: "ko_KR")
         calendarView.appearance.headerTitleColor = .clear
-        calendarView.headerHeight = 42
+        calendarView.headerHeight = 0
         
         //MARK: -캘린더 관련
         calendarView.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
@@ -69,17 +61,17 @@ class ChallengeDateCalendarView: UIView {
         calendarView.appearance.weekdayTextColor = .challendarWhite
         calendarView.appearance.titleWeekendColor = .challendarWhite
         calendarView.appearance.selectionColor = .clear
-        calendarView.appearance.titleSelectionColor = .challendarBlack
+        calendarView.appearance.titleSelectionColor = .red
         calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
         calendarView.appearance.todayColor = .clear
         calendarView.scrollDirection = .horizontal
         calendarView.calendarWeekdayView.weekdayLabels[0].textColor = .challendarWeekend
-//        calendarView.calendarWeekdayView.weekdayLabels.forEach{
-//            $0.adjustTextPosition(top: -4, right: 0)
-//        }
+        calendarView.calendarWeekdayView.weekdayLabels.forEach{
+            $0.adjustTextPosition(top: -4, right: 0)
+        }
         calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .challendarWeekend
         calendarView.placeholderType = .fillSixRows
-        calendarView.allowsMultipleSelection = true
+        calendarView.allowsMultipleSelection = false
         calendarView.delegate = self
         calendarView.dataSource = self
         
@@ -90,14 +82,14 @@ class ChallengeDateCalendarView: UIView {
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        
         calendarView.snp.makeConstraints{
-            $0.leading.bottom.equalToSuperview().inset(20)
+            $0.height.equalTo(332)
+            $0.leading.equalToSuperview().inset(20)
             $0.top.equalTo(calendarLabel.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(19)
         }
         calendarLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(26)
+            $0.top.equalToSuperview().offset(24)
             $0.leading.equalToSuperview().offset(20)
         }
         nextButton.snp.makeConstraints{
@@ -116,7 +108,6 @@ class ChallengeDateCalendarView: UIView {
         if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: calendarView.currentPage) {
             calendarView.setCurrentPage(previousMonth, animated: true)
             updateLabel(previousMonth)
-            NotificationCenter.default.post(name: NSNotification.Name("month"), object: previousMonth, userInfo: nil)
             calendarView.reloadData()
         }
     }
@@ -125,7 +116,6 @@ class ChallengeDateCalendarView: UIView {
         if let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: calendarView.currentPage) {
             calendarView.setCurrentPage(nextMonth, animated: true)
             updateLabel(nextMonth)
-            NotificationCenter.default.post(name: NSNotification.Name("month"), object: nextMonth, userInfo: nil)
             calendarView.reloadData()
         }
     }
@@ -143,44 +133,28 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
         self.layoutIfNeeded()
     }
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-//            NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
-    }
-    
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
         updateLabel(date)
-        NotificationCenter.default.post(name: NSNotification.Name("month"), object: date, userInfo: nil)
         calendar.reloadData()
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         if !date.isSameMonth(as: calendar.currentPage){
-            return .challendarCalendarPlaceholder
-        } else{
-            if let day = dayModelForCurrentPage?.first(where: {
-                $0.date.isSameDay(as: date)
-            }){
-                if day.date.isSameDay(as: Date()){
-                    return .challendarWhite
-                }else{
-                    switch day.percentage{
-                    case 0:
-                        if day.date < Date(){
-                            return .challendarPastDay
-                        }else{
-                            return .challendarWhite
-                        }
-                        
-                    default:
-                        return .challendarBlack100
-                    }
-                }
-            }
-            else{
-                return .challendarWhite
-            }
+            return .secondary800
         }
+        if date.isSameDay(as: Date()) {
+            return . challendarWhite
+        }
+        if let completed = self.currentTodo?.todayCompleted(date: date) {
+            if date < Date(){
+                return completed ? .challendarBlack : .secondary500
+            }else{
+                return completed ? .challendarBlack : .challendarWhite
+            }
+            
+        }
+        return .white
     }
 }
 
@@ -191,11 +165,7 @@ extension ChallengeDateCalendarView : FSCalendarDataSource {
         
         guard let cell = calendar.dequeueReusableCell(withIdentifier: TodoCalendarFSCell.identifier, for: date, at: position) as? TodoCalendarFSCell else { return FSCalendarCell() }
         
-        if let day = dayModelForCurrentPage?.first(where: {
-            $0.date.isSameDay(as: date) && date.isSameMonth(as: calendar.currentPage)
-        }){
-            cell.setViewWithData(day: day)
-        }
+        cell.setViewByComplete(completed: self.currentTodo?.todayCompleted(date: date) ?? false, date: date)
         return cell
     }
 }

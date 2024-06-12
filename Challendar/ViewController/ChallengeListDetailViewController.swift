@@ -14,36 +14,26 @@ import FSCalendar
 class ChallengeListDetailViewController: BaseViewController {
     
     // DayModel 데이터 연결부
-    private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
-    private var completedTodo : [Todo] = []
-    private var inCompletedTodo: [Todo] = []
-    var days : [Day] = []
     var changedMonth : Date?
     var currentDate : Date = Date()
     private var collectionView: UICollectionView!
 //    var newTodo: Todo? = challenge
     var newTodo: Todo? = CoreDataManager.shared.fetchTodos().last
-
+    
+    
+    
     override func viewDidLoad() {
-//        filterTodoitems()
         configureCollectionView()
         super.viewDidLoad()
         configureFloatingButton()
         configureCollectionView()
+        configureBackAndTitleNavigationBar(title: newTodo!.title, checkSetting: false)
+        
     }
     
 //    추후 추가될 todoitems section
     private func filterTodoitems(date: Date = Date()){
-        self.todoItems = todoItems.filter({
-            $0.startDate != nil
-        })
-        completedTodo = todoItems.filter({
-            $0.todayCompleted(date: date) == true
-        })
-        inCompletedTodo = todoItems.filter({
-            $0.todayCompleted(date: date) == false
-        })
-        days = Day.generateDaysForMonth(date: date, todos: self.todoItems)
+        
     }
     
     override func configureNotificationCenter(){
@@ -105,7 +95,7 @@ class ChallengeListDetailViewController: BaseViewController {
         collectionView.register(HalfCircleChartViewCell.self, forCellWithReuseIdentifier: HalfCircleChartViewCell.identifier)
         // Calendar cell
         collectionView.register(DetailCalendarCell.self, forCellWithReuseIdentifier: DetailCalendarCell.identifier)
-        collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         view.addSubview(collectionView)
     }
@@ -155,6 +145,16 @@ class ChallengeListDetailViewController: BaseViewController {
         
         return section
     }
+    
+    func createDate(year: Int, month: Int, day: Int) -> Date? {
+        let calendar = Calendar.current
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        components.day = day
+        return calendar.date(from: components)
+    }
+    
 }
 
 extension ChallengeListDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -177,11 +177,17 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
         switch indexPath.section {
         case 0:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HalfCircleChartViewCell.identifier, for: indexPath) as? HalfCircleChartViewCell else { return UICollectionViewCell() }
-            cell.configure(with: self.todoItems)
+            if let newTodo = newTodo {
+                cell.configureDetail(with: newTodo)
+            }
+            
             return cell
         case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCalendarCell.identifier, for: indexPath) as? DetailCalendarCell else { return UICollectionViewCell() }
-            cell.configureCalenderView(days: self.days)
+            if let newTodo = newTodo {
+                cell.configureCalenderView(todo: newTodo)
+            }
+            
             return cell
         default:
             return UICollectionViewCell()
@@ -190,12 +196,24 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
             
             switch indexPath.section {
             case 0:
                 // 퍼센티지 구간별 나눌 문구 필요
-                header.sectionLabel.text = "잘하고 있어요!"
+                header.sectionLabel.text = "도전을 끝까지 완수해보아요!"
+            case 1..<20:
+                header.sectionLabel.text = "시작이 반!"
+            case 21..<40:
+                header.sectionLabel.text = "힘을 내요 슈퍼파워!"
+            case 41..<60:
+                header.sectionLabel.text = "벌써 절반 가까이 했어요!"
+            case 61..<80:
+                header.sectionLabel.text = "정말 잘하고 있어요!"
+            case 81..<100:
+                header.sectionLabel.text = "거의 다 왔어요!"
+            case 100:
+                header.sectionLabel.text = "도전을 모두 완수했어요!"
             default:
                 header.sectionLabel.text = "챌린지 진행률"
             }
@@ -203,42 +221,6 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
         }
         return UICollectionReusableView()
     }
-}
-
-// 더미 데이터
-
-//func createDate(year: Int, month: Int, day: Int) -> Date? {
-//    let calendar = Calendar.current
-//    var components = DateComponents()
-//    components.year = year
-//    components.month = month
-//    components.day = day
-//    return calendar.date(from: components)
-//}
-
-//    func createDate() -> Date.locale {
-//        // Calendar와 DateComponents를 이용해 startDate와 endDate를 생성
-//        let calendar = Calendar.current
-//
-//        // 6월 1일의 날짜를 만듭니다.
-//        var startDateComponents = DateComponents()
-//        startDateComponents.year = 2024
-//        startDateComponents.month = 6
-//        startDateComponents.day = 1
-//        let startDate = calendar.date(from: startDateComponents)!
-//
-//        // 6월 30일의 날짜를 만듭니다.
-//        var endDateComponents = DateComponents()
-//        endDateComponents.year = 2024
-//        endDateComponents.month = 6
-//        endDateComponents.day = 30
-//        let endDate = calendar.date(from: endDateComponents)!
-//    }
     
-//let challenge: Todo =
-//Todo(title: "6/1~6/30", memo: "메모", startDate: createDate(year: 2024, month: 6, day: 1), endDate: createDate(year: 2024, month: 6, day: 30), completed: [true, true, true, true, true, true, true, true, false, true, false, true, true, true, true, true, true, false, true, false, true, true, true, true, true, true, false, true, false, true], isChallenge: true, percentage: 20)
-//        Todo(title: <#T##String#>, memo: <#T##String?#>, startDate: <#T##Date?#>, endDate: <#T##Date?#>, completed: <#T##[Bool]#>, isChallenge: <#T##Bool#>, percentage: <#T##Double#>, images: <#T##[UIImage]?#>)
-        
-        
-//    let challengeDay: Day = Day(date: <#T##Date#>, listCount: <#T##Int#>, completedListCount: <#T##Int#>, percentage: <#T##Double#>, todo: )
-
+    
+}

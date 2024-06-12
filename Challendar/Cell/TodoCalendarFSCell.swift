@@ -90,20 +90,20 @@ class TodoCalendarFSCell: FSCalendarCell {
         }
     }
     
-    func setViewByComplete(day: Day) {
-//        circleView.backgroundColor = colorByComplete(completed: challenge.completed)
+    func setViewByComplete(completed: Bool, date: Date) {
+        circleView.backgroundColor = colorByComplete(completed: completed)
+        
+        if date.isSameDay(as: Date()){
+            todayView.backgroundColor = .challendarBlack100
+        }
     }
     
-    private func colorByComplete(completed: [Bool]) -> [UIColor] {
-        var dateColor: [UIColor] = []
-        for complete in completed {
-            if complete == true {
-                dateColor.append(.challendarGreen100)
-            } else {
-                dateColor.append(.clear)
-            }
+    private func colorByComplete(completed: Bool) -> UIColor {
+        if completed {
+            return UIColor.primary200
+        }else{
+            return UIColor.clear
         }
-        return dateColor
     }
     
     required init(coder aDecoder: NSCoder!) {

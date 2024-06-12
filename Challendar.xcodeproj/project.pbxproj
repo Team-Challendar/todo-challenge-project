@@ -11,7 +11,6 @@
 		141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
-		1472ADA52C082A0F00145668 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
 		1472ADAD2C082A1000145668 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAC2C082A1000145668 /* Assets.xcassets */; };
 		1472ADB02C082A1000145668 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAF2C082A1000145668 /* Base */; };
@@ -78,8 +77,10 @@
 		14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F362C0A4B2500819B27 /* UITextFieldExtension.swift */; };
 		14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F382C0A4B3600819B27 /* UIViewExtension.swift */; };
 		14E1EF8A2C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */; };
-		2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
+		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
+		2EBF439B2C188C8E00064A77 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
+		2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */; };
 		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
 		B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */; };
 		B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */; };
@@ -88,7 +89,6 @@
 		B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA762C10D60000926B53 /* DailyViewController.swift */; };
 		B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */; };
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
-		B90CAA832C11856700926B53 /* DropdownButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA822C11856700926B53 /* DropdownButtonView.swift */; };
 		DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */; };
 		DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */; };
 		DE6EBEA52C0F187E002F6800 /* ChallengeListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */; };
@@ -172,6 +172,7 @@
 		14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarViewDifferableViewController.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSuccessViewController.swift; sourceTree = "<group>"; };
 		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
 		B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerBtnView.swift; sourceTree = "<group>"; };
 		B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YZCenterFlowLayout.swift; sourceTree = "<group>"; };
@@ -180,7 +181,6 @@
 		B90CAA762C10D60000926B53 /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
-		B90CAA822C11856700926B53 /* DropdownButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownButtonView.swift; sourceTree = "<group>"; };
 		DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCalendarCell.swift; sourceTree = "<group>"; };
 		DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeDateCalendarView.swift; path = Challendar/Component/ChallengeDateCalendarView.swift; sourceTree = SOURCE_ROOT; };
 		DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListDetailViewController.swift; sourceTree = "<group>"; };
@@ -251,6 +251,7 @@
 				14C97F132C098BE500819B27 /* AddTodo */,
 				1472ADD72C083AD400145668 /* SearchViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
+				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
 				1472ADE92C0840AD00145668 /* TabBarViewController.swift */,
 				1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */,
 				1472ADDB2C083B1000145668 /* TodoViewController.swift */,
@@ -334,7 +335,6 @@
 				B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */,
 				B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */,
 				B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */,
-				B90CAA822C11856700926B53 /* DropdownButtonView.swift */,
 				2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */,
 				DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */,
 			);
@@ -526,10 +526,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EBF439B2C188C8E00064A77 /* TodoCalendarViewController.swift in Sources */,
+				2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */,
 				1472ADF32C086AE300145668 /* Constraint.swift in Sources */,
 				149228FE2C0B1CE500D63368 /* DateExtension.swift in Sources */,
 				14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */,
-				1472ADA52C082A0F00145668 /* TodoCalendarViewController.swift in Sources */,
 				1472ADF12C0868E600145668 /* EmptyView.swift in Sources */,
 				14E1EF8A2C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift in Sources */,
 				14C3FA162C0C8B0F00ACAFB6 /* Todo.swift in Sources */,
@@ -542,9 +543,7 @@
 				14C97F332C0A4AF000819B27 /* BaseViewControllerExtension.swift in Sources */,
 				DEDEE28F2C0DEA47006AD1C6 /* DateBottomSheetCollectionViewCell.swift in Sources */,
 				14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */,
-				1472ADA52C082A0F00145668 /* TodoCalendarViewController.swift in Sources */,
 				1472ADD82C083AD400145668 /* SearchViewController.swift in Sources */,
-				B90CAA832C11856700926B53 /* DropdownButtonView.swift in Sources */,
 				1472ADE02C083F5D00145668 /* TabModel.swift in Sources */,
 				14C97F272C09D7B400819B27 /* DayModel.swift in Sources */,
 				B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */,
@@ -599,6 +598,7 @@
 				14C97F212C09A71800819B27 /* DateView.swift in Sources */,
 				14C97F1D2C09A4C800819B27 /* BottomSheetViewController.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
+				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
 				DEDEE28B2C0DEA20006AD1C6 /* SearchCollectionViewCell.swift in Sources */,
 				14BB8F082C101D7300FA92E8 /* TodoCalendarFSCell.swift in Sources */,

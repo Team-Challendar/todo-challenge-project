@@ -175,7 +175,6 @@ class TodoCalendarView: UIView {
         default:
             return
         }
-        //        calendar.reloadData()
     }
 }
 

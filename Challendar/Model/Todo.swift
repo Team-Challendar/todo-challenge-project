@@ -26,7 +26,7 @@ class Todo : Hashable{
     public var isChallenge: Bool = false
     public var percentage: Double = 0
     public var images: [UIImage]?
-    public var iscompleted = false
+    public var iscompleted = false  // 요게 새로 추가된 iscompleted 변수입니다.*
     
     init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Bool] = [], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil, iscompleted : Bool = false) {
         self.id = id

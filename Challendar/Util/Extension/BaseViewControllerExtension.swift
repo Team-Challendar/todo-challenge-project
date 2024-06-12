@@ -77,7 +77,7 @@ extension BaseViewController{
         
         return button
     }
-    func configureBackAndTitleNavigationBar(title: String) {
+    func configureBackAndTitleNavigationBar(title: String, checkSetting: Bool) {
         let view = UIView()
         let titleLabel = UILabel()
         titleLabel.text = title
@@ -111,12 +111,18 @@ extension BaseViewController{
         
         closeImageView.isUserInteractionEnabled = true
         var tapGesture = UITapGestureRecognizer()
-        tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+        if checkSetting {
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+        }else{
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(backButtonTapped))
+        }
+        
         
         closeImageView.addGestureRecognizer(tapGesture)
         view.translatesAutoresizingMaskIntoConstraints = false
         let titleBarButtonItem = UIBarButtonItem(customView: view)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem
+        self.configureSettingButtonNavigationBar()
     }
     func configureNavigationBar(checkFirst: Bool){
         let closeImageView = UIImageView()
@@ -204,7 +210,7 @@ extension BaseViewController{
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 24, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0)
         section.interGroupSpacing = 8
         
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))

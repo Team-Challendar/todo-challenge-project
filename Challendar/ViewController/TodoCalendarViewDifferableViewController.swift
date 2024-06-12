@@ -11,7 +11,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
     private var collectionView: UICollectionView!
     
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
-    private var completedTodo : [Todo] = []
+    private var completedTodo: [Todo] = []
     private var inCompletedTodo: [Todo] = []
     var days : [Day]?
     var currentState: currentCalendar? = .calendar
@@ -49,7 +49,6 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(dateChanged(notification:)), name: NSNotification.Name("date"), object: currentDate)
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
     }
-    
     override func configureConstraint() {
         super.configureConstraint()
         
@@ -119,9 +118,11 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         button = configureCalendarButtonNavigationBar(title: title)
         button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
     }
-    
     private func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
@@ -183,8 +184,8 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
                 cell.configure(with: completedTodo, date: self.currentDate ?? Date())
                 return cell
             }
-            
         }
+        
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
             guard kind == UICollectionView.elementKindSectionHeader else {
                 return nil
@@ -234,8 +235,9 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    @objc func dateChanged(notification : Notification){
-        guard let date = notification.object as? Date else {return}
+    @objc func dateChanged(notification: Notification) {
+        todoItems = CoreDataManager.shared.fetchTodos()
+        guard let date = notification.object as? Date else { return }
         self.currentDate = date
         completedTodo = []
         inCompletedTodo = []
@@ -244,9 +246,9 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
     
-    @objc func coreDataUpdated(){
+    @objc func coreDataUpdated() {
         todoItems = CoreDataManager.shared.fetchTodos()
-        self.filterTodoitems(date:  self.currentDate ?? Date())
+        self.filterTodoitems(date: self.currentDate ?? Date())
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
     
@@ -326,7 +328,6 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
             }
         }
     }
-    
 }
 
 extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDelegate {
