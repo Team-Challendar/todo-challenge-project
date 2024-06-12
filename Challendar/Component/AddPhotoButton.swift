@@ -24,10 +24,10 @@ class AddPhotoButton: UIButton {
     func setup(count : Int = 0) {
         var configuration = UIButton.Configuration.filled()
         var titleContainer = AttributeContainer()
-        titleContainer.foregroundColor = UIColor.challendarBlack60
+        titleContainer.foregroundColor = UIColor.secondary700
         titleContainer.font = .pretendardMedium(size: 13)
         configuration.attributedTitle = AttributedString("\(count)/5", attributes: titleContainer)
-        configuration.image = UIImage.camera.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal)
+        configuration.image = UIImage.camera.withTintColor(.secondary700, renderingMode: .alwaysOriginal)
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 17)
         configuration.imagePadding = 5
         
@@ -39,7 +39,7 @@ class AddPhotoButton: UIButton {
     
     private func setupUI(){
         self.layer.cornerRadius = photoCellCornerRadius
-        self.layer.borderColor = UIColor.challendarBlack60.cgColor
+        self.layer.borderColor = UIColor.secondary700.cgColor
         self.layer.borderWidth = 1
     }
     

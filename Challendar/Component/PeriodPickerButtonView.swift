@@ -28,7 +28,7 @@ class PeriodPickerButtonView: UIView {
         label.textColor = .secondary700
         label.font = .pretendardRegular(size: 17)
         let imageView = UIImageView(image: .monthly0)
-        imageView.tintColor = .challendarBlack60
+        imageView.tintColor = .secondary700
         
         view.addSubview(label)
         view.addSubview(imageView)
@@ -55,7 +55,7 @@ class PeriodPickerButtonView: UIView {
         label.textColor = .secondary700
         label.font = .pretendardRegular(size: 17)
         let imageView = UIImageView(image: .daily0)
-        imageView.tintColor = .challendarBlack60
+        imageView.tintColor = .secondary700
         
         view.addSubview(label)
         view.addSubview(imageView)
@@ -118,7 +118,7 @@ class PeriodPickerButtonView: UIView {
         for (index, buttonView) in buttonViews.enumerated() {
             if index > 0 {
                 let border = UIView()
-                border.backgroundColor = .challendarBlack60
+                border.backgroundColor = .secondary700
                 buttonView.addSubview(border)
                 border.snp.makeConstraints { make in
                     make.top.leading.trailing.equalToSuperview()

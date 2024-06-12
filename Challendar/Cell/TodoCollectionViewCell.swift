@@ -55,7 +55,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     
     private func setupCheckButton() {
         checkButton = UIButton(type: .system)
-        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
+        checkButton.setImage(.done0.withTintColor(.secondary800, renderingMode: .alwaysOriginal), for: .normal)
         checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
@@ -88,7 +88,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     func configure(with item: Todo) {
         self.todoItem = item
         titleLabel.text = item.title
-        contentView.backgroundColor = .challendarBlack80
+        contentView.backgroundColor = .secondary850
         
         // 완료 여부에 따라 체크 버튼 상태 설정
         checkButton.isSelected = item.iscompleted
@@ -99,7 +99,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
         if checkButton.isSelected {
             if let title = titleLabel.text {
                 titleLabel.attributedText = title.strikeThrough()
-                titleLabel.textColor = .challendarBlack60
+                titleLabel.textColor = .secondary800
             }
         } else {
             if let title = titleLabel.text {

@@ -25,7 +25,7 @@ class SuccessViewController: BaseViewController {
         })
     }
     override func configureUI() {
-        dimmedView.backgroundColor = UIColor.challendarBlack90.withAlphaComponent(dimmedViewAlpha)
+        dimmedView.backgroundColor = UIColor.secondary900.withAlphaComponent(dimmedViewAlpha)
         if isChallenge {
             imageView.image = .partyPopper
             textLabel.text = "도전 목록에 추가했어요!"

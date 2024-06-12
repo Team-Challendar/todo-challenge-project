@@ -40,7 +40,7 @@ class ChallengeCheckViewController: BaseViewController {
     }
     override func configureUI() {
         super.configureUI()
-        dimmedView.backgroundColor = UIColor.challendarBlack90
+        dimmedView.backgroundColor = UIColor.secondary800
         dimmedView.alpha = 0
     }
     override func configureConstraint() {

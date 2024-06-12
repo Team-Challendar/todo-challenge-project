@@ -58,19 +58,19 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
-        stateLabel.textColor = .primary200
+        stateLabel.textColor = .challendarGreen200
         stateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(stateLabel)
         
         progressBar = UIProgressView(progressViewStyle: .default)
         progressBar.translatesAutoresizingMaskIntoConstraints = false
-        progressBar.progressTintColor = .primary200
+        progressBar.progressTintColor = .challendarGreen200
         progressBar.trackTintColor = .secondary800
         contentView.addSubview(progressBar)
         
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.secondary800, renderingMode: .alwaysOriginal), for: .normal)
-        checkButton.setImage(.done2.withTintColor(.primary200, renderingMode: .alwaysOriginal), for: .selected)
+        checkButton.setImage(.done2.withTintColor(.challendarGreen200, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
         checkButton.translatesAutoresizingMaskIntoConstraints = false

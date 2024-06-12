@@ -32,10 +32,10 @@ class CalendarCell: FSCalendarCell {
             contentView.insertSubview($0, at: 0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        todayView.backgroundColor = .challendarBlack100
+        todayView.backgroundColor = .challendarBlack
         circleView.backgroundColor = .challendarGreen100
-        leftView.backgroundColor = .challendarGreen80
-        rightView.backgroundColor = .challendarGreen80
+        leftView.backgroundColor = .challendarGreen800
+        rightView.backgroundColor = .challendarGreen800
         self.titleLabel.textAlignment = .center
     }
     
@@ -69,7 +69,7 @@ class CalendarCell: FSCalendarCell {
         }
     }
     func updateBackImage(_ dateType: SelectedDateType) {
-        titleLabel.textColor = .challendarBlack100
+        titleLabel.textColor = .challendarBlack
         todayView.isHidden = true
             switch dateType {
             case .singleDate:
@@ -104,9 +104,9 @@ class CalendarCell: FSCalendarCell {
             self.titleLabel.textColor = .challendarWhite
         }else{
             todayView.isHidden = false
-            todayView.backgroundColor = .challendarBlack100
+            todayView.backgroundColor = .challendarBlack
             self.titleLabel.backgroundColor = .clear
-            self.titleLabel.textColor = .challendarBlack100
+            self.titleLabel.textColor = .challendarBlack
         }
         
     }

@@ -161,13 +161,13 @@ class SearchViewController: BaseViewController {
             return
         }
         
-        searchTextField.backgroundColor = .challendarBlack80
+        searchTextField.backgroundColor = .secondary800
         searchTextField.font = .pretendardMedium(size: 18)
         searchTextField.layer.borderColor = UIColor(white: 1, alpha: 0.02).cgColor
         searchTextField.layer.borderWidth = 1
         searchTextField.layer.cornerRadius = 12
         searchTextField.clipsToBounds = true
-        searchTextField.tintColor = .challendarBlack80
+        searchTextField.tintColor = .secondary800
         searchTextField.textColor = .challendarWhite
         
         if let placeholderText = searchBar.placeholder {
@@ -175,7 +175,7 @@ class SearchViewController: BaseViewController {
                 string: placeholderText,
                 attributes: [
                     NSAttributedString.Key.font: UIFont.pretendardRegular(size: 18),
-                    NSAttributedString.Key.foregroundColor: UIColor.challendarBlack60
+                    NSAttributedString.Key.foregroundColor: UIColor.secondary600
                 ]
             )
         }
@@ -199,7 +199,7 @@ class SearchViewController: BaseViewController {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 8, y: 0, width: 24, height: 24)
-        imageView.tintColor = .challendarBlack60
+        imageView.tintColor = .secondary600
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 22))
         paddingView.addSubview(imageView)
         textField.leftView = paddingView

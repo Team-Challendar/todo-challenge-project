@@ -8,7 +8,7 @@ extension UITextField {
         clearButton.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         clearButton.contentMode = .scaleAspectFit
         clearButton.addTarget(self, action: #selector(UITextField.clear(sender:)), for: .touchUpInside)
-        clearButton.tintColor = .challendarBlack60
+        clearButton.tintColor = .secondary600
         self.rightView = clearButton
         self.rightViewMode = mode
     }

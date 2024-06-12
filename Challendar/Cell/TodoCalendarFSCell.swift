@@ -67,7 +67,7 @@ class TodoCalendarFSCell: FSCalendarCell {
         todayView.backgroundColor = .alertTomato
     }
     func selectDate(){
-        selectedView.backgroundColor = .challendarBlack100
+        selectedView.backgroundColor = .challendarBlack
     }
     private func colorByPercentage(percentage : Double) -> UIColor {
         switch percentage{
@@ -94,13 +94,13 @@ class TodoCalendarFSCell: FSCalendarCell {
         circleView.backgroundColor = colorByComplete(completed: completed)
         
         if date.isSameDay(as: Date()){
-            todayView.backgroundColor = .challendarBlack100
+            todayView.backgroundColor = .challendarBlack
         }
     }
     
     private func colorByComplete(completed: Bool) -> UIColor {
         if completed {
-            return UIColor.primary200
+            return UIColor.challendarGreen200
         }else{
             return UIColor.clear
         }

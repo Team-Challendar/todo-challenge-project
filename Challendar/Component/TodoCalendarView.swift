@@ -51,7 +51,7 @@ class TodoCalendarView: UIView {
         
         self.layer.cornerRadius = 20
         self.layer.cornerCurve = .continuous
-        self.backgroundColor = .challendarBlack80
+        self.backgroundColor = .secondary800
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
@@ -61,20 +61,20 @@ class TodoCalendarView: UIView {
         
         //MARK: -캘린더 관련
         calendar.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
-        calendar.backgroundColor = .challendarBlack80
+        calendar.backgroundColor = .secondary800
         calendar.weekdayHeight = 44
         calendar.appearance.weekdayTextColor = .challendarWhite
         calendar.appearance.titleWeekendColor = .challendarWhite
         calendar.appearance.selectionColor = .clear
         calendar.appearance.titleSelectionColor  = .none
-        calendar.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
+        calendar.appearance.titlePlaceholderColor = .white
         calendar.appearance.todayColor = .clear
         calendar.scrollDirection = .horizontal
-        calendar.calendarWeekdayView.weekdayLabels[0].textColor = .challendarWeekend
+        calendar.calendarWeekdayView.weekdayLabels[0].textColor = .secondary500
         calendar.calendarWeekdayView.weekdayLabels.forEach{
             $0.adjustTextPosition(top: -4, right: 0)
         }
-        calendar.calendarWeekdayView.weekdayLabels[6].textColor = .challendarWeekend
+        calendar.calendarWeekdayView.weekdayLabels[6].textColor = .secondary500
         calendar.placeholderType = .fillSixRows
         calendar.allowsMultipleSelection = false
         calendar.delegate = self
@@ -221,7 +221,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 return .challendarWhite
             }
             if !date.isSameMonth(as: calendar.currentPage){
-                return .challendarCalendarPlaceholder
+                return .secondary800
             }else{
                 if let day = dayModelForCurrentPage?.first(where: {
                     $0.date.isSameDay(as: date)
@@ -229,13 +229,13 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     switch day.percentage{
                     case 0:
                         if day.date < Date(){
-                            return .challendarPastDay
+                            return .secondary500
                         }else{
                             return .challendarWhite
                         }
                         
                     default:
-                        return .challendarBlack100
+                        return .challendarBlack
                     }
                 }
                 else{
@@ -252,13 +252,13 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 switch day.percentage{
                 case 0:
                     if day.date < Date(){
-                        return .challendarPastDay
+                        return .secondary500
                     }else{
                         return .challendarWhite
                     }
                     
                 default:
-                    return .challendarBlack100
+                    return .challendarBlack
                 }
                 
             }

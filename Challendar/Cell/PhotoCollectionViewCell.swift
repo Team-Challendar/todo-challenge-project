@@ -31,7 +31,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         self.deleteButton.setImage(UIImage.deleteCircleS, for: .normal)
         self.deleteButton.imageView?.contentMode = .scaleAspectFit
         
-        self.backgroundColor = .challendarBlack90
+        self.backgroundColor = .clear
         let imageView = PhotoImageView(image: image)
         self.addSubview(imageView)
         self.addSubview(deleteButton)

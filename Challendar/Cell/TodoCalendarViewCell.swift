@@ -80,7 +80,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         editButtonImage.backgroundColor = .clear
         
         enrollChallengeContainer = UIView()
-        enrollChallengeContainer.backgroundColor = .primary200
+        enrollChallengeContainer.backgroundColor = .challendarGreen200
         enrollChallengeContainer.layer.cornerRadius = 20
         enrollChallengeContainer.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
         enrollChallengeButton = UIButton()
@@ -118,7 +118,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         container.addSubview(stateLabel)
                
         checkButton = UIButton(type: .system)
-        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
+        checkButton.setImage(.done0.withTintColor(.secondary600, renderingMode: .alwaysOriginal), for: .normal)
         checkButton.setImage(.done2.withTintColor(.challendarBlue600, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
@@ -263,7 +263,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
         self.currentDate = date
-        contentView.backgroundColor = .challendarBlack80
+        contentView.backgroundColor = .secondary800
         // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
         checkButton.isSelected = item.todayCompleted(date: date) ?? false
         updateTitleLabel()
@@ -273,7 +273,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         if checkButton.isSelected {
             if let title = titleLabel.text {
                 titleLabel.attributedText = title.strikeThrough()
-                titleLabel.textColor = .challendarBlack60
+                titleLabel.textColor = .secondary600
             }
         } else {
             if let title = titleLabel.text {

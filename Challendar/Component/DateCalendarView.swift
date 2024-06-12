@@ -38,7 +38,7 @@ class DateCalendarView: UIView {
     }
     
     private func configureUI(){
-        emptyView.backgroundColor = .challendarEmpty
+        emptyView.backgroundColor = .secondary850
         emptyView.layer.cornerRadius = 2.5
         emptyView.clipsToBounds = true
         
@@ -51,13 +51,13 @@ class DateCalendarView: UIView {
         prevButton.backgroundColor = .clear
         
         confirmButton.setTitle("선택", for: .normal)
-        confirmButton.setTitleColor(.challendarBlack60, for: .normal)
+        confirmButton.setTitleColor(.secondary600, for: .normal)
         confirmButton.backgroundColor = .clear
         confirmButton.titleLabel?.font = .pretendardSemiBold(size: 16)
         confirmButton.isEnabled = false
         
         self.layer.cornerRadius = 20
-        self.backgroundColor = .challendarBlack80
+        self.backgroundColor = .secondary800
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
@@ -66,21 +66,21 @@ class DateCalendarView: UIView {
         calendarView.headerHeight = 0
         //MARK: -캘린더 관련
         calendarView.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.identifier)
-        calendarView.backgroundColor = .challendarBlack80
+        calendarView.backgroundColor = .secondary800
         calendarView.weekdayHeight = 46
         calendarView.rowHeight = 46
         calendarView.appearance.weekdayTextColor = .challendarWhite
         calendarView.appearance.titleWeekendColor = .challendarWhite
         calendarView.appearance.selectionColor = .clear
-        calendarView.appearance.titleSelectionColor = .challendarBlack100
-        calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
+        calendarView.appearance.titleSelectionColor = .challendarBlack
+        calendarView.appearance.titlePlaceholderColor = .white
         calendarView.appearance.todayColor = .clear
         calendarView.scrollDirection = .horizontal
         calendarView.calendarWeekdayView.weekdayLabels.forEach{
             $0.font = .pretendardSemiBold(size: 13)
         }
-        calendarView.calendarWeekdayView.weekdayLabels[0].textColor = .challendarWeekend
-        calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .challendarWeekend
+        calendarView.calendarWeekdayView.weekdayLabels[0].textColor = .secondary500
+        calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .secondary500
         calendarView.placeholderType = .fillSixRows
         calendarView.allowsMultipleSelection = true
         calendarView.delegate = self
@@ -140,7 +140,7 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         self.layoutIfNeeded()
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        confirmButton.setTitleColor(.challendarBlack60, for: .normal)
+        confirmButton.setTitleColor(.secondary600, for: .normal)
         if firstDate == nil {
             firstDate = date
             datesRange = [firstDate!]
@@ -206,11 +206,11 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         if !date.isSameMonth(as: calendar.currentPage){
-            return .challendarCalendarPlaceholder
+            return .secondary500
         }
         
         if datesRange.contains(where: { $0 == date }){
-            return .challendarBlack100
+            return .challendarBlack
         }else{
             return .challendarWhite
         }

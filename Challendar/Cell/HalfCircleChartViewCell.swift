@@ -27,7 +27,7 @@ class HalfCircleChartViewCell: UICollectionViewCell {
     private func setupViews() {
         contentView.layer.cornerRadius = 20
         contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .challendarBlack80
+        contentView.backgroundColor = .secondary800
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         
@@ -124,7 +124,7 @@ struct ChallengeChartView: View {
                     .position(center)
             }
             .frame(width: chartSize.width, height: chartSize.height)
-            .background(Color(.challendarBlack80))
+            .background(Color(.secondary800))
         }
         .frame(width: 220, height: 110)
         .padding(0)

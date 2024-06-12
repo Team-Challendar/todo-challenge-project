@@ -20,8 +20,8 @@ class CustomBounceAnimation : RAMItemAnimation {
     }
     
     override func deselectAnimation(_ icon: UIImageView, textLabel: UILabel, defaultTextColor: UIColor, defaultIconColor: UIColor) {
-        icon.tintColor = .challendarBlack60
-        textLabel.textColor = .challendarBlack60
+        icon.tintColor = .secondary600
+        textLabel.textColor = .secondary600
         textLabel.font = .pretendardSemiBold(size: 12)
         icon.image = deSelectedImage
     }

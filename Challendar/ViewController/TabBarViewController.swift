@@ -37,10 +37,10 @@ class TabBarViewController: RAMAnimatedTabBarController {
 //            $0.iconView!.icon.frame.origin.x = oldCenter
 //        }
         let standard = UITabBarAppearance()
-        standard.backgroundColor = .challendarBlack90
+        standard.backgroundColor = .secondary900
         self.tabBar.standardAppearance = standard
         self.tabBar.scrollEdgeAppearance = standard
-        self.tabBar.layer.addBorder([.top], color: .challendarTabBorder, width: 0.5)
+        self.tabBar.layer.addBorder([.top], color: .secondary600, width: 0.5)
         
     }
     
@@ -50,7 +50,7 @@ class TabBarViewController: RAMAnimatedTabBarController {
             let nav = UINavigationController(rootViewController: tab.vc)
             tabsItem[index] = RAMAnimatedTabBarItem(title: "", image: tab.image, selectedImage: tab.selectedImage)
             tabsItem[index].animation = CustomBounceAnimation(selectedImage: tab.selectedImage, deSelectedImage: tab.image)
-            tabsItem[index].iconColor = .challendarBlack60
+            tabsItem[index].iconColor = .secondary600
             tabsItem[index].textFontSize = 12
             nav.tabBarItem = tabsItem[index]
             nav.tabBarItem.title = tab.title

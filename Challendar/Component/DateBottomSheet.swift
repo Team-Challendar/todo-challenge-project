@@ -30,14 +30,14 @@ class DateBottomSheet: UIView {
     }
     
     func configureUI(){
-        self.backgroundColor = .challendarBlack80
+        self.backgroundColor = .secondary850
         applybutton.nonApplyState()
         laterButton.laterState()
         stackView.axis = .horizontal
         stackView.spacing = 8
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
-        emptyView.backgroundColor = .challendarEmpty
+        emptyView.backgroundColor = UIColor(red: 0.761, green: 0.761, blue: 0.761, alpha: 0.5)
         emptyView.layer.cornerRadius = 2.5
         emptyView.clipsToBounds = true
     }
@@ -52,7 +52,7 @@ class DateBottomSheet: UIView {
         listCollectionView.dataSource = self
         listCollectionView.isScrollEnabled = false
         listCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        listCollectionView.backgroundColor = .challendarBlack80
+        listCollectionView.backgroundColor = .secondary850
         listCollectionView.register(DateBottomSheetCollectionViewCell.self, forCellWithReuseIdentifier: DateBottomSheetCollectionViewCell.identifier)
         listCollectionView.showsVerticalScrollIndicator = false
         listCollectionView.showsHorizontalScrollIndicator = false

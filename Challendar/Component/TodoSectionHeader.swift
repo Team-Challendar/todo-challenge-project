@@ -7,16 +7,16 @@ class TodoSectionHeader: UICollectionReusableView {
     let headerLabel: UILabel = {
         let label = UILabel()
         label.font = .pretendardRegular(size: 14)
-        label.textColor = .challendarBlack60
+        label.textColor = .secondary600
         return label
     }()
     
     let deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle("지우기", for: .normal) // 버튼 텍스트 설정
-        button.setTitleColor(.challendarBlack60, for: .normal) // 텍스트 색상을 .challendarBlack60으로 설정
+        button.setTitleColor(.secondary600, for: .normal) // 텍스트 색상을 .challendarBlack60으로 설정
         button.titleLabel?.font = .pretendardRegular(size: 14) // 폰트를 .pretendardRegular(size: 14)로 설정
-        button.backgroundColor = .challendarBlack90 // 배경색을 현재 배경과 동일하게 설정
+        button.backgroundColor = .secondary900 // 배경색을 현재 배경과 동일하게 설정
         button.isHidden = true // 기본적으로는 숨김 상태로 설정
         button.sizeToFit() // 버튼의 크기를 텍스트에 맞게 조정
         return button

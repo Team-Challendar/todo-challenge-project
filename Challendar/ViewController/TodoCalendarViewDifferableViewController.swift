@@ -31,7 +31,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
     }
     override func configureUI() {
         super.configureUI()
-        dimmedView.backgroundColor = UIColor.challendarBlack90.withAlphaComponent(0)
+        dimmedView.backgroundColor = UIColor.secondary900.withAlphaComponent(0)
         topContainer.backgroundColor = .clear
         dailyView.isHidden = true
     }

@@ -24,11 +24,11 @@ class DateView: UIView {
     private func setup(){
         textLabel.text = "나중에 정할래요"
         textLabel.font = .pretendardMedium(size: 18)
-        textLabel.textColor = .challendarBlack60
+        textLabel.textColor = .secondary700
         arrowImageView.image = .arrowDown
         textLabel.backgroundColor = .clear
         arrowImageView.backgroundColor = .clear
-        self.backgroundColor = .challendarBlack80
+        self.backgroundColor = .secondary850
         configureConstraint()
     }
     

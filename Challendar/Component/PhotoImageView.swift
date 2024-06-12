@@ -21,7 +21,7 @@ class PhotoImageView: UIImageView {
     
     func setupUI(){
         self.layer.cornerRadius = photoCellCornerRadius
-        self.layer.borderColor = UIColor.challendarBlack60.cgColor
+        self.layer.borderColor = UIColor.secondary600.cgColor
         self.layer.borderWidth = 1
         self.clipsToBounds = true
         self.translatesAutoresizingMaskIntoConstraints = false

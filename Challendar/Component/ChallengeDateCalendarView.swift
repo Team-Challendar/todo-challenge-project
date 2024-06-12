@@ -46,7 +46,7 @@ class ChallengeDateCalendarView: UIView {
         
         self.layer.cornerRadius = 20
         self.layer.cornerCurve = .continuous
-        self.backgroundColor = .challendarBlack80
+        self.backgroundColor = .secondary800
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
@@ -56,20 +56,20 @@ class ChallengeDateCalendarView: UIView {
         
         //MARK: -캘린더 관련
         calendarView.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
-        calendarView.backgroundColor = .challendarBlack80
+        calendarView.backgroundColor = .secondary800
         calendarView.weekdayHeight = 44
         calendarView.appearance.weekdayTextColor = .challendarWhite
         calendarView.appearance.titleWeekendColor = .challendarWhite
         calendarView.appearance.selectionColor = .clear
         calendarView.appearance.titleSelectionColor = .red
-        calendarView.appearance.titlePlaceholderColor = .challendarCalendarPlaceholder
+        calendarView.appearance.titlePlaceholderColor = .white
         calendarView.appearance.todayColor = .clear
         calendarView.scrollDirection = .horizontal
-        calendarView.calendarWeekdayView.weekdayLabels[0].textColor = .challendarWeekend
+        calendarView.calendarWeekdayView.weekdayLabels[0].textColor = .secondary500
         calendarView.calendarWeekdayView.weekdayLabels.forEach{
             $0.adjustTextPosition(top: -4, right: 0)
         }
-        calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .challendarWeekend
+        calendarView.calendarWeekdayView.weekdayLabels[6].textColor = .secondary500
         calendarView.placeholderType = .fillSixRows
         calendarView.allowsMultipleSelection = false
         calendarView.delegate = self

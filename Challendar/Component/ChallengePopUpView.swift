@@ -29,7 +29,7 @@ class ChallengePopUpView: UIView {
     
 
     func configureUI(){
-        self.backgroundColor = .challendarBlack80
+        self.backgroundColor = .secondary850
         self.layer.cornerRadius = 20
         self.layer.cornerCurve = .continuous
         
@@ -50,7 +50,7 @@ class ChallengePopUpView: UIView {
         
         subTitleLabel.text = Speech.list.randomElement()?.text
         subTitleLabel.font = .pretendardRegular(size: 13)
-        subTitleLabel.textColor = .challendarGrey50
+        subTitleLabel.textColor = .secondary700
         subTitleLabel.textAlignment = .center
         
     }

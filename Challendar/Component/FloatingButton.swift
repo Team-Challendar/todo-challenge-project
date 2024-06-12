@@ -20,10 +20,10 @@ class FloatingButton: UIButton {
     }
     
     private func setup() {
-        self.backgroundColor = .challendarEmerald
-        self.setImage(.fab.withTintColor(.challendarBlack100, renderingMode: .alwaysOriginal), for: .normal)
+        self.backgroundColor = .alertEmerald
+        self.setImage(.fab.withTintColor(.challendarBlack, renderingMode: .alwaysOriginal), for: .normal)
         self.layer.cornerRadius = 60 / 2
-        self.layer.borderColor = UIColor.challendarBlack60.cgColor
+        self.layer.borderColor = UIColor.secondary600.cgColor
         self.layer.borderWidth = 1
         self.clipsToBounds = true
         setupShadow()

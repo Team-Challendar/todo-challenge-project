@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navigationBarAppearance.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor : UIColor.white
             ]
-            navigationBarAppearance.backgroundColor = UIColor.challendarBlack90
+            navigationBarAppearance.backgroundColor = UIColor.secondary900
             UINavigationBar.appearance().standardAppearance = navigationBarAppearance
             UINavigationBar.appearance().compactAppearance = navigationBarAppearance
             UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
