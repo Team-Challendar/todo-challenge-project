@@ -13,7 +13,6 @@ class TodoCalendarCell: UICollectionViewCell {
     var calanderView = TodoCalendarView()
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-
     }
     
     override init(frame: CGRect) {

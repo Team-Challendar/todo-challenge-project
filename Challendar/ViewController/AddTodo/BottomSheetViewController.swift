@@ -75,7 +75,7 @@ class BottomSheetViewController: UIViewController {
         
     }
     func configureUI(){
-        dimmedView.backgroundColor = UIColor.challendarBlack90
+        dimmedView.backgroundColor = UIColor.black
         dimmedView.alpha = 0
 
         dateBottomSheet.layer.cornerRadius = 10

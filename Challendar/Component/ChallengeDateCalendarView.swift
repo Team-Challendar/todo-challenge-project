@@ -133,7 +133,6 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
         self.layoutIfNeeded()
     }
     
-    
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
         updateLabel(date)

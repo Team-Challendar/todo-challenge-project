@@ -18,11 +18,15 @@ class Day : Hashable{
     }
     func hash(into hasher: inout Hasher) {
         hasher.combine(date)
+        hasher.combine(listCount)
+        hasher.combine(completedListCount)
+        hasher.combine(percentage)
+        hasher.combine(toDo)
     }
     
     // Implementing the == operator for Hashable
     static func == (lhs: Day, rhs: Day) -> Bool {
-        return lhs.date == rhs.date
+        return lhs.date == rhs.date && lhs.listCount == rhs.listCount && lhs.completedListCount == rhs.completedListCount && lhs.percentage == rhs.percentage && lhs.toDo == rhs.toDo
     }
 }
 

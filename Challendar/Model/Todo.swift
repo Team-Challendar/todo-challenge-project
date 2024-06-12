@@ -16,9 +16,6 @@ class Todo : Hashable{
         didSet{
             guard let startDate = startDate else {return}
             completed = [Bool](repeating: false, count: ((endDate?.daysBetween(startDate) ?? 0) + 1))
-            print(DateFormatter.dateFormatterALL.string(from: startDate))
-            print(DateFormatter.dateFormatterALL.string(from: endDate!))
-            print(completed.count)
         }
     }
     public var completed: [Bool] = []{
@@ -90,10 +87,19 @@ class Todo : Hashable{
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(title)
+        hasher.combine(memo)
+        hasher.combine(startDate)
+        hasher.combine(endDate)
+        hasher.combine(completed)
+        hasher.combine(isChallenge)
+        hasher.combine(percentage)
+        hasher.combine(images)
+        hasher.combine(iscompleted)
     }
     
     // Equatable 프로토콜을 준수하도록 구현
     static func ==(lhs: Todo, rhs: Todo) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.title == rhs.title && lhs.memo == rhs.memo && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate && lhs.completed == rhs.completed && lhs.isChallenge == rhs.isChallenge && lhs.percentage == rhs.percentage && lhs.images == rhs.images && lhs.iscompleted == rhs.iscompleted
     }
 }

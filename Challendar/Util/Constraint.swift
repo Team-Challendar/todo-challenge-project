@@ -26,7 +26,7 @@ public let dateLabelHorizontalPadding = 24
 public let dateLabelVerticalPadding = 25.5
 
 // MARK: - BottomSheetViewController 에서 사용하는 Constraint
-public let dimmedViewAlpha = 0.7
+public let dimmedViewAlpha = 0.5
 public let checkMarkVerticalPadding = 12
 public let checkMarkHorizontalPadding = 8
 public let textLabelVerticalPadding = 14
@@ -45,3 +45,4 @@ public let popUpHeight = 311
 var initialCalendarHeight: CGFloat = 404
 var minCalendarHeight: CGFloat = 174
 var maxCalendarHeight: CGFloat = 404
+var dailyHeight : CGFloat = 258
