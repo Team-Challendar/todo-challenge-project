@@ -19,7 +19,7 @@ class TodoTitleTextField: UITextField {
         )
         self.font = .pretendardMedium(size: 18)
         self.tintColor = .challendarGreen100
-        self.textColor = .challendarWhite
+        self.textColor = .secondary700
         self.autocorrectionType = .no
         self.spellCheckingType = .no
         self.clearButtonMode = .never

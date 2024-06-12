@@ -13,7 +13,7 @@ class EditTodoTitleViewController: BaseViewController {
     let todoTextField = TodoTitleTextField(placeholder: "고양이 츄르 주문하기")
     
     // 기한 질문 UI 컴포넌트
-    let dateAskLabel = EditTitleLabel(text: "기한을 선택해주세요")
+    let dateAskLabel = EditTitleLabel(text: "기한을 정해주세요")
     let dateAskView = EmptyView()
     let dateView = DateView()
     var newTodo : Todo?
@@ -21,19 +21,13 @@ class EditTodoTitleViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .secondary900
         configureNavigationBar(checkFirst: true)
-        
-        titleLabel.backgroundColor = .systemPink
-        titleView.backgroundColor = .cyan
-        todoTextField.backgroundColor = .black
-        
-        dateAskLabel.backgroundColor = .blue
-        dateAskView.backgroundColor = .green
+        titleView.backgroundColor = .secondary850
+        dateAskView.backgroundColor = .secondary850
     }
     
-    
     override func configureConstraint(){
-        
         
         titleView.addSubview(todoTextField)
         dateAskView.addSubview(dateView) // 나연님 짱..
@@ -75,5 +69,3 @@ class EditTodoTitleViewController: BaseViewController {
         }
     }
 }
-
-
