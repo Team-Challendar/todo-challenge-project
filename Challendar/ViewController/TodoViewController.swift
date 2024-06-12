@@ -19,9 +19,14 @@ class TodoViewController: BaseViewController, PickerBtnViewDelegate {
         button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
         pickerBtnView.delegate = self
         loadData()
-    }
+   
     
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
+    tapGesture.cancelsTouchesInView = false
+    view.addGestureRecognizer(tapGesture)
     
+    pickerBtnView.delegate = self
+}
     
     // 리로드
     private func loadData() {
@@ -130,6 +135,16 @@ class TodoViewController: BaseViewController, PickerBtnViewDelegate {
         pickerBtnView.isHidden.toggle()
     }
     
+    @objc func dismissPicker() {
+         if self.pickerBtnView.frame.height > 0 {
+             UIView.animate(withDuration: 0.3) {
+                 self.pickerBtnView.snp.updateConstraints { make in
+                     make.height.equalTo(0)
+                 }
+                 self.view.layoutIfNeeded()
+             }
+         }
+     }
     
 }
 
