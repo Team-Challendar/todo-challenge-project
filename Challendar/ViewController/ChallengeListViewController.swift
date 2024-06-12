@@ -1,3 +1,4 @@
+//  
 //  ChallengeListViewController.swift
 //  Challendar
 //
@@ -14,9 +15,13 @@ class ChallengeListViewController: BaseViewController {
     private var completedTodos: [Todo] = []         // 완료 투두
     private var incompleteTodos: [Todo] = []        // 미완료 투두
     private var upcomingTodos: [Todo] = []          // 예정 투두
+    
     private var emptyMainLabel: UILabel!
     private var emptySubLabel: UILabel!
     private var emptyImage: UIImageView!
+    
+    private var dateView: UIView!
+    private var todayLabel: UILabel!
     private var collectionView: UICollectionView!
     private var resetBtn: UIButton!
     
@@ -59,6 +64,7 @@ class ChallengeListViewController: BaseViewController {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.updateEmptyStateVisibility()
+            self.checkIfAllChallengesCompleted()
         }
     }
     
@@ -139,6 +145,7 @@ class ChallengeListViewController: BaseViewController {
             guard let startDate = $0.startDate else { return false }
             return startDate > today
         }
+        checkIfAllChallengesCompleted()
     }
     
     // 최신순
@@ -207,7 +214,14 @@ class ChallengeListViewController: BaseViewController {
         emptySubLabel.isHidden = !isEmpty
         emptyImage.isHidden = !isEmpty
     }
-
+    
+    private func checkIfAllChallengesCompleted() {
+        if incompleteTodos.isEmpty && !todoItems.isEmpty {
+            let successViewController = ChallengeSuccessViewController()
+            successViewController.modalPresentationStyle = .fullScreen
+            present(successViewController, animated: true, completion: nil)
+        }
+    }
 }
 
 extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {

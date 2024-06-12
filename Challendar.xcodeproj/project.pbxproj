@@ -78,6 +78,7 @@
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
 		2EBF439B2C188C8E00064A77 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
+		2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */; };
 		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
 		B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */; };
 		B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */; };
@@ -169,6 +170,7 @@
 		14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarViewDifferableViewController.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSuccessViewController.swift; sourceTree = "<group>"; };
 		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
 		B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerBtnView.swift; sourceTree = "<group>"; };
 		B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YZCenterFlowLayout.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				14C97F132C098BE500819B27 /* AddTodo */,
 				1472ADD72C083AD400145668 /* SearchViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
+				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
 				1472ADE92C0840AD00145668 /* TabBarViewController.swift */,
 				1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */,
 				1472ADDB2C083B1000145668 /* TodoViewController.swift */,
@@ -589,6 +592,7 @@
 				14C97F212C09A71800819B27 /* DateView.swift in Sources */,
 				14C97F1D2C09A4C800819B27 /* BottomSheetViewController.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
+				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
 				DEDEE28B2C0DEA20006AD1C6 /* SearchCollectionViewCell.swift in Sources */,
 				14BB8F082C101D7300FA92E8 /* TodoCalendarFSCell.swift in Sources */,
