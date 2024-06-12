@@ -1,3 +1,11 @@
+//
+//  SearchViewController.swift
+//  Challendar
+//
+//  Created by Sam.Lee on 5/30/24.
+//
+
+
 import UIKit
 import SnapKit
 
@@ -22,9 +30,6 @@ class ChallengeListViewController: BaseViewController {
         super.viewDidLoad()
         configureFloatingButton()
         configureTitleNavigationBar(title: "챌린지 리스트")
-//        configureUI()
-//        configureConstraint()
-//        configureNotificationCenter()
         loadData()
     }
     
@@ -139,7 +144,10 @@ class ChallengeListViewController: BaseViewController {
             guard let startDate = $0.startDate else { return false }
             return startDate > today
         }
-        checkIfAllChallengesCompleted()
+        
+        if self.isKind(of: ChallengeListViewController.self) {
+            checkIfAllChallengesCompleted()
+        }
     }
     
     // 최신순
@@ -318,4 +326,3 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         }
     }
 }
-

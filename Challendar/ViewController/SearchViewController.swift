@@ -161,13 +161,13 @@ class SearchViewController: BaseViewController {
             return
         }
         
-        searchTextField.backgroundColor = .secondary800
+        searchTextField.backgroundColor = .secondary850
         searchTextField.font = .pretendardMedium(size: 18)
         searchTextField.layer.borderColor = UIColor(white: 1, alpha: 0.02).cgColor
         searchTextField.layer.borderWidth = 1
         searchTextField.layer.cornerRadius = 12
         searchTextField.clipsToBounds = true
-        searchTextField.tintColor = .secondary800
+        searchTextField.tintColor = .challendarGreen200
         searchTextField.textColor = .challendarWhite
         
         if let placeholderText = searchBar.placeholder {
@@ -175,7 +175,7 @@ class SearchViewController: BaseViewController {
                 string: placeholderText,
                 attributes: [
                     NSAttributedString.Key.font: UIFont.pretendardRegular(size: 18),
-                    NSAttributedString.Key.foregroundColor: UIColor.secondary600
+                    NSAttributedString.Key.foregroundColor: UIColor.secondary800
                 ]
             )
         }
@@ -266,15 +266,11 @@ class SearchViewController: BaseViewController {
             filteredNonChallengeItems = []
             filteredNoDeadlineItems = []
             filteredCompletedItems = []
-            //            filteredChallengeItems = items.filter { $0.isChallenge && !($0.todayCompleted() ?? false) }
-            //            filteredNonChallengeItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate != nil }
-            //            filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil }
-            //            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) || $0.iscompleted }
         } else {
             filteredChallengeItems = items.filter { $0.isChallenge && !($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredNonChallengeItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate != nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
-            //            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) || $0.iscompleted && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
         
         // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
@@ -282,7 +278,7 @@ class SearchViewController: BaseViewController {
         updateEmptyState(hasResults: !filteredChallengeItems.isEmpty || !filteredNonChallengeItems.isEmpty || !filteredNoDeadlineItems.isEmpty || !filteredCompletedItems.isEmpty, searchText: searchText)
         self.collectionView.reloadData() // 필터링 후 데이터 리로드
     }
-    
+
     // 최신순
     private func sortByRecentStartDate() {
         func sortItems(_ items: inout [Todo]) {
@@ -368,20 +364,19 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        items[indexPath.item].toggleTodaysCompletedState()
-        let previousIndexPath = selectedIndexPath
-        selectedIndexPath = indexPath
+        let item = getTodoItem(for: indexPath.section)[indexPath.row]
+    
+        item.toggleTodaysCompletedState()
         
-        if previousIndexPath == indexPath {
-            selectedIndexPath = nil
+        CoreDataManager.shared.updateTodoById(id: item.id!, newCompleted: item.completed)
+        
+        if let searchText = searchBar.text {
+            filterItems(with: searchText)
         }
         
-        collectionView.reloadItems(at: [indexPath])
-        
-        if let previousIndexPath = previousIndexPath {
-            collectionView.reloadItems(at: [previousIndexPath])
-        }
+        collectionView.reloadData()
     }
+
     
     private func getTodoItem(for section: Int) -> [Todo] {
         let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].enumerated().filter { !$0.element.isEmpty }
