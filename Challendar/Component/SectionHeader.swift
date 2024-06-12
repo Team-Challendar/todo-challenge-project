@@ -18,16 +18,16 @@ class SectionHeader: UICollectionReusableView {
     
     let sectionLabel: UILabel = {
         let label = UILabel()
-        label.font = .pretendardSemiBold(size: 14)
-        label.textColor = .challendarBlack60
+        label.font = .pretendardMedium(size: 14)
+        label.textColor = .secondary600
         return label
     }()
     
     let deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle("지우기", for: .normal)
-        button.setTitleColor(.challendarBlack60, for: .normal)
-        button.titleLabel?.font = .pretendardSemiBold(size: 14)
+        button.setTitleColor(.secondary600, for: .normal)
+        button.titleLabel?.font = .pretendardMedium(size: 14)
         button.isHidden = true
         return button
     }()

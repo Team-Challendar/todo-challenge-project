@@ -171,13 +171,13 @@ class ChallengeListViewController: BaseViewController {
         view.addSubview(emptyMainLabel)
         
         emptySubLabel = UILabel()
-        emptySubLabel.text = "작성하기 버튼을 눌러 등록해주세요."
+        emptySubLabel.text = "작성하기 버튼을 눌러 등록해주세요"
         emptySubLabel.font = .pretendardMedium(size: 13)
-        emptySubLabel.textColor = .challendarGrey50
+        emptySubLabel.textColor = .secondary500
         view.addSubview(emptySubLabel)
         
          emptyImage = UIImageView()
-         emptyImage.image = UIImage(named: "SurprisedFace")
+         emptyImage.image = UIImage(named: "Bullseye")
          view.addSubview(emptyImage)
     }
     
@@ -228,7 +228,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "enabledCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: todo)
             cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
-            cell.isUserInteractionEnabled = true
+            cell.isUserInteractionEnabled = false
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
@@ -242,14 +242,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         header.section = indexPath.section
         header.delegate = self
-
-        // 섹션에 값이 있는 경우 지우기 버튼 표시
-        if getTodoItemCount(for: indexPath.section) > 0 {
-            header.showDeleteButton()
-        } else {
-            header.hideDeleteButton()
-        }
-
         return header
     }
     
