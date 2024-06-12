@@ -34,13 +34,20 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
         configureNavigationForEdit(checkFirst: true)
         titleView.backgroundColor = .secondary850
         dateAskView.backgroundColor = .secondary850
+        
+        
+        // Delegate 설정
         todoTextField.delegate = self
+        
+        // DateView에 터치 제스처 인식 추가
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dateViewTapped))
+        dateView.addGestureRecognizer(tapGesture)
+    
     }
     
     
     override func configureConstraint(){
-        
-        
+    
         titleView.addSubview(todoTextField)
         dateAskView.addSubview(dateView) // 나연님 짱..
         
@@ -83,7 +90,6 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
     
     
     func configureNavigationForEdit(checkFirst: Bool) {
- 
         
         // UIImageView 생성 및 크기 설정
         let closeImageView = UIImageView()
@@ -138,5 +144,11 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
             titleView.layer.borderWidth = 0.0
         }
     }
-
+    
+    @objc func dateViewTapped() {
+        dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
+        dateAskView.layer.borderWidth = 1.0
+    }
 }
+   
+
