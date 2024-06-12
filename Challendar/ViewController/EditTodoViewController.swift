@@ -3,7 +3,7 @@ import SnapKit
 
 
 
-class EditTodoTitleViewController: BaseViewController {
+class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
     
     
     // 계획 질문 UI 컴포넌트
@@ -34,6 +34,7 @@ class EditTodoTitleViewController: BaseViewController {
         configureNavigationForEdit(checkFirst: true)
         titleView.backgroundColor = .secondary850
         dateAskView.backgroundColor = .secondary850
+        todoTextField.delegate = self
     }
     
     
@@ -123,4 +124,19 @@ class EditTodoTitleViewController: BaseViewController {
         // 수정 버튼의 액션 처리
         print("수정 버튼이 눌렸습니다")
     }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == todoTextField {
+            titleView.layer.borderColor = UIColor.challendarGreen200.cgColor
+            titleView.layer.borderWidth = 1.0
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == todoTextField {
+            titleView.layer.borderColor = UIColor.clear.cgColor
+            titleView.layer.borderWidth = 0.0
+        }
+    }
+
 }
