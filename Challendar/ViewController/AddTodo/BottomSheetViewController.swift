@@ -12,6 +12,7 @@ import RxCocoa
 
 class BottomSheetViewController: UIViewController {
     var rootViewVC: AddTodoDateViewController?
+    var rootViewVC2: EditTodoTitleViewController?
     var dimmedView = UIView()
     var dateBottomSheet = DateBottomSheet()
     var dispose = DisposeBag()
