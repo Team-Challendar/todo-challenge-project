@@ -39,39 +39,44 @@ class CustomButton: UIButton {
     }
     func highLightState(){
         self.isEnabled = true
-        self.backgroundColor = .challendarGreen100
+        self.backgroundColor = .challendarGreen200
         self.setTitleColor(.challendarBlack, for: .normal)
+        self.titleLabel?.font = .pretendardSemiBold(size: 18)
     }
     func laterState(){
         changeTitle(title: "나중에 정할래요")
         self.isEnabled = true
-        self.setTitleColor(.challendarGreen100, for: .normal)
+        self.setTitleColor(.challendarGreen200, for: .normal)
         self.backgroundColor = .clear
-        self.layer.borderColor = UIColor.challendarGreen100.cgColor
+        self.layer.borderColor = UIColor.challendarGreen200.cgColor
         self.layer.borderWidth = 1
+        self.titleLabel?.font = .pretendardMedium(size: 18)
     }
     
     func applyState(){
         self.isEnabled = true
         changeTitle(title: "적용하기")
         self.setTitleColor(.challendarBlack, for: .normal)
-        self.backgroundColor = .challendarGreen100
+        self.backgroundColor = .challendarGreen200
+        self.titleLabel?.font = .pretendardSemiBold(size: 18)
     }
     
     func nonApplyState(){
         changeTitle(title: "적용하기")
         self.setTitleColor(.secondary800, for: .normal)
         self.backgroundColor = .secondary700
+        self.titleLabel?.font = .pretendardMedium(size: 18)
     }
     
     func laterMediumState() {
         changeTitle(title: "나중에")
         self.layer.cornerRadius = 12
         self.isEnabled = true
-        self.setTitleColor(.challendarGreen100, for: .normal)
+        self.setTitleColor(.challendarGreen200, for: .normal)
         self.backgroundColor = .clear
-        self.layer.borderColor = UIColor.challendarGreen100.cgColor
+        self.layer.borderColor = UIColor.challendarGreen200.cgColor
         self.layer.borderWidth = 1
+        self.titleLabel?.font = .pretendardSemiBold(size: 18)
     }
     
     func challengeState(){
@@ -79,6 +84,7 @@ class CustomButton: UIButton {
         self.layer.cornerRadius = 12
         changeTitle(title: "도전!")
         self.setTitleColor(.challendarBlack, for: .normal)
-        self.backgroundColor = .challendarGreen100
+        self.backgroundColor = .challendarGreen200
+        self.titleLabel?.font = .pretendardSemiBold(size: 18)
     }
 }

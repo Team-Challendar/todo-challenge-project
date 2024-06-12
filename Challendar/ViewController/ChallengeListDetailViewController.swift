@@ -28,6 +28,7 @@ class ChallengeListDetailViewController: BaseViewController {
         configureFloatingButton()
         configureCollectionView()
         configureBackAndTitleNavigationBar(title: newTodo!.title, checkSetting: false)
+        self.configureSettingButtonNavigationBar()
         
     }
     
@@ -47,13 +48,6 @@ class ChallengeListDetailViewController: BaseViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("month"), object: changedMonth)
         NotificationCenter.default.addObserver(self, selector: #selector(monthChanged), name: NSNotification.Name("date"), object: changedMonth)
-        
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(todoCompletedStateChanged(_:)),
-//            name: NSNotification.Name("TodoCompletedStateChanged"),
-//            object: nil
-//        )
     }
     
     @objc func dismissedFromSuccess(_ notification: Notification) {
@@ -69,14 +63,6 @@ class ChallengeListDetailViewController: BaseViewController {
         self.filterTodoitems(date: month.addingDays(1)!)
         collectionView.reloadData()
     }
-    
-    //    @objc func todoCompletedStateChanged(_ notification: Notification) {
-    //        filterTodoitems()
-    //        DispatchQueue.main.async {
-    //            self.collectionView.reloadData()
-    //        }
-    //    }
-    
     override func configureUI() {
         super.configureUI()
         collectionView.snp.makeConstraints {
@@ -91,12 +77,14 @@ class ChallengeListDetailViewController: BaseViewController {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: creaateCompostionalLayout())
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.backgroundColor = UIColor(named: "challendarBlack80")
+        collectionView.backgroundColor = .secondary900
         collectionView.register(HalfCircleChartViewCell.self, forCellWithReuseIdentifier: HalfCircleChartViewCell.identifier)
         // Calendar cell
         collectionView.register(DetailCalendarCell.self, forCellWithReuseIdentifier: DetailCalendarCell.identifier)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         view.addSubview(collectionView)
     }
     
@@ -104,47 +92,15 @@ class ChallengeListDetailViewController: BaseViewController {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0:
-                return self.createChartSection()
+                return self.createTodoSection(itemHeight: .estimated(220))
             case 1:
-                return self.createCalendarSection()
+                return self.createSpecialSection(itemHeight: .estimated(440))
             default:
                 return nil
             }
         }
     }
     
-    private func createChartSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(220))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(220))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0)
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(19))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        header.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0)
-        section.boundarySupplementaryItems = [header]
-        
-        return section
-    }
-    
-    private func createCalendarSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(404))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(404))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 24, trailing: 0)
-        
-        return section
-    }
     
     func createDate(year: Int, month: Int, day: Int) -> Date? {
         let calendar = Calendar.current
@@ -197,8 +153,8 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
-            
-            switch indexPath.section {
+            let percentage = (self.newTodo?.percentage ?? 0) * 100
+            switch percentage {
             case 0:
                 // 퍼센티지 구간별 나눌 문구 필요
                 header.sectionLabel.text = "도전을 끝까지 완수해보아요!"

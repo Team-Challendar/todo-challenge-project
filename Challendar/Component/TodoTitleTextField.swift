@@ -13,6 +13,7 @@ class TodoTitleTextField: UITextField {
     }
     
     func setup(placeHolder: String) {
+        self.backgroundColor = .secondary850
         self.attributedPlaceholder = NSAttributedString(
         string: placeHolder,
         attributes: [NSAttributedString.Key.foregroundColor: UIColor.secondary800]

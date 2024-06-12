@@ -14,7 +14,7 @@ class CarouselCell: UICollectionViewCell {
     // 컨테이너 뷰 설정
     private lazy var container: UIView = {
         let view = UIView()
-        view.backgroundColor = .secondary800
+        view.backgroundColor = .secondary850
         view.layer.cornerRadius = 30.0
         return view
     }()

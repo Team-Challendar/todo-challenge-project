@@ -7,9 +7,11 @@
 
 import UIKit
 import SnapKit
+import Lottie
 
 class ChallengeCollectionViewCell: UICollectionViewCell {
-    
+    let animation = LottieAnimation.named("doneGreen")
+    var animationView : LottieAnimationView!
     var checkButton: UIButton!
     var titleLabel: UILabel!
     var dateLabel: UILabel!
@@ -71,44 +73,63 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.secondary800, renderingMode: .alwaysOriginal), for: .normal)
         checkButton.setImage(.done2.withTintColor(.challendarGreen200, renderingMode: .alwaysOriginal), for: .selected)
+        checkButton.backgroundColor = .secondary850
         checkButton.tintColor = .clear
         checkButton.isHidden = false
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         contentView.addSubview(checkButton)
+        animationView = LottieAnimationView(animation: animation)
+        contentView.addSubview(animationView)
         
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            
-            stateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            
-            progressBar.centerYAnchor.constraint(equalTo: stateLabel.centerYAnchor),
-            progressBar.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
-            progressBar.widthAnchor.constraint(equalToConstant: 24),
-            progressBar.heightAnchor.constraint(equalToConstant: 6),
-            
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-            dateLabel.leadingAnchor.constraint(equalTo: progressBar.trailingAnchor, constant: 4),
-            
-            checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(contentView.snp.top).offset(18)
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+        }
+
+        stateLabel.snp.makeConstraints { make in
+            make.leading.equalTo(contentView.snp.leading).offset(24)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-16.5)
+        }
+
+        progressBar.snp.makeConstraints { make in
+            make.centerY.equalTo(stateLabel.snp.centerY)
+            make.leading.equalTo(stateLabel.snp.trailing).offset(4)
+            make.width.equalTo(24)
+            make.height.equalTo(6)
+        }
+
+        dateLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(contentView.snp.bottom).offset(-16.5)
+            make.leading.equalTo(progressBar.snp.trailing).offset(4)
+        }
+
+        checkButton.snp.makeConstraints { make in
+            make.centerY.equalTo(titleLabel.snp.centerY)
+            make.trailing.equalTo(contentView.snp.trailing).offset(-24)
+        }
+
         contentView.bringSubviewToFront(checkButton)
+        animationView.snp.makeConstraints{
+            $0.center.equalTo(checkButton)
+            $0.size.equalTo(96)
+        }
         progressBar.layer.cornerRadius = progressBar.frame.height / 2
     }
     
     @objc private func checkButtonTapped() {
+        playBounceAnimation(checkButton)
+        animationView.play()
         checkButton.isSelected.toggle()
         updateTitleLabel()
         
         guard let item = todoItem else { return }
         item.toggleTodaysCompletedState()
-        updatePercentage(for: item)
-        updateTodoCompletion(for: item)
-        
-        print("Todo \(item.title) completed status updated: \(item.completed)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+            self.animationView.stop()
+            self.updatePercentage(for: item)
+            self.updateTodoCompletion(for: item)
+        })
     }
     
     func configure(with item: Todo) {

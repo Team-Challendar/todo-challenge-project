@@ -51,13 +51,13 @@ class DateCalendarView: UIView {
         prevButton.backgroundColor = .clear
         
         confirmButton.setTitle("선택", for: .normal)
-        confirmButton.setTitleColor(.secondary600, for: .normal)
+        confirmButton.setTitleColor(.secondary700, for: .normal)
         confirmButton.backgroundColor = .clear
         confirmButton.titleLabel?.font = .pretendardSemiBold(size: 16)
         confirmButton.isEnabled = false
         
         self.layer.cornerRadius = 20
-        self.backgroundColor = .secondary800
+        self.backgroundColor = .secondary850
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
@@ -66,7 +66,7 @@ class DateCalendarView: UIView {
         calendarView.headerHeight = 0
         //MARK: -캘린더 관련
         calendarView.register(CalendarCell.self, forCellReuseIdentifier: CalendarCell.identifier)
-        calendarView.backgroundColor = .secondary800
+        calendarView.backgroundColor = .secondary850
         calendarView.weekdayHeight = 46
         calendarView.rowHeight = 46
         calendarView.appearance.weekdayTextColor = .challendarWhite
@@ -167,7 +167,7 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 }
                 lastDate = range.last
                 datesRange = range
-                confirmButton.setTitleColor(.challendarGreen100, for: .normal)
+                confirmButton.setTitleColor(.challendarGreen200, for: .normal)
                 confirmButton.isEnabled = true
                 calendar.reloadData()
                 return
@@ -206,7 +206,7 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         if !date.isSameMonth(as: calendar.currentPage){
-            return .secondary500
+            return .secondary800
         }
         
         if datesRange.contains(where: { $0 == date }){

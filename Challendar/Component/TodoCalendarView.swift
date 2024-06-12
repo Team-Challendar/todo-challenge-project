@@ -51,7 +51,7 @@ class TodoCalendarView: UIView {
         
         self.layer.cornerRadius = 20
         self.layer.cornerCurve = .continuous
-        self.backgroundColor = .secondary800
+        self.backgroundColor = .secondary850
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
@@ -61,13 +61,12 @@ class TodoCalendarView: UIView {
         
         //MARK: -캘린더 관련
         calendar.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
-        calendar.backgroundColor = .secondary800
+        calendar.backgroundColor = .secondary850
         calendar.weekdayHeight = 44
         calendar.appearance.weekdayTextColor = .challendarWhite
         calendar.appearance.titleWeekendColor = .challendarWhite
         calendar.appearance.selectionColor = .clear
         calendar.appearance.titleSelectionColor  = .none
-        calendar.appearance.titlePlaceholderColor = .white
         calendar.appearance.todayColor = .clear
         calendar.scrollDirection = .horizontal
         calendar.calendarWeekdayView.weekdayLabels[0].textColor = .secondary500

@@ -85,6 +85,17 @@ class Todo : Hashable{
         }
     }
     
+    func getPercentageToToday() -> Double{
+        if let startDate = startDate, let endDate = endDate {
+            if Date().isBetween(startDate, endDate) {
+                let count = Date().daysBetween(startDate)
+                let completedUntilToday = completed[0...count]
+                let percentage = Double(completedUntilToday.filter{$0 == true}.count) / Double( completedUntilToday.count)
+                return percentage
+            }
+        }
+            return 0
+    }
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(title)

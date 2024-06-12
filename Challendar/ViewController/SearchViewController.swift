@@ -351,7 +351,7 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
             return cell
         } else if item.endDate == nil { // 기한 없는 투두
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TodoCollectionViewCell
-//            cell.configure(with: item)
+            cell.configure(with: item)
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell

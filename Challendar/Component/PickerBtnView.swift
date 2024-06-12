@@ -2,7 +2,6 @@ import UIKit
 import SnapKit
 
 protocol PickerBtnViewDelegate: AnyObject {
-    func didTapDailyButton()
     func didTapLatestOrderButton()
     func didTapRegisteredOrderButton()
 }
@@ -16,7 +15,7 @@ class PickerBtnView: UIView {
         button.setTitle("등록순", for: .normal)
         button.setTitleColor(.secondary700, for: .normal)
         button.setTitleColor(.challendarWhite, for: .selected)
-        button.titleLabel?.font = .pretendardRegular(size: 17)
+        button.titleLabel?.font = .pretendardMedium(size: 17)
         return button
     }()
     
@@ -25,7 +24,7 @@ class PickerBtnView: UIView {
         button.setTitle("최신순", for: .normal)
         button.setTitleColor(.secondary700, for: .normal)
         button.setTitleColor(.challendarWhite, for: .selected)
-        button.titleLabel?.font = .pretendardRegular(size: 17)
+        button.titleLabel?.font = .pretendardMedium(size: 17)
         return button
     }()
     
@@ -49,28 +48,39 @@ class PickerBtnView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    private var buttonViews: [UIView] {
+        return [registeredOrderBtn, latestOrderBtn]
+    }
+    private func addBorders() {
+        for (index, buttonView) in buttonViews.enumerated() {
+            if index > 0 {
+                let border = UIView()
+                border.backgroundColor = .secondary700
+                buttonView.addSubview(border)
+                border.snp.makeConstraints { make in
+                    make.top.leading.trailing.equalToSuperview()
+                    make.height.equalTo(0.5) // 경계선의 높이
+                }
+            }
+        }
+    }
     
     private func setupView() {
         addSubview(registeredOrderBtn)
         addSubview(latestOrderBtn)
-        addSubview(separator)
         
         registeredOrderBtn.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(44)
+            make.height.equalToSuperview().dividedBy(2)
         }
         
         latestOrderBtn.snp.makeConstraints { make in
             make.top.equalTo(registeredOrderBtn.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(44)
+            make.height.equalToSuperview().dividedBy(2)
         }
         
-        separator.snp.makeConstraints { make in
-            make.top.equalTo(latestOrderBtn.snp.top)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(0.5)
-        }
+        addBorders()
         
         layer.cornerRadius = 12
         clipsToBounds = true
@@ -78,7 +88,6 @@ class PickerBtnView: UIView {
     }
     
     private func setupActions() {
-        //   button1.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         registeredOrderBtn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         latestOrderBtn.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
     }
