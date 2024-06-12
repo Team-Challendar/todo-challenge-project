@@ -41,6 +41,15 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
         
         configureGestureRecognizers()
         setupNotificationCenter()
+        
+        // 제스처 인식기 추가
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    // 제스처 인식기 메소드 추가
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -48,7 +57,7 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
         // 수정 버튼을 누르지 않고 화면이 사라질 때, 원래 상태로 돌아갑니다.
         fetchTodo()
     }
-
+    
     
     override func configureConstraint() {
         titleView.addSubview(todoTextField)
@@ -95,20 +104,26 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
             print("Todo not found")
             return
         }
-        
         // 투두의 제목을 텍스트 필드에 설정
         todoTextField.text = todoModel.title
-        
+        todoTextField.textColor = .secondary400
+        todoTextField.font = .pretendardMedium(size: 18)
         // 투두의 날짜 범위를 dateView에 설정
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             if startDate.isSameDay(as: endDate) {
                 dateView.textLabel.text = DateRange.today.rawValue
+                dateView.textLabel.textColor = .secondary400
+                dateView.textLabel.font = .pretendardMedium(size: 18)
                 self.dateRange = .today
             } else if startDate.isSameDay(as: Date().addingDays(-1)!) && endDate.isSameDay(as: Date()) {
                 dateView.textLabel.text = DateRange.tomorrow.rawValue
+                dateView.textLabel.textColor = .secondary400
+                dateView.textLabel.font = .pretendardMedium(size: 18)
                 self.dateRange = .tomorrow
             } else if startDate.isSameDay(as: Date().addingDays(-7)!) && endDate.isSameDay(as: Date()) {
                 dateView.textLabel.text = DateRange.week.rawValue
+                dateView.textLabel.textColor = .secondary400
+                dateView.textLabel.font = .pretendardMedium(size: 18)
                 self.dateRange = .week
             } else {
                 let dateFormatter = DateFormatter()
@@ -116,6 +131,8 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
                 let startDateString = dateFormatter.string(from: startDate)
                 let endDateString = dateFormatter.string(from: endDate)
                 dateView.textLabel.text = "\(startDateString) - \(endDateString)"
+                dateView.textLabel.textColor = .secondary400
+                dateView.textLabel.font = .pretendardMedium(size: 18)
                 self.dateRange = .manual
             }
         }
@@ -125,8 +142,8 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
     
     private func configureGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dateViewTapped))
-        dateView.addGestureRecognizer(tapGesture)
-        dateView.isUserInteractionEnabled = true
+        dateAskView.addGestureRecognizer(tapGesture)
+        dateAskView.isUserInteractionEnabled = true
     }
     
     private func setupNotificationCenter() {
@@ -137,10 +154,18 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
         guard let data = notification.object as? DateRange else { return }
         self.dateRange = data
         self.dateView.textLabel.text = data.rawValue
-        editButton.setTitleColor(.red, for: .normal)
+        editButton.setTitleColor(.challendarGreen200, for: .normal)
     }
     
-    @objc private func dateViewTapped(){
+    @objc private func dateViewTapped() {
+        // dateView의 보더 추가
+        dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
+        dateAskView.layer.borderWidth = 1.0
+        dateView.textLabel.textColor = .challendarWhite
+        [titleLabel, titleView].forEach { view in
+            view.alpha = 0.3
+        }
+        
         let bottomSheetVC = BottomSheetViewController()
         bottomSheetVC.rootViewVC2 = self
         bottomSheetVC.newTodo = self.newTodo
@@ -148,11 +173,11 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
             bottomSheetVC.dateRange = dateRange
         }
         bottomSheetVC.modalPresentationStyle = .overFullScreen
-        self.present(bottomSheetVC, animated: false,completion: nil)
+        self.present(bottomSheetVC, animated: false, completion: nil)
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        editButton.setTitleColor(.red, for: .normal)
+        editButton.setTitleColor(.challendarGreen200, for: .normal)
     }
     
     // BottomSheetViewControllerDelegate 메소드 구현
@@ -160,7 +185,7 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
         guard let startDate = startDate, let endDate = endDate else { return }
         self.newTodo?.startDate = startDate
         self.newTodo?.endDate = endDate
-
+        
         // completed 배열을 초기화
         self.newTodo?.completed = Array(repeating: false, count: Calendar.current.dateComponents([.day], from: startDate, to: endDate).day! + 1)
         
@@ -169,7 +194,16 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
         let startDateString = dateFormatter.string(from: startDate)
         let endDateString = dateFormatter.string(from: endDate)
         dateView.textLabel.text = "\(startDateString) - \(endDateString)"
-        editButton.setTitleColor(.red, for: .normal)
+        
+        // dateView의 보더 제거
+        dateAskView.layer.borderColor = UIColor.clear.cgColor
+        dateAskView.layer.borderWidth = 0.0
+        dateView.textLabel.textColor = .secondary400
+        [titleLabel, titleView].forEach { view in
+            view.alpha = 1.0
+        }
+        
+        editButton.setTitleColor(.challendarGreen200, for: .normal)
     }
     
     func configureNavigationForEdit(checkFirst: Bool) {
@@ -202,7 +236,6 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
     @objc func editButtonTapped() {
         guard let todoId = todoId else { return }
         guard let title = todoTextField.text, !title.isEmpty else {
-            // Handle empty title case
             return
         }
         // 변경사항을 코어 데이터에 반영
@@ -210,19 +243,27 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate {
         print("수정 버튼이 눌렸습니다")
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == todoTextField {
             titleView.layer.borderColor = UIColor.challendarGreen200.cgColor
             titleView.layer.borderWidth = 1.0
+            todoTextField.textColor = .challendarWhite
+            [dateAskLabel, dateAskView].forEach { view in
+                view.alpha = 0.3
+            }
         }
     }
-
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == todoTextField {
             titleView.layer.borderColor = UIColor.clear.cgColor
             titleView.layer.borderWidth = 0.0
+            todoTextField.textColor = .secondary400
+            [dateAskLabel, dateAskView].forEach { view in
+                view.alpha = 1.0
+            }
         }
     }
 }
