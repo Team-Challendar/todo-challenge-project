@@ -22,7 +22,7 @@ class PeriodPickerButtonView: UIView {
     var currentState : currentCalendar? = .calendar
     private let buttonView1: UIView = {
         let view = UIView()
-        view.backgroundColor = .clear
+        view.backgroundColor = .secondary850
         let label = UILabel()
         label.text = "달력"
         label.textColor = .secondary700
@@ -49,7 +49,7 @@ class PeriodPickerButtonView: UIView {
     
     private let buttonView2: UIView = {
         let view = UIView()
-        view.backgroundColor = .clear
+        view.backgroundColor = .secondary850
         let label = UILabel()
         label.text = "날짜"
         label.textColor = .secondary700

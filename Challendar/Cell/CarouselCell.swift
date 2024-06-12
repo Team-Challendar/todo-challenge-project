@@ -40,7 +40,7 @@ class CarouselCell: UICollectionViewCell {
     // 날짜 배경 뷰 설정
     private lazy var dateBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .challendarGreen100
+        view.backgroundColor = .clear
         view.layer.cornerRadius = 34.5 // 기존 43.125에서 수정
         view.layer.masksToBounds = true
         return view
@@ -49,7 +49,7 @@ class CarouselCell: UICollectionViewCell {
     // 날짜 컨테이너 뷰 설정
     private lazy var dateContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .clear
         view.layer.cornerRadius = 43.125 // 86.25 / 2
         view.layer.masksToBounds = true
         return view
@@ -106,9 +106,34 @@ class CarouselCell: UICollectionViewCell {
     }
     
     // 데이터를 설정하는 메서드
-    func configure(day: String, date: String) {
-        dayLabel.text = day
-        dateLabel.text = date
+    func configure(day: Day) {
+        dayLabel.text = day.date.formatDateWeekdayString()
+        dateLabel.text = day.date.formatDateToDayString()
+        dateBackgroundView.backgroundColor = colorByPercentage(percentage: day.percentage)
+        dateContainerView.backgroundColor = .clear
+    }
+    func configureSelectedDate(){
+        dateContainerView.backgroundColor = .challendarBlack100
+    }
+    private func colorByPercentage(percentage : Double) -> UIColor {
+        switch percentage{
+        case 0:
+            return .clear
+        case 0..<20:
+            return .challendarBlue100
+        case 20..<40:
+            return .challendarBlue200
+        case 40..<60:
+            return .challendarBlue300
+        case 60..<80:
+            return .challendarBlue400
+        case 80..<100:
+            return .challendarBlue500
+        case 100:
+            return .challendarBlue600
+        default:
+            return .clear
+        }
     }
 }
 

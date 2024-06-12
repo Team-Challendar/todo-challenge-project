@@ -11,7 +11,7 @@ import Lottie
 
 class TodoCalendarViewCell: UICollectionViewCell {
     static var identifier = "TodoCalendarViewCell"
-    let animation = LottieAnimation.named("checkBoxAnimation")
+    let animation = LottieAnimation.named("checkBoxAnimation2")
     var animationView : LottieAnimationView!
     var checkButton: UIButton!
     var titleLabel: UILabel!
@@ -39,8 +39,6 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     private func setupViews() {
-        
-        
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
         contentView.backgroundColor = .challendarBlack80
@@ -75,13 +73,13 @@ class TodoCalendarViewCell: UICollectionViewCell {
         
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
-        stateLabel.textColor = .challendarGreen100
+        stateLabel.textColor = .challendarBlue600
         stateLabel.font = .pretendardMedium(size: 12)
         container.addSubview(stateLabel)
                
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
-        checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
+        checkButton.setImage(.done2.withTintColor(.challendarBlue600, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
         checkButton.translatesAutoresizingMaskIntoConstraints = false
@@ -89,9 +87,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         container.addSubview(checkButton)
         animationView = LottieAnimationView(animation: animation)
         container.addSubview(animationView)
-        
         container.bringSubviewToFront(checkButton)
-        
         
         
         container.snp.makeConstraints{
@@ -155,14 +151,17 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     @objc private func checkButtonTapped() {
+        playBounceAnimation(checkButton)
         animationView.play()
         checkButton.isSelected.toggle()
         updateTitleLabel()
         guard let item = todoItem else { return }
 //        print(self.currentDate?.dateToString())
         item.toggleDatesCompletedState(date: self.currentDate!)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            self.animationView.stop()
             self.updateTodoCompletion(for: item)
+            
         })
         // Notification으로 챌린지 리스트 뷰에 변경됨을 알림
     }
@@ -221,5 +220,15 @@ class TodoCalendarViewCell: UICollectionViewCell {
     
     private func updateTodoCompletion(for item: Todo) {
         CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newCompleted: item.completed)
+    }
+    
+    func playBounceAnimation(_ icon : UIButton) {
+        
+        let bounceAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        bounceAnimation.values = [0.8, 1.1, 1.0]
+        bounceAnimation.duration = 0.2
+        bounceAnimation.calculationMode = CAAnimationCalculationMode.cubic
+        
+        icon.layer.add(bounceAnimation, forKey: "bounceAnimation")
     }
 }

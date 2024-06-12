@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		141744D92C1821C8002335F7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 141744D82C1821C8002335F7 /* Lottie */; };
+		141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADA52C082A0F00145668 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
@@ -100,6 +101,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGaugeCollectionViewCell.swift; sourceTree = "<group>"; };
 		1472AD9D2C082A0F00145668 /* Challendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1472ADA02C082A0F00145668 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1472ADA22C082A0F00145668 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 				B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */,
 				149FEFAC2C11CEE800CDDC23 /* TodoCalendarViewCell.swift */,
 				DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */,
+				141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -577,6 +580,7 @@
 				B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
+				141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */,
 				2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */,
 				2E738AC12C1082E0006F4A26 /* StrikeThroughExtension.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,

@@ -1,5 +1,6 @@
 import UIKit
 import SnapKit
+import Lottie
 
 extension BaseViewController{
     
@@ -35,9 +36,9 @@ extension BaseViewController{
     }
     
     func configureCalendarButtonNavigationBar(title: String) -> UIButton {
-        let arrow = UIImageView()
-        arrow.image = .arrowDown
-        arrow.contentMode = .scaleAspectFit
+        let animation = LottieAnimation.named("dropDown")
+        let animationView = LottieAnimationView(animation: animation)
+        animationView.tag = 1001
         
         let titleLabel = UILabel()
         titleLabel.text = title
@@ -48,7 +49,7 @@ extension BaseViewController{
         let button = UIButton(type: .system)
         button.backgroundColor = .clear
         
-        [arrow, titleLabel].forEach {
+        [animationView, titleLabel].forEach {
             button.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -58,7 +59,7 @@ extension BaseViewController{
             $0.leading.equalToSuperview().offset(4)
         }
         titleLabel.sizeToFit()
-        arrow.snp.makeConstraints {
+        animationView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(titleLabel.snp.trailing).offset(4)
             $0.size.equalTo(24)
@@ -66,7 +67,7 @@ extension BaseViewController{
         
         button.snp.makeConstraints {
             $0.height.equalTo(34)
-            $0.width.equalTo(60)
+            $0.width.equalTo(70)
         }
         
         let titleBarButtonItem = UIBarButtonItem(customView: button)
