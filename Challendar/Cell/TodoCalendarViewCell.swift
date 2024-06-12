@@ -19,7 +19,6 @@ class TodoCalendarViewCell: UICollectionViewCell {
     var stateLabel : UILabel!
     var container : UIView!
     var deleteContainer : UIView!
-
     var deleteButtonImage : UIImageView!
     var editContainer : UIView!
     var editButtonImage : UIImageView!
@@ -87,9 +86,9 @@ class TodoCalendarViewCell: UICollectionViewCell {
         enrollChallengeButton.titleLabel?.font = .pretendardMedium(size: 20)
         enrollChallengeButton.setTitle("챌린지 등록하기", for: .normal)
         enrollChallengeButton.setTitleColor(.secondary900, for: .normal)
-        enrollChallengeButton.setTitleColor(.challendarWhite, for: .highlighted)
+        
         enrollChallengeButton.setImage(UIImage(named: "challengeOff")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        enrollChallengeButton.setImage(UIImage(named: "challengeOn")?.withRenderingMode(.alwaysOriginal), for: .highlighted)
+        
         enrollChallengeButton.configuration?.imagePadding = 4   // iOS 15.0 이상
         enrollChallengeButton.backgroundColor = .clear
         enrollChallengeButton.layer.cornerRadius = 20
@@ -195,6 +194,11 @@ class TodoCalendarViewCell: UICollectionViewCell {
         let swipeGestureRight = UISwipeGestureRecognizer(target: self, action:  #selector(didSwipeCellRight))
         swipeGestureRight.direction = .right
         self.addGestureRecognizer(swipeGestureRight)
+        
+        // 스와이프 버튼
+        enrollTapGestureRecognizer()
+        deleteTapGestureRecognizer()
+        editTapGestureRecognizer()
     }
     
     @objc func didSwipeCellLeft() {
@@ -234,12 +238,30 @@ class TodoCalendarViewCell: UICollectionViewCell {
         }
     }
     
-    @objc func deleteContainerTapped() {
+    private func enrollTapGestureRecognizer() {
+        enrollChallengeButton.addTarget(self, action: #selector(enrollButtonTapped), for: .touchUpInside)
+    }
+    @objc func enrollButtonTapped() {
+        print("등록")
+    }
+    
+    private func deleteTapGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(deleteContainerTapped(_:)))
+        deleteContainer.addGestureRecognizer(tapGesture)
+        deleteContainer.isUserInteractionEnabled = true
+    }
+    @objc func deleteContainerTapped(_ sender: UITapGestureRecognizer) {
+        print("delete")
         
     }
     
-    @objc func editContainerTapped() {
-        
+    private func editTapGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(editContainerTapped(_:)))
+        editContainer.addGestureRecognizer(tapGesture)
+        editContainer.isUserInteractionEnabled = true
+    }
+    @objc func editContainerTapped(_ sender: UITapGestureRecognizer) {
+        print("edit")
     }
     
     @objc private func checkButtonTapped() {
