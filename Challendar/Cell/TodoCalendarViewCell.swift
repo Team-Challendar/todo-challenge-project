@@ -17,9 +17,9 @@ class TodoCalendarViewCell: UICollectionViewCell {
     var stateLabel : UILabel!
     var container : UIView!
     var deleteContainer : UIView!
-    var deleteButton : UIButton!
+    var deleteButtonImage : UIImageView!
     var editContainer : UIView!
-    var editButton : UIButton!
+    var editButtonImage : UIImageView!
     var enrollChallengeContainer : UIView!
     private let buttonConfig = UIButton.Configuration.filled()
     private lazy var enrollChallengeButton = UIButton(configuration: buttonConfig)
@@ -63,17 +63,17 @@ class TodoCalendarViewCell: UICollectionViewCell {
         deleteContainer.backgroundColor = .alertRed
         deleteContainer.layer.cornerRadius = 20
         deleteContainer.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
-        deleteButton = UIButton()
-        deleteButton.setImage(UIImage(named: "trash")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        deleteButton.backgroundColor = .clear
-        deleteButton.layer.cornerRadius = 20
-        deleteButton.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
+        deleteButtonImage = UIImageView()
+        deleteButtonImage.image = UIImage(named: "trash")
+        deleteButtonImage.backgroundColor = .clear
+        deleteButtonImage.layer.cornerRadius = 20
+        deleteButtonImage.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
         
         editContainer = UIView()
         editContainer.backgroundColor = .alertIOrange
-        editButton = UIButton()
-        editButton.setImage(UIImage(named: "edit")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        editButton.backgroundColor = .clear
+        editButtonImage = UIImageView()
+        editButtonImage.image = UIImage(named: "edit")
+        editButtonImage.backgroundColor = .clear
         
         enrollChallengeContainer = UIView()
         enrollChallengeContainer.backgroundColor = .primary200
@@ -86,12 +86,12 @@ class TodoCalendarViewCell: UICollectionViewCell {
         enrollChallengeButton.setTitleColor(.challendarWhite, for: .highlighted)
         enrollChallengeButton.setImage(UIImage(named: "challengeOff")?.withRenderingMode(.alwaysOriginal), for: .normal)
         enrollChallengeButton.setImage(UIImage(named: "challengeOn")?.withRenderingMode(.alwaysOriginal), for: .highlighted)
-        enrollChallengeButton.configuration?.imagePadding = 4
+        enrollChallengeButton.configuration?.imagePadding = 4   // iOS 15.0 이상
         enrollChallengeButton.backgroundColor = .clear
         enrollChallengeButton.layer.cornerRadius = 20
         enrollChallengeButton.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
         
-        [enrollChallengeContainer, enrollChallengeButton, deleteContainer, deleteButton, editContainer, editButton, container].forEach {
+        [enrollChallengeContainer, enrollChallengeButton, deleteContainer, deleteButtonImage, editContainer, editButtonImage, container].forEach {
             self.contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -137,7 +137,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview()
             $0.top.bottom.equalToSuperview()
         }
-        deleteButton.snp.makeConstraints {
+        deleteButtonImage.snp.makeConstraints {
             $0.leading.equalTo(deleteContainer.snp.leading).offset(25)
             $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
             $0.top.equalTo(deleteContainer.snp.top).offset(25.5)
@@ -149,7 +149,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.trailing.equalTo(deleteContainer.snp.leading).offset(0)
             $0.top.bottom.equalToSuperview()
         }
-        editButton.snp.makeConstraints {
+        editButtonImage.snp.makeConstraints {
             $0.leading.equalTo(editContainer.snp.leading).offset(45)
             $0.trailing.equalTo(editContainer.snp.trailing).offset(-25)
             $0.top.equalTo(editContainer.snp.top).offset(25.5)
@@ -236,6 +236,14 @@ class TodoCalendarViewCell: UICollectionViewCell {
             }
             self.layoutIfNeeded()
         }
+    }
+    
+    @objc func deleteContainerTapped() {
+        
+    }
+    
+    @objc func editContainerTapped() {
+        
     }
     
     @objc private func checkButtonTapped() {
