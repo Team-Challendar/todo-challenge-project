@@ -25,14 +25,41 @@ extension BaseViewController{
     }
     
     func configureTitleNavigationBar(title: String){
+        let view = UIView()
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = .pretendardSemiBold(size: 26)
+        titleLabel.font = .pretendardMedium(size: 20)
         titleLabel.textColor = .challendarWhite
         titleLabel.backgroundColor = .clear
-        let titleBarButtonItem = UIBarButtonItem(customView: titleLabel)
+        
+        let flagImageView = UIImageView()
+        flagImageView.contentMode = .scaleAspectFill
+        flagImageView.image = .challengeFlag
+        flagImageView.backgroundColor = .clear
+        
+        [flagImageView,titleLabel].forEach{
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        view.snp.makeConstraints {
+            $0.height.equalTo(44)
+            $0.width.equalTo(305)// 예시로 높이를 설정합니다. 필요에 따라 조정하세요.
+        }
+        
+        flagImageView.snp.makeConstraints{
+            $0.width.height.equalTo(28)
+            $0.leading.equalToSuperview()
+            $0.centerY.equalToSuperview()
+        }
+        titleLabel.snp.makeConstraints{
+            $0.leading.equalTo(flagImageView.snp.trailing).offset(5)
+            $0.centerY.equalToSuperview()
+        }
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        let titleBarButtonItem = UIBarButtonItem(customView: view)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem
-        configureSettingButtonNavigationBar()
+        self.configureSettingButtonNavigationBar()
     }
     
     func configureCalendarButtonNavigationBar(title: String) -> UIButton {
@@ -81,7 +108,7 @@ extension BaseViewController{
         let view = UIView()
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = .pretendardSemiBold(size: 26)
+        
         titleLabel.textColor = .challendarWhite
         titleLabel.backgroundColor = .clear
         
@@ -113,8 +140,10 @@ extension BaseViewController{
         var tapGesture = UITapGestureRecognizer()
         if checkSetting {
             tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+            titleLabel.font = .pretendardSemiBold(size: 20)
         }else{
             tapGesture = UITapGestureRecognizer(target: self, action: #selector(backButtonTapped))
+            titleLabel.font = .pretendardMedium(size: 20)
         }
         
         
@@ -122,7 +151,6 @@ extension BaseViewController{
         view.translatesAutoresizingMaskIntoConstraints = false
         let titleBarButtonItem = UIBarButtonItem(customView: view)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem
-        self.configureSettingButtonNavigationBar()
     }
     func configureNavigationBar(checkFirst: Bool){
         let closeImageView = UIImageView()
@@ -174,7 +202,7 @@ extension BaseViewController{
         settingImageView.isUserInteractionEnabled = true
         var tapGesture = UITapGestureRecognizer()
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(settingButtonTapped))
-        settingImageView.image = .settingIcon
+        settingImageView.image = .settingIcon.withTintColor(.white, renderingMode: .alwaysOriginal)
         settingImageView.addGestureRecognizer(tapGesture)
         settingImageView.backgroundColor = .clear
         settingImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -222,7 +250,7 @@ extension BaseViewController{
         return section
     }
     
-    private func createSpecialSection(itemHeight: NSCollectionLayoutDimension) -> NSCollectionLayoutSection {
+    func createSpecialSection(itemHeight: NSCollectionLayoutDimension) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: itemHeight)
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)

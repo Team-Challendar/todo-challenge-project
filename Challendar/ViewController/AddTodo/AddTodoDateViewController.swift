@@ -108,7 +108,7 @@ class AddTodoDateViewController: BaseViewController {
             self.newTodo?.endDate = self.dateRange?.date
             let challengeCheckViewController = ChallengeCheckViewController()
             challengeCheckViewController.newTodo = self.newTodo
-            self.navigationController?.pushViewController(challengeCheckViewController, animated: true)
+            self.navigationController?.pushViewController(challengeCheckViewController, animated: false)
         }
     }
     

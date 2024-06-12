@@ -111,7 +111,7 @@ class AddTodoTitleViewController: BaseViewController {
                 let nextVC = AddTodoDateViewController()
                 nextVC.newTodo = self?.newTodo
                 
-                self?.navigationController?.pushViewController(nextVC, animated: true)
+                self?.navigationController?.pushViewController(nextVC, animated: false)
             })
             .disposed(by: self.dispose)
         

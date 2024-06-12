@@ -20,7 +20,7 @@ class EmptyView: UIView {
     }
     
     private func setup(){
-        self.backgroundColor = .secondary800
+        self.backgroundColor = .secondary850
         self.layer.cornerRadius = 20
         self.clipsToBounds = true
     }

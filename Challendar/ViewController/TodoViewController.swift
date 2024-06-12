@@ -1,32 +1,33 @@
 import UIKit
 import SnapKit
+import Lottie
 
-
-
-class TodoViewController: BaseViewController, PickerBtnViewDelegate {
-    
-    private let pickerBtnView = PickerBtnView()
+class TodoViewController: BaseViewController {
     private var todoItems: [Todo] = []
-    private var completedTodos: [Todo] = []         // 완료 투두
-    private var incompleteTodos: [Todo] = []        // 미완료 투두
+    private var completedTodos: [Todo] = []
+    private var incompleteTodos: [Todo] = []
+    private var isPickerViewExpaned = false
+    
     private var collectionView: UICollectionView!
+    private let pickerBtnView = PickerBtnView()
+    var dimmedView = UIView()
     var button = UIButton()
+    
+    
+    
     override func viewDidLoad() {
         setupCollectionView()
         super.viewDidLoad()
         configureFloatingButton()
-        button = configureCalendarButtonNavigationBar(title: "최신순")
-        button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
-        pickerBtnView.delegate = self
+        configureNav(title: "최신순")
+
         loadData()
-   
+    }
     
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
-    tapGesture.cancelsTouchesInView = false
-    view.addGestureRecognizer(tapGesture)
-    
-    pickerBtnView.delegate = self
-}
+    func configureNav(title: String){
+        button = configureCalendarButtonNavigationBar(title: title)
+        button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
+    }
     
     // 리로드
     private func loadData() {
@@ -41,27 +42,56 @@ class TodoViewController: BaseViewController, PickerBtnViewDelegate {
     override func configureUI() {
         super.configureUI()
         view.backgroundColor = .secondary900
-//        pickerBtnView.isHidden = true // 처음에는 숨김 상태로 설정 // 델리게이트 설정
+        dimmedView.backgroundColor = UIColor.secondary900.withAlphaComponent(0)
     }
     
+    override func configureUtil() {
+        super.configureUtil()
+        let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(titleTouched))
+        dimmedView.addGestureRecognizer(dimmedTap)
+        dimmedView.isUserInteractionEnabled = true
+        
+        pickerBtnView.delegate = self
+    }
     override func configureConstraint() {
         super.configureConstraint()
         view.addSubview(pickerBtnView)
-        pickerBtnView.snp.makeConstraints { make in
-            make.width.equalTo(96)
-            //  make.height.equalTo(0) // 초기 높이를 0으로 설정
-            make.height.equalTo(88.5)
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(98)
-        }
-        
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(10)
             make.left.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview()
         }
+        
+        dimmedView.addSubview(pickerBtnView)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            let statusBarHeight = windowScene.statusBarManager?.statusBarFrame.height ?? 0
+            let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
+            let totalOffset = navigationBarHeight + statusBarHeight
+            pickerBtnView.snp.makeConstraints{
+                $0.top.equalToSuperview().offset(totalOffset)
+                $0.leading.equalToSuperview().offset(16)
+                $0.height.equalTo(0)
+                $0.width.equalTo(96)
+            }
+        }
+        
     }
     
+    func showButtonView(){
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+            window.addSubview(dimmedView)
+            dimmedView.translatesAutoresizingMaskIntoConstraints = false
+            dimmedView.snp.makeConstraints {
+                $0.edges.equalTo(window)
+            }
+        }
+    }
+    
+    func removeButtonView(){
+        dimmedView.removeFromSuperview()
+    }
     
     override func configureNotificationCenter() {
         super.configureNotificationCenter()
@@ -108,52 +138,37 @@ class TodoViewController: BaseViewController, PickerBtnViewDelegate {
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
     
-    
-    // PickerBtnViewDelegate 메소드 구현
-    func didTapDailyButton() {
-        // Implement this function if needed
-    }
-    
-    func didTapLatestOrderButton() {
-        todoItems.reverse()
-        completedTodos.reverse()
-        incompleteTodos.reverse()
-        collectionView.reloadData()
-    }
-    
-    func didTapRegisteredOrderButton() {
-        loadData() // 데이터를 다시 불러와서 원래 순서로 복원
-    }
-    
-//    func didSelectOption(_ option: String) {
-//        // 드롭다운 옵션 선택 시 처리
-//        print("Selected option: \(option)")
-//        pickerBtnView.isHidden.toggle()
-//    }
-    
-    @objc func titleTouched(){
-//        pickerBtnView.isHidden.toggle()
-//        
-        if self.pickerBtnView.frame.height > 0 {
-            UIView.animate(withDuration: 0.3) {
-                self.pickerBtnView.snp.updateConstraints { make in
-                    make.height.equalTo(88.5)
+    @objc func titleTouched() {
+        guard let arrow = button.viewWithTag(1001) as? LottieAnimationView else { return }
+        
+        if isPickerViewExpaned {
+            arrow.animationSpeed = 8
+            arrow.play(fromProgress: 1.0, toProgress: 0.0, loopMode: .none)
+            isPickerViewExpaned.toggle()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.pickerBtnView.snp.updateConstraints{
+                    $0.height.equalTo(0)
                 }
+                self.dimmedView.backgroundColor = UIColor.black.withAlphaComponent(0)
                 self.view.layoutIfNeeded()
-            }
+            },completion: {_ in
+                self.removeButtonView()
+            })
+            
+        }else{
+            arrow.animationSpeed = 8
+            arrow.play(fromProgress: 0.0, toProgress: 1.0, loopMode: .none)
+            self.showButtonView()
+            isPickerViewExpaned.toggle()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.pickerBtnView.snp.updateConstraints{
+                    $0.height.equalTo(88.5)
+                }
+                self.dimmedView.backgroundColor = UIColor.black.withAlphaComponent(dimmedViewAlpha)
+                self.view.layoutIfNeeded()
+            })
         }
     }
-    
-    @objc func dismissPicker() {
-         if self.pickerBtnView.frame.height > 0 {
-             UIView.animate(withDuration: 0.3) {
-                 self.pickerBtnView.snp.updateConstraints { make in
-                     make.height.equalTo(0)
-                 }
-                 self.view.layoutIfNeeded()
-             }
-         }
-     }
 }
 
 extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, SectionHeaderDelegate {
@@ -239,5 +254,21 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         }
         
         loadData()
+    }
+}
+
+
+extension TodoViewController : PickerBtnViewDelegate {
+    func didTapLatestOrderButton() {
+        todoItems.reverse()
+        completedTodos.reverse()
+        incompleteTodos.reverse()
+        collectionView.reloadData()
+        titleTouched()
+    }
+    
+    func didTapRegisteredOrderButton() {
+        loadData() // 데이터를 다시 불러와서 원래 순서로 복원
+        titleTouched()
     }
 }

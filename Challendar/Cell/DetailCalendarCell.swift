@@ -15,7 +15,6 @@ class DetailCalendarCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -25,6 +24,7 @@ class DetailCalendarCell: UICollectionViewCell {
     
     func configureCalenderView(todo: Todo){
         self.addSubview(calanderView)
+        self.backgroundColor = .clear
         calanderView.currentTodo = todo
         calanderView.snp.makeConstraints{
             $0.edges.equalToSuperview()

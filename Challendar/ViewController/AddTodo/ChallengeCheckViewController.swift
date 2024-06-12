@@ -40,7 +40,7 @@ class ChallengeCheckViewController: BaseViewController {
     }
     override func configureUI() {
         super.configureUI()
-        dimmedView.backgroundColor = UIColor.secondary800
+        dimmedView.backgroundColor = UIColor.secondary900
         dimmedView.alpha = 0
     }
     override func configureConstraint() {
@@ -62,7 +62,7 @@ class ChallengeCheckViewController: BaseViewController {
     
     private func showLayout(){
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear,  animations: {
-            self.dimmedView.alpha = dimmedViewAlpha
+            self.dimmedView.alpha = 100
             self.view.layoutIfNeeded()
         }, completion: nil)
     }

@@ -15,6 +15,7 @@ class ChallengeDateCalendarView: UIView {
     var prevButton = UIButton()
     var nextButton = UIButton()
     var currentTodo : Todo?
+    var selectedDate : Date = Date()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -46,7 +47,7 @@ class ChallengeDateCalendarView: UIView {
         
         self.layer.cornerRadius = 20
         self.layer.cornerCurve = .continuous
-        self.backgroundColor = .secondary800
+        self.backgroundColor = .secondary850
         self.clipsToBounds = true
         
         //MARK: - 헤더뷰 설정
@@ -56,12 +57,12 @@ class ChallengeDateCalendarView: UIView {
         
         //MARK: -캘린더 관련
         calendarView.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
-        calendarView.backgroundColor = .secondary800
+        calendarView.backgroundColor = .secondary850
         calendarView.weekdayHeight = 44
         calendarView.appearance.weekdayTextColor = .challendarWhite
         calendarView.appearance.titleWeekendColor = .challendarWhite
         calendarView.appearance.selectionColor = .clear
-        calendarView.appearance.titleSelectionColor = .red
+        calendarView.appearance.titleSelectionColor = .none
         calendarView.appearance.titlePlaceholderColor = .white
         calendarView.appearance.todayColor = .clear
         calendarView.scrollDirection = .horizontal
@@ -143,8 +144,8 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
         if !date.isSameMonth(as: calendar.currentPage){
             return .secondary800
         }
-        if date.isSameDay(as: Date()) {
-            return . challendarWhite
+        if date.isSameDay(as: selectedDate) {
+            return .challendarWhite
         }
         if let completed = self.currentTodo?.todayCompleted(date: date) {
             if date < Date(){
@@ -152,7 +153,6 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
             }else{
                 return completed ? .challendarBlack : .challendarWhite
             }
-            
         }
         return .white
     }
@@ -166,6 +166,13 @@ extension ChallengeDateCalendarView : FSCalendarDataSource {
         guard let cell = calendar.dequeueReusableCell(withIdentifier: TodoCalendarFSCell.identifier, for: date, at: position) as? TodoCalendarFSCell else { return FSCalendarCell() }
         
         cell.setViewByComplete(completed: self.currentTodo?.todayCompleted(date: date) ?? false, date: date)
+        if date.isSameDay(as: selectedDate){
+            cell.selectDate()
+        }
         return cell
+    }
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        selectedDate = date
+        calendar.reloadData()
     }
 }

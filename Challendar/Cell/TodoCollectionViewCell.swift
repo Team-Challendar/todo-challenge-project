@@ -7,9 +7,11 @@
 
 import UIKit
 import SnapKit
+import Lottie
 
 class TodoCollectionViewCell: UICollectionViewCell {
-    
+    let animation = LottieAnimation.named("doneTomato")
+    var animationView : LottieAnimationView!
     var titleLabel: UILabel!
     var checkButton: UIButton!
     var todoItem: Todo?
@@ -32,8 +34,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     
     private func setupViews() {
         setupContentView()
-        setupTitleLabel()
-        setupCheckButton()
+        configureUI()
         setupConstraints()
     }
     
@@ -45,56 +46,68 @@ class TodoCollectionViewCell: UICollectionViewCell {
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
     }
     
-    private func setupTitleLabel() {
+    private func configureUI(){
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .white
-        titleLabel.font = .pretendardMedium(size: 20)
-        contentView.addSubview(titleLabel)
-    }
-    
-    private func setupCheckButton() {
+        titleLabel.font = .pretendardMedium(size: 18)
+        
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.secondary800, renderingMode: .alwaysOriginal), for: .normal)
-        checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
+        checkButton.setImage(.done2.withTintColor(.alertTomato, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
+        checkButton.backgroundColor = .secondary850
         checkButton.translatesAutoresizingMaskIntoConstraints = false
         checkButton.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
-        contentView.addSubview(checkButton)
+        animationView = LottieAnimationView(animation: animation)
     }
     
+    
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 75),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            checkButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
-        ])
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(animationView)
+        contentView.addSubview(checkButton)
+        
+        titleLabel.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(24)
+            $0.trailing.equalTo(checkButton.snp.leading).offset(12)
+        }
+        checkButton.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-24)
+            $0.size.equalTo(24).priority(999)
+        }
+        animationView.snp.makeConstraints{
+            $0.center.equalTo(checkButton)
+            $0.size.equalTo(96)
+        }
     }
     
     @objc private func checkButtonTapped() {
+        playBounceAnimation(checkButton)
         checkButton.isSelected.toggle()
         updateTitleLabel()
+        animationView.play()
         
         guard let item = todoItem else { return }
         item.iscompleted.toggle()
-        updateTodoCompletion(for: item)
-        
-        print("Todo \(item.title) completed status updated: \(item.iscompleted)")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+            self.animationView.stop()
+            self.updateTodoCompletion(for: item)
+        })
     }
     
     func configure(with item: Todo) {
         self.todoItem = item
         titleLabel.text = item.title
         contentView.backgroundColor = .secondary850
-        
         // 완료 여부에 따라 체크 버튼 상태 설정
         checkButton.isSelected = item.iscompleted
         updateTitleLabel()
     }
-
+    
     private func updateTitleLabel() {
         if checkButton.isSelected {
             if let title = titleLabel.text {
@@ -112,4 +125,5 @@ class TodoCollectionViewCell: UICollectionViewCell {
     private func updateTodoCompletion(for item: Todo) {
         CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newCompleted: item.completed, newIsCompleted: item.iscompleted)
     }
+    
 }

@@ -33,9 +33,9 @@ class CalendarCell: FSCalendarCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         todayView.backgroundColor = .challendarBlack
-        circleView.backgroundColor = .challendarGreen100
-        leftView.backgroundColor = .challendarGreen800
-        rightView.backgroundColor = .challendarGreen800
+        circleView.backgroundColor = .challendarGreen200
+        leftView.backgroundColor = .challendarGreen400
+        rightView.backgroundColor = .challendarGreen400
         self.titleLabel.textAlignment = .center
     }
     
@@ -121,7 +121,7 @@ class CalendarCell: FSCalendarCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        circleView.backgroundColor = .challendarGreen100
+        circleView.backgroundColor = .challendarGreen200
     }
     
 }

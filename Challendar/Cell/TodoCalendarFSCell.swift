@@ -94,7 +94,7 @@ class TodoCalendarFSCell: FSCalendarCell {
         circleView.backgroundColor = colorByComplete(completed: completed)
         
         if date.isSameDay(as: Date()){
-            todayView.backgroundColor = .challendarBlack
+            todayView.backgroundColor = .alertTomato
         }
     }
     

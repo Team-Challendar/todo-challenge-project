@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import SnapKit
 
 // SwiftUI를 UIHostingController 이용해 만든 Cell
 class HalfCircleChartViewCell: UICollectionViewCell {
@@ -27,13 +28,13 @@ class HalfCircleChartViewCell: UICollectionViewCell {
     private func setupViews() {
         contentView.layer.cornerRadius = 20
         contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .secondary800
+        contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         
         
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 206),
+            contentView.heightAnchor.constraint(equalToConstant: 220),
         ])
         setupChartView()
     }
@@ -48,11 +49,9 @@ class HalfCircleChartViewCell: UICollectionViewCell {
         halfCircleHostingController.view.backgroundColor = .clear
         contentView.addSubview(halfCircleHostingController.view)
         
-        NSLayoutConstraint.activate([
-            halfCircleHostingController.view.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            halfCircleHostingController.view.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            
-        ])
+        halfCircleHostingController.view.snp.makeConstraints{
+            $0.edges.equalTo(contentView)
+        }
     }
     
     func configure(with todoProgress: [Todo]) {
@@ -61,7 +60,7 @@ class HalfCircleChartViewCell: UICollectionViewCell {
     }
     
     func configureDetail(with todo: Todo){
-        let chartView = ChallengeChartView(percentage: todo.percentage)
+        let chartView = ChallengeChartView(percentage: todo.getPercentageToToday())
         halfCircleHostingController?.rootView = chartView
     }
 
@@ -77,10 +76,9 @@ struct ChallengeChartView: View {
             let total = Double(todoProgress.count)
             let completed = todoProgress.filter { $0.percentage == 1.0 }.count
             return total == 0 ? 0 : Double(completed) / total
-        }else if let percentage = percentage{
-            print(percentage)
+        } else if let percentage = percentage {
             return percentage
-        }else{
+        } else {
             return 0
         }
     }
@@ -88,7 +86,7 @@ struct ChallengeChartView: View {
     var trackLineWidth: CGFloat = 20
     var progressLineWidth: CGFloat = 30
     var trackColor: Color = Color.gray
-    var progressColor: [Color] = [Color.challendarGreen100]
+    var progressColor: [Color] = [Color.challendarGreen200]
     var chartSize: CGSize = CGSize(width: 220, height: 220) // 기본 크기 설정
     
     var body: some View {
@@ -105,9 +103,8 @@ struct ChallengeChartView: View {
                 
                 // Progress (foreground circle)
                 Path { path in
-                    path.addArc(center: center, radius: radius, startAngle: .degrees(180), endAngle: .degrees(180 + (progress * 180)), clockwise: false)
+                    path.addArc(center: center, radius: radius, startAngle: Angle(degrees:180), endAngle: Angle(degrees:180 + (progress * 180)), clockwise: false)
                 }
-                .trim(from: 0, to: progress)
                 .stroke(
                     LinearGradient(
                         gradient: Gradient(colors: progressColor),
@@ -116,17 +113,20 @@ struct ChallengeChartView: View {
                     ),
                     style: StrokeStyle(lineWidth: progressLineWidth, lineCap: .round)
                 )
-                .animation(.easeInOut(duration: 1), value: progress)
                 
                 Text("\(Int(progress * 100))%")
-                    .font(.largeTitle)
+                    .font(Font(UIFont.pretendardMedium(size: 46.7)))
                     .foregroundColor(.white)
                     .position(center)
             }
             .frame(width: chartSize.width, height: chartSize.height)
-            .background(Color(.secondary800))
+            .background(Color(.secondary850))
         }
         .frame(width: 220, height: 110)
         .padding(0)
     }
 }
+
+
+
+
