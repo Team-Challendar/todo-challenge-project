@@ -74,7 +74,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         deleteButtonImage.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
         
         editContainer = UIView()
-        editContainer.backgroundColor = .alertIOrange
+        editContainer.backgroundColor = .alertOrange
         editButtonImage = UIImageView()
         editButtonImage.image = UIImage(named: "edit")
         editButtonImage.backgroundColor = .clear

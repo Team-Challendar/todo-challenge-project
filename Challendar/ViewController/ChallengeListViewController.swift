@@ -210,11 +210,11 @@ class ChallengeListViewController: BaseViewController {
     }
     
     private func checkIfAllChallengesCompleted() {
-        if incompleteTodos.isEmpty && !todoItems.isEmpty {
-            let successViewController = ChallengeSuccessViewController()
-            successViewController.modalPresentationStyle = .fullScreen
-            present(successViewController, animated: true, completion: nil)
-        }
+//        if incompleteTodos.isEmpty && !todoItems.isEmpty {
+//            let successViewController = ChallengeSuccessViewController()
+//            successViewController.modalPresentationStyle = .fullScreen
+//            present(successViewController, animated: true, completion: nil)
+//        }
     }
 }
 
