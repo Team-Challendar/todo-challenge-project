@@ -1,10 +1,3 @@
-//  
-//  ChallengeListViewController.swift
-//  Challendar
-//
-//  Created by 서혜림 on 6/3/24.
-//
-
 import UIKit
 import SnapKit
 
@@ -28,10 +21,11 @@ class ChallengeListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureFloatingButton()
-        filterTodos()
         configureTitleNavigationBar(title: "챌린지 리스트")
-        updateEmptyStateVisibility()
-        sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
+//        configureUI()
+//        configureConstraint()
+//        configureNotificationCenter()
+        loadData()
     }
     
     override func configureUI() {
@@ -58,9 +52,14 @@ class ChallengeListViewController: BaseViewController {
     }
     
     @objc func coreDataChanged(_ notification: Notification) {
+        loadData()
+    }
+    
+    private func loadData() {
         self.todoItems = CoreDataManager.shared.fetchTodos()
         filterTodos()
         sortByRecentStartDate()
+        updateEmptyStateVisibility()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.updateEmptyStateVisibility()
@@ -79,31 +78,26 @@ class ChallengeListViewController: BaseViewController {
     }
     
     // 임시 리셋버튼
-    private func setupResetButton() {
-        resetBtn = UIButton(type: .system)
-        resetBtn.setTitle("Reset All", for: .normal)
-        resetBtn.setTitleColor(.white, for: .normal)
-        resetBtn.backgroundColor = .red
-        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
-        view.addSubview(resetBtn)
+//    private func setupResetButton() {
+//        resetBtn = UIButton(type: .system)
+//        resetBtn.setTitle("Reset All", for: .normal)
+//        resetBtn.setTitleColor(.white, for: .normal)
+//        resetBtn.backgroundColor = .red
+//        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+//        view.addSubview(resetBtn)
+//
+//        resetBtn.snp.makeConstraints { make in
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+//            make.centerX.equalToSuperview()
+//            make.width.equalTo(200)
+//            make.height.equalTo(50)
+//        }
+//    }
 
-        resetBtn.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(200)
-            make.height.equalTo(50)
-        }
-    }
     
     @objc private func resetButtonTapped() {
         CoreDataManager.shared.deleteAllTodos()
-        self.todoItems = CoreDataManager.shared.fetchTodos()
-        filterTodos()
-        sortByRecentStartDate()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.updateEmptyStateVisibility()
-        }
+        loadData()
     }
 
     // 컬렉션뷰 설정
@@ -224,7 +218,7 @@ class ChallengeListViewController: BaseViewController {
     }
 }
 
-extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate, SectionHeaderDelegate {
     // 비어있지 않은 배열의 수 반환
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return [completedTodos, incompleteTodos, upcomingTodos].filter { !$0.isEmpty }.count
@@ -252,6 +246,10 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
+        }
+        
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         header.section = indexPath.section
@@ -281,6 +279,12 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let todo = getTodoItem(for: indexPath)
+        let detailVC = ChallengeListDetailViewController()
+        detailVC.newTodo = todo
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
     private enum SectionType {
         case completed, incomplete, upcoming
     }
@@ -303,7 +307,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         print("Invalid section: \(section)")
         return .incomplete // 기본값을 반환하거나 적절한 오류 처리를 합니다.
     }
-    
     // 각 섹션 헤더 반환
     private func getSectionHeaderTitle(for section: Int) -> String {
         switch getSectionType(for: section) {
@@ -342,3 +345,4 @@ extension ChallengeListViewController: SectionHeaderDelegate {
         }
     }
 }
+

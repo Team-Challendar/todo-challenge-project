@@ -4,26 +4,27 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
     var calendarView = TodoCalendarView()
     private let periodBtnView = PeriodPickerButtonView() // 기간피커
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
-    private var completedTodo : [Todo] = []
+    private var completedTodo: [Todo] = []
     private var inCompletedTodo: [Todo] = []
-    var days : [Day] = []
-    var changedMonth : Date?
-    var currentDate : Date?
+    var days: [Day] = []
+    var changedMonth: Date?
+    var currentDate: Date?
     private var collectionView: UICollectionView!
-    private var isFirstSectionExpanded = true
+    private var isPickerExpanded = false
+    var currentState : currentCalendar = .month
     
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Todo>!
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     
     override func viewDidLoad() {
         configureCollectionView()
-        configureCalendarView()
         super.viewDidLoad()
         filterTodoitems(date: currentDate ?? Date())
         configureFloatingButton()
         configureNav()
         configureDataSource()
     }
-    override func configureNotificationCenter(){
+    
+    override func configureNotificationCenter() {
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(self, selector: #selector(dateChanged(notification:)), name: NSNotification.Name("date"), object: currentDate)
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
@@ -31,47 +32,53 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
     
     override func configureUI() {
         super.configureUI()
-        calendarView.snp.makeConstraints{
-            $0.height.equalTo(initialCalendarHeight)
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(16)
-        }
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(calendarView.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview()
-        }
+        periodBtnView.delegate = self
     }
     
-    func configureNav(){
+    override func configureConstraint() {
+        [collectionView!, periodBtnView].forEach{
+            self.view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        periodBtnView.snp.makeConstraints{
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).priority(999)
+            $0.leading.equalToSuperview().offset(16)
+            $0.width.equalTo(131)
+            $0.height.equalTo(0)
+        }
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(16)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.bottom.equalToSuperview()
+        }
+    }
+    func configureNav() {
         let button = configureCalendarButtonNavigationBar(title: "월간")
         button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
     }
     
-    private func configureCalendarView(){
+    private func configureCalendarView() {
         self.view.addSubview(calendarView)
     }
     
     private func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.register(TodoCalendarCell.self, forCellWithReuseIdentifier: TodoCalendarCell.identifier)
         collectionView.register(TodoCalendarViewCell.self, forCellWithReuseIdentifier: TodoCalendarViewCell.identifier)
-        collectionView.register(ChallengeSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
-        view.addSubview(collectionView)
+        
     }
     
-    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            return self.createTodoSection(itemHeight: .estimated(75))
-        }
-    }
-
-    private func filterTodoitems(date: Date = Date()){
+    private func filterTodoitems(date: Date = Date()) {
         self.todoItems = todoItems.filter({
             $0.startDate != nil && $0.isChallenge == false
         })
@@ -88,90 +95,163 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
     
     // 데이터 소스 설정
     private func configureDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, Todo>(collectionView: collectionView) { (collectionView, indexPath, todo) -> UICollectionViewCell? in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarViewCell.identifier, for: indexPath) as! TodoCalendarViewCell
-            cell.configure(with: todo, date: self.currentDate ?? Date())
-            return cell
+        dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView) { (collectionView, indexPath, item) -> UICollectionViewCell? in
+            switch item {
+            case .calendarItem(let day):
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarCell.identifier, for: indexPath) as! TodoCalendarCell
+                cell.configureCalenderView(days: day)
+                return cell
+            case .incompleteItem(let todo):
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarViewCell.identifier, for: indexPath) as! TodoCalendarViewCell
+                cell.configure(with: todo, date: self.currentDate ?? Date())
+                return cell
+            case .completeItem(let todo):
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarViewCell.identifier, for: indexPath) as! TodoCalendarViewCell
+                cell.configure(with: todo, date: self.currentDate ?? Date())
+                return cell
+            }
         }
+        
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
             guard kind == UICollectionView.elementKindSectionHeader else {
                 return nil
             }
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! ChallengeSectionHeader
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
             switch indexPath.section {
-            case 0:
-                header.sectionLabel.text = "할일"
             case 1:
+                header.sectionLabel.text = "할일"
+            case 2:
                 header.sectionLabel.text = "완료된 투두"
             default:
-                header.sectionLabel.text = "챌린지 투두"
+                header.sectionLabel.text = ""
             }
             return header
         }
         updateDataSource()
     }
-
+    
     // 데이터 업데이트
     private func updateDataSource() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Todo>()
-        snapshot.appendSections([.incomplete, .complete])
-        snapshot.appendItems(inCompletedTodo, toSection: .incomplete)
-        snapshot.appendItems(completedTodo, toSection: .complete)
-            
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        snapshot.appendSections([.calendar, .incomplete, .complete])
+        snapshot.appendItems([days].map { .calendarItem($0) }, toSection: .calendar)
+        snapshot.appendItems(inCompletedTodo.map { .incompleteItem($0) }, toSection: .incomplete)
+        snapshot.appendItems(completedTodo.map { .completeItem($0) }, toSection: .complete)
+        
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    @objc func dateChanged(notification : Notification){
-        guard let date = notification.object as? Date else {return}
+    @objc func dateChanged(notification: Notification) {
+        todoItems = CoreDataManager.shared.fetchTodos()
+        guard let date = notification.object as? Date else { return }
         self.currentDate = date
         self.filterTodoitems(date: self.currentDate!)
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
     
-    @objc func coreDataUpdated(){
+    @objc func coreDataUpdated() {
         todoItems = CoreDataManager.shared.fetchTodos()
-        self.filterTodoitems(date:  self.currentDate ?? Date())
+        self.filterTodoitems(date: self.currentDate ?? Date())
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
     
-    @objc func titleTouched() {}
+    @objc func titleTouched() {
+        if isPickerExpanded == true {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.periodBtnView.snp.updateConstraints{
+                    $0.height.equalTo(0)
+                }
+                self.view.layoutIfNeeded()
+            })
+        }else{
+            self.periodBtnView.currentState = self.currentState
+            self.periodBtnView.configureButtons()
+            UIView.animate(withDuration: 0.3, animations: {
+                self.periodBtnView.snp.updateConstraints{
+                    $0.height.equalTo(133)
+                }
+                self.view.layoutIfNeeded()
+            })
+        }
+        isPickerExpanded.toggle()
+    }
 }
 
 // Section 정의
 extension TodoCalendarViewDifferableViewController {
     enum Section {
+        case calendar
         case incomplete
         case complete
+    }
+    enum Item: Hashable {
+        case calendarItem([Day])
+        case incompleteItem(Todo)
+        case completeItem(Todo)
+    }
+}
+
+extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        switch indexPath.section {
+        case 0:
+            var height : CGFloat = 0
+            switch self.currentState{
+            case .month:
+                height = maxCalendarHeight
+            case .week:
+                height = minCalendarHeight
+            case .day:
+                height = minCalendarHeight
+            }
+            return CGSize(width: collectionView.frame.width, height: height)
+        default:
+            return CGSize(width: collectionView.frame.width, height: 75)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if section == 0 {
+            return CGSize.zero
+        }
+        return CGSize(width: collectionView.frame.width, height: 50)
     }
 }
 
 
-extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UIScrollViewDelegate {
-    // collectionView(_:numberOfItemsInSection:) 및 collectionView(_:cellForItemAt:) 메서드는 삭제되었습니다.
-    // 이제 dataSource에 의해 데이터를 관리하므로 필요하지 않습니다.
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let translation = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-        
-        if translation.y > 0 {
-            // 아래로 스크롤
-            self.calendarView.calendar.setScope(.month, animated: true)
-            UIView.animate(withDuration: 0.5) {
-                self.calendarView.snp.updateConstraints {
-                    $0.height.equalTo(maxCalendarHeight)
-                }
-                self.view.layoutIfNeeded()
+extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDelegate {
+    func didTapDailyButton(){}
+    func didTapMonthButton(){
+        currentState = .month
+        NotificationCenter.default.post(name: NSNotification.Name("CalendarToggle"), object: currentState, userInfo: nil)
+        UIView.animate(withDuration: 0.3) {
+            self.periodBtnView.snp.updateConstraints{
+                $0.height.equalTo(0)
             }
-            
-        } else if translation.y < 0 {
-            // 위로 스크롤
-            UIView.animate(withDuration: 0.5) {
-                self.calendarView.snp.updateConstraints {
-                    $0.height.equalTo(minCalendarHeight)
-                }
-                self.view.layoutIfNeeded()
-            }
-            self.calendarView.calendar.setScope(.week, animated: true)
+            self.view.layoutIfNeeded()
         }
+        
+        UIView.animate(withDuration: 0.5) {
+            self.updateDataSource()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView.layoutIfNeeded()
+        }
+        isPickerExpanded.toggle()
+    }
+    func didTapWeekButton(){
+        currentState = .week
+        NotificationCenter.default.post(name: NSNotification.Name("CalendarToggle"), object: currentState, userInfo: nil)
+        UIView.animate(withDuration: 0.3) {
+            self.periodBtnView.snp.updateConstraints{
+                $0.height.equalTo(0)
+            }
+            self.view.layoutIfNeeded()
+        }
+        UIView.animate(withDuration: 0.5) {
+            self.updateDataSource()
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            self.collectionView.layoutIfNeeded()
+        }
+        isPickerExpanded.toggle()
     }
 }

@@ -76,7 +76,7 @@ extension BaseViewController{
         
         return button
     }
-    func configureBackAndTitleNavigationBar(title: String) {
+    func configureBackAndTitleNavigationBar(title: String, checkSetting: Bool) {
         let view = UIView()
         let titleLabel = UILabel()
         titleLabel.text = title
@@ -110,12 +110,18 @@ extension BaseViewController{
         
         closeImageView.isUserInteractionEnabled = true
         var tapGesture = UITapGestureRecognizer()
-        tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+        if checkSetting {
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped))
+        }else{
+            tapGesture = UITapGestureRecognizer(target: self, action: #selector(backButtonTapped))
+        }
+        
         
         closeImageView.addGestureRecognizer(tapGesture)
         view.translatesAutoresizingMaskIntoConstraints = false
         let titleBarButtonItem = UIBarButtonItem(customView: view)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem
+        self.configureSettingButtonNavigationBar()
     }
     func configureNavigationBar(checkFirst: Bool){
         let closeImageView = UIImageView()
@@ -211,6 +217,21 @@ extension BaseViewController{
         header.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: nil, trailing: nil, bottom: .fixed(8))
         
         section.boundarySupplementaryItems = [header]
+        
+        return section
+    }
+    
+    private func createSpecialSection(itemHeight: NSCollectionLayoutDimension) -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: itemHeight)
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(itemHeight.dimension))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0)
+        section.interGroupSpacing = 8
         
         return section
     }

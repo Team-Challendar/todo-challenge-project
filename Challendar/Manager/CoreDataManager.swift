@@ -35,12 +35,11 @@ class CoreDataManager {
         
         todo.isChallenge = newTodo.isChallenge
         todo.percentage = newTodo.percentage
-        
         if let imagesArray = newTodo.images {
             let imageData = imagesArray.map { $0.pngData() }
             todo.images = try? JSONEncoder().encode(imageData)
         }
-        
+        todo.isCompleted = newTodo.iscompleted
         saveContext()
     }
     
@@ -84,7 +83,8 @@ class CoreDataManager {
                     completed: model.completed,
                     isChallenge: model.isChallenge,
                     percentage: model.percentage,
-                    images: images
+                    images: images,
+                    iscompleted: model.isCompleted
                 )
             }
         } catch {
@@ -107,7 +107,7 @@ class CoreDataManager {
     }
     
     // Update
-    func updateTodoById(id: UUID, newTitle: String? = nil, newMemo: String? = nil, newStartDate: Date? = nil, newEndDate: Date? = nil, newCompleted: [Bool]? = nil, newIsChallenge: Bool? = nil, newPercentage: Double? = nil, newImages: [UIImage]? = nil) {
+    func updateTodoById(id: UUID, newTitle: String? = nil, newMemo: String? = nil, newStartDate: Date? = nil, newEndDate: Date? = nil, newCompleted: [Bool]? = nil, newIsChallenge: Bool? = nil, newPercentage: Double? = nil, newImages: [UIImage]? = nil, newIsCompleted: Bool? = nil) {
         guard let todoToUpdate = fetchTodoById(id: id) else {
             print("Todo not found")
             return
@@ -127,6 +127,7 @@ class CoreDataManager {
         }
         if let newCompleted = newCompleted {
             todoToUpdate.completed = newCompleted
+            todoToUpdate.percentage = Double(newCompleted.filter{$0 == true}.count) / Double( newCompleted.count)
         }
         if let newIsChallenge = newIsChallenge {
             todoToUpdate.isChallenge = newIsChallenge
@@ -137,6 +138,9 @@ class CoreDataManager {
         if let newImages = newImages {
             let imageData = newImages.map { $0.pngData() }
             todoToUpdate.images = try? JSONEncoder().encode(imageData)
+        }
+        if let newIsCompleted = newIsCompleted{
+            todoToUpdate.isCompleted = newIsCompleted
         }
         
         saveContext()

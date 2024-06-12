@@ -23,9 +23,9 @@ class DetailCalendarCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCalenderView(days: [Day]){
+    func configureCalenderView(todo: Todo){
         self.addSubview(calanderView)
-        calanderView.dayModelForCurrentPage = days
+        calanderView.currentTodo = todo
         calanderView.snp.makeConstraints{
             $0.edges.equalToSuperview()
         }
