@@ -177,10 +177,12 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
             case .incompleteItem(let incompletedTodo):
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarViewCell.identifier, for: indexPath) as! TodoCalendarViewCell
                 cell.configure(with: incompletedTodo, date: self.currentDate ?? Date())
+                cell.delegate = self
                 return cell
             case .completeItem(let completedTodo):
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodoCalendarViewCell.identifier, for: indexPath) as! TodoCalendarViewCell
                 cell.configure(with: completedTodo, date: self.currentDate ?? Date())
+                cell.delegate = self
                 return cell
             }
             
@@ -325,6 +327,17 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
                 self.calendarView.calendar.setScope(.week, animated: true)
             }
         }
+    }
+    
+}
+
+extension TodoCalendarViewDifferableViewController : CollectionViewCellDelegate {
+    func editContainerTapped(in cell: TodoCalendarViewCell) {
+        let editVC = EditTodoTitleViewController()
+        editVC.todoId = cell.todoItem?.id
+        editVC.modalTransitionStyle = .coverVertical
+        editVC.modalPresentationStyle = .fullScreen
+        self.present(editVC, animated: true, completion: nil)
     }
     
 }

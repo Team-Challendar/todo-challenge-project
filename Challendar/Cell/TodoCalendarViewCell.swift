@@ -9,6 +9,10 @@ import UIKit
 import SnapKit
 import Lottie
 
+protocol CollectionViewCellDelegate: AnyObject {
+    func editContainerTapped(in cell: TodoCalendarViewCell)
+}
+
 class TodoCalendarViewCell: UICollectionViewCell {
     static var identifier = "TodoCalendarViewCell"
     let animation = LottieAnimation.named("doneBlue")
@@ -27,6 +31,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
     private lazy var enrollChallengeButton = UIButton(configuration: buttonConfig)
     var swipeLeft : Bool = false
     var swipeRight : Bool = false
+    weak var delegate: CollectionViewCellDelegate?
 
     var todoItem: Todo? // Todo 항목을 저장할 속성
     var currentDate : Date?
@@ -278,12 +283,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
         editContainer.isUserInteractionEnabled = true
     }
     @objc func editContainerTapped(_ sender: UITapGestureRecognizer) {
-        let editVC = EditTodoTitleViewController()
-//        editVC.newTodo = self.todoItem?.id
+        delegate?.editContainerTapped(in: self)
         print("edit")
-    }
-    private func editTodo(for item: Todo) {
-        
     }
     
     @objc private func checkButtonTapped() {
