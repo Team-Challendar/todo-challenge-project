@@ -93,7 +93,7 @@ class CoreDataManager {
         }
     }
     
-    private func fetchTodoById(id: UUID) -> TodoModel? {
+    func fetchTodoById(id: UUID) -> TodoModel? {
         let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         
