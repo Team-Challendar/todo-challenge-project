@@ -1,10 +1,3 @@
-//
-//  ChallengeListViewController.swift
-//  Challendar
-//
-//  Created by 서혜림 on 6/3/24.
-//
-
 import UIKit
 import SnapKit
 
@@ -24,10 +17,11 @@ class ChallengeListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureFloatingButton()
-        filterTodos()
         configureTitleNavigationBar(title: "챌린지 리스트")
-        updateEmptyStateVisibility()
-        sortByRecentStartDate()     // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
+//        configureUI()
+//        configureConstraint()
+//        configureNotificationCenter()
+        loadData()
     }
     
     override func configureUI() {
@@ -54,12 +48,16 @@ class ChallengeListViewController: BaseViewController {
     }
     
     @objc func coreDataChanged(_ notification: Notification) {
+        loadData()
+    }
+    
+    private func loadData() {
         self.todoItems = CoreDataManager.shared.fetchTodos()
         filterTodos()
         sortByRecentStartDate()
+        updateEmptyStateVisibility()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
-            self.updateEmptyStateVisibility()
         }
     }
     
@@ -81,7 +79,7 @@ class ChallengeListViewController: BaseViewController {
 //        resetBtn.backgroundColor = .red
 //        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
 //        view.addSubview(resetBtn)
-//        
+//
 //        resetBtn.snp.makeConstraints { make in
 //            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
 //            make.centerX.equalToSuperview()
@@ -92,13 +90,7 @@ class ChallengeListViewController: BaseViewController {
     
     @objc private func resetButtonTapped() {
         CoreDataManager.shared.deleteAllTodos()
-        self.todoItems = CoreDataManager.shared.fetchTodos()
-        filterTodos()
-        sortByRecentStartDate()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.updateEmptyStateVisibility()
-        }
+        loadData()
     }
 
     // 컬렉션뷰 설정
@@ -204,28 +196,21 @@ class ChallengeListViewController: BaseViewController {
     
     // 비어있는 상태 가시성 업데이트
     private func updateEmptyStateVisibility() {
-        let isEmpty = todoItems.isEmpty
+        let isEmpty = [completedTodos, incompleteTodos, upcomingTodos].allSatisfy { $0.isEmpty }
         emptyMainLabel.isHidden = !isEmpty
         emptySubLabel.isHidden = !isEmpty
         emptyImage.isHidden = !isEmpty
     }
 }
 
-extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate, SectionHeaderDelegate {
     // 비어있지 않은 배열의 수 반환
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return [completedTodos, incompleteTodos, upcomingTodos].filter { !$0.isEmpty }.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch getSectionType(for: section) {
-        case .completed:
-            return completedTodos.count
-        case .incomplete:
-            return incompleteTodos.count
-        case .upcoming:
-            return upcomingTodos.count
-        }
+        return getTodoItem(for: section).count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -245,16 +230,52 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            return UICollectionReusableView()
+        }
+        
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
+        header.section = indexPath.section
+        header.delegate = self
+        
+        // 섹션에 값이 있는 경우 지우기 버튼 표시
+        if getTodoItem(for: indexPath.section).count > 0 {
+            header.showDeleteButton()
+        } else {
+            header.hideDeleteButton()
+        }
+        
         return header
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let todo = getTodoItem(for: indexPath)
         let detailVC = ChallengeListDetailViewController()
         detailVC.newTodo = todo
         self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+    func didTapDeleteButton(in section: Int) {
+        let nonEmptySections = [completedTodos, incompleteTodos, upcomingTodos].enumerated().filter { !$0.element.isEmpty }
+        let sectionIndex = nonEmptySections[section].offset
+        
+        let todosToDelete: [Todo]
+        switch sectionIndex {
+        case 0:
+            todosToDelete = completedTodos
+        case 1:
+            todosToDelete = incompleteTodos
+        case 2:
+            todosToDelete = upcomingTodos
+        default:
+            todosToDelete = []
+        }
+        
+        for todo in todosToDelete {
+            CoreDataManager.shared.deleteTodoById(id: todo.id!)
+        }
+        
+        loadData()
     }
     private enum SectionType {
         case completed, incomplete, upcoming
@@ -280,27 +301,13 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     // 각 섹션 투두 항목들 반환
+    private func getTodoItem(for section: Int) -> [Todo] {
+        let nonEmptySections = [completedTodos, incompleteTodos, upcomingTodos].enumerated().filter { !$0.element.isEmpty }
+        return nonEmptySections[section].element
+    }
+    
     private func getTodoItem(for indexPath: IndexPath) -> Todo {
-        switch getSectionType(for: indexPath.section) {
-        case .completed:
-            guard completedTodos.indices.contains(indexPath.item) else {
-                print("Invalid indexPath: \(indexPath)")
-                return Todo() // 기본값을 반환하거나 적절한 오류 처리를 합니다.
-            }
-            return completedTodos[indexPath.item]
-        case .incomplete:
-            guard incompleteTodos.indices.contains(indexPath.item) else {
-                print("Invalid indexPath: \(indexPath)")
-                return Todo() // 기본값을 반환하거나 적절한 오류 처리를 합니다.
-            }
-            return incompleteTodos[indexPath.item]
-        case .upcoming:
-            guard upcomingTodos.indices.contains(indexPath.item) else {
-                print("Invalid indexPath: \(indexPath)")
-                return Todo() // 기본값을 반환하거나 적절한 오류 처리를 합니다.
-            }
-            return upcomingTodos[indexPath.item]
-        }
+        return getTodoItem(for: indexPath.section)[indexPath.item]
     }
     
     // 각 섹션 헤더 반환
@@ -340,3 +347,4 @@ class ChallengeSectionHeader: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
