@@ -27,7 +27,6 @@ class ChallengeSuccessViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.dismiss(animated: true)
             self.animationView.stop()
-            //            self.animationView.removeFromSuperview()
         }
     }
     
@@ -44,7 +43,7 @@ class ChallengeSuccessViewController: BaseViewController {
         
         animationView = LottieAnimationView(animation: animation)
         animationView.backgroundColor = .clear
-        animationView.contentMode = .scaleAspectFill // 이 줄 추가
+        animationView.contentMode = .scaleAspectFill
         view.addSubview(animationView)
         
         if isChallenge {
@@ -76,22 +75,7 @@ class ChallengeSuccessViewController: BaseViewController {
             $0.centerX.equalToSuperview()
         }
         animationView.snp.makeConstraints {
-                   $0.edges.equalToSuperview() // 이 줄 수정
-               }
-//        animationView.snp.makeConstraints{
-//            $0.height.equalToSuperview()
-//            $0.center.equalToSuperview()
-////            $0.edges.equalTo(view)
-////            $0.height.equalTo(view)
-//        }
-        
-        //        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-        //           let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-        //            window.addSubview(animationView)
-        //            animationView.translatesAutoresizingMaskIntoConstraints = false
-        //            animationView.snp.makeConstraints {
-        //                $0.edges.equalTo(window)
-        //            }
-        //        }
+            $0.edges.equalToSuperview()
+        }
     }
 }
