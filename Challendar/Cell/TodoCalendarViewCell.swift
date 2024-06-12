@@ -44,6 +44,12 @@ class TodoCalendarViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         titleLabel.attributedText = nil
+        deleteContainer = nil
+        editContainer = nil
+        enrollChallengeContainer = nil
+        deleteButtonImage = nil
+        editButtonImage = nil
+        enrollChallengeButton = UIButton()
     }
     
     private func setupViews() {
@@ -266,8 +272,12 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     @objc private func checkButtonTapped() {
-        playBounceAnimation(checkButton)
-        animationView.play()
+        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+            self.didSwipeCellLeft()
+            self.didSwipeCellRight()
+            self.playBounceAnimation(self.checkButton)
+            self.animationView.play()
+        })
         checkButton.isSelected.toggle()
         updateTitleLabel()
         guard let item = todoItem else { return }
