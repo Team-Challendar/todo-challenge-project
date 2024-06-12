@@ -249,7 +249,13 @@ class TodoCalendarViewCell: UICollectionViewCell {
         enrollChallengeButton.addTarget(self, action: #selector(enrollButtonTapped), for: .touchUpInside)
     }
     @objc func enrollButtonTapped() {
+        guard let item = todoItem else { return }
+        item.isChallenge = true
+        self.enrollChallenge(for: item)
         print("등록")
+    }
+    private func enrollChallenge(for item: Todo) {
+        CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newIsChallenge: item.isChallenge)
     }
     
     private func deleteTapGestureRecognizer() {
@@ -258,8 +264,12 @@ class TodoCalendarViewCell: UICollectionViewCell {
         deleteContainer.isUserInteractionEnabled = true
     }
     @objc func deleteContainerTapped(_ sender: UITapGestureRecognizer) {
+        guard let item = todoItem else { return }
+        self.deleteTodo(for: item)
         print("delete")
-        
+    }
+    private func deleteTodo(for item: Todo) {
+        CoreDataManager.shared.deleteTodoById(id: item.id ?? UUID())
     }
     
     private func editTapGestureRecognizer() {
@@ -268,7 +278,12 @@ class TodoCalendarViewCell: UICollectionViewCell {
         editContainer.isUserInteractionEnabled = true
     }
     @objc func editContainerTapped(_ sender: UITapGestureRecognizer) {
+        let editVC = EditTodoTitleViewController()
+//        editVC.newTodo = self.todoItem?.id
         print("edit")
+    }
+    private func editTodo(for item: Todo) {
+        
     }
     
     @objc private func checkButtonTapped() {

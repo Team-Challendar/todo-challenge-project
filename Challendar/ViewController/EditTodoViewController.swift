@@ -8,10 +8,7 @@
 import UIKit
 import SnapKit
 
-
-
 class EditTodoTitleViewController: BaseViewController {
-    
     
     // 계획 질문 UI 컴포넌트
     let titleLabel = EditTitleLabel(text: "어떤 계획이 생겼나요?")
