@@ -32,7 +32,7 @@ class ChallengeListViewController: BaseViewController {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
-        setupResetButton()
+//        setupResetButton()
     }
     
     override func configureConstraint() {
@@ -218,7 +218,7 @@ class ChallengeListViewController: BaseViewController {
     }
 }
 
-extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate, SectionHeaderDelegate {
+extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     // 비어있지 않은 배열의 수 반환
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return [completedTodos, incompleteTodos, upcomingTodos].filter { !$0.isEmpty }.count
@@ -253,7 +253,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         header.section = indexPath.section
-        header.delegate = self
         return header
     }
     
@@ -316,32 +315,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
             return "지금 도전 중!"
         case .upcoming:
             return "도전 예정 목록"
-        }
-    }
-}
-
-extension ChallengeListViewController: SectionHeaderDelegate {
-    func didTapDeleteButton(in section: Int) {
-        let todosToDelete: [Todo]
-        switch getSectionType(for: section) {
-        case .completed:
-            todosToDelete = completedTodos
-        case .incomplete:
-            todosToDelete = incompleteTodos
-        case .upcoming:
-            todosToDelete = upcomingTodos
-        }
-
-        for todo in todosToDelete {
-            CoreDataManager.shared.deleteTodoById(id: todo.id!)
-        }
-
-        self.todoItems = CoreDataManager.shared.fetchTodos()
-        filterTodos()
-        sortByRecentStartDate()
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-            self.updateEmptyStateVisibility()
         }
     }
 }
