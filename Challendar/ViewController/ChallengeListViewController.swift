@@ -8,11 +8,15 @@ class ChallengeListViewController: BaseViewController {
     private var completedTodos: [Todo] = []         // 완료 투두
     private var incompleteTodos: [Todo] = []        // 미완료 투두
     private var upcomingTodos: [Todo] = []          // 예정 투두
+    
     private var emptyMainLabel: UILabel!
     private var emptySubLabel: UILabel!
     private var emptyImage: UIImageView!
+    
+    private var dateView: UIView!
+    private var todayLabel: UILabel!
     private var collectionView: UICollectionView!
-//    private var resetBtn: UIButton!
+    private var resetBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +32,7 @@ class ChallengeListViewController: BaseViewController {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
-//        setupResetButton()
+        setupResetButton()
     }
     
     override func configureConstraint() {
@@ -58,6 +62,8 @@ class ChallengeListViewController: BaseViewController {
         updateEmptyStateVisibility()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+            self.updateEmptyStateVisibility()
+            self.checkIfAllChallengesCompleted()
         }
     }
     
@@ -87,6 +93,7 @@ class ChallengeListViewController: BaseViewController {
 //            make.height.equalTo(50)
 //        }
 //    }
+
     
     @objc private func resetButtonTapped() {
         CoreDataManager.shared.deleteAllTodos()
@@ -132,6 +139,7 @@ class ChallengeListViewController: BaseViewController {
             guard let startDate = $0.startDate else { return false }
             return startDate > today
         }
+        checkIfAllChallengesCompleted()
     }
     
     // 최신순
@@ -164,14 +172,13 @@ class ChallengeListViewController: BaseViewController {
         view.addSubview(emptyMainLabel)
         
         emptySubLabel = UILabel()
-        emptySubLabel.text = "작성하기 버튼을 눌러 등록해주세요."
+        emptySubLabel.text = "작성하기 버튼을 눌러 등록해주세요"
         emptySubLabel.font = .pretendardMedium(size: 13)
-        emptySubLabel.textColor = .challendarGrey50
+        emptySubLabel.textColor = .secondary500
         view.addSubview(emptySubLabel)
         
-        // If you want to use the emptyImage
          emptyImage = UIImageView()
-         emptyImage.image = UIImage(named: "SurprisedFace")
+         emptyImage.image = UIImage(named: "Bullseye")
          view.addSubview(emptyImage)
     }
     
@@ -194,12 +201,20 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
-    // 비어있는 상태 가시성 업데이트
+    // 비어있는 상태 업데이트
     private func updateEmptyStateVisibility() {
-        let isEmpty = [completedTodos, incompleteTodos, upcomingTodos].allSatisfy { $0.isEmpty }
+        let isEmpty = completedTodos.isEmpty && incompleteTodos.isEmpty && upcomingTodos.isEmpty
         emptyMainLabel.isHidden = !isEmpty
         emptySubLabel.isHidden = !isEmpty
         emptyImage.isHidden = !isEmpty
+    }
+    
+    private func checkIfAllChallengesCompleted() {
+        if incompleteTodos.isEmpty && !todoItems.isEmpty {
+            let successViewController = ChallengeSuccessViewController()
+            successViewController.modalPresentationStyle = .fullScreen
+            present(successViewController, animated: true, completion: nil)
+        }
     }
 }
 
@@ -210,7 +225,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return getTodoItem(for: section).count
+        return getTodoItemCount(for: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -221,6 +236,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "enabledCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: todo)
             cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            cell.isUserInteractionEnabled = false
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
@@ -238,44 +254,36 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         header.section = indexPath.section
         header.delegate = self
-        
-        // 섹션에 값이 있는 경우 지우기 버튼 표시
-        if getTodoItem(for: indexPath.section).count > 0 {
-            header.showDeleteButton()
-        } else {
-            header.hideDeleteButton()
-        }
-        
         return header
     }
-
+    
+    private func getTodoItemCount(for section: Int) -> Int {
+        switch getSectionType(for: section) {
+        case .completed:
+            return completedTodos.count
+        case .incomplete:
+            return incompleteTodos.count
+        case .upcoming:
+            return upcomingTodos.count
+        }
+    }
+    
+    private func getTodoItem(for indexPath: IndexPath) -> Todo {
+        switch getSectionType(for: indexPath.section) {
+        case .completed:
+            return completedTodos[indexPath.item]
+        case .incomplete:
+            return incompleteTodos[indexPath.item]
+        case .upcoming:
+            return upcomingTodos[indexPath.item]
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let todo = getTodoItem(for: indexPath)
         let detailVC = ChallengeListDetailViewController()
         detailVC.newTodo = todo
         self.navigationController?.pushViewController(detailVC, animated: true)
-    }
-    func didTapDeleteButton(in section: Int) {
-        let nonEmptySections = [completedTodos, incompleteTodos, upcomingTodos].enumerated().filter { !$0.element.isEmpty }
-        let sectionIndex = nonEmptySections[section].offset
-        
-        let todosToDelete: [Todo]
-        switch sectionIndex {
-        case 0:
-            todosToDelete = completedTodos
-        case 1:
-            todosToDelete = incompleteTodos
-        case 2:
-            todosToDelete = upcomingTodos
-        default:
-            todosToDelete = []
-        }
-        
-        for todo in todosToDelete {
-            CoreDataManager.shared.deleteTodoById(id: todo.id!)
-        }
-        
-        loadData()
     }
     private enum SectionType {
         case completed, incomplete, upcoming
@@ -299,17 +307,6 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         print("Invalid section: \(section)")
         return .incomplete // 기본값을 반환하거나 적절한 오류 처리를 합니다.
     }
-    
-    // 각 섹션 투두 항목들 반환
-    private func getTodoItem(for section: Int) -> [Todo] {
-        let nonEmptySections = [completedTodos, incompleteTodos, upcomingTodos].enumerated().filter { !$0.element.isEmpty }
-        return nonEmptySections[section].element
-    }
-    
-    private func getTodoItem(for indexPath: IndexPath) -> Todo {
-        return getTodoItem(for: indexPath.section)[indexPath.item]
-    }
-    
     // 각 섹션 헤더 반환
     private func getSectionHeaderTitle(for section: Int) -> String {
         switch getSectionType(for: section) {
@@ -318,33 +315,34 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         case .incomplete:
             return "지금 도전 중!"
         case .upcoming:
-            return "예정된 목록"
+            return "도전 예정 목록"
         }
     }
 }
 
-class ChallengeSectionHeader: UICollectionReusableView {
-    let sectionLabel: UILabel = {
-        let label = UILabel()
-        label.font = .pretendardMedium(size: 16)
-        label.textColor = .challendarBlack60
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        addSubview(sectionLabel)
-        NSLayoutConstraint.activate([
-            sectionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            sectionLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            sectionLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            sectionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -0)
-        ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+extension ChallengeListViewController: SectionHeaderDelegate {
+    func didTapDeleteButton(in section: Int) {
+        let todosToDelete: [Todo]
+        switch getSectionType(for: section) {
+        case .completed:
+            todosToDelete = completedTodos
+        case .incomplete:
+            todosToDelete = incompleteTodos
+        case .upcoming:
+            todosToDelete = upcomingTodos
+        }
+
+        for todo in todosToDelete {
+            CoreDataManager.shared.deleteTodoById(id: todo.id!)
+        }
+
+        self.todoItems = CoreDataManager.shared.fetchTodos()
+        filterTodos()
+        sortByRecentStartDate()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.updateEmptyStateVisibility()
+        }
     }
 }
 

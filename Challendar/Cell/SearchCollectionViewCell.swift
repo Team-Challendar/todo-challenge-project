@@ -34,7 +34,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
     private func setupViews() {
         contentView.layer.cornerRadius = 20
         contentView.layer.masksToBounds = false
-        contentView.backgroundColor = .challendarBlack80
+        contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         contentView.layer.shadowColor = UIColor.black.cgColor
@@ -45,24 +45,24 @@ class SearchCollectionViewCell: UICollectionViewCell {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .challendarWhite
-        titleLabel.font = .pretendardMedium(size: 20)
+        titleLabel.font = .pretendardMedium(size: 18)
         contentView.addSubview(titleLabel)
         
         dateLabel = UILabel()
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.textColor = .challendarBlack60
+        dateLabel.textColor = .secondary400
         dateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(dateLabel)
         
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
-        stateLabel.textColor = .challendarGreen100
+        stateLabel.textColor = .primary200
         stateLabel.font = .pretendardMedium(size: 12)
         contentView.addSubview(stateLabel)
-               
+        
         checkButton = UIButton(type: .system)
-        checkButton.setImage(.done0.withTintColor(.challendarBlack60, renderingMode: .alwaysOriginal), for: .normal)
-        checkButton.setImage(.done2.withTintColor(.challendarGreen100, renderingMode: .alwaysOriginal), for: .selected)
+        checkButton.setImage(.done0.withTintColor(.secondary800, renderingMode: .alwaysOriginal), for: .normal)
+        checkButton.setImage(.done2.withTintColor(.primary200, renderingMode: .alwaysOriginal), for: .selected)
         checkButton.tintColor = .clear
         checkButton.isHidden = false
         checkButton.translatesAutoresizingMaskIntoConstraints = false
@@ -70,12 +70,12 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(checkButton)
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16.5),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             
             stateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
-           
+            
             dateLabel.leadingAnchor.constraint(equalTo: stateLabel.trailingAnchor, constant: 4),
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
             
@@ -101,7 +101,6 @@ class SearchCollectionViewCell: UICollectionViewCell {
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
-        contentView.backgroundColor = .challendarBlack80
         
         // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
         checkButton.isSelected = item.todayCompleted() ?? false
@@ -112,39 +111,44 @@ class SearchCollectionViewCell: UICollectionViewCell {
         if checkButton.isSelected {
             if let title = titleLabel.text {
                 titleLabel.attributedText = title.strikeThrough()
-                titleLabel.textColor = .challendarBlack60
+                titleLabel.textColor = .secondary800
+                dateLabel.textColor = .secondary800
             }
         } else {
             if let title = titleLabel.text {
                 titleLabel.attributedText = NSAttributedString(string: title)
             }
             titleLabel.textColor = .challendarWhite
+            dateLabel.textColor = .secondary400
         }
     }
-
+    
     private func formatDate(_ date: Date?) -> String {
-        guard let date = date else { return "날짜 없음" }
+        guard let date = date else { return " " }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy. MM. dd."
         return dateFormatter.string(from: date)
     }
     
     private func calculateState(startDate: Date?, endDate: Date?) -> String {
-        guard let startDate = startDate, let endDate = endDate else { return "날짜 없음" }
+        guard let startDate = startDate, let endDate = endDate else { return " " }
         let today = Date()
         let calendar = Calendar.current
         
         if today > endDate {
             return "종료됨"
         } else if today < startDate {
-            return "예정됨"
+            let daysUntilStart = calendar.dateComponents([.day], from: today, to: startDate).day ?? 0
+                return "\(daysUntilStart)일 후"
+            } else if today == startDate {
+            return "1일차"
         }
         
         let components = calendar.dateComponents([.day], from: startDate, to: today)
         if let day = components.day {
             return "\(day + 1)일차"
         } else {
-            return "날짜 없음"
+            return " "
         }
     }
     
