@@ -15,7 +15,7 @@ class TodoCalendarView: UIView {
     var calendarLabel = UILabel()
     var prevButton = UIButton()
     var nextButton = UIButton()
-    
+    var currentState : currentCalendar?
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureUI()
@@ -31,7 +31,7 @@ class TodoCalendarView: UIView {
     
     func configureNotificationCenter(){
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataChanged), name: NSNotification.Name("CoreDataChanged"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(calendarToggle), name: NSNotification.Name("CalendarToggle"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(calendarToggle(notification:)), name: NSNotification.Name("CalendarToggle"), object: currentState)
     }
     
     private func configureUI(){
@@ -153,13 +153,18 @@ class TodoCalendarView: UIView {
         calendar.reloadData()
     }
     
-    @objc func calendarToggle(){
-        if calendar.scope == .month {
-            calendar.scope = .week
-        }else{
-            calendar.scope = .month
+    @objc func calendarToggle(notification: Notification){
+        guard let state = notification.object as? currentCalendar else {return}
+        currentState = state
+        switch currentState {
+        case .month:
+            calendar.setScope(.month, animated: true)
+        case .week:
+            calendar.setScope(.week, animated: true)
+        default:
+            return
         }
-        //        calendarView.reloadData()
+//        calendar.reloadData()
     }
 }
 

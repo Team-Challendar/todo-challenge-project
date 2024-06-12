@@ -25,6 +25,7 @@ extension TodoModel {
     @NSManaged public var isChallenge: Bool
     @NSManaged public var percentage: Double
     @NSManaged public var images: Data?
+    @NSManaged public var isCompleted: Bool
 
 }
 
