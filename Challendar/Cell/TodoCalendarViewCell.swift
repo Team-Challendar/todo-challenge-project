@@ -261,9 +261,32 @@ class TodoCalendarViewCell: UICollectionViewCell {
         editContainer.addGestureRecognizer(tapGesture)
         editContainer.isUserInteractionEnabled = true
     }
+    
     @objc func editContainerTapped(_ sender: UITapGestureRecognizer) {
-        print("edit")
+        guard let todoItem = todoItem, let viewController = findViewController() else {
+            print("Todo item or view controller not found")
+            return
+        }
+        
+        let editTodoVC = EditTodoTitleViewController()
+        editTodoVC.todoId = todoItem.id
+        let navigationController = UINavigationController(rootViewController: editTodoVC)
+        navigationController.modalTransitionStyle = .coverVertical
+        navigationController.modalPresentationStyle = .overFullScreen
+        viewController.present(navigationController, animated: true)
     }
+    
+    private func findViewController() -> UIViewController? {
+        var nextResponder: UIResponder? = self
+        while nextResponder != nil {
+            nextResponder = nextResponder?.next
+            if let viewController = nextResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
+
     
     @objc private func checkButtonTapped() {
         playBounceAnimation(checkButton)

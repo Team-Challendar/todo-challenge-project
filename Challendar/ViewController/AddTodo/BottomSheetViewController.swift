@@ -12,6 +12,8 @@ import RxCocoa
 
 class BottomSheetViewController: UIViewController {
     var rootViewVC: AddTodoDateViewController?
+    var rootViewVC2: EditTodoTitleViewController?
+    var dismissCompletion: (() -> Void)?
     var dimmedView = UIView()
     var dateBottomSheet = DateBottomSheet()
     var dispose = DisposeBag()
@@ -29,6 +31,11 @@ class BottomSheetViewController: UIViewController {
         super.viewDidAppear(animated)
         showLayout()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            dismissCompletion?()
+        }
     
     func configureUtil(){
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
