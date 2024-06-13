@@ -40,7 +40,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     
     private func setupContentView() {
         contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = true
+        contentView.layer.masksToBounds = false
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor

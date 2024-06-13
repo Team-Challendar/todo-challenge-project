@@ -43,6 +43,8 @@ class SearchViewController: BaseViewController {
         configureBackground()
         searchBarConfigure()
         setupCollectionView()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
     
     override func configureConstraint() {
@@ -130,13 +132,13 @@ class SearchViewController: BaseViewController {
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(true, animated: true)
+        searchBar.setShowsCancelButton(true, animated: false)
         //        navigationItem.rightBarButtonItem = customCancelButton
         updateSearchTextFieldConstraints(showingCancelButton: true)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.setShowsCancelButton(false, animated: false)
         //        navigationItem.rightBarButtonItem = nil
         updateSearchTextFieldConstraints(showingCancelButton: false)
     }
@@ -284,6 +286,11 @@ class SearchViewController: BaseViewController {
             return .orderedSame
         }
     }
+    
+    @objc func dismissKeyboard() {
+        searchBar.resignFirstResponder()
+    }
+    
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
