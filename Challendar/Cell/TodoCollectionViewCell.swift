@@ -56,17 +56,20 @@ class TodoCollectionViewCell: UICollectionViewCell {
     
     private func setupContentView() {
         contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = false
+        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        contentView.layer.shadowColor = UIColor.black.cgColor
+        contentView.layer.shadowOpacity = 0.16
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        contentView.layer.shadowRadius = 4
     }
     
     private func configureUI(){
         container = UIView()
         container.backgroundColor = .secondary850
         container.layer.cornerRadius = 20
-        container.clipsToBounds = true
         
         deleteContainer = UIView()
         deleteContainer.backgroundColor = .alertRed

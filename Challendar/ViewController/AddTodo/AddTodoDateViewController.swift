@@ -24,7 +24,7 @@ class AddTodoDateViewController: BaseViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(dateChangedFromCal), name: NSNotification.Name("todo"), object: newTodo)
     }
     override func configureUI(){
-        confirmButton.changeTitle(title: "할일 등록")
+        confirmButton.changeTitle(title: "할 일 등록")
         confirmButton.highLightState()
     }
     
