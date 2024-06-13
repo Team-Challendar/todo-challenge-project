@@ -295,6 +295,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: todo)
+            cell.delegate = self
             return cell
         }
     }
@@ -370,5 +371,15 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         case .upcoming:
             return "도전 예정 목록"
         }
+    }
+}
+
+extension ChallengeListViewController : ChallengeCollectionViewCellDelegate {
+    func editContainerTapped(in cell: ChallengeCollectionViewCell) {
+        let editVC = EditTodoTitleViewController()
+        editVC.todoId = cell.todoItem?.id
+        editVC.modalTransitionStyle = .coverVertical
+        editVC.modalPresentationStyle = .fullScreen
+        self.present(editVC, animated: true, completion: nil)
     }
 }

@@ -169,6 +169,9 @@ extension DateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                 datesRange = range
                 confirmButton.setTitleColor(.challendarGreen200, for: .normal)
                 confirmButton.isEnabled = true
+                self.newTodo?.startDate = firstDate
+                self.newTodo?.endDate = lastDate
+                NotificationCenter.default.post(name: NSNotification.Name("todo"), object: self.newTodo, userInfo: nil)
                 calendar.reloadData()
                 return
             }

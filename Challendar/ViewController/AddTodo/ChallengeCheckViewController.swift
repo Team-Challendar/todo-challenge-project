@@ -18,6 +18,7 @@ class ChallengeCheckViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .clear
         configureNavigationBar(checkFirst: false)
     }
     
@@ -40,9 +41,16 @@ class ChallengeCheckViewController: BaseViewController {
     }
     override func configureUI() {
         super.configureUI()
-        dimmedView.backgroundColor = UIColor.secondary900
+        dimmedView.backgroundColor = UIColor.challendarBlack
         dimmedView.alpha = 0
+        let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
+        dimmedView.addGestureRecognizer(dimmedTap)
+        dimmedView.isUserInteractionEnabled = true
     }
+    @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
+        self.dismiss(animated: true)
+    }
+    
     override func configureConstraint() {
         super.configureConstraint()
         [dimmedView,challengePopUp].forEach{
@@ -62,7 +70,7 @@ class ChallengeCheckViewController: BaseViewController {
     
     private func showLayout(){
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear,  animations: {
-            self.dimmedView.alpha = 100
+            self.dimmedView.alpha = dimmedViewAlpha
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
@@ -70,14 +78,18 @@ class ChallengeCheckViewController: BaseViewController {
     
     func showSuccessVC(){
         CoreDataManager.shared.createTodo(newTodo: (self.newTodo)!)
+        
         let rootView = self.presentingViewController
+        let rootViewRoot = rootView?.presentingViewController
         let successViewController = SuccessViewController()
         successViewController.isChallenge = self.newTodo!.isChallenge
         let navigationController = UINavigationController(rootViewController: successViewController)
         navigationController.modalTransitionStyle = .coverVertical
         navigationController.modalPresentationStyle = .overFullScreen
         self.dismiss(animated: false, completion: {
-            rootView?.present(navigationController, animated: true)
+            rootView?.dismiss(animated: false, completion: {
+                rootViewRoot?.present(navigationController, animated: true)
+            })
         })
     }
 }

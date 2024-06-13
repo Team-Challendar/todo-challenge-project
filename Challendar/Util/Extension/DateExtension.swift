@@ -43,6 +43,17 @@ extension Date {
         dateformatter.timeZone = TimeZone.current
         return dateformatter.string(from: self)
     }
+    
+    func startToEndDate(date: Date) -> String{
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "MM월dd일"
+        dateformatter.locale = Locale(identifier: "ko_KR")
+        dateformatter.timeZone = TimeZone.current
+        let start = dateformatter.string(from: self)
+        let end = dateformatter.string(from: date)
+        let string = "\(start) 부터 \(end)까지"
+        return string
+    }
     static func stringToDate(string : String) -> Date{
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "yyyy년MM월dd일 HH:mm"

@@ -17,8 +17,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = TabBarViewController()
         
-        
-//      // 네비게이션 임베드
 //        let nav = UINavigationController(rootViewController: EditTodoTitleViewController())
 //        window?.rootViewController = nav
 //        

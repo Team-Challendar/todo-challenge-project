@@ -191,7 +191,7 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         let todo = getTodoItem(for: indexPath.section)[indexPath.item]
         cell.configure(with: todo)
         cell.checkButton.isSelected = todo.iscompleted // 체크박스 상태 설정
-        
+        cell.delegate = self
         return cell
     }
     
@@ -257,6 +257,15 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
 }
 
+extension TodoViewController : TodoViewCellDelegate {
+    func editContainerTapped(in cell: TodoCollectionViewCell) {
+        let editVC = EditTodoTitleViewController()
+        editVC.todoId = cell.todoItem?.id
+        editVC.modalTransitionStyle = .coverVertical
+        editVC.modalPresentationStyle = .fullScreen
+        self.present(editVC, animated: true, completion: nil)
+    }
+}
 
 extension TodoViewController : PickerBtnViewDelegate {
     func didTapLatestOrderButton() {
