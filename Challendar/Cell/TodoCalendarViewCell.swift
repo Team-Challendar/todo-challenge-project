@@ -291,6 +291,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         editContainer.addGestureRecognizer(tapGesture)
         editContainer.isUserInteractionEnabled = true
     }
+    
     @objc func editContainerTapped(_ sender: UITapGestureRecognizer) {
         delegate?.editContainerTapped(in: self)
         self.container.snp.updateConstraints {
@@ -299,6 +300,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         }
         self.swipeLeft = false
     }
+
     
     @objc private func checkButtonTapped() {
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
