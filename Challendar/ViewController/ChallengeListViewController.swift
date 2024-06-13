@@ -39,7 +39,6 @@ class ChallengeListViewController: BaseViewController {
         setupEmptyStateViews()
         setupCollectionView()
         setupDateView()
-        setupResetButton()
     }
     
     override func configureConstraint() {
@@ -124,24 +123,6 @@ class ChallengeListViewController: BaseViewController {
             make.leading.equalTo(dayLabel.snp.trailing).offset(7)
         }
     }
-    
-    // 임시 리셋버튼
-    private func setupResetButton() {
-        resetBtn = UIButton(type: .system)
-        resetBtn.setTitle("Reset All", for: .normal)
-        resetBtn.setTitleColor(.white, for: .normal)
-        resetBtn.backgroundColor = .red
-        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
-        view.addSubview(resetBtn)
-
-        resetBtn.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(200)
-            make.height.equalTo(50)
-        }
-    }
-
     
     @objc private func resetButtonTapped() {
         CoreDataManager.shared.deleteAllTodos()
