@@ -52,7 +52,6 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         fetchTodo()
     }
     
-    
     override func configureConstraint() {
         titleView.addSubview(todoTextField)
         dateAskView.addSubview(dateView)
@@ -106,6 +105,9 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 값 임시 저장용 뉴 투두
         self.newTodo = Todo(id: todoModel.id, title: todoModel.title, memo: todoModel.memo, startDate: todoModel.startDate, endDate: todoModel.endDate, completed: todoModel.completed, isChallenge: todoModel.isChallenge, percentage: todoModel.percentage, iscompleted: todoModel.isCompleted)
         
+        // 디버깅 로그 추가
+        print("Fetched Todo - Title: \(todoModel.title ?? "N/A"), Completed: \(todoModel.completed)")
+        
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }
@@ -125,7 +127,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             } else {
                 self.dateView.textLabel.text = "\(startDateString) - \(endDateString)"
             }
-        } else if endDate.isSameDay(as: Date().addingDays(1)!) {
+        } else if startDate.isSameDay(as: Date()) && endDate.isSameDay(as: Date().addingDays(1)!) {
             self.dateView.textLabel.text = DateRange.tomorrow.rawValue
         } else if startDate <= Date() && endDate <= Date().addingDays(7)! {
             self.dateView.textLabel.text = DateRange.week.rawValue
@@ -193,9 +195,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.newTodo?.startDate = startDate
         self.newTodo?.endDate = endDate
         
-        // completed 배열을 초기화 >> 추후에 이야기 해봐야함
-        self.newTodo?.completed = Array(repeating: false, count: Calendar.current.dateComponents([.day], from: startDate, to: endDate).day! + 1)
-        
+        // completed 배열을 초기화하지 않도록 수정
         self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         
         self.dismiss(animated: true, completion: nil) // 바텀시트엥 디스미스 컴플리션
@@ -234,9 +234,56 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             return
         }
         
-        // 수정 버튼이 눌렸을 대 코어 데이터에 업데이트
-        CoreDataManager.shared.updateTodoById(id: todoId, newTitle: title, newStartDate: newTodo?.startDate, newEndDate: newTodo?.endDate, newCompleted: newTodo?.completed)
-        print("수정 버튼이 눌렸습니다")
+        // 기존 투두 가져오기
+        guard let existingTodo = CoreDataManager.shared.fetchTodoById(id: todoId) else {
+            return
+        }
+        
+        // 기존 투두의 날짜 범위
+        let oldStartDate = existingTodo.startDate
+        let oldEndDate = existingTodo.endDate
+        
+        // 새로운 투두의 날짜 범위
+        let newStartDate = newTodo?.startDate
+        let newEndDate = newTodo?.endDate
+        
+        // 기존 completed 배열을 유지하면서 새로운 completed 배열 생성
+        var updatedCompleted: [Bool] = []
+        
+        if let oldStart = oldStartDate, let oldEnd = oldEndDate, let newStart = newStartDate, let newEnd = newEndDate {
+            let calendar = Calendar.current
+            
+            // 새로운 투두의 시작일부터 끝일까지 날짜 배열 생성
+            var currentDate = newStart
+            while currentDate <= newEnd {
+                // 기존 completed 배열에서 해당 날짜의 값을 가져옴
+                if currentDate >= oldStart && currentDate <= oldEnd {
+                    let dayIndex = calendar.dateComponents([.day], from: oldStart, to: currentDate).day!
+                    if dayIndex < existingTodo.completed.count {
+                        updatedCompleted.append(existingTodo.completed[dayIndex])
+                    } else {
+                        updatedCompleted.append(false)
+                    }
+                } else {
+                    // 새로운 날짜는 기본값 false로 설정
+                    updatedCompleted.append(false)
+                }
+                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+            }
+        }
+        
+        // 변경된 값을 코어 데이터에 업데이트
+        CoreDataManager.shared.updateTodoById(
+            id: todoId,
+            newTitle: title,
+            newStartDate: newTodo?.startDate,
+            newEndDate: newTodo?.endDate,
+            newCompleted: updatedCompleted
+        )
+        
+        // 디버깅 로그 추가
+        print("Updated Todo - Title: \(title), Completed: \(updatedCompleted)")
+        
         self.dismiss(animated: true, completion: nil)
     }
     
