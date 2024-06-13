@@ -238,8 +238,8 @@ class SearchViewController: BaseViewController {
         } else {
             filteredChallengeItems = items.filter { $0.isChallenge && !($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredNonChallengeItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate != nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
-            filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
-            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil && !$0.iscompleted && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
+            filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false || $0.iscompleted) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
         sortByRecentStartDate()
         updateEmptyState(hasResults: !filteredChallengeItems.isEmpty || !filteredNonChallengeItems.isEmpty || !filteredNoDeadlineItems.isEmpty || !filteredCompletedItems.isEmpty, searchText: searchText)
