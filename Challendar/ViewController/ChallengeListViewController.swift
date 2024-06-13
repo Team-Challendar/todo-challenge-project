@@ -210,7 +210,7 @@ class ChallengeListViewController: BaseViewController {
         view.addSubview(emptySubLabel)
         
          emptyImage = UIImageView()
-         emptyImage.image = UIImage(named: "Bullseye")
+         emptyImage.image = UIImage(named: "bullseye")
          view.addSubview(emptyImage)
     }
     
