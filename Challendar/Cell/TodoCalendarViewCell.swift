@@ -58,8 +58,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
     
     private func setupViews() {
         contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = false
-//        contentView.clipsToBounds = true
+//        contentView.layer.masksToBounds = true
+        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -71,41 +71,46 @@ class TodoCalendarViewCell: UICollectionViewCell {
         container = UIView()
         container.backgroundColor = .secondary850
         container.layer.cornerRadius = 20
-        container.clipsToBounds = true
-        container.layer.masksToBounds = false
+//        container.clipsToBounds = true
+//        container.layer.masksToBounds = false
+//        container.isHidden = true
         
         deleteContainer = UIView()
         deleteContainer.backgroundColor = .alertRed
         deleteContainer.layer.cornerRadius = 20
         deleteContainer.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
+//        deleteContainer.isHidden = true
         deleteButtonImage = UIImageView()
         deleteButtonImage.image = UIImage(named: "trash")
         deleteButtonImage.backgroundColor = .clear
         deleteButtonImage.layer.cornerRadius = 20
         deleteButtonImage.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
+//        deleteButtonImage.isHidden = true
         
         editContainer = UIView()
         editContainer.backgroundColor = .alertOrange
+//        editContainer.isHidden = true
         editButtonImage = UIImageView()
         editButtonImage.image = UIImage(named: "edit")
         editButtonImage.backgroundColor = .clear
+//        editButtonImage.isHidden = true
         
         enrollChallengeContainer = UIView()
         enrollChallengeContainer.backgroundColor = .challendarGreen200
         enrollChallengeContainer.layer.cornerRadius = 20
         enrollChallengeContainer.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
+//        enrollChallengeContainer.isHidden = true
         enrollChallengeButton = UIButton()
         enrollChallengeButton.titleLabel?.font = .pretendardMedium(size: 20)
         enrollChallengeButton.setTitle("챌린지 등록하기", for: .normal)
         enrollChallengeButton.setTitleColor(.secondary900, for: .normal)
-        
         enrollChallengeButton.setImage(UIImage(named: "challengeOff")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
         enrollChallengeButton.configuration?.imagePadding = 4   // iOS 15.0 이상
         enrollChallengeButton.backgroundColor = .clear
         enrollChallengeButton.layer.cornerRadius = 20
         enrollChallengeButton.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
-        
+//        enrollChallengeButton.isHidden = true
+
         [enrollChallengeContainer, enrollChallengeButton, deleteContainer, deleteButtonImage, editContainer, editButtonImage, container].forEach {
             self.contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -215,14 +220,16 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     @objc func didSwipeCellLeft() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeRight == true {
+//                self.containerIsHidden()
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
                     $0.trailing.equalToSuperview().offset(0)
                 }
                 self.swipeRight = false
             } else if self.swipeRight == false {
+//                self.containerUnHidden()
                 self.container.snp.updateConstraints {
                     $0.trailing.equalToSuperview().offset(-148)
                     $0.leading.equalToSuperview().offset(-148)
@@ -230,17 +237,19 @@ class TodoCalendarViewCell: UICollectionViewCell {
                 self.swipeLeft = true
             }
             self.layoutIfNeeded()
-        }
+        })
     }
     @objc func didSwipeCellRight() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeLeft ==  true {
+//                self.containerIsHidden()
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
                     $0.trailing.equalToSuperview().offset(0)
                 }
                 self.swipeLeft = false
             } else if self.swipeLeft == false {
+//                self.containerUnHidden()
                 self.container.snp.updateConstraints {
                     $0.trailing.equalToSuperview().offset(185)
                     $0.leading.equalToSuperview().offset(185)
@@ -248,7 +257,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
                 self.swipeRight = true
             }
             self.layoutIfNeeded()
-        }
+        })
     }
     
     private func enrollTapGestureRecognizer() {
@@ -300,7 +309,30 @@ class TodoCalendarViewCell: UICollectionViewCell {
         }
         self.swipeLeft = false
     }
-
+    
+    private func containerIsHidden() {
+        UIView.animate(withDuration: 0.3) {
+            self.deleteContainer.isHidden = true
+            self.deleteButtonImage.isHidden = true
+            self.editContainer.isHidden = true
+            self.editButtonImage.isHidden = true
+            self.enrollChallengeContainer.isHidden = true
+            self.enrollChallengeButton.isHidden = true
+            self.layoutIfNeeded()
+        }
+    }
+    
+    private func containerUnHidden() {
+        UIView.animate(withDuration: 0.3) {
+            self.deleteContainer.isHidden = false
+            self.deleteButtonImage.isHidden = false
+            self.editContainer.isHidden = false
+            self.editButtonImage.isHidden = false
+            self.enrollChallengeContainer.isHidden = false
+            self.enrollChallengeButton.isHidden = false
+            self.layoutIfNeeded()
+        }
+    }
     
     @objc private func checkButtonTapped() {
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
