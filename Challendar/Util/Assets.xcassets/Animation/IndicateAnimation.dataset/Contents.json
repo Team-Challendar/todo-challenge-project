@@ -1,10 +1,9 @@
 {
-  "images" : [
+  "data" : [
     {
-      "filename" : "1024.png",
+      "filename" : "IndicateAnimation.json",
       "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
+      "universal-type-identifier" : "public.json"
     }
   ],
   "info" : {
