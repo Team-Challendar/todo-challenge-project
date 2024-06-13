@@ -9,7 +9,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     
     let todoTextField: TodoTitleTextField = {
         let textField = TodoTitleTextField(placeholder: "")
-        let placeholderText = "고양이 츄르 주문하기"
+        let placeholderText = "할 일을 입력해주세요"
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.secondary700
         ]
@@ -111,17 +111,33 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }
-        self.dateView.textLabel.textColor = .secondary400
     }
-
     
-    private func updateDateViewTextForModel(startDate: Date, endDate: Date) {
+    private func getAttributedDateText(startDate: Date?, endDate: Date?, isHighlighted: Bool) -> NSAttributedString {
+        guard let startDate = startDate, let endDate = endDate else { return NSAttributedString(string: "") }
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy.MM.dd."
         let startDateString = dateFormatter.string(from: startDate)
         let endDateString = dateFormatter.string(from: endDate)
         
-        self.dateView.textLabel.text = "\(startDateString) - \(endDateString)"
+        let fullString = "\(startDateString) - \(endDateString)"
+        let attributedString = NSMutableAttributedString(string: fullString)
+        
+        let defaultColor: UIColor = isHighlighted ? .challendarWhite : .secondary400
+        attributedString.addAttribute(.foregroundColor, value: defaultColor, range: NSRange(location: 0, length: attributedString.length))
+        
+        if let range = fullString.range(of: "-") {
+            let nsRange = NSRange(range, in: fullString)
+            let highlightColor = isHighlighted ? UIColor.challendarGreen200 : UIColor.secondary400
+            attributedString.addAttribute(.foregroundColor, value: highlightColor, range: nsRange)
+        }
+        
+        return attributedString
+    }
+    
+    private func updateDateViewTextForModel(startDate: Date, endDate: Date, isHighlighted: Bool = false) {
+        self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: startDate, endDate: endDate, isHighlighted: isHighlighted)
     }
 
     
@@ -146,6 +162,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // dateView의 보더 추가
         dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
         dateAskView.layer.borderWidth = 1.0
+        titleView.layer.borderWidth = 0.0
         dateView.textLabel.textColor = .challendarWhite
         [self.titleLabel, self.titleView].forEach { view in
             view.alpha = 0.3
@@ -164,14 +181,14 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             guard let self = self else { return }
             self.dateAskView.layer.borderColor = UIColor.clear.cgColor
             self.dateAskView.layer.borderWidth = 0.0
-            self.dateView.textLabel.textColor = .secondary400
+            self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: self.newTodo?.startDate, endDate: self.newTodo?.endDate, isHighlighted: false)
             [self.titleLabel, self.titleView].forEach { view in
                 view.alpha = 1.0
             }
             
             // 바텀시트가 닫힐 때 새로 저장된 뉴 투두로 값 표시
             if let startDate = self.newTodo?.startDate, let endDate = self.newTodo?.endDate {
-                self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
+                self.updateDateViewTextForModel(startDate: startDate, endDate: endDate, isHighlighted: false)
             }
         }
         

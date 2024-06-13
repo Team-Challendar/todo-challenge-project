@@ -83,7 +83,7 @@ class BottomSheetViewController: UIViewController {
         dimmedView.backgroundColor = UIColor.black
         dimmedView.alpha = 0
         
-        dateBottomSheet.layer.cornerRadius = 10
+        dateBottomSheet.layer.cornerRadius = 20
         dateBottomSheet.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         dateBottomSheet.clipsToBounds = true
         dateBottomSheet.dateRange = self.dateRange
