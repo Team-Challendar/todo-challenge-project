@@ -105,36 +105,25 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 값 임시 저장용 뉴 투두
         self.newTodo = Todo(id: todoModel.id, title: todoModel.title, memo: todoModel.memo, startDate: todoModel.startDate, endDate: todoModel.endDate, completed: todoModel.completed, isChallenge: todoModel.isChallenge, percentage: todoModel.percentage, iscompleted: todoModel.isCompleted)
         
-        // 디버깅 로그 추가
+        // completed 확인용 디버깅 로그
         print("Fetched Todo - Title: \(todoModel.title ?? "N/A"), Completed: \(todoModel.completed)")
         
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }
+        self.dateView.textLabel.textColor = .secondary400
     }
+
     
     private func updateDateViewTextForModel(startDate: Date, endDate: Date) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy. M. d"
+        dateFormatter.dateFormat = "yyyy.MM.dd."
         let startDateString = dateFormatter.string(from: startDate)
         let endDateString = dateFormatter.string(from: endDate)
         
-        if startDate.isSameDay(as: endDate) {
-            if startDate.isSameDay(as: Date()) {
-                self.dateView.textLabel.text = DateRange.today.rawValue
-            } else if startDate.isSameDay(as: Date().addingDays(1)!) {
-                self.dateView.textLabel.text = DateRange.tomorrow.rawValue
-            } else {
-                self.dateView.textLabel.text = "\(startDateString) - \(endDateString)"
-            }
-        } else if startDate.isSameDay(as: Date()) && endDate.isSameDay(as: Date().addingDays(1)!) {
-            self.dateView.textLabel.text = DateRange.tomorrow.rawValue
-        } else if startDate <= Date() && endDate <= Date().addingDays(7)! {
-            self.dateView.textLabel.text = DateRange.week.rawValue
-        } else {
-            self.dateView.textLabel.text = "\(startDateString) - \(endDateString)"
-        }
+        self.dateView.textLabel.text = "\(startDateString) - \(endDateString)"
     }
+
     
     private func configureGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dateViewTapped))
@@ -158,6 +147,9 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
         dateAskView.layer.borderWidth = 1.0
         dateView.textLabel.textColor = .challendarWhite
+        [self.titleLabel, self.titleView].forEach { view in
+            view.alpha = 0.3
+        }
         
         let bottomSheetVC = BottomSheetViewController()
         bottomSheetVC.rootViewVC2 = self
