@@ -333,11 +333,13 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
 
 extension TodoCalendarViewDifferableViewController : TodoCalendarCollectionViewCellDelegate {
     func editContainerTapped(in cell: TodoCalendarViewCell) {
-        let editVC = EditTodoTitleViewController()
+        let editVC = EditTodoViewController()
         editVC.todoId = cell.todoItem?.id
         editVC.modalTransitionStyle = .coverVertical
-        editVC.modalPresentationStyle = .fullScreen
-        self.present(editVC, animated: true, completion: nil)
+        editVC.modalPresentationStyle = .overFullScreen
+        let navi = UINavigationController(rootViewController: editVC)
+        navi.modalPresentationStyle = .overFullScreen
+        self.present(navi, animated: true, completion: nil)
     }
 }
 

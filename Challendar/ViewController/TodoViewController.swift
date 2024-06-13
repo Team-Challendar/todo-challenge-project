@@ -259,11 +259,13 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
 
 extension TodoViewController : TodoViewCellDelegate {
     func editContainerTapped(in cell: TodoCollectionViewCell) {
-        let editVC = EditTodoTitleViewController()
+        let editVC = EditTodoViewController()
         editVC.todoId = cell.todoItem?.id
         editVC.modalTransitionStyle = .coverVertical
         editVC.modalPresentationStyle = .fullScreen
-        self.present(editVC, animated: true, completion: nil)
+        let navi = UINavigationController(rootViewController: editVC)
+        navi.modalPresentationStyle = .overFullScreen
+        self.present(navi, animated: true, completion: nil)
     }
 }
 

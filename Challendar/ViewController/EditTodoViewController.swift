@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
+class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewControllerTransitioningDelegate {
     
     // 계획 질문 UI 컴포넌트
     let titleLabel = EditTitleLabel(text: "어떤 계획이 생겼나요?")
@@ -30,7 +30,7 @@ class EditTodoTitleViewController: BaseViewController, UITextFieldDelegate, UIVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureNavigationBar(checkFirst: true)
+        configureNavigationForEdit(checkFirst: true)
         fetchTodo()
         todoTextField.delegate = self
         configureGestureRecognizers()

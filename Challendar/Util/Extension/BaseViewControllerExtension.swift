@@ -152,6 +152,8 @@ extension BaseViewController{
         let titleBarButtonItem = UIBarButtonItem(customView: view)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem
     }
+    
+    
     func configureNavigationBar(checkFirst: Bool){
         let closeImageView = UIImageView()
         closeImageView.snp.makeConstraints{
@@ -265,3 +267,4 @@ extension BaseViewController{
         return section
     }
 }
+
