@@ -9,6 +9,8 @@ import UIKit
 import RAMAnimatedTabBarController
 
 class TabBarViewController: RAMAnimatedTabBarController {
+    var previousIndex: Int = 0
+    
     var tabsItem = [RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem()]
     var navs : [UINavigationController] = []
     var tabs : [TabModel] = [
@@ -28,9 +30,10 @@ class TabBarViewController: RAMAnimatedTabBarController {
     
     func configure(){
         configureBackground()
+        self.delegate = self
         self.navs = createNav(with: tabs)
         self.setViewControllers(self.navs, animated: true)
-        guard let items = tabBar.items as? [RAMAnimatedTabBarItem] else { return }
+//        guard let items = tabBar.items as? [RAMAnimatedTabBarItem] else { return }
 //        items.forEach{
 //            let oldCenter = $0.iconView!.icon.frame.origin.x
 //            $0.iconView!.icon.frame = CGRect(x: $0.iconView!.icon.frame.origin.x, y: $0.iconView!.icon.frame.origin.y + 2, width: 24, height: 24)
@@ -57,5 +60,16 @@ class TabBarViewController: RAMAnimatedTabBarController {
             navs.append(nav)
         }
         return navs
+    }
+}
+
+extension TabBarViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if tabBarController.selectedIndex != 3 {
+            previousIndex = tabBarController.selectedIndex
+        }
+    }
+    func goToPreviousTab() {
+        self.setSelectIndex(from: self.selectedIndex, to: previousIndex)
     }
 }

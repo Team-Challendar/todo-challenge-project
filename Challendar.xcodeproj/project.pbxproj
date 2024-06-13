@@ -78,6 +78,9 @@
 		14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C97F382C0A4B3600819B27 /* UIViewExtension.swift */; };
 		14E1EF8A2C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */; };
 		14F4DB122C19874A00B5CE45 /* UICollectionViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB112C19874A00B5CE45 /* UICollectionViewCellExtension.swift */; };
+		14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */; };
+		14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */; };
+		14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
 		2EBF439B2C188C8E00064A77 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
@@ -173,6 +176,9 @@
 		14C97F382C0A4B3600819B27 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarViewDifferableViewController.swift; sourceTree = "<group>"; };
 		14F4DB112C19874A00B5CE45 /* UICollectionViewCellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCellExtension.swift; sourceTree = "<group>"; };
+		14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
+		14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSuccessViewController.swift; sourceTree = "<group>"; };
@@ -383,6 +389,7 @@
 			isa = PBXGroup;
 			children = (
 				14C6AFE22C0F12AA0016B80C /* SettingViewController.swift */,
+				14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -413,6 +420,7 @@
 				149FEFAE2C122C2300CDDC23 /* UILabelExtension.swift */,
 				2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */,
 				14F4DB112C19874A00B5CE45 /* UICollectionViewCellExtension.swift */,
+				14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -434,6 +442,7 @@
 				149FEFAC2C11CEE800CDDC23 /* TodoCalendarViewCell.swift */,
 				DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */,
 				141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */,
+				14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -558,6 +567,7 @@
 				14AAA9052C0E08A00085E22F /* SuccessViewController.swift in Sources */,
 				149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */,
 				DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */,
+				14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */,
 				14F4DB122C19874A00B5CE45 /* UICollectionViewCellExtension.swift in Sources */,
 				14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */,
 				B90CAA732C10C9B600926B53 /* CarouselCell.swift in Sources */,
@@ -591,6 +601,7 @@
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
 				14C6AFE32C0F12AA0016B80C /* SettingViewController.swift in Sources */,
+				14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */,
 				DEA8E4C92C19C3F3007AAF93 /* EditTodoViewController.swift in Sources */,
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
@@ -598,6 +609,7 @@
 				14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */,
 				14C97F232C09ACF300819B27 /* DateBottomSheet.swift in Sources */,
 				2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */,
+				14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */,
 				DEDEE2912C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift in Sources */,
 				14C3FA182C0C900400ACAFB6 /* SelectedDateTypeEnum.swift in Sources */,
 				B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */,

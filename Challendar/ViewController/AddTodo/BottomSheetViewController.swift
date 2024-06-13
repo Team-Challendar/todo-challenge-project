@@ -18,12 +18,13 @@ class BottomSheetViewController: UIViewController {
     var calenderView = DateCalendarView()
     var dateRange : DateRange?
     var newTodo: Todo?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         configureConstraint()
         configureUtil()
-
+        
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -66,9 +67,6 @@ class BottomSheetViewController: UIViewController {
                 self?.hideCalShowBottom()
             })
             .disposed(by: self.dispose)
-        
-        
-        
         dateBottomSheet.newTodo = self.newTodo
         calenderView.newTodo = self.newTodo
         calenderView.delegate = self
@@ -77,15 +75,16 @@ class BottomSheetViewController: UIViewController {
     func configureUI(){
         dimmedView.backgroundColor = UIColor.black
         dimmedView.alpha = 0
-
+        
         dateBottomSheet.layer.cornerRadius = 10
         dateBottomSheet.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         dateBottomSheet.clipsToBounds = true
         dateBottomSheet.dateRange = self.dateRange
         calenderView.layer.cornerRadius = 20
         calenderView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        dateBottomSheet.applybutton.nonApplyState()
         calenderView.clipsToBounds = true
-
+        
     }
     
     func configureConstraint(){
@@ -138,12 +137,11 @@ class BottomSheetViewController: UIViewController {
                 $0.bottom.equalToSuperview().offset(bottomSheetHeight)
             }
             self.view.layoutIfNeeded()
+            self.dismiss(animated: false)
         }, completion: { _ in
             let challengeCheckViewController = ChallengeCheckViewController()
             challengeCheckViewController.newTodo = self.newTodo
-            self.dismiss(animated: false, completion: {
-                self.rootViewVC?.navigationController?.pushViewController(challengeCheckViewController, animated: true)
-            })
+            self.rootViewVC?.present(challengeCheckViewController, animated: true)
         })
     }
     private func hideBottomShowCal(){
@@ -220,6 +218,7 @@ extension BottomSheetViewController : DateRangeProtocol {
         if let startDate = startDate, let endDate = endDate{
             self.newTodo?.startDate = startDate
             self.newTodo?.endDate = endDate
+            NotificationCenter.default.post(name: NSNotification.Name("todo"), object: self.newTodo, userInfo: nil)
             hideLayoutShowChallenge()
         }
     }

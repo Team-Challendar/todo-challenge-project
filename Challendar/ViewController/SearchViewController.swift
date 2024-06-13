@@ -22,7 +22,7 @@ class SearchViewController: BaseViewController {
     private var emptyMainLabel: UILabel!
     private var emptyImage: UIImageView!
     
-    private var searchBar: UISearchBar!
+    var searchBar: UISearchBar!
     private var collectionView: UICollectionView!
     private var customCancelButton: UIBarButtonItem!
     
@@ -34,6 +34,7 @@ class SearchViewController: BaseViewController {
         super.viewDidLoad()
         emptyMainLabel.isHidden = true
         emptyImage.isHidden = true
+        
     }
     
     override func configureUI() {
@@ -42,6 +43,8 @@ class SearchViewController: BaseViewController {
         configureBackground()
         searchBarConfigure()
         setupCollectionView()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
     }
     
     override func configureConstraint() {
@@ -106,73 +109,52 @@ class SearchViewController: BaseViewController {
         self.collectionView.reloadData()
     }
     
-    private func searchBarConfigure() {
+    func searchBarConfigure() {
         searchBar = UISearchBar()
         searchBar.delegate = self
-        searchBar.placeholder = "검색어를 입력해주세요"
-        navigationItem.titleView = searchBar
+        searchBar.placeholder = "어느 지역의 날씨가 궁금해요?"
+        searchBar.setValue("취소", forKey: "cancelButtonText")
+        searchBar.showsCancelButton = false
+        searchBar.tintColor = UIColor.label
+        
+        searchBar.searchTextField.snp.makeConstraints{
+            $0.height.equalTo(40)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
+        }
         searchBarTextFieldConfigure()
-        
-        let cancelBtn = UIView()
-        cancelBtn.frame = CGRect(x: 0, y: 0, width: 48, height: 40)
-        cancelBtn.isUserInteractionEnabled = true
-        cancelBtn.translatesAutoresizingMaskIntoConstraints = false
-        
-        let cancelText = UILabel()
-        cancelText.text = "취소"
-        cancelText.font = .pretendardSemiBold(size: 16)
-        cancelText.textColor = .challendarWhite
-        cancelBtn.addSubview(cancelText)
-        cancelText.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            cancelText.leadingAnchor.constraint(equalTo: cancelBtn.leadingAnchor, constant: 8),
-            cancelText.trailingAnchor.constraint(equalTo: cancelBtn.trailingAnchor, constant: -8),
-            cancelText.centerYAnchor.constraint(equalTo: cancelBtn.centerYAnchor)
-        ])
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cancelButtonTap))
-        cancelBtn.addGestureRecognizer(tapGesture)
-        
-        customCancelButton = UIBarButtonItem(customView: cancelBtn)
+        self.navigationItem.titleView = searchBar
     }
     
     @objc func cancelButtonTap() {
-        //        searchBar.setShowsCancelButton(false, animated: true)
-        //        navigationItem.rightBarButtonItem = nil
-        //        searchBar.text = ""
-        //        searchBar.resignFirstResponder()
-        //        filterItems(with: "")
+        
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
-        navigationItem.rightBarButtonItem = customCancelButton
+        searchBar.setShowsCancelButton(true, animated: false)
+        //        navigationItem.rightBarButtonItem = customCancelButton
         updateSearchTextFieldConstraints(showingCancelButton: true)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(false, animated: true)
-        navigationItem.rightBarButtonItem = nil
+        searchBar.setShowsCancelButton(false, animated: false)
+        //        navigationItem.rightBarButtonItem = nil
         updateSearchTextFieldConstraints(showingCancelButton: false)
     }
     
     private func searchBarTextFieldConfigure() {
-        guard let searchTextField = searchBar.value(forKey: "searchField") as? UITextField else {
-            return
-        }
-        
-        searchTextField.backgroundColor = .secondary850
-        searchTextField.font = .pretendardMedium(size: 18)
-        searchTextField.layer.borderColor = UIColor(white: 1, alpha: 0.02).cgColor
-        searchTextField.layer.borderWidth = 1
-        searchTextField.layer.cornerRadius = 12
-        searchTextField.clipsToBounds = true
-        searchTextField.tintColor = .challendarGreen200
-        searchTextField.textColor = .challendarWhite
+        searchBar.searchTextField.backgroundColor = .secondary850
+        searchBar.searchTextField.font = .pretendardMedium(size: 18)
+        searchBar.searchTextField.layer.borderColor = UIColor(white: 1, alpha: 0.02).cgColor
+        searchBar.searchTextField.layer.borderWidth = 1
+        searchBar.searchTextField.layer.cornerRadius = 12
+        searchBar.searchTextField.clipsToBounds = true
+        searchBar.searchTextField.tintColor = .challendarGreen200
+        searchBar.searchTextField.textColor = .challendarWhite
         
         if let placeholderText = searchBar.placeholder {
-            searchTextField.attributedPlaceholder = NSAttributedString(
+            searchBar.searchTextField.attributedPlaceholder = NSAttributedString(
                 string: placeholderText,
                 attributes: [
                     NSAttributedString.Key.font: UIFont.pretendardRegular(size: 18),
@@ -180,26 +162,21 @@ class SearchViewController: BaseViewController {
                 ]
             )
         }
+        setLeftImage(UIImage.search0, for: searchBar.searchTextField)
         
-        if let image = UIImage(systemName: "magnifyingglass") {
-            setLeftImage(image, for: searchTextField)
-        } else {
-            print("Image not found")
-        }
+        let attributes:[NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.pretendardSemiBold(size: 16)
+        ]
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes(attributes, for: .normal)
         
-        searchTextField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: searchBar.topAnchor, constant: 4),
-            searchTextField.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: -12),
-            searchTextField.leadingAnchor.constraint(equalTo: searchBar.leadingAnchor, constant: 16),
-            searchTextField.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: -16)
-        ])
+        searchBar.searchTextField.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func setLeftImage(_ image: UIImage, for textField: UITextField) {
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
-        imageView.frame = CGRect(x: 8, y: 0, width: 24, height: 24)
+        imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         imageView.tintColor = .secondary600
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 22))
         paddingView.addSubview(imageView)
@@ -208,21 +185,12 @@ class SearchViewController: BaseViewController {
     }
     
     private func updateSearchTextFieldConstraints(showingCancelButton: Bool) {
-        guard let searchTextField = searchBar.value(forKey: "searchField") as? UITextField else {
-            return
-        }
-        
-        searchTextField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.deactivate(searchTextField.constraints)
-        
-        let trailingConstant: CGFloat = showingCancelButton ? -56 : -16
-        
-        NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: searchBar.topAnchor, constant: 4),
-            searchTextField.bottomAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: -4),
-            searchTextField.leadingAnchor.constraint(equalTo: searchBar.leadingAnchor, constant: 16),
-            searchTextField.trailingAnchor.constraint(equalTo: searchBar.trailingAnchor, constant: trailingConstant)
-        ])
+        let trailingConstant: CGFloat = showingCancelButton ? -64 : -16
+        UIView.animate(withDuration: 0.3, animations: {
+            self.searchBar.searchTextField.snp.updateConstraints{
+                $0.trailing.equalToSuperview().offset(trailingConstant)
+            }
+        })
     }
     
     // 비어있는 상태 UI 설정
@@ -273,11 +241,9 @@ class SearchViewController: BaseViewController {
             filteredNoDeadlineItems = items.filter { !$0.isChallenge && !($0.todayCompleted() ?? false) && $0.endDate == nil && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
             filteredCompletedItems = items.filter { ($0.todayCompleted() ?? false) && $0.title.range(of: searchText, options: .caseInsensitive) != nil }
         }
-        
-        // 기본 정렬 -> 최신순 (startDate 기준 내림차순)
         sortByRecentStartDate()
         updateEmptyState(hasResults: !filteredChallengeItems.isEmpty || !filteredNonChallengeItems.isEmpty || !filteredNoDeadlineItems.isEmpty || !filteredCompletedItems.isEmpty, searchText: searchText)
-        self.collectionView.reloadData() // 필터링 후 데이터 리로드
+        self.collectionView.reloadData()
     }
     
     // 최신순
@@ -320,6 +286,11 @@ class SearchViewController: BaseViewController {
             return .orderedSame
         }
     }
+    
+    @objc func dismissKeyboard() {
+        searchBar.resignFirstResponder()
+    }
+    
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -411,5 +382,10 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
 extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterItems(with: searchText)
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if let tabBarController = self.tabBarController as? TabBarViewController {
+            tabBarController.goToPreviousTab()
+        }
     }
 }

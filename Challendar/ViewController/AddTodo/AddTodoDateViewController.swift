@@ -20,6 +20,8 @@ class AddTodoDateViewController: BaseViewController {
     
     func setupNotificationCenter(){
         NotificationCenter.default.addObserver(self, selector: #selector(startDateChanged), name: NSNotification.Name("dateRange"), object: dateRange)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(dateChangedFromCal), name: NSNotification.Name("todo"), object: newTodo)
     }
     override func configureUI(){
         confirmButton.changeTitle(title: "할일 등록")
@@ -86,8 +88,19 @@ class AddTodoDateViewController: BaseViewController {
     @objc func startDateChanged(notification : Notification) {
         guard let data = notification.object as? DateRange else {return}
         self.dateRange = data
+        self.newTodo?.startDate = Date().startOfDay()
+        self.newTodo?.endDate = data.date
         self.dateView.textLabel.text = data.rawValue
     }
+    
+    @objc func dateChangedFromCal(notification : Notification) {
+        guard let new = notification.object as? Todo else {return}
+        self.dateRange = .manual
+        self.newTodo?.startDate = new.startDate
+        self.newTodo?.endDate = new.endDate
+        self.dateView.textLabel.text = new.startDate!.startToEndDate(date: new.endDate!)
+    }
+    
     private func confirmButtonTapped(){
         if self.dateRange == nil {
             self.newTodo?.startDate = Date()
@@ -102,13 +115,15 @@ class AddTodoDateViewController: BaseViewController {
                 rootView?.present(navigationController, animated: true)
             })
         }else if self.dateRange == .manual{
-            print("기간 직접 입력 오류")
+            let challengeCheckViewController = ChallengeCheckViewController()
+            challengeCheckViewController.newTodo = self.newTodo
+            self.present(challengeCheckViewController, animated: true)
         }else{
             self.newTodo?.startDate = Date().startOfDay()
             self.newTodo?.endDate = self.dateRange?.date
             let challengeCheckViewController = ChallengeCheckViewController()
             challengeCheckViewController.newTodo = self.newTodo
-            self.navigationController?.pushViewController(challengeCheckViewController, animated: false)
+            self.present(challengeCheckViewController, animated: true)
         }
     }
     

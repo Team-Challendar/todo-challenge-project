@@ -117,6 +117,7 @@ extension DateBottomSheet: UICollectionViewDelegate, UICollectionViewDataSource,
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.dateRange = DateRange.allCases[indexPath.item]
+        self.applybutton.applyState()
         NotificationCenter.default.post(name: NSNotification.Name("dateRange"), object: dateRange, userInfo: nil)
         self.delegate?.dateRangeChanged(dateRange: self.dateRange)
         self.listCollectionView.reloadData()

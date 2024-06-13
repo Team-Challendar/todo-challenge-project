@@ -58,7 +58,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
     
     private func setupViews() {
         contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
+        contentView.layer.masksToBounds = false
+//        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -71,6 +72,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         container.backgroundColor = .secondary850
         container.layer.cornerRadius = 20
         container.clipsToBounds = true
+        container.layer.masksToBounds = false
         
         deleteContainer = UIView()
         deleteContainer.backgroundColor = .alertRed
