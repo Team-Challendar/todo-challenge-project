@@ -39,6 +39,11 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 제스처 인식기 추가
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+        
+        // 추가된 제스처 인식기
+        let outsideTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissTextField))
+        outsideTapGesture.cancelsTouchesInView = false // dateAskView를 눌러도 텍스트 편집이 가능하게 설정
+        view.addGestureRecognizer(outsideTapGesture)
     }
     
     // 제스처 인식기 메소드 추가
@@ -46,6 +51,13 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         view.endEditing(true)
     }
     
+    @objc private func dismissTextField(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: self.view)
+        if !dateAskView.frame.contains(location) && !todoTextField.frame.contains(location) {
+            view.endEditing(true)
+        }
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 수정 버튼을 누르지 않고 화면이 사라질 때, 원래 상태로 돌아갑니다.
@@ -162,11 +174,14 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         editButton.setTitleColor(.challendarGreen200, for: .normal)
     }
     
+    // dateViewTapped 메소드 수정
     @objc private func dateViewTapped() {
-        // dateView의 보더 추가
-        dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
-        dateAskView.layer.borderWidth = 1.0
-        titleView.layer.borderWidth = 0.0
+        // 타이핑 상태 해제
+        view.endEditing(true)
+        
+        // dateView의 보더 제거
+        dateAskView.layer.borderColor = UIColor.clear.cgColor
+        dateAskView.layer.borderWidth = 0.0
         dateView.textLabel.attributedText = getAttributedDateText(startDate: newTodo?.startDate, endDate: newTodo?.endDate, isHighlighted: true)
         [self.titleLabel, self.titleView].forEach { view in
             view.alpha = 0.3
