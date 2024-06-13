@@ -9,7 +9,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     
     let todoTextField: TodoTitleTextField = {
         let textField = TodoTitleTextField(placeholder: "")
-        let placeholderText = "고양이 츄르 주문하기"
+        let placeholderText = "할 일을 입력해주세요"
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.secondary700
         ]
@@ -51,7 +51,6 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 수정 버튼을 누르지 않고 화면이 사라질 때, 원래 상태로 돌아갑니다.
         fetchTodo()
     }
-    
     
     override func configureConstraint() {
         titleView.addSubview(todoTextField)
@@ -106,33 +105,41 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 값 임시 저장용 뉴 투두
         self.newTodo = Todo(id: todoModel.id, title: todoModel.title, memo: todoModel.memo, startDate: todoModel.startDate, endDate: todoModel.endDate, completed: todoModel.completed, isChallenge: todoModel.isChallenge, percentage: todoModel.percentage, iscompleted: todoModel.isCompleted)
         
+        // completed 확인용 디버깅 로그
+        print("Fetched Todo - Title: \(todoModel.title ?? "N/A"), Completed: \(todoModel.completed)")
+        
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }
     }
     
-    private func updateDateViewTextForModel(startDate: Date, endDate: Date) {
+    private func getAttributedDateText(startDate: Date?, endDate: Date?, isHighlighted: Bool) -> NSAttributedString {
+        guard let startDate = startDate, let endDate = endDate else { return NSAttributedString(string: "") }
+        
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy. M. d"
+        dateFormatter.dateFormat = "yyyy.MM.dd."
         let startDateString = dateFormatter.string(from: startDate)
         let endDateString = dateFormatter.string(from: endDate)
         
-        if startDate.isSameDay(as: endDate) {
-            if startDate.isSameDay(as: Date()) {
-                self.dateView.textLabel.text = DateRange.today.rawValue
-            } else if startDate.isSameDay(as: Date().addingDays(1)!) {
-                self.dateView.textLabel.text = DateRange.tomorrow.rawValue
-            } else {
-                self.dateView.textLabel.text = "\(startDateString) - \(endDateString)"
-            }
-        } else if endDate.isSameDay(as: Date().addingDays(1)!) {
-            self.dateView.textLabel.text = DateRange.tomorrow.rawValue
-        } else if startDate <= Date() && endDate <= Date().addingDays(7)! {
-            self.dateView.textLabel.text = DateRange.week.rawValue
-        } else {
-            self.dateView.textLabel.text = "\(startDateString) - \(endDateString)"
+        let fullString = "\(startDateString) - \(endDateString)"
+        let attributedString = NSMutableAttributedString(string: fullString)
+        
+        let defaultColor: UIColor = isHighlighted ? .challendarWhite : .secondary400
+        attributedString.addAttribute(.foregroundColor, value: defaultColor, range: NSRange(location: 0, length: attributedString.length))
+        
+        if let range = fullString.range(of: "-") {
+            let nsRange = NSRange(range, in: fullString)
+            let highlightColor = isHighlighted ? UIColor.challendarGreen200 : UIColor.secondary400
+            attributedString.addAttribute(.foregroundColor, value: highlightColor, range: nsRange)
         }
+        
+        return attributedString
     }
+    
+    private func updateDateViewTextForModel(startDate: Date, endDate: Date, isHighlighted: Bool = false) {
+        self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: startDate, endDate: endDate, isHighlighted: isHighlighted)
+    }
+
     
     private func configureGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dateViewTapped))
@@ -155,7 +162,11 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // dateView의 보더 추가
         dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
         dateAskView.layer.borderWidth = 1.0
+        titleView.layer.borderWidth = 0.0
         dateView.textLabel.textColor = .challendarWhite
+        [self.titleLabel, self.titleView].forEach { view in
+            view.alpha = 0.3
+        }
         
         let bottomSheetVC = BottomSheetViewController()
         bottomSheetVC.rootViewVC2 = self
@@ -170,14 +181,14 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             guard let self = self else { return }
             self.dateAskView.layer.borderColor = UIColor.clear.cgColor
             self.dateAskView.layer.borderWidth = 0.0
-            self.dateView.textLabel.textColor = .secondary400
+            self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: self.newTodo?.startDate, endDate: self.newTodo?.endDate, isHighlighted: false)
             [self.titleLabel, self.titleView].forEach { view in
                 view.alpha = 1.0
             }
             
             // 바텀시트가 닫힐 때 새로 저장된 뉴 투두로 값 표시
             if let startDate = self.newTodo?.startDate, let endDate = self.newTodo?.endDate {
-                self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
+                self.updateDateViewTextForModel(startDate: startDate, endDate: endDate, isHighlighted: false)
             }
         }
         
@@ -193,9 +204,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.newTodo?.startDate = startDate
         self.newTodo?.endDate = endDate
         
-        // completed 배열을 초기화 >> 추후에 이야기 해봐야함
-        self.newTodo?.completed = Array(repeating: false, count: Calendar.current.dateComponents([.day], from: startDate, to: endDate).day! + 1)
-        
+        // completed 배열을 초기화하지 않도록 수정
         self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         
         self.dismiss(animated: true, completion: nil) // 바텀시트엥 디스미스 컴플리션
@@ -234,9 +243,56 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             return
         }
         
-        // 수정 버튼이 눌렸을 대 코어 데이터에 업데이트
-        CoreDataManager.shared.updateTodoById(id: todoId, newTitle: title, newStartDate: newTodo?.startDate, newEndDate: newTodo?.endDate, newCompleted: newTodo?.completed)
-        print("수정 버튼이 눌렸습니다")
+        // 기존 투두 가져오기
+        guard let existingTodo = CoreDataManager.shared.fetchTodoById(id: todoId) else {
+            return
+        }
+        
+        // 기존 투두의 날짜 범위
+        let oldStartDate = existingTodo.startDate
+        let oldEndDate = existingTodo.endDate
+        
+        // 새로운 투두의 날짜 범위
+        let newStartDate = newTodo?.startDate
+        let newEndDate = newTodo?.endDate
+        
+        // 기존 completed 배열을 유지하면서 새로운 completed 배열 생성
+        var updatedCompleted: [Bool] = []
+        
+        if let oldStart = oldStartDate, let oldEnd = oldEndDate, let newStart = newStartDate, let newEnd = newEndDate {
+            let calendar = Calendar.current
+            
+            // 새로운 투두의 시작일부터 끝일까지 날짜 배열 생성
+            var currentDate = newStart
+            while currentDate <= newEnd {
+                // 기존 completed 배열에서 해당 날짜의 값을 가져옴
+                if currentDate >= oldStart && currentDate <= oldEnd {
+                    let dayIndex = calendar.dateComponents([.day], from: oldStart, to: currentDate).day!
+                    if dayIndex < existingTodo.completed.count {
+                        updatedCompleted.append(existingTodo.completed[dayIndex])
+                    } else {
+                        updatedCompleted.append(false)
+                    }
+                } else {
+                    // 새로운 날짜는 기본값 false로 설정
+                    updatedCompleted.append(false)
+                }
+                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+            }
+        }
+        
+        // 변경된 값을 코어 데이터에 업데이트
+        CoreDataManager.shared.updateTodoById(
+            id: todoId,
+            newTitle: title,
+            newStartDate: newTodo?.startDate,
+            newEndDate: newTodo?.endDate,
+            newCompleted: updatedCompleted
+        )
+        
+        // 디버깅 로그 추가
+        print("Updated Todo - Title: \(title), Completed: \(updatedCompleted)")
+        
         self.dismiss(animated: true, completion: nil)
     }
     
