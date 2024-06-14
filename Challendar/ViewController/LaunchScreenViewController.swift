@@ -21,6 +21,14 @@ class LaunchScreenViewController: UIViewController {
         setupAnimation()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
+            let tabBarViewController = TabBarViewController()
+            tabBarViewController.modalPresentationStyle = .overFullScreen
+            tabBarViewController.modalTransitionStyle = .crossDissolve
+            self.show(tabBarViewController, sender: self)
+        })
+    }
     private func setupTitleLabel() {
         titleLabel = UILabel()
         titleLabel.text = "챌린더"
