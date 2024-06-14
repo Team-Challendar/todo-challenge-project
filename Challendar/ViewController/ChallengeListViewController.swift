@@ -56,12 +56,21 @@ class ChallengeListViewController: BaseViewController {
             name: NSNotification.Name("CoreDataChanged"),
             object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(checkBoxTapped),
+            name: NSNotification.Name("ButtonTapped"),
+            object: nil
+        )
     }
     
     @objc func coreDataChanged(_ notification: Notification) {
         loadData()
     }
-    
+    @objc func checkBoxTapped(){
+        checkIfAllChallengesCompleted()
+    }
     private func loadData() {
         self.todoItems = CoreDataManager.shared.fetchTodos()
         filterTodos()
@@ -70,7 +79,6 @@ class ChallengeListViewController: BaseViewController {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.updateEmptyStateVisibility()
-            self.checkIfAllChallengesCompleted()
         }
     }
     
@@ -184,10 +192,6 @@ class ChallengeListViewController: BaseViewController {
         upcomingTodos = filteredItems.filter {
             guard let startDate = $0.startDate else { return false }
             return startDate > today
-        }
-        
-        if self.isKind(of: ChallengeListViewController.self) {
-            checkIfAllChallengesCompleted()
         }
     }
     

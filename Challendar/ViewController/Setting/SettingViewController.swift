@@ -75,9 +75,12 @@ class SettingViewController: BaseViewController {
     
     func applySnapShot(){
         var snapshot = NSDiffableDataSourceSnapshot<Section, SectionItem>()
-        snapshot.appendSections([.privacy, .darkMode, .information, .share])
-        snapshot.appendItems(SettingModel.privacy.map{ .privacyItem($0)}, toSection: .privacy)
-        snapshot.appendItems(SettingModel.darkMode.map{ .darkModeItem($0)}, toSection: .darkMode)
+        //        snapshot.appendSections([.privacy, .darkMode, .information, .share])
+        //        snapshot.appendItems(SettingModel.privacy.map{ .privacyItem($0)}, toSection: .privacy)
+        //        snapshot.appendItems(SettingModel.darkMode.map{ .darkModeItem($0)}, toSection: .darkMode)
+        //        snapshot.appendItems(SettingModel.information.map{ .informationItem($0)}, toSection: .information)
+        //        snapshot.appendItems(SettingModel.share.map{ .shareItem($0)}, toSection: .share)
+        snapshot.appendSections([.information, .share])
         snapshot.appendItems(SettingModel.information.map{ .informationItem($0)}, toSection: .information)
         snapshot.appendItems(SettingModel.share.map{ .shareItem($0)}, toSection: .share)
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -123,6 +126,25 @@ class SettingViewController: BaseViewController {
             self.present(alertController, animated: true)
         }
     }
+    
+    func openSetting(){
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    func shareToFriend(){
+        var objectsToShare = [URL]()
+        guard let url = URL(string: "www.naver.com") else {return}
+                objectsToShare.append(url)
+                
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                activityVC.popoverPresentationController?.sourceView = self.view
+                
+                // 공유하기 기능 중 제외할 기능이 있을 때 사용
+        //        activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
+                self.present(activityVC, animated: true, completion: nil)
+    }
 }
 
 
@@ -159,12 +181,23 @@ extension SettingViewController: UITableViewDelegate {
             case .darkModeItem(let model):
                 print("Dark mode item selected: \(model)")
             case .informationItem(let model):
-                print("Information item selected: \(model)")
+                if model.menuTitle == "오픈소스 라이선스"{
+                    openSetting()
+                }else if model.menuTitle == "공지사항"{
+                    if let nextVC = model.nextVC {
+                        self.navigationController?.pushViewController(nextVC, animated: true)
+                    }
+                    
+
+                    
+                }
             case .shareItem(let model):
                 if model.menuTitle == "문의하기"{
                     sendEmail()
+                }else if model.menuTitle == "친구에게 공유하기"{
+//                    shareToFriend()
                 }
-                print("Share item selected: \(model)")
+                
             }
         }
     }

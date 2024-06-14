@@ -12,7 +12,8 @@ class DailyGaugeCollectionViewCell: UICollectionViewCell {
     static var identifier = "DailyGaugeCollectionViewCell"
     var gaugeBar : UIProgressView?
     var progrssLabel = UILabel()
-
+    var textLabel =  UILabel()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -46,20 +47,31 @@ class DailyGaugeCollectionViewCell: UICollectionViewCell {
         
         progrssLabel.text = "\(Int(day.percentage))%"
         progrssLabel.textColor = .challendarWhite
-        progrssLabel.font = .pretendardMedium(size: 47)
+        progrssLabel.font = .pretendardMedium(size: 28)
+        
+        textLabel.text = "오늘의 계획 달성률이에요"
+        textLabel.textColor = .secondary600
+        textLabel.font = .pretendardRegular(size: 14)
         
         self.contentView.addSubview(gaugeBar!)
         self.contentView.addSubview(progrssLabel)
+        self.contentView.addSubview(textLabel)
         gaugeBar!.snp.makeConstraints{
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(44.5)
-            $0.width.equalTo(144)
-            $0.height.equalTo(36)
+            $0.top.equalToSuperview().offset(24)
+            $0.width.equalTo(145)
+            $0.height.equalTo(37)
         }
         progrssLabel.snp.makeConstraints{
             $0.top.equalTo(gaugeBar!.snp.bottom).offset(8)
             $0.centerX.equalTo(gaugeBar!)
         }
+        
+        textLabel.snp.makeConstraints{
+            $0.top.equalTo(progrssLabel.snp.bottom).offset(10)
+            $0.centerX.equalTo(gaugeBar!)
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
             UIView.animate(withDuration: 0.5) {
                 self.gaugeBar?.setProgress(Float(day.percentage / 100), animated: true)

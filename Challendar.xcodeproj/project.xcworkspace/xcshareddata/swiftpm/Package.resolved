@@ -1,5 +1,5 @@
 {
-  "originHash" : "0bf67885b89a80cc2ea426524b15aa8383f7a16c75eaa318b221959a9e0f11a6",
+  "originHash" : "d259e87af274526cb9f153556bab3d61115ca65620a0e523d0f63e488f447252",
   "pins" : [
     {
       "identity" : "animated-tab-bar",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "1d29eccc24cc8b75bff9f6804155112c0ffc9605",
         "version" : "4.4.3"
+      }
+    },
+    {
+      "identity" : "markdownview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/keitaoouchi/MarkdownView.git",
+      "state" : {
+        "revision" : "5e62a27f1002cd63c350ef1a4c640ddcd1f1ed48",
+        "version" : "1.9.1"
       }
     },
     {

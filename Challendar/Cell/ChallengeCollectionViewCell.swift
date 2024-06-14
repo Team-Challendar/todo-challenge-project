@@ -334,6 +334,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             self.updatePercentage(for: item)
             self.updateTodoCompletion(for: item)
         })
+        
     }
     
     func configure(with item: Todo) {
@@ -404,5 +405,6 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     
     private func updateTodoCompletion(for item: Todo) {
         CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newCompleted: item.completed)
+        NotificationCenter.default.post(name: NSNotification.Name("ButtonTapped"), object: nil, userInfo: nil)
     }
 }

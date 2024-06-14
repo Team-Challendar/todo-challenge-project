@@ -16,7 +16,7 @@ extension DateFormatter {
     static var dateFormatterALL : DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.init(identifier: "ko_KR")
-        dateFormatter.dateFormat = "YYYY년 M월 dd일 HH:mm"
+        dateFormatter.dateFormat = "M월 dd일 YYYY"
         return dateFormatter
     }
 }
