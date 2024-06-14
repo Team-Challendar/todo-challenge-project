@@ -147,9 +147,9 @@ class TodoCollectionViewCell: UICollectionViewCell {
             $0.bottom.equalTo(editContainer.snp.bottom).offset(-25.5)
         }
         titleLabel.snp.makeConstraints{
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(24)
-            $0.trailing.equalTo(checkButton.snp.leading).offset(-5)
+            $0.top.equalTo(container.snp.top).offset(16.5)
+            $0.leading.equalTo(container.snp.leading).offset(24)
+            $0.trailing.equalTo(checkButton.snp.leading).offset(5)
         }
         checkButton.snp.makeConstraints{
             $0.centerY.equalTo(titleLabel.snp.centerY)
