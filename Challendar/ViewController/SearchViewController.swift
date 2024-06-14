@@ -385,8 +385,9 @@ extension SearchViewController: UISearchBarDelegate {
         filterItems(with: searchText)
     }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        if let tabBarController = self.tabBarController as? TabBarViewController {
-            tabBarController.goToPreviousTab()
-        }
+//        if let tabBarController = self.tabBarController as? TabBarViewController {
+//            tabBarController.goToPreviousTab()
+//        }
+        searchBar.resignFirstResponder()
     }
 }
