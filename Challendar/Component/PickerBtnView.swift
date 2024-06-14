@@ -80,6 +80,9 @@ class PickerBtnView: UIView {
             make.height.equalToSuperview().dividedBy(2)
         }
         
+        latestOrderBtn.isSelected = true
+        latestOrderBtn.tintColor = .challendarWhite // 선택된 버튼 색상 변경
+        latestOrderBtn.backgroundColor = .secondary850
         addBorders()
         
         layer.cornerRadius = 12

@@ -70,7 +70,7 @@ class CustomButton: UIButton {
     }
     
     func laterMediumState() {
-        changeTitle(title: "나중에")
+        changeTitle(title: "계획하기")
         self.layer.cornerRadius = 12
         self.isEnabled = true
         self.setTitleColor(.challendarGreen200, for: .normal)
@@ -83,7 +83,7 @@ class CustomButton: UIButton {
     func challengeState(){
         self.isEnabled = true
         self.layer.cornerRadius = 12
-        changeTitle(title: "도전!")
+        changeTitle(title: "도전하기")
         self.setTitleColor(.challendarBlack, for: .normal)
         self.backgroundColor = .challendarGreen200
         self.titleLabel?.font = .pretendardSemiBold(size: 18)

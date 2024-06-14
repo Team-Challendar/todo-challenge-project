@@ -271,15 +271,20 @@ extension TodoViewController : TodoViewCellDelegate {
 
 extension TodoViewController : PickerBtnViewDelegate {
     func didTapLatestOrderButton() {
+        configureNav(title: "최신순")
         todoItems.reverse()
         completedTodos.reverse()
         incompleteTodos.reverse()
-        collectionView.reloadData()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
         titleTouched()
     }
     
     func didTapRegisteredOrderButton() {
+        configureNav(title: "등록순")
         loadData() // 데이터를 다시 불러와서 원래 순서로 복원
         titleTouched()
+        
     }
 }

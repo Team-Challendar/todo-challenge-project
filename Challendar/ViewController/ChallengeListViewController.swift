@@ -268,6 +268,7 @@ class ChallengeListViewController: BaseViewController {
         if incompleteTodos.isEmpty {
             let successViewController = ChallengeSuccessViewController()
             successViewController.modalPresentationStyle = .fullScreen
+            successViewController.modalTransitionStyle = .crossDissolve
 //            let navigationController = UINavigationController(rootViewController: successViewController)
 //            navigationController.modalTransitionStyle = .coverVertical
 //            navigationController.modalPresentationStyle = .overFullScreen
