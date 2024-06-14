@@ -12,7 +12,7 @@ extension BaseViewController{
             $0.width.equalTo(128)
             $0.height.equalTo(52)
             $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
             //            $0.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
             // $0.height.width.equalTo(60)
         }
