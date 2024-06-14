@@ -57,6 +57,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     private func setupContentView() {
         contentView.layer.cornerRadius = 20
         contentView.clipsToBounds = true
+        contentView.layer.masksToBounds = false
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -147,7 +148,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
             $0.bottom.equalTo(editContainer.snp.bottom).offset(-25.5)
         }
         titleLabel.snp.makeConstraints{
-            $0.top.equalTo(container.snp.top).offset(16.5)
+            $0.centerY.equalTo(container)
             $0.leading.equalTo(container.snp.leading).offset(24)
             $0.trailing.equalTo(checkButton.snp.leading).offset(5)
         }
@@ -239,6 +240,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func checkButtonTapped() {
+        contentView.clipsToBounds = false
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
             self.didSwipeCellLeft()
             self.didSwipeCellRight()
@@ -252,6 +254,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
         item.iscompleted.toggle()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
             self.animationView.stop()
+            self.contentView.clipsToBounds = true
             self.updateTodoCompletion(for: item)
         })
     }

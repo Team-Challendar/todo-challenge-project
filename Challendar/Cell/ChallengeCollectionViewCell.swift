@@ -59,7 +59,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     private func setupViews() {
         contentView.layer.cornerRadius = 20
         contentView.layer.masksToBounds = false
-//        contentView.clipsToBounds = true
+        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -321,6 +321,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func checkButtonTapped() {
+        contentView.clipsToBounds = false
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
             self.didSwipeCellLeft()
             self.didSwipeCellRight()
@@ -334,9 +335,11 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         item.toggleTodaysCompletedState()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
             self.animationView.stop()
+            self.contentView.clipsToBounds = true
             self.updatePercentage(for: item)
             self.updateTodoCompletion(for: item)
         })
+        
         
     }
     
