@@ -46,7 +46,12 @@ class BottomSheetViewController: UIViewController {
         dateBottomSheet.delegate = self
         dateBottomSheet.applybutton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                self?.hideLayoutShowChallenge()
+                if let rootViewVC2 = self?.rootViewVC2 {
+                    self?.hideLayout()
+                }else{
+                    self?.hideLayoutShowChallenge()
+                }
+                
             }).disposed(by: self.dispose)
         
         dateBottomSheet.laterButton.rx.tap
@@ -55,8 +60,7 @@ class BottomSheetViewController: UIViewController {
                 
                 // rootViewVC2면 view만
                 if let rootViewVC2 = self?.rootViewVC2 {
-                            self?.dismiss(animated: false, completion: {
-                            })
+                    self?.hideLayout()
                 } else {
                     CoreDataManager.shared.createTodo(newTodo: (self?.newTodo)!)
                     let rootView = self?.presentingViewController

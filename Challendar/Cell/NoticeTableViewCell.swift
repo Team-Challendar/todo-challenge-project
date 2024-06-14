@@ -76,8 +76,6 @@ class NoticeTableViewCell: UITableViewCell {
         
     }
     
-    
-    
     private func formatDate(_ date: Date?) -> String {
         guard let date = date else { return "날짜 없음" }
         let dateFormatter = DateFormatter()

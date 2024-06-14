@@ -186,10 +186,11 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
         dateAskView.layer.borderWidth = 1.0
         dateView.textLabel.attributedText = getAttributedDateText(startDate: newTodo?.startDate, endDate: newTodo?.endDate, isHighlighted: true)
-        [self.titleLabel, self.titleView].forEach { view in
-            view.alpha = 0.3
-        }
-        
+        UIView.animate(withDuration: 0.2, animations: {
+            [self.titleLabel, self.titleView].forEach { view in
+                view.alpha = 0.3
+            }
+        })
         let bottomSheetVC = BottomSheetViewController()
         bottomSheetVC.rootViewVC2 = self
         bottomSheetVC.newTodo = self.newTodo
@@ -233,9 +234,12 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             } else {
                 self.updateDateViewTextForLater()
             }
-            [self.titleLabel, self.titleView].forEach { view in
-                view.alpha = 1.0
-            }
+            UIView.animate(withDuration: 0.2, animations: {
+                [self.titleLabel, self.titleView].forEach { view in
+                    view.alpha = 1.0
+                }
+            })
+            
         }
         
         self.present(bottomSheetVC, animated: false, completion: nil)
@@ -275,7 +279,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         
         editButton = UIButton(type: .system)
         editButton.setTitle("수정", for: .normal)
-        editButton.setTitleColor(.secondary700, for: .normal)
+        editButton.setTitleColor(.challendarGreen200, for: .normal)
         editButton.titleLabel?.font = .pretendardBold(size: 16)
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
@@ -349,7 +353,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             
             // ChallengeCheckViewController 호출
             newTodo?.isChallenge = false // 기본값 설정
-            let challengeCheckVC = ChallengeCheckViewController()
+            let challengeCheckVC = EditChallengeCheckViewController()
             challengeCheckVC.newTodo = newTodo
             challengeCheckVC.modalPresentationStyle = .overFullScreen
             
@@ -413,9 +417,12 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             titleView.layer.borderColor = UIColor.challendarGreen200.cgColor
             titleView.layer.borderWidth = 1.0
             todoTextField.textColor = .challendarWhite
-            [dateAskLabel, dateAskView].forEach { view in
-                view.alpha = 0.3
-            }
+            UIView.animate(withDuration: 0.2, animations: {
+                [self.dateAskLabel, self.dateAskView].forEach { view in
+                    view.alpha = 0.3
+                }
+            })
+            
         }
     }
     
@@ -424,9 +431,11 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             titleView.layer.borderColor = UIColor.clear.cgColor
             titleView.layer.borderWidth = 0.0
             todoTextField.textColor = .secondary400
-            [dateAskLabel, dateAskView].forEach { view in
-                view.alpha = 1.0
-            }
+            UIView.animate(withDuration: 0.2, animations: {
+                [self.dateAskLabel, self.dateAskView].forEach { view in
+                    view.alpha = 1.0
+                }
+            })
         }
     }
 }

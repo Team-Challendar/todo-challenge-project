@@ -51,6 +51,7 @@
 		149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F92C0B065200D63368 /* UIViewControllerExtension.swift */; };
 		149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */; };
 		149228FE2C0B1CE500D63368 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FD2C0B1CE500D63368 /* DateExtension.swift */; };
+		149944002C1C0D82005EE584 /* EditChallengeCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149943FF2C1C0D82005EE584 /* EditChallengeCheckViewController.swift */; };
 		149FEFAD2C11CEE800CDDC23 /* TodoCalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149FEFAC2C11CEE800CDDC23 /* TodoCalendarViewCell.swift */; };
 		149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149FEFAE2C122C2300CDDC23 /* UILabelExtension.swift */; };
 		14AAA9052C0E08A00085E22F /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA9042C0E08A00085E22F /* SuccessViewController.swift */; };
@@ -156,6 +157,7 @@
 		149228F92C0B065200D63368 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
 		149228FD2C0B1CE500D63368 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		149943FF2C1C0D82005EE584 /* EditChallengeCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditChallengeCheckViewController.swift; sourceTree = "<group>"; };
 		149FEFAC2C11CEE800CDDC23 /* TodoCalendarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarViewCell.swift; sourceTree = "<group>"; };
 		149FEFAE2C122C2300CDDC23 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		14AAA9042C0E08A00085E22F /* SuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				14E1EF892C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift */,
 				DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */,
 				B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */,
+				149943FF2C1C0D82005EE584 /* EditChallengeCheckViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -616,6 +619,7 @@
 				1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */,
 				14C97F312C0A4AD000819B27 /* UIFontExtension.swift in Sources */,
 				1472ADF72C08720900145668 /* TodoTitleTextField.swift in Sources */,
+				149944002C1C0D82005EE584 /* EditChallengeCheckViewController.swift in Sources */,
 				1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */,
 				1472ADDC2C083B1000145668 /* TodoViewController.swift in Sources */,
 				DEDEE28A2C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift in Sources */,
