@@ -39,6 +39,11 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 제스처 인식기 추가
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+        
+        // 추가된 제스처 인식기
+        let outsideTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissTextField))
+        outsideTapGesture.cancelsTouchesInView = false // dateAskView를 눌러도 텍스트 편집이 가능하게 설정
+        view.addGestureRecognizer(outsideTapGesture)
     }
     
     // 제스처 인식기 메소드 추가
@@ -46,6 +51,13 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         view.endEditing(true)
     }
     
+    @objc private func dismissTextField(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: self.view)
+        if !dateAskView.frame.contains(location) && !todoTextField.frame.contains(location) {
+            view.endEditing(true)
+        }
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 수정 버튼을 누르지 않고 화면이 사라질 때, 원래 상태로 돌아갑니다.
@@ -105,14 +117,19 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 값 임시 저장용 뉴 투두
         self.newTodo = Todo(id: todoModel.id, title: todoModel.title, memo: todoModel.memo, startDate: todoModel.startDate, endDate: todoModel.endDate, completed: todoModel.completed, isChallenge: todoModel.isChallenge, percentage: todoModel.percentage, iscompleted: todoModel.isCompleted)
         
+        // endDate가 nil이 아닌 경우 iscompleted를 false로 설정
+        if self.newTodo?.endDate != nil {
+            self.newTodo?.iscompleted = false
+        }
+        
         // completed 확인용 디버깅 로그
-        print("Fetched Todo - Title: \(todoModel.title), Completed: \(todoModel.completed)")
+        print("Fetched Todo - Title: \(todoModel.title), Completed: \(todoModel.completed), \(todoModel.isChallenge)")
         
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }
     }
-    
+
     private func getAttributedDateText(startDate: Date?, endDate: Date?, isHighlighted: Bool) -> NSAttributedString {
         guard let startDate = startDate, let endDate = endDate else { return NSAttributedString(string: "") }
         
@@ -140,7 +157,6 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: startDate, endDate: endDate, isHighlighted: isHighlighted)
     }
 
-    
     private func configureGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dateViewTapped))
         dateAskView.addGestureRecognizer(tapGesture)
@@ -158,11 +174,14 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         editButton.setTitleColor(.challendarGreen200, for: .normal)
     }
     
+    // dateViewTapped 메소드 수정
     @objc private func dateViewTapped() {
-        // dateView의 보더 추가
-        dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
-        dateAskView.layer.borderWidth = 1.0
-        titleView.layer.borderWidth = 0.0
+        // 타이핑 상태 해제
+        view.endEditing(true)
+        
+        // dateView의 보더 제거
+        dateAskView.layer.borderColor = UIColor.clear.cgColor
+        dateAskView.layer.borderWidth = 0.0
         dateView.textLabel.attributedText = getAttributedDateText(startDate: newTodo?.startDate, endDate: newTodo?.endDate, isHighlighted: true)
         [self.titleLabel, self.titleView].forEach { view in
             view.alpha = 0.3
@@ -244,13 +263,13 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         }
         
         // 기존 투두 가져오기
-        guard let existingTodo = CoreDataManager.shared.fetchTodoById(id: todoId) else {
+        guard let todoModel = CoreDataManager.shared.fetchTodoById(id: todoId) else {
             return
         }
         
         // 기존 투두의 날짜 범위
-        let oldStartDate = existingTodo.startDate
-        let oldEndDate = existingTodo.endDate
+        let oldStartDate = todoModel.startDate
+        let oldEndDate = todoModel.endDate
         
         // 새로운 투두의 날짜 범위
         let newStartDate = newTodo?.startDate
@@ -259,17 +278,17 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // 기존 completed 배열을 유지하면서 새로운 completed 배열 생성
         var updatedCompleted: [Bool] = []
         
-        if let oldStart = oldStartDate, let oldEnd = oldEndDate, let newStart = newStartDate, let newEnd = newEndDate {
+        if let oldStart = oldStartDate, let newStart = newStartDate, let newEnd = newEndDate {
             let calendar = Calendar.current
             
             // 새로운 투두의 시작일부터 끝일까지 날짜 배열 생성
             var currentDate = newStart
             while currentDate <= newEnd {
                 // 기존 completed 배열에서 해당 날짜의 값을 가져옴
-                if currentDate >= oldStart && currentDate <= oldEnd {
+                if let oldEnd = oldEndDate, currentDate >= oldStart && currentDate <= oldEnd {
                     let dayIndex = calendar.dateComponents([.day], from: oldStart, to: currentDate).day!
-                    if dayIndex < existingTodo.completed.count {
-                        updatedCompleted.append(existingTodo.completed[dayIndex])
+                    if dayIndex < todoModel.completed.count {
+                        updatedCompleted.append(todoModel.completed[dayIndex])
                     } else {
                         updatedCompleted.append(false)
                     }
@@ -281,21 +300,78 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             }
         }
         
-        // 변경된 값을 코어 데이터에 업데이트
+        // endDate가 nil이 아닌 경우 iscompleted를 false로 설정
+        if newEndDate != nil {
+            newTodo?.iscompleted = false
+        }
+        
+        // ChallengeCheckViewController 호출
+        if newEndDate != nil {
+            newTodo?.title = title
+            newTodo?.startDate = newStartDate
+            newTodo?.endDate = newEndDate
+            newTodo?.completed = updatedCompleted
+            newTodo?.iscompleted = newEndDate == nil ? todoModel.isCompleted : false
+            
+            // 디버깅 로그 추가
+            print("Updated Todo - Title: \(title), Completed: \(updatedCompleted)")
+            
+            // ChallengeCheckViewController 호출
+            newTodo?.isChallenge = false // 기본값 설정
+            let challengeCheckVC = ChallengeCheckViewController()
+            challengeCheckVC.newTodo = newTodo
+            challengeCheckVC.modalPresentationStyle = .overFullScreen
+            
+            // ChallengeCheckViewController에서 선택된 값에 따라 기존 투두 업데이트
+            challengeCheckVC.laterButtonTapped = { [weak self] in
+                self?.updateTodoIsChallenge(isChallenge: false, todoModel: todoModel, title: title, startDate: newStartDate, endDate: newEndDate, completed: updatedCompleted)
+            }
+            challengeCheckVC.challengeButtonTapped = { [weak self] in
+                self?.updateTodoIsChallenge(isChallenge: true, todoModel: todoModel, title: title, startDate: newStartDate, endDate: newEndDate, completed: updatedCompleted)
+            }
+            
+            self.present(challengeCheckVC, animated: true, completion: nil)
+        } else {
+            // 변경된 값을 코어 데이터에 업데이트
+            CoreDataManager.shared.updateTodoById(
+                id: todoId,
+                newTitle: title,
+                newStartDate: newStartDate,
+                newEndDate: newEndDate,
+                newCompleted: updatedCompleted,
+                newIsCompleted: newEndDate == nil ? todoModel.isCompleted : false // endDate가 nil이 아닌 경우 false로 설정
+            )
+            
+            // 기존 투두 업데이트
+            newTodo?.title = title
+            newTodo?.startDate = newStartDate
+            newTodo?.endDate = newEndDate
+            newTodo?.completed = updatedCompleted
+            newTodo?.iscompleted = newEndDate == nil ? todoModel.isCompleted : false
+            
+            // 디버깅 로그 추가
+            print("Updated Todo - Title: \(title), Completed: \(updatedCompleted)")
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+
+    private func updateTodoIsChallenge(isChallenge: Bool, todoModel: TodoModel, title: String, startDate: Date?, endDate: Date?, completed: [Bool]) {
+        todoModel.isChallenge = isChallenge
+        todoModel.title = title
+        todoModel.startDate = startDate
+        todoModel.endDate = endDate
+        todoModel.completed = completed
         CoreDataManager.shared.updateTodoById(
-            id: todoId,
+            id: todoModel.id!,
             newTitle: title,
-            newStartDate: newTodo?.startDate,
-            newEndDate: newTodo?.endDate,
-            newCompleted: updatedCompleted
+            newStartDate: startDate,
+            newEndDate: endDate,
+            newCompleted: completed,
+            newIsCompleted: endDate == nil ? todoModel.isCompleted : false
         )
-        
-        // 디버깅 로그 추가
-        print("Updated Todo - Title: \(title), Completed: \(updatedCompleted)")
-        
         self.dismiss(animated: true, completion: nil)
     }
-    
     @objc func textFieldDidChange(_ textField: UITextField) {
         editButton.setTitleColor(.challendarGreen200, for: .normal)
     }

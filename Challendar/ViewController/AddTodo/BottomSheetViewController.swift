@@ -14,6 +14,7 @@ class BottomSheetViewController: UIViewController {
     var rootViewVC: AddTodoDateViewController?
     var rootViewVC2: EditTodoViewController?
     var dismissCompletion: (() -> Void)?
+    var bottomSheetLaterButtonTapped: (() -> Void)?
     var dimmedView = UIView()
     var dateBottomSheet = DateBottomSheet()
     var dispose = DisposeBag()
@@ -50,21 +51,30 @@ class BottomSheetViewController: UIViewController {
         
         dateBottomSheet.laterButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                CoreDataManager.shared.createTodo(newTodo: (self?.newTodo)!)
-                let rootView = self?.presentingViewController
-                let root = rootView?.presentingViewController
-                let successViewController = SuccessViewController()
-                successViewController.isChallenge = false
-                let navigationController = UINavigationController(rootViewController: successViewController)
-                navigationController.modalTransitionStyle = .coverVertical
-                navigationController.modalPresentationStyle = .overFullScreen
-                self?.dismiss(animated: false, completion: {
-                    rootView?.dismiss(animated: false, completion: {
-                        root?.present(navigationController, animated: true)
+                self?.bottomSheetLaterButtonTapped?()
+                
+                // rootViewVC2면 view만
+                if let rootViewVC2 = self?.rootViewVC2 {
+                            self?.dismiss(animated: false, completion: {
+                            })
+                } else {
+                    CoreDataManager.shared.createTodo(newTodo: (self?.newTodo)!)
+                    let rootView = self?.presentingViewController
+                    let root = rootView?.presentingViewController
+                    let successViewController = SuccessViewController()
+                    successViewController.isChallenge = false
+                    let navigationController = UINavigationController(rootViewController: successViewController)
+                    navigationController.modalTransitionStyle = .coverVertical
+                    navigationController.modalPresentationStyle = .overFullScreen
+                    self?.dismiss(animated: false, completion: {
+                        rootView?.dismiss(animated: false, completion: {
+                            root?.present(navigationController, animated: true)
+                        })
                     })
-                })
+                }
             })
             .disposed(by: self.dispose)
+
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         dateBottomSheet.addGestureRecognizer(panGesture)
