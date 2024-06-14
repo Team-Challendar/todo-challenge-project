@@ -146,4 +146,10 @@ extension Date {
         }
         return nil
     }
+    
+    func dayFromDate() -> Int {
+        let calendar = Calendar.current
+        let day = calendar.component(.day, from: self)
+        return day
+    }
 }
