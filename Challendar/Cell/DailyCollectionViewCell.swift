@@ -14,6 +14,7 @@ class DailyView: UIView {
     // 상단 캐로셀 컬렉션 뷰 설정
     var collectionView: UICollectionView!
     var currentDate : Date?
+    let visibleItemsThreshold = 4
     
     // 초기화 메서드
     override init(frame: CGRect) {
@@ -34,6 +35,7 @@ class DailyView: UIView {
         currentDate = selectedDate ?? days[0].date
         self.days = days
         collectionView.reloadData()
+        
     }
     func configureDateLabel(date: Date?){
         dateLabel.text = DateFormatter.dateFormatter.string(from: date ?? Date())
@@ -47,8 +49,8 @@ class DailyView: UIView {
         self.addSubview(collectionView)
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom)
-            $0.bottom.equalToSuperview()
+            $0.top.equalTo(dateLabel.snp.bottom).offset(25)
+            $0.height.equalTo(244)
             $0.leading.trailing.equalToSuperview()
         }
         dateLabel.snp.makeConstraints {
@@ -108,6 +110,15 @@ extension DailyView : UICollectionViewDelegate, UICollectionViewDataSource, UICo
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let page = layout.currentCenteredPage {
             NotificationCenter.default.post(name: NSNotification.Name("date"), object: days![page].date, userInfo: nil)
+//            if page <= 4 {
+//                NotificationCenter.default.post(name: NSNotification.Name("AddDaysFront"), object: days![page].date.prevMonth(), userInfo: nil)
+//            }
+//            if let count = days?.count {
+//                if page >= count - 4 {
+//                    NotificationCenter.default.post(name: NSNotification.Name("AddDaysBack"), object: days![page].date.nextMonth(), userInfo: nil)
+//                }
+//            }
+//            
         }
     }
 }

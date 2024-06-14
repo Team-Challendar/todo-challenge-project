@@ -18,7 +18,20 @@ extension Date {
         components.second = 59
         return calendar.date(from: components)
     }
-    
+    func nextMonth() -> Date? {
+           var dateComponents = DateComponents()
+           dateComponents.month = 1
+           
+           let calendar = Calendar.current
+           return calendar.date(byAdding: dateComponents, to: self)
+       }
+    func prevMonth() -> Date? {
+           var dateComponents = DateComponents()
+           dateComponents.month = -1
+           
+           let calendar = Calendar.current
+           return calendar.date(byAdding: dateComponents, to: self)
+       }
     func formatDateToDayString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.calendar = Calendar.current

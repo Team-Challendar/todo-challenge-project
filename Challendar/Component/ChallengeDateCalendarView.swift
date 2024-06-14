@@ -34,7 +34,7 @@ class ChallengeDateCalendarView: UIView {
         calendarLabel.font = .pretendardBold(size: 22)
         calendarLabel.backgroundColor = .clear
         calendarLabel.textColor = .challendarWhite
-        
+        updateLabel(Date())
         prevButton.setImage(.arrowLeftNew, for: .normal)
         prevButton.backgroundColor = .clear
         
@@ -122,7 +122,13 @@ class ChallengeDateCalendarView: UIView {
     }
     
     func updateLabel(_ date: Date){
-        calendarLabel.text = DateFormatter.dateFormatter.string(from: date)
+        let dateString = DateFormatter.dateFormatter.string(from: date)
+        let attributedString = NSMutableAttributedString(string: dateString)
+        
+        let lastFourRange = NSRange(location: dateString.count - 4, length: 4)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.secondary800, range: lastFourRange)
+        
+        calendarLabel.attributedText = attributedString
     }
 }
 

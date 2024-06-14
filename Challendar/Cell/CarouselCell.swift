@@ -16,6 +16,7 @@ class CarouselCell: UICollectionViewCell {
         let view = UIView()
         view.backgroundColor = .secondary850
         view.layer.cornerRadius = 30.0
+        view.layer.cornerCurve = .continuous
         return view
     }()
     
@@ -86,7 +87,7 @@ class CarouselCell: UICollectionViewCell {
         // 날짜 배경 뷰 추가
         container.addSubview(dateBackgroundView)
         dateBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(dayLabel.snp.bottom).offset(20)
+            make.top.equalTo(dayLabel.snp.bottom).offset(17)
             make.centerX.equalToSuperview()
             make.width.height.equalTo(126.5) // 높이와 너비를 126.5로 설정
         }

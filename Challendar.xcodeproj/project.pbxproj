@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		141744D92C1821C8002335F7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 141744D82C1821C8002335F7 /* Lottie */; };
 		141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */; };
+		142052C42C1BDC1C00BC4831 /* NoticeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C32C1BDC1C00BC4831 /* NoticeModel.swift */; };
+		142052C62C1BE08700BC4831 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C52C1BE08700BC4831 /* NoticeViewController.swift */; };
+		142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */; };
+		142052D32C1BFB5E00BC4831 /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = 142052D22C1BFB5E00BC4831 /* MarkdownView */; };
+		142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 142052D42C1BFC8000BC4831 /* Settings.bundle */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
@@ -53,6 +58,7 @@
 		14AAA9092C0E217E0085E22F /* ChallengePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */; };
 		14AAA90B2C0E231D0085E22F /* Speech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90A2C0E231C0085E22F /* Speech.swift */; };
 		14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */; };
+		14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */; };
 		14BB8F042C1013E000FA92E8 /* TodoCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */; };
 		14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F052C1019BC00FA92E8 /* TodoCalendarView.swift */; };
 		14BB8F082C101D7300FA92E8 /* TodoCalendarFSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F072C101D7300FA92E8 /* TodoCalendarFSCell.swift */; };
@@ -107,6 +113,10 @@
 
 /* Begin PBXFileReference section */
 		141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGaugeCollectionViewCell.swift; sourceTree = "<group>"; };
+		142052C32C1BDC1C00BC4831 /* NoticeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeModel.swift; sourceTree = "<group>"; };
+		142052C52C1BE08700BC4831 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
+		142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeTableViewCell.swift; sourceTree = "<group>"; };
+		142052D42C1BFC8000BC4831 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		1472AD9D2C082A0F00145668 /* Challendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1472ADA02C082A0F00145668 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1472ADA22C082A0F00145668 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +161,7 @@
 		14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengePopUpView.swift; sourceTree = "<group>"; };
 		14AAA90A2C0E231C0085E22F /* Speech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speech.swift; sourceTree = "<group>"; };
 		14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeDelegate.swift; sourceTree = "<group>"; };
+		14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarCell.swift; sourceTree = "<group>"; };
 		14BB8F052C1019BC00FA92E8 /* TodoCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoCalendarView.swift; sourceTree = "<group>"; };
 		14BB8F072C101D7300FA92E8 /* TodoCalendarFSCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarFSCell.swift; sourceTree = "<group>"; };
@@ -211,6 +222,7 @@
 				1472ADE32C08404D00145668 /* RxCocoa in Frameworks */,
 				1472ADE82C08406D00145668 /* RAMAnimatedTabBarController in Frameworks */,
 				14C97F2C2C0A1D1600819B27 /* FSCalendar in Frameworks */,
+				142052D32C1BFB5E00BC4831 /* MarkdownView in Frameworks */,
 				1472ADD62C08369700145668 /* SnapKit in Frameworks */,
 				141744D92C1821C8002335F7 /* Lottie in Frameworks */,
 			);
@@ -222,6 +234,7 @@
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
+				142052D42C1BFC8000BC4831 /* Settings.bundle */,
 				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
@@ -298,6 +311,7 @@
 				14C3FA172C0C900400ACAFB6 /* SelectedDateTypeEnum.swift */,
 				14AAA90A2C0E231C0085E22F /* Speech.swift */,
 				14C6AFE42C0F136C0016B80C /* SettingModel.swift */,
+				142052C32C1BDC1C00BC4831 /* NoticeModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -372,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				14C3FA0E2C0C7D0A00ACAFB6 /* CoreDataManager.swift */,
+				14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -390,6 +405,7 @@
 			children = (
 				14C6AFE22C0F12AA0016B80C /* SettingViewController.swift */,
 				14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */,
+				142052C52C1BE08700BC4831 /* NoticeViewController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -443,6 +459,7 @@
 				DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */,
 				141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */,
 				14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */,
+				142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -470,6 +487,7 @@
 				1472ADE72C08406D00145668 /* RAMAnimatedTabBarController */,
 				14C97F2B2C0A1D1600819B27 /* FSCalendar */,
 				141744D82C1821C8002335F7 /* Lottie */,
+				142052D22C1BFB5E00BC4831 /* MarkdownView */,
 			);
 			productName = Challendar;
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
@@ -505,6 +523,7 @@
 				1472ADE62C08406D00145668 /* XCRemoteSwiftPackageReference "animated-tab-bar" */,
 				14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				142052D12C1BFB5E00BC4831 /* XCRemoteSwiftPackageReference "MarkdownView" */,
 			);
 			productRefGroup = 1472AD9E2C082A0F00145668 /* Products */;
 			projectDirPath = "";
@@ -524,6 +543,7 @@
 				1472ADAD2C082A1000145668 /* Assets.xcassets in Resources */,
 				1472ADCE2C082B8300145668 /* Pretendard-SemiBold.ttf in Resources */,
 				1472ADB02C082A1000145668 /* Base in Resources */,
+				142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */,
 				1472ADC92C082B8300145668 /* Pretendard-ExtraBold.ttf in Resources */,
 				1472ADCA2C082B8300145668 /* Pretendard-ExtraLight.ttf in Resources */,
 				1472ADCD2C082B8300145668 /* Pretendard-Regular.ttf in Resources */,
@@ -557,6 +577,7 @@
 				14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */,
 				14C97F332C0A4AF000819B27 /* BaseViewControllerExtension.swift in Sources */,
 				DEDEE28F2C0DEA47006AD1C6 /* DateBottomSheetCollectionViewCell.swift in Sources */,
+				142052C62C1BE08700BC4831 /* NoticeViewController.swift in Sources */,
 				14C97F352C0A4B0F00819B27 /* CALayerExtension.swift in Sources */,
 				1472ADD82C083AD400145668 /* SearchViewController.swift in Sources */,
 				1472ADE02C083F5D00145668 /* TabModel.swift in Sources */,
@@ -568,6 +589,7 @@
 				149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */,
 				DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */,
 				14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */,
+				142052C42C1BDC1C00BC4831 /* NoticeModel.swift in Sources */,
 				14F4DB122C19874A00B5CE45 /* UICollectionViewCellExtension.swift in Sources */,
 				14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */,
 				B90CAA732C10C9B600926B53 /* CarouselCell.swift in Sources */,
@@ -605,6 +627,7 @@
 				DEA8E4C92C19C3F3007AAF93 /* EditTodoViewController.swift in Sources */,
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
+				142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */,
 				14AAA9072C0E1F110085E22F /* ChallengeCheckViewController.swift in Sources */,
 				14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */,
 				14C97F232C09ACF300819B27 /* DateBottomSheet.swift in Sources */,
@@ -615,6 +638,7 @@
 				B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */,
 				14C97F212C09A71800819B27 /* DateView.swift in Sources */,
 				14C97F1D2C09A4C800819B27 /* BottomSheetViewController.swift in Sources */,
+				14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
 				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
@@ -852,6 +876,14 @@
 				minimumVersion = 4.4.3;
 			};
 		};
+		142052D12C1BFB5E00BC4831 /* XCRemoteSwiftPackageReference "MarkdownView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/keitaoouchi/MarkdownView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.1;
+			};
+		};
 		1472ADD42C08369700145668 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -891,6 +923,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */;
 			productName = Lottie;
+		};
+		142052D22C1BFB5E00BC4831 /* MarkdownView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 142052D12C1BFB5E00BC4831 /* XCRemoteSwiftPackageReference "MarkdownView" */;
+			productName = MarkdownView;
 		};
 		1472ADD52C08369700145668 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

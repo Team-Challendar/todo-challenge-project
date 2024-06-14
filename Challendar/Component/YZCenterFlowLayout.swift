@@ -102,6 +102,30 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
         
         return targetContentOffset
     }
+    func scrollToPage(atIndex index: Int, animated: Bool = true) {
+        guard let collectionView = self.collectionView else { return }
+        
+        let proposedContentOffset: CGPoint
+        let shouldAnimate: Bool
+        
+        switch scrollDirection {
+        case .horizontal:
+            let pageOffset = CGFloat(index) * self.pageWidth - collectionView.contentInset.left
+            proposedContentOffset = CGPoint(x: pageOffset, y: collectionView.contentOffset.y)
+            shouldAnimate = abs(collectionView.contentOffset.x - pageOffset) > 1 ? animated : false
+            collectionView.setContentOffset(proposedContentOffset, animated: shouldAnimate)
+            break
+        case .vertical:
+            let pageOffset = CGFloat(index) * self.pageWidth - collectionView.contentInset.top
+            proposedContentOffset = CGPoint(x: collectionView.contentOffset.x, y: pageOffset)
+            shouldAnimate = abs(collectionView.contentOffset.y - pageOffset) > 1 ? animated : false
+            collectionView.setContentOffset(proposedContentOffset, animated: shouldAnimate)
+            break
+        default:
+            print("Default Case...")
+            break
+        }
+    }
 }
 
 // MARK: - Private Methods

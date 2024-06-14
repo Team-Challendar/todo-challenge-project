@@ -18,6 +18,8 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
     var currentDate : Date?
     private var isPickerViewExpaned = false
     var day: Day?
+    var nextMonth : Date?
+    var prevMonth : Date?
     
     private var dataSource: UICollectionViewDiffableDataSource<Section, SectionItem>!
     
@@ -48,6 +50,8 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(self, selector: #selector(dateChanged(notification:)), name: NSNotification.Name("date"), object: currentDate)
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(addDaysFront(notification:)), name: NSNotification.Name("AddDaysFront"), object: nextMonth)
+//        NotificationCenter.default.addObserver(self, selector: #selector(addDaysBack(notification:)), name: NSNotification.Name("AddDaysBack"), object: prevMonth)
     }
     
     override func configureConstraint() {
@@ -62,30 +66,27 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
             topContainer.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        
         topContainer.snp.makeConstraints{
             $0.height.equalTo(initialCalendarHeight)
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
             $0.leading.trailing.equalToSuperview()
         }
         dailyView.snp.makeConstraints{
-            $0.height.equalTo(318)
+            $0.height.equalTo(300)
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
         }
-        
         calendarView.snp.makeConstraints{
             $0.height.equalToSuperview()
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(topContainer.snp.bottom).offset(16)
+            make.top.equalTo(topContainer.snp.bottom).offset(13)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview()
         }
-        
         dimmedView.addSubview(periodBtnView)
         
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
@@ -129,7 +130,6 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         collectionView.register(DailyGaugeCollectionViewCell.self, forCellWithReuseIdentifier: DailyGaugeCollectionViewCell.identifier)
         collectionView.register(TodoCalendarViewCell.self, forCellWithReuseIdentifier: TodoCalendarViewCell.identifier)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        collectionView.backgroundColor = .clear
         
     }
     
@@ -137,7 +137,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             if self.currentState == .daily{
                 if sectionIndex == 0 {
-                    return self.createTodoSection(itemHeight: .estimated(180))
+                    return self.createSpecialSection(itemHeight: .estimated(152))
                 }else{
                     return self.createTodoSection(itemHeight: .estimated(75))
                 }
@@ -251,7 +251,22 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         self.filterTodoitems(date:  self.currentDate ?? Date())
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
-    
+    @objc func addDaysFront(notification: Notification){
+        guard let date = notification.object as? Date else {return}
+        
+        let prevDays = Day.generateDaysForMonth(date: date, todos: self.todoItems)
+        currentDate = date.prevMonth()
+        days = prevDays + days!
+        dailyView.configure(with: days!,selectedDate: currentDate)
+    }
+    @objc func addDaysBack(notification: Notification){
+        guard let date = notification.object as? Date else {return}
+        
+        let nextDays = Day.generateDaysForMonth(date: date, todos: self.todoItems)
+        currentDate = date.nextMonth()
+        days = days! + nextDays
+        dailyView.configure(with: days!,selectedDate: currentDate)
+    }
     @objc func titleTouched() {
         guard let arrow = button.viewWithTag(1001) as? LottieAnimationView else { return }
         
@@ -352,7 +367,7 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         self.dailyView.isHidden = false
         UIView.animate(withDuration: 0.5) {
             self.topContainer.snp.updateConstraints {
-                $0.height.equalTo(318)
+                $0.height.equalTo(300)
             }
             self.view.layoutIfNeeded()
         }

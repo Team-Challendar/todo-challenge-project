@@ -19,14 +19,13 @@ class ChallengeListDetailViewController: BaseViewController {
     private var collectionView: UICollectionView!
 //    var newTodo: Todo? = challenge
     var newTodo: Todo? = CoreDataManager.shared.fetchTodos().last
-    
+    var dateLabel = UILabel()
     
     
     override func viewDidLoad() {
         configureCollectionView()
         super.viewDidLoad()
         configureFloatingButton()
-        configureCollectionView()
         configureBackAndTitleNavigationBar(title: newTodo!.title, checkSetting: false)
         self.configureSettingButtonNavigationBar()
         
@@ -65,16 +64,32 @@ class ChallengeListDetailViewController: BaseViewController {
     }
     override func configureUI() {
         super.configureUI()
+        dateLabel.text = DateFormatter.dateFormatterALL.string(from: Date())
+        dateLabel.textColor = .secondary200
+        dateLabel.font = .pretendardSemiBold(size: 16)
+        let dateString = DateFormatter.dateFormatterALL.string(from: Date())
+        let attributedString = NSMutableAttributedString(string: dateString)
+        
+        let lastFourRange = NSRange(location: dateString.count - 4, length: 4)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.secondary800, range: lastFourRange)
+        
+        dateLabel.attributedText = attributedString
+        
+        self.view.addSubview(dateLabel)
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.top.equalTo(dateLabel.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview()
         }
+        dateLabel.snp.makeConstraints{
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12.5)
+            $0.leading.equalToSuperview().offset(16)
+        }
     }
     
     private func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: creaateCompostionalLayout())
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompostionalLayout())
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .secondary900
@@ -88,11 +103,11 @@ class ChallengeListDetailViewController: BaseViewController {
         view.addSubview(collectionView)
     }
     
-    private func creaateCompostionalLayout() -> UICollectionViewCompositionalLayout {
+    private func createCompostionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0:
-                return self.createTodoSection(itemHeight: .estimated(220))
+                return self.createSpecialSection(itemHeight: .estimated(206))
             case 1:
                 return self.createSpecialSection(itemHeight: .estimated(440))
             default:
@@ -153,7 +168,7 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
-            let percentage = (self.newTodo?.percentage ?? 0) * 100
+            let percentage = (self.newTodo?.getPercentageToToday() ?? 0) * 100
             switch percentage {
             case 0:
                 // 퍼센티지 구간별 나눌 문구 필요

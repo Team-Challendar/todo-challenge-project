@@ -13,6 +13,7 @@ import SnapKit
 class HalfCircleChartViewCell: UICollectionViewCell {
     static var identifier = "HalfCircleChartViewCell"
     private var halfCircleHostingController: UIHostingController<ChallengeChartView>?
+    var textLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +35,7 @@ class HalfCircleChartViewCell: UICollectionViewCell {
         
         
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 220),
+            contentView.heightAnchor.constraint(equalToConstant: 206),
         ])
         setupChartView()
     }
@@ -48,9 +49,19 @@ class HalfCircleChartViewCell: UICollectionViewCell {
         halfCircleHostingController.view.translatesAutoresizingMaskIntoConstraints = false
         halfCircleHostingController.view.backgroundColor = .clear
         contentView.addSubview(halfCircleHostingController.view)
-        
         halfCircleHostingController.view.snp.makeConstraints{
-            $0.edges.equalTo(contentView)
+            $0.bottom.equalTo(contentView.snp.bottom).offset(-15)
+            $0.leading.trailing.equalTo(contentView)
+            $0.height.equalTo(110)
+        }
+        textLabel.font = .pretendardRegular(size: 14)
+        textLabel.textColor = .secondary600
+        textLabel.text = "시작한 날에서 오늘까지의 달성률이에요"
+        contentView.addSubview(textLabel)
+        contentView.bringSubviewToFront(textLabel)
+        textLabel.snp.makeConstraints{
+            $0.bottom.equalToSuperview().offset(-26.5)
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -87,45 +98,42 @@ struct ChallengeChartView: View {
     var progressLineWidth: CGFloat = 30
     var trackColor: Color = Color.gray
     var progressColor: [Color] = [Color.challendarGreen200]
-    var chartSize: CGSize = CGSize(width: 220, height: 220) // 기본 크기 설정
+    var chartSize: CGSize = CGSize(width: 220, height: 110) // 기본 크기 설정
     
     var body: some View {
-        GeometryReader { geometry in
-            let radius = min(chartSize.width, chartSize.height) / 2
-            let center = CGPoint(x: chartSize.width / 2, y: chartSize.height / 2)
-            
-            ZStack {
-                // Track (background circle)
-                Path { path in
-                    path.addArc(center: center, radius: radius, startAngle: .degrees(180), endAngle: .degrees(0), clockwise: false)
-                }
-                .stroke(trackColor, style: StrokeStyle(lineWidth: trackLineWidth, lineCap: .round))
-                
-                // Progress (foreground circle)
-                Path { path in
-                    path.addArc(center: center, radius: radius, startAngle: Angle(degrees:180), endAngle: Angle(degrees:180 + (progress * 180)), clockwise: false)
-                }
-                .stroke(
-                    LinearGradient(
-                        gradient: Gradient(colors: progressColor),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    ),
-                    style: StrokeStyle(lineWidth: progressLineWidth, lineCap: .round)
-                )
-                
-                Text("\(Int(progress * 100))%")
-                    .font(Font(UIFont.pretendardMedium(size: 46.7)))
-                    .foregroundColor(.white)
-                    .position(center)
+        let radius = (chartSize.height*2 - max(trackLineWidth, progressLineWidth)) / 2 // 반지름 조정
+        let center = CGPoint(x: chartSize.width / 2, y: chartSize.height / 2)
+        
+        ZStack {
+            // Track (background circle)
+            Path { path in
+                path.addArc(center: center, radius: radius, startAngle: .degrees(180), endAngle: .degrees(0), clockwise: false)
             }
-            .frame(width: chartSize.width, height: chartSize.height)
-            .background(Color(.secondary850))
+            .stroke(trackColor, style: StrokeStyle(lineWidth: trackLineWidth, lineCap: .round))
+            
+            // Progress (foreground circle)
+            Path { path in
+                path.addArc(center: center, radius: radius, startAngle: Angle(degrees: 180), endAngle: Angle(degrees: 180 + (progress * 180)), clockwise: false)
+            }
+            .stroke(
+                LinearGradient(
+                    gradient: Gradient(colors: progressColor),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                ),
+                style: StrokeStyle(lineWidth: progressLineWidth, lineCap: .round)
+            )
+            
+            Text("\(Int(progress * 100))%")
+                           .font(Font(UIFont.pretendardBold(size: 28)))
+                           .foregroundColor(.white)
+                           .position(x: chartSize.width / 2, y: chartSize.height / 2 - 6)
         }
-        .frame(width: 220, height: 110)
-        .padding(0)
+        .frame(width: chartSize.width, height: 110)
+        .background(Color(.secondary850))
     }
 }
+
 
 
 
