@@ -27,9 +27,9 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         configureCollectionView()
         super.viewDidLoad()
         filterTodoitems(date: currentDate ?? Date())
-        configureFloatingButton()
         configureNav(title: "달력")
         configureDataSource()
+        configureFloatingButton()
     }
     override func configureUI() {
         super.configureUI()

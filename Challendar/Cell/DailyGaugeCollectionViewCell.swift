@@ -29,7 +29,8 @@ class DailyGaugeCollectionViewCell: UICollectionViewCell {
     }
     func configure(day: Day){
         contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
+        contentView.layer.masksToBounds = false
+//        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor

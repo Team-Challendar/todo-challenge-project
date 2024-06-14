@@ -7,7 +7,7 @@
 
 import UIKit
 import Lottie
-
+import SnapKit
 class LaunchScreenViewController: UIViewController {
 
     private var animationView: LottieAnimationView?
@@ -46,18 +46,17 @@ class LaunchScreenViewController: UIViewController {
         view.addSubview(subLabel)
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 121), // 기존 122에서 1만큼 위로 올림
-            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 147),
-            titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -147)
-        ])
         
+        titleLabel.snp.makeConstraints{
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(121)
+            $0.centerX.equalToSuperview()
+        }
+        
+        subLabel.snp.makeConstraints{
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(15)
+        }
         subLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            subLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15), // 기존 20에서 5만큼 위로 올림
-            subLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 94),
-            subLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -94)
-        ])
     }
 
     private func setupAnimation() {

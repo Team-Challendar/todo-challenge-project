@@ -72,6 +72,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: checkButton.leadingAnchor, constant: 5),
             
             stateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             stateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
@@ -80,7 +81,9 @@ class SearchCollectionViewCell: UICollectionViewCell {
             dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16.5),
             
             checkButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24)
+            checkButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            checkButton.widthAnchor.constraint(equalToConstant: 24),
+            checkButton.heightAnchor.constraint(equalToConstant: 24),
         ])
         contentView.bringSubviewToFront(checkButton)
     }

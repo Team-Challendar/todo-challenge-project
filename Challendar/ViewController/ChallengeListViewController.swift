@@ -163,6 +163,8 @@ class ChallengeListViewController: BaseViewController {
         collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         view.addSubview(collectionView)
     }
     
@@ -225,7 +227,7 @@ class ChallengeListViewController: BaseViewController {
         view.addSubview(emptyMainLabel)
         
         emptySubLabel = UILabel()
-        emptySubLabel.text = "작성하기 버튼을 눌러 등록해주세요"
+        emptySubLabel.text = "추가 버튼을 눌러 등록해주세요"
         emptySubLabel.font = .pretendardMedium(size: 13)
         emptySubLabel.textColor = .secondary500
         view.addSubview(emptySubLabel)

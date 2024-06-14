@@ -149,11 +149,12 @@ class TodoCollectionViewCell: UICollectionViewCell {
         titleLabel.snp.makeConstraints{
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().offset(24)
-            $0.trailing.equalTo(checkButton.snp.leading).offset(12)
+            $0.trailing.equalTo(checkButton.snp.leading).offset(-5)
         }
         checkButton.snp.makeConstraints{
             $0.centerY.equalTo(titleLabel.snp.centerY)
             $0.trailing.equalTo(container.snp.trailing).offset(-24)
+            $0.size.equalTo(24)
         }
         animationView.snp.makeConstraints{
             $0.center.equalTo(checkButton)

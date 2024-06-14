@@ -112,7 +112,7 @@ class SearchViewController: BaseViewController {
     func searchBarConfigure() {
         searchBar = UISearchBar()
         searchBar.delegate = self
-        searchBar.placeholder = "어느 지역의 날씨가 궁금해요?"
+        searchBar.placeholder = "도전, 할 일, 계획 검색"
         searchBar.setValue("취소", forKey: "cancelButtonText")
         searchBar.showsCancelButton = false
         searchBar.tintColor = UIColor.label

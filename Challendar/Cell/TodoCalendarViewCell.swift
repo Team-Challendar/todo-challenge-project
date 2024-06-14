@@ -58,7 +58,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
     
     private func setupViews() {
         contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
+        contentView.layer.masksToBounds = false
+//        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -179,6 +180,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(container.snp.top).offset(16.5)
             $0.leading.equalTo(container.snp.leading).offset(24)
+            $0.trailing.equalTo(checkButton.snp.leading).offset(5)
         }
         stateLabel.snp.makeConstraints {
             $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
@@ -191,6 +193,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         checkButton.snp.makeConstraints {
             $0.centerY.equalTo(titleLabel.snp.centerY)
             $0.trailing.equalTo(container.snp.trailing).offset(-24)
+            $0.size.equalTo(24)
         }
         animationView.snp.makeConstraints{
             $0.center.equalTo(checkButton)
