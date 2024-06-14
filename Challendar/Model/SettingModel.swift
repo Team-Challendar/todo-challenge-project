@@ -22,7 +22,7 @@ extension SettingModel {
     static var information =
     [
         SettingModel(menuTitle: "공지사항", toggle: nil, text: nil, nextVC: NoticeViewController()),
-        SettingModel(menuTitle: "앱 버전", toggle: nil, text: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String),
+        SettingModel(menuTitle: "앱 버전", toggle: nil, text: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String),
         SettingModel(menuTitle: "오픈소스 라이선스", toggle: nil, text: nil, nextVC: EmptyViewController())
     ]
     

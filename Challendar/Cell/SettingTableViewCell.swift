@@ -70,10 +70,10 @@ class SettingTableViewCell: UITableViewCell {
             $0.centerY.equalToSuperview()
             $0.height.equalTo(24)
         }
-        if let toggle = setting.toggle {
+        if let _ = setting.toggle {
             self.toggle.isHidden = false
             self.toggle.isEnabled = true
-        }else if let subText = setting.text {
+        }else if let _ = setting.text {
             self.subText.isHidden = false
             self.subText.isUserInteractionEnabled = true
         }else{

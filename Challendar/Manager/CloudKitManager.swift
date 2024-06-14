@@ -41,9 +41,9 @@ class CloudKitManager {
         
         operation.queryResultBlock = { result in
             switch result {
-            case .success(let cursor):
+            case .success(let _):
                 completion(notices)
-            case .failure(let error):
+            case .failure(let _):
                 print("FETCH ERROR")
             }
         }
