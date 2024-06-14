@@ -211,6 +211,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         let date = calendar.currentPage
         updateLabel(date)
         NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
+        selectedDate = date
         calendar.reloadData()
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {

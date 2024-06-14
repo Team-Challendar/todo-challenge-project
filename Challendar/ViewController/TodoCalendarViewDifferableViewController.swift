@@ -328,8 +328,10 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
                     self.topContainer.snp.updateConstraints {
                         $0.height.equalTo(maxCalendarHeight)
                     }
+                    
                     self.view.layoutIfNeeded()
                 }
+                self.calendarView.calendar.reloadData()
                 
             } else if translation.y < 0 {
                 // 위로 스크롤
@@ -340,6 +342,7 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
                     self.view.layoutIfNeeded()
                 }
                 self.calendarView.calendar.setScope(.week, animated: true)
+                self.calendarView.calendar.reloadData()
             }
         }
     }
