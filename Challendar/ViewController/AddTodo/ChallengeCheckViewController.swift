@@ -16,6 +16,10 @@ class ChallengeCheckViewController: BaseViewController {
     var challengePopUp = ChallengePopUpView()
     var dispose = DisposeBag()
     
+    // EditTodoVC에서 사용될 콜백 추가했습니다.
+    var laterButtonTapped: (() -> Void)?
+    var challengeButtonTapped: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .clear
@@ -30,12 +34,14 @@ class ChallengeCheckViewController: BaseViewController {
         challengePopUp.laterButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.newTodo?.isChallenge = false
+                self?.laterButtonTapped?()
                 self?.showSuccessVC()
             }).disposed(by: self.dispose)
         
         challengePopUp.challengeButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.newTodo?.isChallenge = true
+                self?.challengeButtonTapped?()
                 self?.showSuccessVC()
             }).disposed(by: self.dispose)
     }
