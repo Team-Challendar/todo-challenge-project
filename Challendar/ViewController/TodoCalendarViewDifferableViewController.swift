@@ -365,6 +365,10 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         titleTouched()
         self.calendarView.isHidden = true
         self.dailyView.isHidden = false
+        if let date = self.currentDate?.dayFromDate() {
+            self.dailyView.layout.scrollToPage(atIndex: date - 1, animated: false)
+        }
+       
         UIView.animate(withDuration: 0.5) {
             self.topContainer.snp.updateConstraints {
                 $0.height.equalTo(300)
@@ -377,7 +381,10 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         currentState = .calendar
         configureNav(title: "달력")
         titleTouched()
+        self.calendarView.selectedDate = self.currentDate
+        self.calendarView.calendar.reloadData()
         self.calendarView.isHidden = false
+        
         self.dailyView.isHidden = true
         UIView.animate(withDuration: 0.5) {
             self.topContainer.snp.updateConstraints {

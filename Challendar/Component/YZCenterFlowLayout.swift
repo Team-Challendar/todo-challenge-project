@@ -104,28 +104,35 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
     }
     func scrollToPage(atIndex index: Int, animated: Bool = true) {
         guard let collectionView = self.collectionView else { return }
-        
+
         let proposedContentOffset: CGPoint
         let shouldAnimate: Bool
-        
+
         switch scrollDirection {
         case .horizontal:
-            let pageOffset = CGFloat(index) * self.pageWidth - collectionView.contentInset.left
-            proposedContentOffset = CGPoint(x: pageOffset, y: collectionView.contentOffset.y)
-            shouldAnimate = abs(collectionView.contentOffset.x - pageOffset) > 1 ? animated : false
-            collectionView.setContentOffset(proposedContentOffset, animated: shouldAnimate)
-            break
+            // Calculate the correct offset to center the item, considering sectionInsets
+            let collectionViewCenter = (collectionView.bounds.size.width - collectionView.contentInset.left - collectionView.contentInset.right) / 2
+            let itemCenter = CGFloat(index) * self.pageWidth + self.itemSize.width / 2 + self.sectionInset.left
+            let offset = itemCenter - collectionViewCenter
+            proposedContentOffset = CGPoint(x: offset - collectionView.contentInset.left, y: collectionView.contentOffset.y)
+            shouldAnimate = abs(collectionView.contentOffset.x - offset) > 1 ? animated : false
         case .vertical:
-            let pageOffset = CGFloat(index) * self.pageWidth - collectionView.contentInset.top
-            proposedContentOffset = CGPoint(x: collectionView.contentOffset.x, y: pageOffset)
-            shouldAnimate = abs(collectionView.contentOffset.y - pageOffset) > 1 ? animated : false
-            collectionView.setContentOffset(proposedContentOffset, animated: shouldAnimate)
-            break
+            // Calculate the correct offset to center the item, considering sectionInsets
+            let collectionViewCenter = (collectionView.bounds.size.height - collectionView.contentInset.top - collectionView.contentInset.bottom) / 2
+            let itemCenter = CGFloat(index) * self.pageWidth + self.itemSize.height / 2 + self.sectionInset.top
+            let offset = itemCenter - collectionViewCenter
+            proposedContentOffset = CGPoint(x: collectionView.contentOffset.x, y: offset - collectionView.contentInset.top)
+            shouldAnimate = abs(collectionView.contentOffset.y - offset) > 1 ? animated : false
         default:
             print("Default Case...")
-            break
+            return
         }
+
+        collectionView.setContentOffset(proposedContentOffset, animated: shouldAnimate)
     }
+
+
+
 }
 
 // MARK: - Private Methods

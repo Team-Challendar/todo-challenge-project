@@ -62,6 +62,7 @@ class BottomSheetViewController: UIViewController {
                 if let rootViewVC2 = self?.rootViewVC2 {
                     self?.hideLayout()
                 } else {
+                    self?.newTodo?.endDate = nil
                     CoreDataManager.shared.createTodo(newTodo: (self?.newTodo)!)
                     let rootView = self?.presentingViewController
                     let root = rootView?.presentingViewController
