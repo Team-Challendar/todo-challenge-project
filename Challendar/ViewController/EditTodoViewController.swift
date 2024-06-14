@@ -121,6 +121,10 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // endDate가 nil이 아닌 경우 iscompleted를 false로 설정
         if self.newTodo?.endDate != nil {
             self.newTodo?.iscompleted = false
+        } else {
+            // endDate가 nil인 경우 초기화
+            self.newTodo?.completed = []
+            self.newTodo?.iscompleted = false
         }
         
         // completed 확인용 디버깅 로그
@@ -130,7 +134,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }
     }
-    
+
     private func getAttributedDateText(startDate: Date?, endDate: Date?, isHighlighted: Bool) -> NSAttributedString {
         guard let startDate = startDate, let endDate = endDate else { return NSAttributedString(string: "") }
         
@@ -159,7 +163,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     }
     
     private func updateDateViewTextForLater() {
-        self.dateView.textLabel.text = "다음에 정할래요"
+        self.dateView.textLabel.text = "나중에 정할래요"
     }
     
     private func configureGestureRecognizers() {
@@ -185,7 +189,6 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         view.endEditing(true)
         dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
         dateAskView.layer.borderWidth = 1.0
-        dateView.textLabel.attributedText = getAttributedDateText(startDate: newTodo?.startDate, endDate: newTodo?.endDate, isHighlighted: true)
         UIView.animate(withDuration: 0.2, animations: {
             [self.titleLabel, self.titleView].forEach { view in
                 view.alpha = 0.3
@@ -287,6 +290,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.navigationItem.rightBarButtonItem = editBarButtonItem
     }
     
+    // editButtonTapped 메서드에서 endDate가 nil이 아닌 경우에 대한 로직 추가
     @objc func editButtonTapped() {
         guard let todoId = todoId else { return }
         guard let title = todoTextField.text, !title.isEmpty else {
@@ -318,7 +322,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
                 // 기존 completed 배열에서 해당 날짜의 값을 가져옴
                 if let oldEnd = oldEndDate, currentDate >= oldStart && currentDate <= oldEnd {
                     let dayIndex = calendar.dateComponents([.day], from: oldStart, to: currentDate).day!
-                    if dayIndex < todoModel.completed.count {
+                    if dayIndex >= 0 && dayIndex < todoModel.completed.count {
                         updatedCompleted.append(todoModel.completed[dayIndex])
                     } else {
                         updatedCompleted.append(false)
@@ -359,10 +363,12 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             
             // ChallengeCheckViewController에서 선택된 값에 따라 기존 투두 업데이트
             challengeCheckVC.laterButtonTapped = { [weak self] in
-                self?.updateTodoIsChallenge(isChallenge: false, todoModel: todoModel, title: title, startDate: newStartDate, endDate: newEndDate, completed: updatedCompleted)
+                guard let self = self else { return }
+                self.updateTodoIsChallenge(isChallenge: false, todoModel: todoModel, title: title, startDate: newStartDate, endDate: newEndDate, completed: updatedCompleted)
             }
             challengeCheckVC.challengeButtonTapped = { [weak self] in
-                self?.updateTodoIsChallenge(isChallenge: true, todoModel: todoModel, title: title, startDate: newStartDate, endDate: newEndDate, completed: updatedCompleted)
+                guard let self = self else { return }
+                self.updateTodoIsChallenge(isChallenge: true, todoModel: todoModel, title: title, startDate: newStartDate, endDate: newEndDate, completed: updatedCompleted)
             }
             
             self.present(challengeCheckVC, animated: true, completion: nil)
