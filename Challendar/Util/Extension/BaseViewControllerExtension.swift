@@ -9,8 +9,12 @@ extension BaseViewController{
         view.addSubview(floatingButton)
         floatingButton.translatesAutoresizingMaskIntoConstraints = false
         floatingButton.snp.makeConstraints{
-            $0.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-            $0.height.width.equalTo(60)
+            $0.width.equalTo(128)
+            $0.height.equalTo(52)
+            $0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
+            //            $0.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            // $0.height.width.equalTo(60)
         }
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
     }
@@ -55,7 +59,7 @@ extension BaseViewController{
             $0.leading.equalTo(flagImageView.snp.trailing).offset(5)
             $0.centerY.equalToSuperview()
         }
-
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         let titleBarButtonItem = UIBarButtonItem(customView: view)
         self.navigationItem.leftBarButtonItem = titleBarButtonItem

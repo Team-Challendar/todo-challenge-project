@@ -58,8 +58,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
     
     private func setupViews() {
         contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = false
-//        contentView.clipsToBounds = true
+        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -71,8 +70,6 @@ class TodoCalendarViewCell: UICollectionViewCell {
         container = UIView()
         container.backgroundColor = .secondary850
         container.layer.cornerRadius = 20
-        container.clipsToBounds = true
-        container.layer.masksToBounds = false
         
         deleteContainer = UIView()
         deleteContainer.backgroundColor = .alertRed
@@ -94,18 +91,17 @@ class TodoCalendarViewCell: UICollectionViewCell {
         enrollChallengeContainer.backgroundColor = .challendarGreen200
         enrollChallengeContainer.layer.cornerRadius = 20
         enrollChallengeContainer.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
+        
         enrollChallengeButton = UIButton()
         enrollChallengeButton.titleLabel?.font = .pretendardMedium(size: 20)
         enrollChallengeButton.setTitle("챌린지 등록하기", for: .normal)
         enrollChallengeButton.setTitleColor(.secondary900, for: .normal)
-        
         enrollChallengeButton.setImage(UIImage(named: "challengeOff")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
         enrollChallengeButton.configuration?.imagePadding = 4   // iOS 15.0 이상
         enrollChallengeButton.backgroundColor = .clear
         enrollChallengeButton.layer.cornerRadius = 20
         enrollChallengeButton.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
-        
+
         [enrollChallengeContainer, enrollChallengeButton, deleteContainer, deleteButtonImage, editContainer, editButtonImage, container].forEach {
             self.contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -215,7 +211,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     @objc func didSwipeCellLeft() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeRight == true {
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
@@ -230,10 +226,10 @@ class TodoCalendarViewCell: UICollectionViewCell {
                 self.swipeLeft = true
             }
             self.layoutIfNeeded()
-        }
+        })
     }
     @objc func didSwipeCellRight() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeLeft ==  true {
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
@@ -248,7 +244,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
                 self.swipeRight = true
             }
             self.layoutIfNeeded()
-        }
+        })
     }
     
     private func enrollTapGestureRecognizer() {
@@ -300,7 +296,6 @@ class TodoCalendarViewCell: UICollectionViewCell {
         }
         self.swipeLeft = false
     }
-
     
     @objc private func checkButtonTapped() {
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
