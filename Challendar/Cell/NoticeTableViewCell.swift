@@ -36,7 +36,7 @@ class NoticeTableViewCell: UITableViewCell {
         dateLabel.font = .pretendardMedium(size: 12)
         dateLabel.textColor = .secondary500
         
-        bottomContainer.load(markdown: notice.content)
+        
         bottomContainer.backgroundColor = .secondary850
         
         [topContainer, bottomContainer].forEach{
@@ -68,12 +68,13 @@ class NoticeTableViewCell: UITableViewCell {
             $0.height.equalTo(300)
         }
         
+      
         if notice.isopen {
             bottomContainer.isHidden = false
         }else{
             bottomContainer.isHidden = true
         }
-        
+        bottomContainer.load(markdown: notice.content)
     }
     
     private func formatDate(_ date: Date?) -> String {

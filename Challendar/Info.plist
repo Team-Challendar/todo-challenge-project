@@ -22,8 +22,6 @@
 		<string>Pretendard-Thin.ttf</string>
 		<string>PretendardVariable.ttf</string>
 	</array>
-	<key>UIUserInterfaceStyle</key>
-	<string>Dark</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

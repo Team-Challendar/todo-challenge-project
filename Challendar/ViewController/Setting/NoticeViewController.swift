@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import WebKit
 
 class NoticeViewController: BaseViewController {
     var noticesList : [NoticeModel] = []

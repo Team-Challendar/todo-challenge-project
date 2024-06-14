@@ -301,22 +301,31 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     @objc private func checkButtonTapped() {
-        contentView.clipsToBounds = false
-        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-            self.didSwipeCellLeft()
-            self.didSwipeCellRight()
-            self.playBounceAnimation(self.checkButton)
-            self.animationView.play()
-        })
-        checkButton.isSelected.toggle()
-        updateTitleLabel()
         guard let item = todoItem else { return }
-        item.toggleDatesCompletedState(date: self.currentDate!)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
-            self.animationView.stop()
-            self.contentView.clipsToBounds = true
+        if item.todayCompleted(date: self.currentDate!)! {
+            checkButton.isSelected.toggle()
+            updateTitleLabel()
+            item.toggleDatesCompletedState(date: self.currentDate!)
             self.updateTodoCompletion(for: item)
-        })
+        }else{
+            contentView.clipsToBounds = false
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                self.didSwipeCellLeft()
+                self.didSwipeCellRight()
+                self.playBounceAnimation(self.checkButton)
+                self.animationView.play()
+            })
+            checkButton.isSelected.toggle()
+            updateTitleLabel()
+            
+            item.toggleDatesCompletedState(date: self.currentDate!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+                self.animationView.stop()
+                self.contentView.clipsToBounds = true
+                self.updateTodoCompletion(for: item)
+            })
+        }
+        
     }
     
     func configure(with item: Todo, date: Date) {

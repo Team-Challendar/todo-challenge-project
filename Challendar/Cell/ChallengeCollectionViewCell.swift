@@ -321,26 +321,32 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func checkButtonTapped() {
-        contentView.clipsToBounds = false
-        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-            self.didSwipeCellLeft()
-            self.didSwipeCellRight()
-            self.playBounceAnimation(self.checkButton)
-            self.animationView.play()
-        })
-        checkButton.isSelected.toggle()
-        updateTitleLabel()
-        
         guard let item = todoItem else { return }
-        item.toggleTodaysCompletedState()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
-            self.animationView.stop()
-            self.contentView.clipsToBounds = true
+        if item.todayCompleted()! {
+            item.toggleTodaysCompletedState()
+            checkButton.isSelected.toggle()
+            updateTitleLabel()
             self.updatePercentage(for: item)
             self.updateTodoCompletion(for: item)
-        })
-        
-        
+        }else{
+            contentView.clipsToBounds = false
+            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                self.didSwipeCellLeft()
+                self.didSwipeCellRight()
+                self.playBounceAnimation(self.checkButton)
+                self.animationView.play()
+            })
+            checkButton.isSelected.toggle()
+            updateTitleLabel()
+
+            item.toggleTodaysCompletedState()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+                self.animationView.stop()
+                self.contentView.clipsToBounds = true
+                self.updatePercentage(for: item)
+                self.updateTodoCompletion(for: item)
+            })
+        }
     }
     
     func configure(with item: Todo) {
@@ -361,7 +367,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         let completedCount = item.completed.filter { $0 }.count
         item.percentage = Double(completedCount) / Double(item.completed.count)
         
-        print("Todo \(item.title) completed status updated: \(item.percentage)")
+//        print("Todo \(item.title) completed status updated: \(item.percentage)")
     }
     
     private func updateTitleLabel() {
