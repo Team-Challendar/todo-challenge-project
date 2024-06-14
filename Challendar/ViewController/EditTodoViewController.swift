@@ -35,12 +35,13 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         todoTextField.delegate = self
         configureGestureRecognizers()
         setupNotificationCenter()
-        
-        // 제스처 인식기 추가
+        setupTapGestures()
+    }
+    
+    private func setupTapGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
-        // 추가된 제스처 인식기
         let outsideTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissTextField))
         outsideTapGesture.cancelsTouchesInView = false // dateAskView를 눌러도 텍스트 편집이 가능하게 설정
         view.addGestureRecognizer(outsideTapGesture)
@@ -57,7 +58,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             view.endEditing(true)
         }
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // 수정 버튼을 누르지 않고 화면이 사라질 때, 원래 상태로 돌아갑니다.
@@ -123,13 +124,13 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         }
         
         // completed 확인용 디버깅 로그
-        print("Fetched Todo - Title: \(todoModel.title), Completed: \(todoModel.completed), \(todoModel.isChallenge)")
+        print("Fetched Todo - Title: \(todoModel.title), Completed: \(todoModel.completed), \(todoModel.isChallenge), \(todoModel.id)")
         
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }
     }
-
+    
     private func getAttributedDateText(startDate: Date?, endDate: Date?, isHighlighted: Bool) -> NSAttributedString {
         guard let startDate = startDate, let endDate = endDate else { return NSAttributedString(string: "") }
         
@@ -156,7 +157,11 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     private func updateDateViewTextForModel(startDate: Date, endDate: Date, isHighlighted: Bool = false) {
         self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: startDate, endDate: endDate, isHighlighted: isHighlighted)
     }
-
+    
+    private func updateDateViewTextForLater() {
+        self.dateView.textLabel.text = "다음에 정할래요"
+    }
+    
     private func configureGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dateViewTapped))
         dateAskView.addGestureRecognizer(tapGesture)
@@ -178,10 +183,8 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     @objc private func dateViewTapped() {
         // 타이핑 상태 해제
         view.endEditing(true)
-        
-        // dateView의 보더 제거
-        dateAskView.layer.borderColor = UIColor.clear.cgColor
-        dateAskView.layer.borderWidth = 0.0
+        dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
+        dateAskView.layer.borderWidth = 1.0
         dateView.textLabel.attributedText = getAttributedDateText(startDate: newTodo?.startDate, endDate: newTodo?.endDate, isHighlighted: true)
         [self.titleLabel, self.titleView].forEach { view in
             view.alpha = 0.3
@@ -196,18 +199,42 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         bottomSheetVC.modalPresentationStyle = .custom
         bottomSheetVC.transitioningDelegate = self
         
+        bottomSheetVC.bottomSheetLaterButtonTapped = { [weak self] in
+            guard let self = self else { return }
+            // 기존 투두 가져오기
+            guard let todoId = self.todoId, let todoModel = CoreDataManager.shared.fetchTodoById(id: todoId) else {
+                return
+            }
+            todoModel.endDate = nil
+            CoreDataManager.shared.updateTodoById(
+                id: todoModel.id!,
+                newTitle: todoModel.title,
+                newStartDate: todoModel.startDate,
+                newEndDate: nil,
+                newCompleted: [],
+                newIsChallenge: todoModel.isChallenge,
+                newIsCompleted: false
+            )
+            
+            self.newTodo?.endDate = nil
+            self.newTodo?.isChallenge = false
+            self.newTodo?.completed = []
+            self.newTodo?.iscompleted = false
+            self.updateDateViewTextForLater()
+            print("BottomSheet Later Button Tapped - endDate set to nil, isChallenge set to false")
+        }
+        
         bottomSheetVC.dismissCompletion = { [weak self] in
             guard let self = self else { return }
             self.dateAskView.layer.borderColor = UIColor.clear.cgColor
             self.dateAskView.layer.borderWidth = 0.0
-            self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: self.newTodo?.startDate, endDate: self.newTodo?.endDate, isHighlighted: false)
+            if let startDate = self.newTodo?.startDate, let endDate = self.newTodo?.endDate, endDate != nil {
+                self.updateDateViewTextForModel(startDate: startDate, endDate: endDate, isHighlighted: false)
+            } else {
+                self.updateDateViewTextForLater()
+            }
             [self.titleLabel, self.titleView].forEach { view in
                 view.alpha = 1.0
-            }
-            
-            // 바텀시트가 닫힐 때 새로 저장된 뉴 투두로 값 표시
-            if let startDate = self.newTodo?.startDate, let endDate = self.newTodo?.endDate {
-                self.updateDateViewTextForModel(startDate: startDate, endDate: endDate, isHighlighted: false)
             }
         }
         
@@ -300,8 +327,12 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             }
         }
         
-        // endDate가 nil이 아닌 경우 iscompleted를 false로 설정
-        if newEndDate != nil {
+        // 새로운 endDate가 nil인 경우 completed 배열 초기화 및 iscompleted false로 설정
+        if newEndDate == nil {
+            newTodo?.completed = []
+            newTodo?.iscompleted = false
+        } else {
+            newTodo?.completed = updatedCompleted
             newTodo?.iscompleted = false
         }
         
@@ -338,7 +369,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
                 newTitle: title,
                 newStartDate: newStartDate,
                 newEndDate: newEndDate,
-                newCompleted: updatedCompleted,
+                newCompleted: updatedCompleted, newIsChallenge: newTodo?.isChallenge ?? false,
                 newIsCompleted: newEndDate == nil ? todoModel.isCompleted : false // endDate가 nil이 아닌 경우 false로 설정
             )
             
@@ -350,12 +381,12 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             newTodo?.iscompleted = newEndDate == nil ? todoModel.isCompleted : false
             
             // 디버깅 로그 추가
-            print("Updated Todo - Title: \(title), Completed: \(updatedCompleted)")
+            print("Updated Todo - Title: \(title), Completed: \(updatedCompleted), \(newEndDate)")
             
             self.dismiss(animated: true, completion: nil)
         }
     }
-
+    
     private func updateTodoIsChallenge(isChallenge: Bool, todoModel: TodoModel, title: String, startDate: Date?, endDate: Date?, completed: [Bool]) {
         todoModel.isChallenge = isChallenge
         todoModel.title = title
@@ -372,6 +403,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         )
         self.dismiss(animated: true, completion: nil)
     }
+    
     @objc func textFieldDidChange(_ textField: UITextField) {
         editButton.setTitleColor(.challendarGreen200, for: .normal)
     }
