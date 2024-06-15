@@ -31,8 +31,8 @@ class SuccessViewController: BaseViewController {
             imageView.image = .partyPopper
             textLabel.text = "도전 목록에 추가했어요!"
         }else{
-            imageView.image = .thumbUp
-            textLabel.text = "할 일을 등록했어요!"
+            imageView.image = .calendarIcon
+            textLabel.text = "계획 목록에 추가했어요!"
         }
         textLabel.font = .pretendardSemiBold(size: 20)
         textLabel.textColor = .challendarWhite
