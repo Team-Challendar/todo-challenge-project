@@ -68,7 +68,7 @@ class BottomSheetViewController: UIViewController {
                     let root = rootView?.presentingViewController
                     let successViewController = SuccessViewController()
                     successViewController.isChallenge = false
-                    successViewController.endDate = self?.newTodo?.endDate // endDate 변수를 설정합니다.
+                    successViewController.endDate = self?.newTodo?.endDate
                     let navigationController = UINavigationController(rootViewController: successViewController)
                     navigationController.modalTransitionStyle = .coverVertical
                     navigationController.modalPresentationStyle = .overFullScreen
