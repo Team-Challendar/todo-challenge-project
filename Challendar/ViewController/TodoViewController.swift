@@ -58,7 +58,7 @@ class TodoViewController: BaseViewController {
         view.addSubview(pickerBtnView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(10)
-            make.left.right.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         

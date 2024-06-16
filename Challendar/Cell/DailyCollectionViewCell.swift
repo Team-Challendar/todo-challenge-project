@@ -32,7 +32,7 @@ class DailyView: UIView {
     // label의 텍스트를 설정하고 testCollectionView의 데이터를 다시 로드
     func configure(with days: [Day], selectedDate: Date?) {
         configureDateLabel(date: selectedDate)
-        currentDate = selectedDate ?? days[0].date
+        currentDate = selectedDate!
         self.days = days
         collectionView.reloadData()
         

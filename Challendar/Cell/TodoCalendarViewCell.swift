@@ -47,18 +47,22 @@ class TodoCalendarViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         titleLabel.attributedText = nil
-        deleteContainer = nil
-        editContainer = nil
-        enrollChallengeContainer = nil
-        deleteButtonImage = nil
-        editButtonImage = nil
-        enrollChallengeButton = UIButton()
+        swipeLeft = false
+        swipeRight = false
+        self.container.snp.updateConstraints {
+            $0.leading.equalToSuperview().offset(0)
+            $0.trailing.equalToSuperview().offset(0)
+        }
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage, enrollChallengeContainer, enrollChallengeButton].forEach{
+            $0?.isHidden = true
+        }
     }
     
     private func setupViews() {
         contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
+//        contentView.clipsToBounds = true
         contentView.layer.masksToBounds = false
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
@@ -68,6 +72,10 @@ class TodoCalendarViewCell: UICollectionViewCell {
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
         contentView.layer.shadowRadius = 4
         
+        contentView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(75)
+        }
         container = UIView()
         container.backgroundColor = .secondary850
         container.layer.cornerRadius = 20
@@ -137,54 +145,56 @@ class TodoCalendarViewCell: UICollectionViewCell {
         animationView = LottieAnimationView(animation: animation)
         container.addSubview(animationView)
         container.bringSubviewToFront(checkButton)
-        
+        rightContainerHiddenToggle()
+        leftContainerHiddenToggle()
         container.snp.makeConstraints {
-            $0.leading.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview()
-        }
-        
-        deleteContainer.snp.makeConstraints {
-            $0.leading.equalTo(editContainer.snp.trailing).offset(-74)
-            $0.trailing.equalToSuperview()
+            $0.leading.equalToSuperview()
             $0.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(0)
+            $0.height.equalTo(75)
         }
-        deleteButtonImage.snp.makeConstraints {
-            $0.leading.equalTo(deleteContainer.snp.leading).offset(25)
-            $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
-            $0.top.equalTo(deleteContainer.snp.top).offset(25.5)
-            $0.bottom.equalTo(deleteContainer.snp.bottom).offset(-25.5)
-        }
-        
         editContainer.snp.makeConstraints {
             $0.leading.equalTo(container.snp.trailing).offset(-20)
             $0.trailing.equalTo(deleteContainer.snp.leading).offset(0)
             $0.top.bottom.equalToSuperview()
         }
-        editButtonImage.snp.makeConstraints {
-            $0.leading.equalTo(editContainer.snp.leading).offset(45)
-            $0.trailing.equalTo(editContainer.snp.trailing).offset(-25)
-            $0.top.equalTo(editContainer.snp.top).offset(25.5)
-            $0.bottom.equalTo(editContainer.snp.bottom).offset(-25.5)
+        
+        deleteContainer.snp.makeConstraints {
+            $0.leading.equalTo(editContainer.snp.trailing)
+            $0.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.width.lessThanOrEqualTo(75)
+        }
+        deleteButtonImage.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
+            $0.centerY.equalTo(deleteContainer)
         }
         
+        editButtonImage.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.trailing.equalTo(editContainer.snp.trailing).offset(-25)
+            $0.centerY.equalTo(editContainer)
+        }
         enrollChallengeContainer.snp.makeConstraints {
-            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.leading.equalToSuperview()
+            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.top.bottom.equalToSuperview()
         }
         enrollChallengeButton.snp.makeConstraints {
-            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.leading.equalToSuperview()
+            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.top.bottom.equalToSuperview()
         }
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(container.snp.top).offset(16.5)
+            $0.top.equalTo(container.snp.top).offset(18)
             $0.leading.equalTo(container.snp.leading).offset(24)
             $0.trailing.equalTo(checkButton.snp.leading).offset(5)
         }
+        
         stateLabel.snp.makeConstraints {
-            $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
             $0.leading.equalTo(container.snp.leading).offset(24)
+            $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
         }
         dateLabel.snp.makeConstraints {
             $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
@@ -213,6 +223,16 @@ class TodoCalendarViewCell: UICollectionViewCell {
         editTapGestureRecognizer()
     }
     
+    func rightContainerHiddenToggle(){
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage].forEach{
+            $0?.isHidden.toggle()
+        }
+    }
+    func leftContainerHiddenToggle(){
+        [enrollChallengeContainer, enrollChallengeButton].forEach{
+            $0?.isHidden.toggle()
+        }
+    }
     @objc func didSwipeCellLeft() {
         UIView.animate(withDuration: 0.3, animations: {
             if self.swipeRight == true {
@@ -220,8 +240,8 @@ class TodoCalendarViewCell: UICollectionViewCell {
                     $0.leading.equalToSuperview().offset(0)
                     $0.trailing.equalToSuperview().offset(0)
                 }
-                self.swipeRight = false
             } else if self.swipeRight == false {
+                self.rightContainerHiddenToggle()
                 self.container.snp.updateConstraints {
                     $0.trailing.equalToSuperview().offset(-148)
                     $0.leading.equalToSuperview().offset(-148)
@@ -229,6 +249,11 @@ class TodoCalendarViewCell: UICollectionViewCell {
                 self.swipeLeft = true
             }
             self.layoutIfNeeded()
+        }, completion: { _ in
+            if self.swipeRight == true {
+                self.swipeRight = false
+                self.leftContainerHiddenToggle()
+            }
         })
     }
     @objc func didSwipeCellRight() {
@@ -238,8 +263,9 @@ class TodoCalendarViewCell: UICollectionViewCell {
                     $0.leading.equalToSuperview().offset(0)
                     $0.trailing.equalToSuperview().offset(0)
                 }
-                self.swipeLeft = false
+                
             } else if self.swipeLeft == false {
+                self.leftContainerHiddenToggle()
                 self.container.snp.updateConstraints {
                     $0.trailing.equalToSuperview().offset(185)
                     $0.leading.equalToSuperview().offset(185)
@@ -247,6 +273,11 @@ class TodoCalendarViewCell: UICollectionViewCell {
                 self.swipeRight = true
             }
             self.layoutIfNeeded()
+        },completion: { _ in
+            if self.swipeLeft == true {
+                self.rightContainerHiddenToggle()
+                self.swipeLeft = false
+            }
         })
     }
     
@@ -261,6 +292,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.leftContainerHiddenToggle()
         self.swipeLeft = false
     }
     private func enrollChallenge(for item: Todo) {
@@ -279,6 +311,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.rightContainerHiddenToggle()
         self.swipeLeft = false
     }
     private func deleteTodo(for item: Todo) {
@@ -297,35 +330,41 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.rightContainerHiddenToggle()
         self.swipeLeft = false
     }
     
     @objc private func checkButtonTapped() {
-        guard let item = todoItem else { return }
-        if item.todayCompleted(date: self.currentDate!)! {
-            checkButton.isSelected.toggle()
-            updateTitleLabel()
-            item.toggleDatesCompletedState(date: self.currentDate!)
-            self.updateTodoCompletion(for: item)
+        if self.swipeLeft {
+            self.didSwipeCellRight()
+        }else if self.swipeRight{
+            self.didSwipeCellLeft()
         }else{
-            contentView.clipsToBounds = false
-            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                self.didSwipeCellLeft()
-                self.didSwipeCellRight()
-                self.playBounceAnimation(self.checkButton)
-                self.animationView.play()
-            })
-            checkButton.isSelected.toggle()
-            updateTitleLabel()
-            
-            item.toggleDatesCompletedState(date: self.currentDate!)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
-                self.animationView.stop()
-                self.contentView.clipsToBounds = true
+            guard let item = todoItem else { return }
+            if item.todayCompleted(date: self.currentDate!)! {
+                checkButton.isSelected.toggle()
+                updateTitleLabel()
+                item.toggleDatesCompletedState(date: self.currentDate!)
                 self.updateTodoCompletion(for: item)
-            })
+            }else{
+                contentView.clipsToBounds = false
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.didSwipeCellLeft()
+                    self.didSwipeCellRight()
+                    self.playBounceAnimation(self.checkButton)
+                    self.animationView.play()
+                })
+                checkButton.isSelected.toggle()
+                updateTitleLabel()
+                
+                item.toggleDatesCompletedState(date: self.currentDate!)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+                    self.animationView.stop()
+                    self.contentView.clipsToBounds = true
+                    self.updateTodoCompletion(for: item)
+                })
+            }
         }
-        
     }
     
     func configure(with item: Todo, date: Date) {

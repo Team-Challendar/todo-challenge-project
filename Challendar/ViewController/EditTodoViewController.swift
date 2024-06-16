@@ -127,9 +127,6 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             self.newTodo?.iscompleted = false
         }
         
-        // completed 확인용 디버깅 로그
-        print("Fetched Todo - Title: \(todoModel.title), Completed: \(todoModel.completed), \(todoModel.isChallenge), \(todoModel.id)")
-        
         if let startDate = todoModel.startDate, let endDate = todoModel.endDate {
             self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         }

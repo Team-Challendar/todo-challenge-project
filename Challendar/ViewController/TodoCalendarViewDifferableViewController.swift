@@ -83,8 +83,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         }
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(topContainer.snp.bottom).offset(13)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.leading.trailing.equalToSuperview().offset(0)
             make.bottom.equalToSuperview()
         }
         dimmedView.addSubview(periodBtnView)
@@ -162,8 +161,11 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         days = Day.generateDaysForMonth(date: date, todos: self.todoItems)
         day = days?.first(where: {$0.date.isSameDay(as: date) })
         calendarView.dayModelForCurrentPage = days
-        calendarView.calendar.reloadData()
-        dailyView.configure(with: days!,selectedDate: currentDate)
+        calendarView.selectedDate = date
+//        calendarView.calendar.reloadData()
+        dailyView.configure(with: days!,selectedDate: date)
+        let targetIndex = date.indexForDate()
+        self.dailyView.layout.scrollToPage(atIndex: targetIndex, animated: false)
     }
     
     // 데이터 소스 설정
@@ -242,7 +244,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         completedTodo = []
         inCompletedTodo = []
         updateDataSource()
-        self.filterTodoitems(date: self.currentDate!)
+        self.filterTodoitems(date: date)
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
     
@@ -328,21 +330,23 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
                     self.topContainer.snp.updateConstraints {
                         $0.height.equalTo(maxCalendarHeight)
                     }
-                    
                     self.view.layoutIfNeeded()
                 }
                 self.calendarView.calendar.reloadData()
                 
             } else if translation.y < 0 {
                 // 위로 스크롤
-                UIView.animate(withDuration: 0.5) {
+                UIView.animate(withDuration: 0.5, animations: {
                     self.topContainer.snp.updateConstraints {
                         $0.height.equalTo(minCalendarHeight)
                     }
+                    self.calendarView.calendar.setScope(.week, animated: true)
                     self.view.layoutIfNeeded()
-                }
-                self.calendarView.calendar.setScope(.week, animated: true)
-                self.calendarView.calendar.reloadData()
+                }, completion: { _ in
+//                    self.calendarView.calendar.reloadData()
+                })
+                
+                
             }
         }
     }
@@ -368,8 +372,12 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         titleTouched()
         self.calendarView.isHidden = true
         self.dailyView.isHidden = false
-        if let date = self.currentDate?.dayFromDate() {
-            self.dailyView.layout.scrollToPage(atIndex: date - 1, animated: false)
+        if let currentDate = self.currentDate {
+            let targetIndex = currentDate.indexForDate()
+            self.dailyView.layout.scrollToPage(atIndex: targetIndex, animated: false)
+        }else{
+            let targetIndex = Date().indexForDate()
+            self.dailyView.layout.scrollToPage(atIndex: targetIndex, animated: false)
         }
        
         UIView.animate(withDuration: 0.5) {
@@ -385,7 +393,8 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         configureNav(title: "달력")
         titleTouched()
         self.calendarView.selectedDate = self.currentDate
-        self.calendarView.calendar.reloadData()
+        self.calendarView.calendar.setCurrentPage(self.currentDate ?? Date(), animated: false)
+        self.calendarView.calendar.select(self.currentDate)
         self.calendarView.isHidden = false
         
         self.dailyView.isHidden = true
@@ -395,6 +404,8 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
             }
             self.view.layoutIfNeeded()
         }
+        self.calendarView.calendar.setScope(.month, animated: false)
+        self.calendarView.calendar.reloadData()
         updateDataSource()
     }
 }

@@ -14,6 +14,7 @@ protocol ChallengeCollectionViewCellDelegate: AnyObject {
 }
 
 class ChallengeCollectionViewCell: UICollectionViewCell {
+    static var identifier = "ChallengeCollectionViewCell"
     let animation = LottieAnimation.named("doneGreen")
     var animationView : LottieAnimationView!
     var checkButton: UIButton!
@@ -46,20 +47,30 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-//        super.prepareForReuse()
+        super.prepareForReuse()
         titleLabel.attributedText = nil
-        deleteContainer = nil
-        editContainer = nil
-        enrollChallengeContainer = nil
-        deleteButtonImage = nil
-        editButtonImage = nil
-        enrollChallengeButton = UIButton()
+        swipeLeft = false
+        swipeRight = false
+        self.container.snp.updateConstraints {
+            $0.leading.equalToSuperview().offset(0)
+            $0.trailing.equalToSuperview().offset(0)
+        }
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage, enrollChallengeContainer, enrollChallengeButton].forEach{
+            $0?.isHidden = true
+        }
+        //        deleteContainer = nil
+        //        editContainer = nil
+        //        enrollChallengeContainer = nil
+        //        deleteButtonImage = nil
+        //        editButtonImage = nil
+        //        enrollChallengeButton = UIButton()
     }
     
     private func setupViews() {
+        self.layer.masksToBounds = false
         contentView.layer.cornerRadius = 20
+//        contentView.clipsToBounds = true
         contentView.layer.masksToBounds = false
-        contentView.clipsToBounds = true
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
@@ -67,7 +78,10 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowOpacity = 0.16
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
         contentView.layer.shadowRadius = 4
-        
+        contentView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(75)
+        }
         container = UIView()
         container.backgroundColor = .secondary850
         container.layer.cornerRadius = 20
@@ -146,43 +160,46 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         container.addSubview(animationView)
         container.bringSubviewToFront(checkButton)
         
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage, enrollChallengeContainer, enrollChallengeButton].forEach{
+            $0?.isHidden = true
+        }
+        
         container.snp.makeConstraints {
-            $0.leading.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview()
-        }
-        
-        deleteContainer.snp.makeConstraints {
-            $0.leading.equalTo(editContainer.snp.trailing).offset(-74)
-            $0.trailing.equalToSuperview()
+            $0.leading.equalToSuperview()
             $0.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(0)
         }
-        deleteButtonImage.snp.makeConstraints {
-            $0.leading.equalTo(deleteContainer.snp.leading).offset(25)
-            $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
-            $0.top.equalTo(deleteContainer.snp.top).offset(25.5)
-            $0.bottom.equalTo(deleteContainer.snp.bottom).offset(-25.5)
-        }
-        
         editContainer.snp.makeConstraints {
             $0.leading.equalTo(container.snp.trailing).offset(-20)
             $0.trailing.equalTo(deleteContainer.snp.leading).offset(0)
             $0.top.bottom.equalToSuperview()
         }
-        editButtonImage.snp.makeConstraints {
-            $0.leading.equalTo(editContainer.snp.leading).offset(45)
-            $0.trailing.equalTo(editContainer.snp.trailing).offset(-25)
-            $0.top.equalTo(editContainer.snp.top).offset(25.5)
-            $0.bottom.equalTo(editContainer.snp.bottom).offset(-25.5)
+        
+        deleteContainer.snp.makeConstraints {
+            $0.leading.equalTo(editContainer.snp.trailing)
+            $0.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.width.lessThanOrEqualTo(75)
+        }
+        deleteButtonImage.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
+            $0.centerY.equalTo(deleteContainer)
         }
         
+        editButtonImage.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.trailing.equalTo(editContainer.snp.trailing).offset(-25)
+            $0.centerY.equalTo(editContainer)
+        }
         enrollChallengeContainer.snp.makeConstraints {
-            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.leading.equalToSuperview()
+            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.top.bottom.equalToSuperview()
         }
         enrollChallengeButton.snp.makeConstraints {
-            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.leading.equalToSuperview()
+            $0.trailing.equalTo(container.snp.leading).offset(25)
             $0.top.bottom.equalToSuperview()
         }
         titleLabel.snp.makeConstraints {
@@ -190,30 +207,30 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             $0.leading.equalTo(container.snp.leading).offset(24)
             $0.trailing.equalTo(checkButton.snp.leading).offset(5)
         }
-
+        
         stateLabel.snp.makeConstraints {
             $0.leading.equalTo(container.snp.leading).offset(24)
             $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
         }
-
+        
         progressBar.snp.makeConstraints {
             $0.centerY.equalTo(stateLabel.snp.centerY)
             $0.leading.equalTo(stateLabel.snp.trailing).offset(4)
             $0.width.equalTo(24)
             $0.height.equalTo(6)
         }
-
+        
         dateLabel.snp.makeConstraints {
             $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
             $0.leading.equalTo(progressBar.snp.trailing).offset(4)
         }
-
+        
         checkButton.snp.makeConstraints {
             $0.centerY.equalTo(titleLabel.snp.centerY)
             $0.trailing.equalTo(container.snp.trailing).offset(-24)
             $0.size.equalTo(24)
         }
-
+        
         animationView.snp.makeConstraints{
             $0.center.equalTo(checkButton)
             $0.size.equalTo(96)
@@ -233,16 +250,26 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         deleteTapGestureRecognizer()
         editTapGestureRecognizer()
     }
+    func rightContainerHiddenToggle(){
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage].forEach{
+            $0?.isHidden.toggle()
+        }
+    }
+    func leftContainerHiddenToggle(){
+        [enrollChallengeContainer, enrollChallengeButton].forEach{
+            $0?.isHidden.toggle()
+        }
+    }
     
     @objc func didSwipeCellLeft() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeRight == true {
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
                     $0.trailing.equalToSuperview().offset(0)
                 }
-                self.swipeRight = false
             } else if self.swipeRight == false {
+                self.rightContainerHiddenToggle()
                 self.container.snp.updateConstraints {
                     $0.trailing.equalToSuperview().offset(-148)
                     $0.leading.equalToSuperview().offset(-148)
@@ -250,17 +277,24 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
                 self.swipeLeft = true
             }
             self.layoutIfNeeded()
-        }
+        }, completion: { _ in
+            if self.swipeRight == true {
+                self.swipeRight = false
+                self.leftContainerHiddenToggle()
+                self.layoutIfNeeded()
+            }
+        })
     }
     @objc func didSwipeCellRight() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeLeft ==  true {
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
                     $0.trailing.equalToSuperview().offset(0)
                 }
-                self.swipeLeft = false
+                
             } else if self.swipeLeft == false {
+                self.leftContainerHiddenToggle()
                 self.container.snp.updateConstraints {
                     $0.trailing.equalToSuperview().offset(185)
                     $0.leading.equalToSuperview().offset(185)
@@ -268,7 +302,13 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
                 self.swipeRight = true
             }
             self.layoutIfNeeded()
-        }
+        },completion: { _ in
+            if self.swipeLeft == true {
+                self.rightContainerHiddenToggle()
+                self.swipeLeft = false
+                self.layoutIfNeeded()
+            }
+        })
     }
     
     private func enrollTapGestureRecognizer() {
@@ -282,6 +322,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.leftContainerHiddenToggle()
         self.swipeLeft = false
     }
     private func enrollChallenge(for item: Todo) {
@@ -300,6 +341,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.rightContainerHiddenToggle()
         self.swipeLeft = false
     }
     private func deleteTodo(for item: Todo) {
@@ -317,36 +359,44 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.rightContainerHiddenToggle()
         self.swipeLeft = false
     }
     
     @objc private func checkButtonTapped() {
-        guard let item = todoItem else { return }
-        if item.todayCompleted()! {
-            item.toggleTodaysCompletedState()
-            checkButton.isSelected.toggle()
-            updateTitleLabel()
-            self.updatePercentage(for: item)
-            self.updateTodoCompletion(for: item)
+        if self.swipeLeft {
+            self.didSwipeCellRight()
+        }else if self.swipeRight{
+            self.didSwipeCellLeft()
         }else{
-            contentView.clipsToBounds = false
-            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                self.didSwipeCellLeft()
-                self.didSwipeCellRight()
-                self.playBounceAnimation(self.checkButton)
-                self.animationView.play()
-            })
-            checkButton.isSelected.toggle()
-            updateTitleLabel()
-
-            item.toggleTodaysCompletedState()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
-                self.animationView.stop()
-                self.contentView.clipsToBounds = true
+            guard let item = todoItem else { return }
+            if item.todayCompleted()! {
+                item.toggleTodaysCompletedState()
+                checkButton.isSelected.toggle()
+                updateTitleLabel()
                 self.updatePercentage(for: item)
                 self.updateTodoCompletion(for: item)
-            })
+            }else{
+                contentView.clipsToBounds = false
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.didSwipeCellLeft()
+                    self.didSwipeCellRight()
+                    self.playBounceAnimation(self.checkButton)
+                    self.animationView.play()
+                })
+                checkButton.isSelected.toggle()
+                updateTitleLabel()
+                
+                item.toggleTodaysCompletedState()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+                    self.animationView.stop()
+                    self.contentView.clipsToBounds = true
+                    self.updatePercentage(for: item)
+                    self.updateTodoCompletion(for: item)
+                })
+            }
         }
+        
     }
     
     func configure(with item: Todo) {
@@ -362,12 +412,12 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         updateTitleLabel()
     }
     
-    // 퍼센티지 계산 로직 추가 
+    // 퍼센티지 계산 로직 추가
     private func updatePercentage(for item: Todo) {
         let completedCount = item.completed.filter { $0 }.count
         item.percentage = Double(completedCount) / Double(item.completed.count)
         
-//        print("Todo \(item.title) completed status updated: \(item.percentage)")
+        //        print("Todo \(item.title) completed status updated: \(item.percentage)")
     }
     
     private func updateTitleLabel() {
@@ -402,8 +452,8 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
             return "종료됨"
         } else if today < startDate {
             let daysUntilStart = calendar.dateComponents([.day], from: today, to: startDate).day ?? 0
-                return "\(daysUntilStart)일 후"
-            } else if today == startDate {
+            return "\(daysUntilStart)일 후"
+        } else if today == startDate {
             return "1일차"
         }
         

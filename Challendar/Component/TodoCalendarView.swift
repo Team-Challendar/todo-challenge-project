@@ -16,7 +16,11 @@ class TodoCalendarView: UIView {
     var prevButton = UIButton()
     var nextButton = UIButton()
     var currentState : currentCalendar?
-    var selectedDate : Date?
+    var selectedDate : Date? {
+        didSet {
+            calendar.reloadData()
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureUI()
@@ -66,7 +70,7 @@ class TodoCalendarView: UIView {
         calendar.appearance.weekdayTextColor = .challendarWhite
         calendar.appearance.titleWeekendColor = .challendarWhite
         calendar.appearance.selectionColor = .clear
-        calendar.appearance.titleSelectionColor  = .none
+        calendar.appearance.titleSelectionColor  = .challendarWhite
         calendar.appearance.todayColor = .clear
         calendar.scrollDirection = .horizontal
         calendar.calendarWeekdayView.weekdayLabels[0].textColor = .secondary500
@@ -201,7 +205,12 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         //        print(DateFormatter.dateFormatterALL.string(from: date))
-        selectedDate = date
+        if !date.isSameMonth(as: calendar.currentPage){
+            calendar.setCurrentPage(date, animated: true)
+            calendar.select(date)
+        }
+        updateLabel(date)
+//        selectedDate = date
         NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
     }
     func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -209,10 +218,12 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
-        updateLabel(date)
-        NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
+        calendar.deselect(selectedDate!)
         selectedDate = date
-        calendar.reloadData()
+        calendar.select(selectedDate!)
+        updateLabel(selectedDate!)
+        NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
+        
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         switch calendar.scope{
@@ -229,7 +240,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     switch day.percentage{
                     case 0:
                         if day.date < Date(){
-                            return .secondary500
+                            return .challendarWhite
                         }else{
                             return .challendarWhite
                         }
@@ -239,31 +250,34 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     }
                 }
                 else{
-                    return .challendarWhite
+                    return .challendarBlack
                 }
             }
         case .week:
             if date.isSameDay(as: selectedDate ?? Date()) {
                 return .challendarWhite
             }
-            if let day = dayModelForCurrentPage?.first(where: {
-                $0.date.isSameDay(as: date)
-            }){
-                switch day.percentage{
-                case 0:
-                    if day.date < Date(){
-                        return .secondary500
-                    }else{
-                        return .challendarWhite
+            if !date.isSameMonth(as: self.selectedDate!){
+                return .secondary800
+            }else{
+                if let day = dayModelForCurrentPage?.first(where: {
+                    $0.date.isSameDay(as: date)
+                }){
+                    switch day.percentage{
+                    case 0:
+                        if day.date < Date(){
+                            return .challendarWhite
+                        }else{
+                            return .challendarWhite
+                        }
+                        
+                    default:
+                        return .challendarBlack
                     }
-                    
-                default:
+                }
+                else{
                     return .challendarBlack
                 }
-                
-            }
-            else{
-                return .challendarWhite
             }
         @unknown default:
             return .challendarWhite
@@ -278,24 +292,47 @@ extension TodoCalendarView : FSCalendarDataSource {
         
         guard let cell = calendar.dequeueReusableCell(withIdentifier: TodoCalendarFSCell.identifier, for: date, at: position) as? TodoCalendarFSCell else { return FSCalendarCell() }
         
-        if let day = dayModelForCurrentPage?.first(where: {
-            $0.date.isSameDay(as: date) && date.isSameMonth(as: calendar.currentPage)
-        }){
-            cell.setViewWithData(day: day)
-            if let selectedDate = selectedDate {
-                if date.isSameDay(as: selectedDate){
-                    cell.selectDate()
-                }
-            }else{
-                if date.isSameDay(as: Date()){
-                    cell.selectDate()
+        switch calendar.scope {
+        case .month:
+            if let day = dayModelForCurrentPage?.first(where: {
+                $0.date.isSameDay(as: date) && $0.date.isSameMonth(as: selectedDate ?? Date())
+            }){
+                cell.setViewWithData(day: day)
+                if let selectedDate = selectedDate {
+                    if date.isSameDay(as: selectedDate){
+                        cell.selectDate()
+                    }
+                }else{
+                    if date.isSameDay(as: Date()){
+                        cell.selectDate()
+                    }
                 }
             }
+            if date.isSameDay(as: Date()){
+                cell.setTodayView()
+            }
+            return cell
+        case .week:
+            if let day = dayModelForCurrentPage?.first(where: {
+                $0.date.isSameDay(as: date)
+            }){
+                cell.setViewWithData(day: day)
+                if let selectedDate = selectedDate {
+                    if date.isSameDay(as: selectedDate){
+                        cell.selectDate()
+                    }
+                }else{
+                    if date.isSameDay(as: Date()){
+                        cell.selectDate()
+                    }
+                }
+            }
+            if date.isSameDay(as: Date()){
+                cell.setTodayView()
+            }
+            return cell
         }
-        if date.isSameDay(as: Date()){
-            cell.setTodayView()
-        }
-        return cell
+        
         
     }
 }

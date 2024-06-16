@@ -14,6 +14,7 @@ protocol TodoViewCellDelegate: AnyObject {
 }
 
 class TodoCollectionViewCell: UICollectionViewCell {
+    static var identifier = "TodoCollectionViewCell"
     let animation = LottieAnimation.named("doneTomato")
     var animationView : LottieAnimationView!
     var titleLabel: UILabel!
@@ -40,12 +41,17 @@ class TodoCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-//        super.prepareForReuse()
+        super.prepareForReuse()
         titleLabel.attributedText = nil
-        deleteContainer = nil
-        editContainer = nil
-        deleteButtonImage = nil
-        editButtonImage = nil
+        swipeLeft = false
+        swipeRight = false
+        self.container.snp.updateConstraints {
+            $0.leading.equalToSuperview().offset(0)
+            $0.trailing.equalToSuperview().offset(0)
+        }
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage].forEach{
+            $0?.isHidden = true
+        }
     }
     
     private func setupViews() {
@@ -56,7 +62,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     
     private func setupContentView() {
         contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
+//        contentView.clipsToBounds = true
         contentView.layer.masksToBounds = false
         contentView.backgroundColor = .secondary850
         contentView.layer.borderWidth = 1
@@ -65,6 +71,10 @@ class TodoCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowOpacity = 0.16
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
         contentView.layer.shadowRadius = 4
+        contentView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(75)
+        }
     }
     
     private func configureUI(){
@@ -92,13 +102,15 @@ class TodoCollectionViewCell: UICollectionViewCell {
             self.contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage].forEach{
+            $0?.isHidden = true
+        }
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .white
         titleLabel.font = .pretendardMedium(size: 18)
         container.addSubview(titleLabel)
         container.bringSubviewToFront(titleLabel)
-        
         checkButton = UIButton(type: .system)
         checkButton.setImage(.done0.withTintColor(.secondary800, renderingMode: .alwaysOriginal), for: .normal)
         checkButton.setImage(.done2.withTintColor(.alertTomato, renderingMode: .alwaysOriginal), for: .selected)
@@ -113,6 +125,11 @@ class TodoCollectionViewCell: UICollectionViewCell {
         container.bringSubviewToFront(checkButton)
     }
     
+    func rightContainerHiddenToggle(){
+        [deleteContainer, deleteButtonImage, editContainer, editButtonImage].forEach{
+            $0?.isHidden.toggle()
+        }
+    }
     
     private func setupConstraints() {
         contentView.addSubview(titleLabel)
@@ -120,32 +137,32 @@ class TodoCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(checkButton)
         
         container.snp.makeConstraints {
-            $0.leading.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview()
-        }
-        
-        deleteContainer.snp.makeConstraints {
-            $0.leading.equalTo(editContainer.snp.trailing).offset(-74)
-            $0.trailing.equalToSuperview()
+            $0.leading.equalToSuperview()
             $0.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(0)
         }
-        deleteButtonImage.snp.makeConstraints {
-            $0.leading.equalTo(deleteContainer.snp.leading).offset(25)
-            $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
-            $0.top.equalTo(deleteContainer.snp.top).offset(25.5)
-            $0.bottom.equalTo(deleteContainer.snp.bottom).offset(-25.5)
-        }
-        
         editContainer.snp.makeConstraints {
             $0.leading.equalTo(container.snp.trailing).offset(-20)
             $0.trailing.equalTo(deleteContainer.snp.leading).offset(0)
             $0.top.bottom.equalToSuperview()
         }
+        
+        deleteContainer.snp.makeConstraints {
+            $0.leading.equalTo(editContainer.snp.trailing)
+            $0.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.width.lessThanOrEqualTo(75)
+        }
+        deleteButtonImage.snp.makeConstraints {
+            $0.size.equalTo(24)
+            $0.trailing.equalTo(deleteContainer.snp.trailing).offset(-25)
+            $0.centerY.equalTo(deleteContainer)
+        }
+        
         editButtonImage.snp.makeConstraints {
-            $0.leading.equalTo(editContainer.snp.leading).offset(45)
+            $0.size.equalTo(24)
             $0.trailing.equalTo(editContainer.snp.trailing).offset(-25)
-            $0.top.equalTo(editContainer.snp.top).offset(25.5)
-            $0.bottom.equalTo(editContainer.snp.bottom).offset(-25.5)
+            $0.centerY.equalTo(editContainer)
         }
         titleLabel.snp.makeConstraints{
             $0.centerY.equalTo(container)
@@ -175,7 +192,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func didSwipeCellLeft() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeRight == true {
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
@@ -183,6 +200,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
                 }
                 self.swipeRight = false
             } else if self.swipeRight == false {
+                self.rightContainerHiddenToggle()
                 self.container.snp.updateConstraints {
                     $0.trailing.equalToSuperview().offset(-148)
                     $0.leading.equalToSuperview().offset(-148)
@@ -190,21 +208,27 @@ class TodoCollectionViewCell: UICollectionViewCell {
                 self.swipeLeft = true
             }
             self.layoutIfNeeded()
-        }
+        },completion: { _ in
+            
+        })
     }
     @objc func didSwipeCellRight() {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             if self.swipeLeft ==  true {
                 self.container.snp.updateConstraints {
                     $0.leading.equalToSuperview().offset(0)
                     $0.trailing.equalToSuperview().offset(0)
                 }
-                self.swipeLeft = false
             } else if self.swipeLeft == false {
                 self.swipeRight = true
             }
             self.layoutIfNeeded()
-        }
+        },completion: { _ in
+            if self.swipeLeft == true {
+                self.rightContainerHiddenToggle()
+                self.swipeLeft = false
+            }
+        })
     }
     
     private func deleteTapGestureRecognizer() {
@@ -219,6 +243,7 @@ class TodoCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.rightContainerHiddenToggle()
         self.swipeLeft = false
     }
     private func deleteTodo(for item: Todo) {
@@ -236,40 +261,47 @@ class TodoCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(0)
             $0.trailing.equalToSuperview().offset(0)
         }
+        self.rightContainerHiddenToggle()
         self.swipeLeft = false
     }
     
     @objc private func checkButtonTapped() {
-        guard let item = todoItem else { return }
-        if item.iscompleted {
-            item.iscompleted.toggle()
-            checkButton.isSelected.toggle()
-            updateTitleLabel()
-            self.updateTodoCompletion(for: item)
+        if self.swipeLeft {
+            self.didSwipeCellRight()
         }else{
-            contentView.clipsToBounds = false
-            DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
-                self.didSwipeCellLeft()
-                self.didSwipeCellRight()
-                self.playBounceAnimation(self.checkButton)
-                self.animationView.play()
-            })
-            checkButton.isSelected.toggle()
-            updateTitleLabel()
-            
             guard let item = todoItem else { return }
-            item.iscompleted.toggle()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
-                self.animationView.stop()
-                self.contentView.clipsToBounds = true
+            if item.iscompleted {
+                item.iscompleted.toggle()
+                checkButton.isSelected.toggle()
+                updateTitleLabel()
                 self.updateTodoCompletion(for: item)
-            })
+            }else{
+                contentView.clipsToBounds = false
+                DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
+                    self.didSwipeCellLeft()
+                    self.didSwipeCellRight()
+                    self.playBounceAnimation(self.checkButton)
+                    self.animationView.play()
+                })
+                checkButton.isSelected.toggle()
+                updateTitleLabel()
+                
+                guard let item = todoItem else { return }
+                item.iscompleted.toggle()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+                    self.animationView.stop()
+                    self.contentView.clipsToBounds = true
+                    self.updateTodoCompletion(for: item)
+                })
+            }
         }
+       
             
         
     }
     
     func configure(with item: Todo) {
+
         self.todoItem = item
         titleLabel.text = item.title
         contentView.backgroundColor = .secondary850

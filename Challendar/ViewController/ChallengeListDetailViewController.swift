@@ -78,7 +78,7 @@ class ChallengeListDetailViewController: BaseViewController {
         self.view.addSubview(dateLabel)
         collectionView.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.trailing.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview()
         }
