@@ -217,12 +217,18 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         
     }
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        let date = calendar.currentPage
-        calendar.deselect(selectedDate!)
-        selectedDate = date
-        calendar.select(selectedDate!)
-        updateLabel(selectedDate!)
-        NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
+        if  !calendar.currentPage.isSameMonth(as: selectedDate!) {
+            let date = calendar.currentPage
+    //        calendar.deselect(selectedDate!)
+            selectedDate = date
+    //        calendar.select(selectedDate!)
+            updateLabel(selectedDate!)
+            NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
+        }else{
+            updateLabel(selectedDate!)
+            NotificationCenter.default.post(name: NSNotification.Name("date"), object: selectedDate, userInfo: nil)
+        }
+        
         
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {

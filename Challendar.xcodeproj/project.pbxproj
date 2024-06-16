@@ -120,7 +120,6 @@
 		142052C52C1BE08700BC4831 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeTableViewCell.swift; sourceTree = "<group>"; };
 		142052D42C1BFC8000BC4831 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		1448257F2C1C7FFF004EBF53 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		1472AD9D2C082A0F00145668 /* Challendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1472ADA02C082A0F00145668 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1472ADA22C082A0F00145668 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -238,14 +237,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1448257E2C1C7FFF004EBF53 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1448257F2C1C7FFF004EBF53 /* WebKit.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
@@ -254,7 +245,6 @@
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
 				1472AD9E2C082A0F00145668 /* Products */,
-				1448257E2C1C7FFF004EBF53 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

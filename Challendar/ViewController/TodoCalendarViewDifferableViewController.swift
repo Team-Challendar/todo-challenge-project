@@ -162,6 +162,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         day = days?.first(where: {$0.date.isSameDay(as: date) })
         calendarView.dayModelForCurrentPage = days
         calendarView.selectedDate = date
+        calendarView.calendar.select(date)
 //        calendarView.calendar.reloadData()
         dailyView.configure(with: days!,selectedDate: date)
         let targetIndex = date.indexForDate()
@@ -393,10 +394,7 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         configureNav(title: "달력")
         titleTouched()
         self.calendarView.selectedDate = self.currentDate
-        self.calendarView.calendar.setCurrentPage(self.currentDate ?? Date(), animated: false)
-        self.calendarView.calendar.select(self.currentDate)
         self.calendarView.isHidden = false
-        
         self.dailyView.isHidden = true
         UIView.animate(withDuration: 0.5) {
             self.topContainer.snp.updateConstraints {
@@ -405,7 +403,8 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
             self.view.layoutIfNeeded()
         }
         self.calendarView.calendar.setScope(.month, animated: false)
-        self.calendarView.calendar.reloadData()
+        self.calendarView.calendar.select(self.currentDate)
+//        self.calendarView.calendar.reloadData()
         updateDataSource()
     }
 }
