@@ -38,12 +38,12 @@ class SectionHeader: UICollectionReusableView {
         addSubview(deleteButton)
         
         sectionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
             make.top.bottom.equalToSuperview()
         }
         
         deleteButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-16)
             make.top.bottom.equalToSuperview()
         }
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)

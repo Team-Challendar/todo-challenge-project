@@ -92,7 +92,7 @@ class ChallengeListViewController: BaseViewController {
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(dateView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }
@@ -104,21 +104,22 @@ class ChallengeListViewController: BaseViewController {
         
         let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "M월 d일"
+            dateFormatter.locale = Locale.init(identifier: "ko_KR")
             let todayString = dateFormatter.string(from: Date())
         
          let yearFormatter = DateFormatter()
          yearFormatter.dateFormat = "yyyy년"
-         let YearString = yearFormatter.string(from: Date())
+         let yearString = yearFormatter.string(from: Date())
             
         
         dayLabel = UILabel()
         dayLabel.text = todayString
         dayLabel.font = .pretendardSemiBold(size: 16)
-        dayLabel.textColor = .secondary700
+        dayLabel.textColor = .secondary200
         dateView.addSubview(dayLabel)
         
         yearLabel = UILabel()
-        yearLabel.text = YearString
+        yearLabel.text = yearString
         yearLabel.font = .pretendardSemiBold(size: 16)
         yearLabel.textColor = .secondary800
         dateView.addSubview(yearLabel)
@@ -160,7 +161,7 @@ class ChallengeListViewController: BaseViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(SearchCollectionViewCell.self, forCellWithReuseIdentifier: "enabledCell")
-        collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(ChallengeCollectionViewCell.self, forCellWithReuseIdentifier: ChallengeCollectionViewCell.identifier)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
@@ -298,7 +299,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
             cell.isUserInteractionEnabled = false
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ChallengeCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ChallengeCollectionViewCell.identifier, for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: todo)
             cell.delegate = self
             return cell

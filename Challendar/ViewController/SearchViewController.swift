@@ -70,8 +70,7 @@ class SearchViewController: BaseViewController {
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }

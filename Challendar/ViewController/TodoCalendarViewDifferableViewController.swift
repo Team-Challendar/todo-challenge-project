@@ -83,8 +83,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         }
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(topContainer.snp.bottom).offset(13)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.leading.trailing.equalToSuperview().offset(0)
             make.bottom.equalToSuperview()
         }
         dimmedView.addSubview(periodBtnView)
@@ -395,6 +394,7 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         titleTouched()
         self.calendarView.selectedDate = self.currentDate
         self.calendarView.calendar.setCurrentPage(self.currentDate ?? Date(), animated: false)
+        self.calendarView.calendar.select(self.currentDate)
         self.calendarView.isHidden = false
         
         self.dailyView.isHidden = true
@@ -409,5 +409,3 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         updateDataSource()
     }
 }
-
-//Commit

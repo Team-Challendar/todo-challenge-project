@@ -41,7 +41,10 @@ class SearchCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowOpacity = 0.16
         contentView.layer.shadowOffset = CGSize(width: 0, height: 2)
         contentView.layer.shadowRadius = 4
-        
+        contentView.snp.makeConstraints{
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(75)
+        }
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .challendarWhite

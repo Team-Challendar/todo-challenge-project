@@ -207,6 +207,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         //        print(DateFormatter.dateFormatterALL.string(from: date))
         if !date.isSameMonth(as: calendar.currentPage){
             calendar.setCurrentPage(date, animated: true)
+            calendar.select(date)
         }
         updateLabel(date)
 //        selectedDate = date
@@ -239,7 +240,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     switch day.percentage{
                     case 0:
                         if day.date < Date(){
-                            return .secondary500
+                            return .challendarWhite
                         }else{
                             return .challendarWhite
                         }
@@ -255,6 +256,9 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         case .week:
             if date.isSameDay(as: selectedDate ?? Date()) {
                 return .challendarWhite
+            }
+            if !date.isSameMonth(as: self.selectedDate!){
+                return .secondary800
             }else{
                 if let day = dayModelForCurrentPage?.first(where: {
                     $0.date.isSameDay(as: date)
@@ -262,7 +266,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     switch day.percentage{
                     case 0:
                         if day.date < Date(){
-                            return .secondary500
+                            return .challendarWhite
                         }else{
                             return .challendarWhite
                         }
@@ -272,7 +276,7 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     }
                 }
                 else{
-                    return .challendarWhite
+                    return .challendarBlack
                 }
             }
         @unknown default:

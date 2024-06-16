@@ -142,10 +142,12 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
-        updateLabel(date)
+        calendar.deselect(selectedDate)
+        selectedDate = date
+        calendar.select(selectedDate)
+        updateLabel(selectedDate)
         calendar.reloadData()
     }
-    
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         if !date.isSameMonth(as: calendar.currentPage){
             return .secondary800
@@ -178,6 +180,10 @@ extension ChallengeDateCalendarView : FSCalendarDataSource {
         return cell
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        if !date.isSameMonth(as: calendar.currentPage){
+            calendar.setCurrentPage(date, animated: true)
+            calendar.select(date)
+        }
         selectedDate = date
         calendar.reloadData()
     }
