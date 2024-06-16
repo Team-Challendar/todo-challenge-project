@@ -111,6 +111,8 @@ class TodoViewController: BaseViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         view.addSubview(collectionView)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 83, right: 0)
+                collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
     
     // 컴포지셔널 레이아웃, createTodoSection 호출

@@ -166,6 +166,8 @@ class ChallengeListViewController: BaseViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         view.addSubview(collectionView)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 83, right: 0)
+                collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
     
     // 컬렉션뷰 레이아웃 생성

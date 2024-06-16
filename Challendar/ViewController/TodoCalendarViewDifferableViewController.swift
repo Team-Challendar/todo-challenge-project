@@ -130,7 +130,8 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         collectionView.register(DailyGaugeCollectionViewCell.self, forCellWithReuseIdentifier: DailyGaugeCollectionViewCell.identifier)
         collectionView.register(TodoCalendarViewCell.self, forCellWithReuseIdentifier: TodoCalendarViewCell.identifier)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 83, right: 0)
+                collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
