@@ -17,17 +17,14 @@ class SuccessViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBarForSuccess()
-        configureUI()
         navigateToAppropriateTab()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-            self.dismiss(animated: true, completion: {
-                self.navigateToAppropriateTab()
-            })
-        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
     override func configureUI() {
@@ -70,17 +67,18 @@ class SuccessViewController: BaseViewController {
     }
 
     private func navigateToAppropriateTab() {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first,
-           let tabBarController = window.rootViewController as? TabBarViewController {
-            
-            if endDate == nil {
-                tabBarController.selectedIndex = 1
-            } else if isChallenge {
-                tabBarController.selectedIndex = 0
-            } else {
-                tabBarController.selectedIndex = 2
-            }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let tabBarController = window.rootViewController as? UITabBarController else {
+            return
+        }
+
+        if endDate == nil {
+            tabBarController.selectedViewController = tabBarController.viewControllers?[1]
+        } else if isChallenge {
+            tabBarController.selectedViewController = tabBarController.viewControllers?[0]
+        } else {
+            tabBarController.selectedViewController = tabBarController.viewControllers?[2]
         }
     }
 }
