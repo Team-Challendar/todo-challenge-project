@@ -203,7 +203,7 @@ class SearchViewController: BaseViewController {
         view.addSubview(emptyMainLabel)
         
         emptyImage = UIImageView()
-        emptyImage.image = UIImage(named: "scurprisedFace")
+        emptyImage.image = .surprisedFace
         view.addSubview(emptyImage)
     }
     
