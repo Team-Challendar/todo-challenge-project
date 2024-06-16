@@ -16,7 +16,11 @@ class TodoCalendarView: UIView {
     var prevButton = UIButton()
     var nextButton = UIButton()
     var currentState : currentCalendar?
-    var selectedDate : Date?
+    var selectedDate : Date? {
+        didSet {
+            calendar.reloadData()
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureUI()
@@ -66,7 +70,7 @@ class TodoCalendarView: UIView {
         calendar.appearance.weekdayTextColor = .challendarWhite
         calendar.appearance.titleWeekendColor = .challendarWhite
         calendar.appearance.selectionColor = .clear
-        calendar.appearance.titleSelectionColor  = .none
+        calendar.appearance.titleSelectionColor  = .challendarWhite
         calendar.appearance.todayColor = .clear
         calendar.scrollDirection = .horizontal
         calendar.calendarWeekdayView.weekdayLabels[0].textColor = .secondary500
@@ -213,9 +217,10 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
+        calendar.deselect(selectedDate!)
         selectedDate = date
-        updateLabel(date)
-        calendar.reloadData()
+        calendar.select(selectedDate!)
+        updateLabel(selectedDate!)
         NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
         
     }
@@ -250,9 +255,6 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
         case .week:
             if date.isSameDay(as: selectedDate ?? Date()) {
                 return .challendarWhite
-            }
-            if !date.isSameMonth(as: selectedDate!){
-                return .secondary800
             }else{
                 if let day = dayModelForCurrentPage?.first(where: {
                     $0.date.isSameDay(as: date)
@@ -286,24 +288,47 @@ extension TodoCalendarView : FSCalendarDataSource {
         
         guard let cell = calendar.dequeueReusableCell(withIdentifier: TodoCalendarFSCell.identifier, for: date, at: position) as? TodoCalendarFSCell else { return FSCalendarCell() }
         
-        if let day = dayModelForCurrentPage?.first(where: {
-            $0.date.isSameDay(as: date) && date.isSameMonth(as: selectedDate!)
-        }){
-            cell.setViewWithData(day: day)
-            if let selectedDate = selectedDate {
-                if date.isSameDay(as: selectedDate){
-                    cell.selectDate()
-                }
-            }else{
-                if date.isSameDay(as: Date()){
-                    cell.selectDate()
+        switch calendar.scope {
+        case .month:
+            if let day = dayModelForCurrentPage?.first(where: {
+                $0.date.isSameDay(as: date) && $0.date.isSameMonth(as: selectedDate ?? Date())
+            }){
+                cell.setViewWithData(day: day)
+                if let selectedDate = selectedDate {
+                    if date.isSameDay(as: selectedDate){
+                        cell.selectDate()
+                    }
+                }else{
+                    if date.isSameDay(as: Date()){
+                        cell.selectDate()
+                    }
                 }
             }
+            if date.isSameDay(as: Date()){
+                cell.setTodayView()
+            }
+            return cell
+        case .week:
+            if let day = dayModelForCurrentPage?.first(where: {
+                $0.date.isSameDay(as: date)
+            }){
+                cell.setViewWithData(day: day)
+                if let selectedDate = selectedDate {
+                    if date.isSameDay(as: selectedDate){
+                        cell.selectDate()
+                    }
+                }else{
+                    if date.isSameDay(as: Date()){
+                        cell.selectDate()
+                    }
+                }
+            }
+            if date.isSameDay(as: Date()){
+                cell.setTodayView()
+            }
+            return cell
         }
-        if date.isSameDay(as: Date()){
-            cell.setTodayView()
-        }
-        return cell
+        
         
     }
 }

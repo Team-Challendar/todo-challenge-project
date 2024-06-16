@@ -152,4 +152,45 @@ extension Date {
         let day = calendar.component(.day, from: self)
         return day
     }
+    
+    var day: Int {
+        let calendar = Calendar.current
+        return calendar.component(.day, from: self)
+    }
+    
+    var month: Int {
+        let calendar = Calendar.current
+        return calendar.component(.month, from: self)
+    }
+    
+    var year: Int {
+        let calendar = Calendar.current
+        return calendar.component(.year, from: self)
+    }
+    
+    func numberOfDaysInMonth() -> Int {
+        let calendar = Calendar.current
+        let range = calendar.range(of: .day, in: .month, for: self)!
+        return range.count
+    }
+    
+    func indexForDate() -> Int {
+        let calendar = Calendar.current
+        let currentDay = self.day
+        let currentMonth = self.month
+        let currentYear = self.year
+        
+        // 전달의 일 수
+        let previousMonth = currentMonth - 1 == 0 ? 12 : currentMonth - 1
+        let previousYear = currentMonth - 1 == 0 ? currentYear - 1 : currentYear
+        let previousDateComponents = DateComponents(year: previousYear, month: previousMonth)
+        let previousDate = calendar.date(from: previousDateComponents)!
+        let numberOfDaysInPreviousMonth = previousDate.numberOfDaysInMonth()
+        
+        // 현재 달의 시작 인덱스 (전달의 일 수)
+        let currentMonthStartIndex = numberOfDaysInPreviousMonth
+        
+        // 주어진 날짜의 인덱스 (전달 일 수 + 현재 일)
+        return currentMonthStartIndex + currentDay - 1
+    }
 }
