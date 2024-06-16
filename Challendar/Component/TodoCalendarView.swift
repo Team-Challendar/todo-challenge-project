@@ -201,7 +201,11 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         //        print(DateFormatter.dateFormatterALL.string(from: date))
-        selectedDate = date
+        if !date.isSameMonth(as: calendar.currentPage){
+            calendar.setCurrentPage(date, animated: true)
+        }
+        updateLabel(date)
+//        selectedDate = date
         NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
     }
     func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
@@ -209,10 +213,11 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
     }
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         let date = calendar.currentPage
-        updateLabel(date)
-        NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
         selectedDate = date
+        updateLabel(date)
         calendar.reloadData()
+        NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
+        
     }
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         switch calendar.scope{
@@ -239,31 +244,34 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
                     }
                 }
                 else{
-                    return .challendarWhite
+                    return .challendarBlack
                 }
             }
         case .week:
             if date.isSameDay(as: selectedDate ?? Date()) {
                 return .challendarWhite
             }
-            if let day = dayModelForCurrentPage?.first(where: {
-                $0.date.isSameDay(as: date)
-            }){
-                switch day.percentage{
-                case 0:
-                    if day.date < Date(){
-                        return .secondary500
-                    }else{
-                        return .challendarWhite
+            if !date.isSameMonth(as: selectedDate!){
+                return .secondary800
+            }else{
+                if let day = dayModelForCurrentPage?.first(where: {
+                    $0.date.isSameDay(as: date)
+                }){
+                    switch day.percentage{
+                    case 0:
+                        if day.date < Date(){
+                            return .secondary500
+                        }else{
+                            return .challendarWhite
+                        }
+                        
+                    default:
+                        return .challendarBlack
                     }
-                    
-                default:
-                    return .challendarBlack
                 }
-                
-            }
-            else{
-                return .challendarWhite
+                else{
+                    return .challendarWhite
+                }
             }
         @unknown default:
             return .challendarWhite
@@ -279,7 +287,7 @@ extension TodoCalendarView : FSCalendarDataSource {
         guard let cell = calendar.dequeueReusableCell(withIdentifier: TodoCalendarFSCell.identifier, for: date, at: position) as? TodoCalendarFSCell else { return FSCalendarCell() }
         
         if let day = dayModelForCurrentPage?.first(where: {
-            $0.date.isSameDay(as: date) && date.isSameMonth(as: calendar.currentPage)
+            $0.date.isSameDay(as: date) && date.isSameMonth(as: selectedDate!)
         }){
             cell.setViewWithData(day: day)
             if let selectedDate = selectedDate {

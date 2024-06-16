@@ -162,8 +162,9 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         days = Day.generateDaysForMonth(date: date, todos: self.todoItems)
         day = days?.first(where: {$0.date.isSameDay(as: date) })
         calendarView.dayModelForCurrentPage = days
+        calendarView.selectedDate = date
         calendarView.calendar.reloadData()
-        dailyView.configure(with: days!,selectedDate: currentDate)
+        dailyView.configure(with: days!,selectedDate: date)
     }
     
     // 데이터 소스 설정
@@ -328,21 +329,23 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
                     self.topContainer.snp.updateConstraints {
                         $0.height.equalTo(maxCalendarHeight)
                     }
-                    
                     self.view.layoutIfNeeded()
                 }
                 self.calendarView.calendar.reloadData()
                 
             } else if translation.y < 0 {
                 // 위로 스크롤
-                UIView.animate(withDuration: 0.5) {
+                UIView.animate(withDuration: 0.5, animations: {
                     self.topContainer.snp.updateConstraints {
                         $0.height.equalTo(minCalendarHeight)
                     }
+                    self.calendarView.calendar.setScope(.week, animated: true)
                     self.view.layoutIfNeeded()
-                }
-                self.calendarView.calendar.setScope(.week, animated: true)
-                self.calendarView.calendar.reloadData()
+                }, completion: { _ in
+//                    self.calendarView.calendar.reloadData()
+                })
+                
+                
             }
         }
     }
