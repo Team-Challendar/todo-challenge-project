@@ -29,6 +29,7 @@ class ChallengeCheckViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         showLayout()
     }
+    
     override func configureUtil() {
         super.configureUtil()
         challengePopUp.laterButton.rx.tap
@@ -45,6 +46,7 @@ class ChallengeCheckViewController: BaseViewController {
                 self?.showSuccessVC()
             }).disposed(by: self.dispose)
     }
+    
     override func configureUI() {
         super.configureUI()
         dimmedView.backgroundColor = UIColor.challendarBlack
@@ -53,6 +55,7 @@ class ChallengeCheckViewController: BaseViewController {
         dimmedView.addGestureRecognizer(dimmedTap)
         dimmedView.isUserInteractionEnabled = true
     }
+    
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
         self.dismiss(animated: true)
     }
@@ -70,7 +73,6 @@ class ChallengeCheckViewController: BaseViewController {
             $0.height.equalTo(popUpHeight)
             $0.leading.trailing.equalToSuperview().inset(50)
             $0.centerY.equalToSuperview()
-            
         }
     }
     
@@ -81,7 +83,6 @@ class ChallengeCheckViewController: BaseViewController {
         }, completion: nil)
     }
     
-    
     func showSuccessVC(){
         CoreDataManager.shared.createTodo(newTodo: (self.newTodo)!)
         
@@ -89,6 +90,7 @@ class ChallengeCheckViewController: BaseViewController {
         let rootViewRoot = rootView?.presentingViewController
         let successViewController = SuccessViewController()
         successViewController.isChallenge = self.newTodo!.isChallenge
+        successViewController.endDate = self.newTodo?.endDate
         let navigationController = UINavigationController(rootViewController: successViewController)
         navigationController.modalTransitionStyle = .coverVertical
         navigationController.modalPresentationStyle = .overFullScreen

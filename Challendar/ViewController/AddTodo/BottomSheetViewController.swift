@@ -46,7 +46,7 @@ class BottomSheetViewController: UIViewController {
         dateBottomSheet.delegate = self
         dateBottomSheet.applybutton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                if let rootViewVC2 = self?.rootViewVC2 {
+                if (self?.rootViewVC2) != nil {
                     self?.hideLayout()
                 }else{
                     self?.hideLayoutShowChallenge()
@@ -59,7 +59,7 @@ class BottomSheetViewController: UIViewController {
                 self?.bottomSheetLaterButtonTapped?()
                 
                 // rootViewVC2면 view만
-                if let rootViewVC2 = self?.rootViewVC2 {
+                if (self?.rootViewVC2) != nil {
                     self?.hideLayout()
                 } else {
                     self?.newTodo?.endDate = nil
@@ -68,6 +68,7 @@ class BottomSheetViewController: UIViewController {
                     let root = rootView?.presentingViewController
                     let successViewController = SuccessViewController()
                     successViewController.isChallenge = false
+                    successViewController.endDate = self?.newTodo?.endDate
                     let navigationController = UINavigationController(rootViewController: successViewController)
                     navigationController.modalTransitionStyle = .coverVertical
                     navigationController.modalPresentationStyle = .overFullScreen
@@ -80,7 +81,6 @@ class BottomSheetViewController: UIViewController {
             })
             .disposed(by: self.dispose)
 
-        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         dateBottomSheet.addGestureRecognizer(panGesture)
         

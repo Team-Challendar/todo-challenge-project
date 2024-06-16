@@ -29,6 +29,7 @@ class EditChallengeCheckViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         showLayout()
     }
+    
     override func configureUtil() {
         super.configureUtil()
         challengePopUp.laterButton.rx.tap
@@ -45,6 +46,7 @@ class EditChallengeCheckViewController: BaseViewController {
                 self?.showSuccessVC()
             }).disposed(by: self.dispose)
     }
+    
     override func configureUI() {
         super.configureUI()
         dimmedView.backgroundColor = UIColor.challendarBlack
@@ -53,40 +55,40 @@ class EditChallengeCheckViewController: BaseViewController {
         dimmedView.addGestureRecognizer(dimmedTap)
         dimmedView.isUserInteractionEnabled = true
     }
+    
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
         self.dismiss(animated: true)
     }
     
     override func configureConstraint() {
         super.configureConstraint()
-        [dimmedView,challengePopUp].forEach{
+        [dimmedView, challengePopUp].forEach {
             self.view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        dimmedView.snp.makeConstraints{
+        dimmedView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        challengePopUp.snp.makeConstraints{
+        challengePopUp.snp.makeConstraints {
             $0.height.equalTo(popUpHeight)
             $0.leading.trailing.equalToSuperview().inset(50)
             $0.centerY.equalToSuperview()
-            
         }
     }
     
-    private func showLayout(){
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear,  animations: {
+    private func showLayout() {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveLinear, animations: {
             self.dimmedView.alpha = dimmedViewAlpha
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
     
-    
-    func showSuccessVC(){
+    func showSuccessVC() {
         let rootView = self.presentingViewController
         let rootViewRoot = rootView?.presentingViewController
         let successViewController = SuccessViewController()
         successViewController.isChallenge = self.newTodo!.isChallenge
+        successViewController.endDate = self.newTodo?.endDate
         let navigationController = UINavigationController(rootViewController: successViewController)
         navigationController.modalTransitionStyle = .coverVertical
         navigationController.modalPresentationStyle = .overFullScreen
