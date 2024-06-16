@@ -344,8 +344,46 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             newTodo?.iscompleted = false
         }
         
-        // ChallengeCheckViewController 호출
-        if newEndDate != nil {
+        // endDate가 nil인 경우 SuccessViewController 호출
+        if newEndDate == nil {
+            // 변경된 값을 코어 데이터에 업데이트
+            CoreDataManager.shared.updateTodoById(
+                id: todoId,
+                newTitle: title,
+                newStartDate: newStartDate,
+                newEndDate: newEndDate,
+                newCompleted: updatedCompleted,
+                newIsChallenge: newTodo?.isChallenge ?? false,
+                newIsCompleted: newEndDate == nil ? todoModel.isCompleted : false // endDate가 nil이 아닌 경우 false로 설정
+            )
+            
+            // 기존 투두 업데이트
+            newTodo?.title = title
+            newTodo?.startDate = newStartDate
+            newTodo?.endDate = newEndDate
+            newTodo?.completed = updatedCompleted
+            newTodo?.iscompleted = newEndDate == nil ? todoModel.isCompleted : false
+            
+            // 디버깅 로그 추가
+            print("Updated Todo - Title: \(title), Completed: \(updatedCompleted), \(newEndDate)")
+            
+            // SuccessViewController 호출
+            let successViewController = SuccessViewController()
+            successViewController.isChallenge = false
+            successViewController.endDate = newEndDate
+            let navigationController = UINavigationController(rootViewController: successViewController)
+            navigationController.modalTransitionStyle = .coverVertical
+            navigationController.modalPresentationStyle = .overFullScreen
+
+            self.dismiss(animated: true) {
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+                   let rootVC = window.rootViewController as? TabBarViewController {
+                    rootVC.present(navigationController, animated: true, completion: nil)
+                }
+            }
+        } else {
+            // ChallengeCheckViewController 호출
             newTodo?.title = title
             newTodo?.startDate = newStartDate
             newTodo?.endDate = newEndDate
@@ -372,30 +410,9 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             }
             
             self.present(challengeCheckVC, animated: true, completion: nil)
-        } else {
-            // 변경된 값을 코어 데이터에 업데이트
-            CoreDataManager.shared.updateTodoById(
-                id: todoId,
-                newTitle: title,
-                newStartDate: newStartDate,
-                newEndDate: newEndDate,
-                newCompleted: updatedCompleted, newIsChallenge: newTodo?.isChallenge ?? false,
-                newIsCompleted: newEndDate == nil ? todoModel.isCompleted : false // endDate가 nil이 아닌 경우 false로 설정
-            )
-            
-            // 기존 투두 업데이트
-            newTodo?.title = title
-            newTodo?.startDate = newStartDate
-            newTodo?.endDate = newEndDate
-            newTodo?.completed = updatedCompleted
-            newTodo?.iscompleted = newEndDate == nil ? todoModel.isCompleted : false
-            
-            // 디버깅 로그 추가
-            print("Updated Todo - Title: \(title), Completed: \(updatedCompleted), \(newEndDate)")
-            
-            self.dismiss(animated: true, completion: nil)
         }
     }
+
     
     private func updateTodoIsChallenge(isChallenge: Bool, todoModel: TodoModel, title: String, startDate: Date?, endDate: Date?, completed: [Bool]) {
         todoModel.isChallenge = isChallenge

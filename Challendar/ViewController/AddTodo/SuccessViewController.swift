@@ -10,31 +10,40 @@ import UIKit
 class SuccessViewController: BaseViewController {
     var dimmedView = UIView()
     var isChallenge = false
+    var endDate: Date?
     var imageView = UIImageView()
     var textLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBarForSuccess()
+        configureUI()
         navigateToAppropriateTab()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: true, completion: {
+                self.navigateToAppropriateTab()
+            })
         })
     }
 
     override func configureUI() {
         dimmedView.backgroundColor = UIColor.secondary900.withAlphaComponent(dimmedViewAlpha)
-        if isChallenge {
+        
+        if endDate == nil {
+            imageView.image = .thumbUp
+            textLabel.text = "할 일을 추가했어요!"
+        } else if isChallenge {
             imageView.image = .partyPopper
             textLabel.text = "도전 목록에 추가했어요!"
         } else {
             imageView.image = .calendarIcon
             textLabel.text = "계획 목록에 추가했어요!"
         }
+        
         textLabel.font = .pretendardSemiBold(size: 20)
         textLabel.textColor = .challendarWhite
         textLabel.backgroundColor = .clear
@@ -64,7 +73,10 @@ class SuccessViewController: BaseViewController {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first,
            let tabBarController = window.rootViewController as? TabBarViewController {
-            if isChallenge {
+            
+            if endDate == nil {
+                tabBarController.selectedIndex = 1
+            } else if isChallenge {
                 tabBarController.selectedIndex = 0
             } else {
                 tabBarController.selectedIndex = 2
