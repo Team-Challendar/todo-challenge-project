@@ -28,7 +28,7 @@ extension SettingModel {
     
     static var share =
     [
-//        SettingModel(menuTitle: "친구에게 공유하기", toggle: nil, text: nil, nextVC: EmptyViewController()),
+        SettingModel(menuTitle: "친구에게 공유하기", toggle: nil, text: nil, nextVC: EmptyViewController()),
         SettingModel(menuTitle: "문의하기", toggle: nil, text: nil, nextVC: EmptyViewController())
     ]
 }

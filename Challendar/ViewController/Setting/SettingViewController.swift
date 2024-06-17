@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import MessageUI
+import LinkPresentation
 
 class SettingViewController: BaseViewController {
     
@@ -133,18 +134,33 @@ class SettingViewController: BaseViewController {
         }
     }
     
-    func shareToFriend(){
-        var objectsToShare = [URL]()
-        guard let url = URL(string: "www.naver.com") else {return}
-                objectsToShare.append(url)
-                
-                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-                activityVC.popoverPresentationController?.sourceView = self.view
-                
-                // 공유하기 기능 중 제외할 기능이 있을 때 사용
-        //        activityVC.excludedActivityTypes = [UIActivityType.airDrop, UIActivityType.addToReadingList]
-                self.present(activityVC, animated: true, completion: nil)
+    func shareToFriend() {
+        let url = URL(string: "https://apps.apple.com/us/app/%EC%B1%8C%EB%A6%B0%EB%8D%94-challendar/id6504077858")!
+        
+        // 원하는 이미지, 제목, 부제목 설정
+        let title = "챌린더 - Challendar"
+        let subtitle = "The best app to manage your challenges"
+        let image = UIImage(named: "AppIcon") // 공유할 이미지 이름
+        
+        let metadata = LPLinkMetadata()
+        metadata.originalURL = url
+        metadata.title = title
+        
+        // 이미지 설정
+        if let image = image {
+            metadata.imageProvider = NSItemProvider(object: image)
+            metadata.iconProvider = NSItemProvider(object: image)
+        }
+        
+        let itemSource = LinkItemSource(metadata: metadata)
+        let activityVC = UIActivityViewController(activityItems: [itemSource], applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = self.view
+        
+        // 공유하기 기능 중 제외할 기능이 있을 때 사용
+        // activityVC.excludedActivityTypes = [.airDrop, .addToReadingList]
+        self.present(activityVC, animated: true, completion: nil)
     }
+
 }
 
 
@@ -187,15 +203,12 @@ extension SettingViewController: UITableViewDelegate {
                     if let nextVC = model.nextVC {
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     }
-                    
-
-                    
                 }
             case .shareItem(let model):
                 if model.menuTitle == "문의하기"{
                     sendEmail()
                 }else if model.menuTitle == "친구에게 공유하기"{
-//                    shareToFriend()
+                    shareToFriend()
                 }
                 
             }
@@ -244,4 +257,26 @@ extension SettingViewController: MFMailComposeViewControllerDelegate {
         // 자동으로 dismiss가 되지 않으므로, 작업 완료 시 dismiss를 해줘야 함
         self.dismiss(animated: true)
     }
+}
+
+
+class LinkItemSource: NSObject, UIActivityItemSource {
+    let metadata: LPLinkMetadata
+    
+    init(metadata: LPLinkMetadata) {
+        self.metadata = metadata
+    }
+    
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        return metadata.originalURL!
+    }
+    
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return metadata.originalURL!
+    }
+    
+    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        return metadata
+    }
+    
 }
