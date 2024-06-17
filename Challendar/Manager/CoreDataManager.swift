@@ -1,41 +1,115 @@
 import UIKit
 import CoreData
+import UserNotifications
 
 class CoreDataManager {
     
     static let shared = CoreDataManager()
     
-    private init() {}
+    private init() {
+        // 요청 알림 권한
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("Notification permission error: \(error)")
+            }
+        }
+    }
     
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
-            let container = NSPersistentCloudKitContainer(name: "Challendar")
-            guard let description = container.persistentStoreDescriptions.first else {
-                fatalError("Failed to initialize persistent Container")
+        let container = NSPersistentCloudKitContainer(name: "Challendar")
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("Failed to initialize persistent Container")
+        }
+        
+        // CloudKit 및 CoreData 설정
+        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        
+        // CloudKit 컨테이너 식별자 설정
+        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
+        
+        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            
-            // CloudKit and CoreData settings
-            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-            
-            // Set your CloudKit container identifier here
-            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
-
-            container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-            container.viewContext.automaticallyMergesChangesFromParent = true
-            
-            container.loadPersistentStores { storeDescription, error in
-                if let error = error as NSError? {
-                    fatalError("Unresolved error \(error), \(error.userInfo)")
-                }
-            }
-            return container
-        }()
+        }
+        
+        // 원격 변경 알림 구독
+        NotificationCenter.default.addObserver(self, selector: #selector(storeRemoteChange(_:)), name: .NSPersistentStoreRemoteChange, object: container.persistentStoreCoordinator)
+        
+        return container
+    }()
     
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
     
-    // MARK: - CRUD Operations
+    // 변경 토큰을 저장할 변수
+    private var lastHistoryToken: NSPersistentHistoryToken? {
+        get {
+            guard let data = UserDefaults.standard.data(forKey: "lastHistoryToken") else { return nil }
+            return try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSPersistentHistoryToken.self, from: data)
+        }
+        set {
+            guard let token = newValue else { return }
+            let data = try? NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: true)
+            UserDefaults.standard.set(data, forKey: "lastHistoryToken")
+        }
+    }
+    
+    // 원격 변경 알림 처리
+    @objc private func storeRemoteChange(_ notification: Notification) {
+        fetchHistoryAndUpdateContext()
+    }
+    
+    // 앱 시작 시 동기화 트리거
+    func triggerSync() {
+        fetchHistoryAndUpdateContext()
+    }
+    
+    // 변경 사항 가져와서 컨텍스트 업데이트
+    private func fetchHistoryAndUpdateContext() {
+        context.perform {
+            do {
+                // 변경 사항 가져오기
+                let fetchRequest = NSPersistentHistoryChangeRequest.fetchHistory(after: self.lastHistoryToken)
+                if let historyResult = try self.context.execute(fetchRequest) as? NSPersistentHistoryResult,
+                   let transactions = historyResult.result as? [NSPersistentHistoryTransaction] {
+                    for transaction in transactions {
+                        self.context.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
+                    }
+                    // 마지막 토큰 업데이트
+                    self.lastHistoryToken = transactions.last?.token
+                }
+                try self.context.save()
+                NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                // 로컬 알림 생성
+//                self.sendLocalNotification()
+                
+            } catch {
+                print("Failed to process remote change notification: \(error)")
+            }
+        }
+    }
+    
+    // 로컬 알림 생성 메서드
+    private func sendLocalNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Data Updated"
+        content.body = "Data has been synchronized with CloudKit."
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    // CRUD Operations
     
     // Create
     func createTodo(newTodo: Todo) {
@@ -58,17 +132,18 @@ class CoreDataManager {
     }
     
     // Save context
-      func saveContext() {
-          if context.hasChanges {
-              do {
-                  try context.save()
-                  NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
-              } catch {
-                  let nserror = error as NSError
-                  fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-              }
-          }
-      }
+    func saveContext() {
+        if context.hasChanges {
+            do {
+                try context.save()
+                NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                print("NOTIFICATIONSD")
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+        }
+    }
     
     // Read
     func fetchTodos() -> [Todo] {
@@ -87,7 +162,6 @@ class CoreDataManager {
                     }
                     return []
                 }()
-                
                 return Todo(
                     id: model.id,
                     title: model.title,
@@ -141,7 +215,7 @@ class CoreDataManager {
         }
         if let newCompleted = newCompleted {
             todoToUpdate.completed = newCompleted
-            todoToUpdate.percentage = Double(newCompleted.filter{$0 == true}.count) / Double( newCompleted.count)
+            todoToUpdate.percentage = Double(newCompleted.filter{$0 == true}.count) / Double(newCompleted.count)
         }
         if let newIsChallenge = newIsChallenge {
             todoToUpdate.isChallenge = newIsChallenge
@@ -153,7 +227,7 @@ class CoreDataManager {
             let imageData = newImages.map { $0.pngData() }
             todoToUpdate.images = try? JSONEncoder().encode(imageData)
         }
-        if let newIsCompleted = newIsCompleted{
+        if let newIsCompleted = newIsCompleted {
             todoToUpdate.isCompleted = newIsCompleted
         }
         

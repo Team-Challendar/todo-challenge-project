@@ -1,8 +1,9 @@
 import UIKit
-import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var syncTimer: Timer?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -22,19 +23,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // Fetch todos on app launch
-        fetchAndSaveTodos()
+        CoreDataManager.shared.triggerSync()
         
+        // 주기적인 동기화 설정
+        startSyncTimer()
+
         return true
     }
 
-    func fetchAndSaveTodos() {
-        DispatchQueue.global(qos: .background).async {
-            let todos = CoreDataManager.shared.fetchTodos()
-            DispatchQueue.main.async {
-                // Update your UI or perform further processing with the fetched todos
-                print("Fetched todos: \(todos)")
-            }
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        // 앱이 포그라운드로 돌아올 때 동기화 트리거
+        CoreDataManager.shared.triggerSync()
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        // 타이머 중지
+        stopSyncTimer()
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        // 타이머 중지
+        stopSyncTimer()
+    }
+    
+    private func startSyncTimer() {
+        syncTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+            CoreDataManager.shared.triggerSync()
         }
+    }
+    
+    private func stopSyncTimer() {
+        syncTimer?.invalidate()
+        syncTimer = nil
     }
     
     // MARK: UISceneSession Lifecycle
@@ -51,45 +71,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-    // MARK: - Core Data stack
+    // Core Data stack and saving context are now handled by CoreDataManager
 
-    lazy var persistentContainer: NSPersistentCloudKitContainer = {
-        let container = NSPersistentCloudKitContainer(name: "Challendar")
-        guard let description = container.persistentStoreDescriptions.first else {
-            fatalError("Failed to initialize persistent Container")
-        }
-
-        // CloudKit and Core Data settings
-        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-
-        // Set your CloudKit container identifier here
-        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
-
-        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-        container.viewContext.automaticallyMergesChangesFromParent = true
-
-        container.loadPersistentStores { storeDescription, error in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
-        return container
-    }()
-    // MARK: - Core Data Saving support
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
