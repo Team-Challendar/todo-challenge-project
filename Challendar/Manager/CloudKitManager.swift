@@ -1,10 +1,3 @@
-//
-//  CloudKitManager.swift
-//  Challendar
-//
-//  Created by Sam.Lee on 6/14/24.
-//
-
 import Foundation
 import CloudKit
 
@@ -24,15 +17,15 @@ class CloudKitManager {
         operation.recordMatchedBlock = { recordID, result in
             switch result {
             case .success(let record):
-                //                for (key, value) in record {
-                //                    print("\(key): \(value)")
-                //                }
+                print("Successfully fetched record: \(recordID)")
                 if let title = record["title"] as? String,
                    let content = record["content"] as? String,
                    let timeStamp = record["timeStamp"] as? Date {
                     
                     let notice = NoticeModel(title: title, content: content, timeStamp: timeStamp)
                     notices.append(notice)
+                } else {
+                    print("Failed to parse record fields")
                 }
             case .failure(let error):
                 print("Failed to fetch record: \(error)")
@@ -41,16 +34,14 @@ class CloudKitManager {
         
         operation.queryResultBlock = { result in
             switch result {
-            case .success(let _):
+            case .success:
+                print("Successfully completed query")
                 completion(notices)
-            case .failure(let _):
-                print("FETCH ERROR")
+            case .failure(let error):
+                print("Failed to complete query: \(error)")
             }
         }
-
         
-        operation.start()
-        
+        container.publicCloudDatabase.add(operation)
     }
-    
 }
