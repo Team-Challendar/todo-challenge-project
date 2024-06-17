@@ -58,21 +58,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let description = container.persistentStoreDescriptions.first else {
             fatalError("Failed to initialize persistent Container")
         }
-        
-        // CloudKit 설정 추가
+
+        // CloudKit and Core Data settings
         description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
         description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-        
+
+        // Set your CloudKit container identifier here
+        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
+
         container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
         container.viewContext.automaticallyMergesChangesFromParent = true
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+
+        container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-        })
+        }
         return container
     }()
-
     // MARK: - Core Data Saving support
 
     func saveContext () {

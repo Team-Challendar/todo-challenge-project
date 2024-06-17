@@ -13,10 +13,13 @@ class CoreDataManager {
                 fatalError("Failed to initialize persistent Container")
             }
             
-            // CloudKit 및 CoreData 설정
+            // CloudKit and CoreData settings
             description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
             description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
             
+            // Set your CloudKit container identifier here
+            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
+
             container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
             container.viewContext.automaticallyMergesChangesFromParent = true
             
