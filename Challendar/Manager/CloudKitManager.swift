@@ -6,13 +6,12 @@ class CloudKitManager {
     static let shared = CloudKitManager()
     private init() {}
     
-    func fetchData(completion: @escaping ([NoticeModel]) -> Void)  {
-        var notices : [NoticeModel] = []
-        let container = CKContainer(identifier: "iCloud.com.seungwon.Challendar")
+    func fetchData(completion: @escaping ([NoticeModel]) -> Void) {
+        var notices: [NoticeModel] = []
+        let container = CKContainer(identifier: "iCloud.com.seungwon.Challendar") // Ensure the container identifier is correct
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: "Notice", predicate: predicate)
         let operation = CKQueryOperation(query: query)
-        operation.database = container.publicCloudDatabase
         
         operation.recordMatchedBlock = { recordID, result in
             switch result {
