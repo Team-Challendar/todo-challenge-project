@@ -8,14 +8,25 @@ class CoreDataManager {
     private init() {}
     
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
-        let container = NSPersistentCloudKitContainer(name: "Challendar")
-        container.loadPersistentStores { storeDescription, error in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+            let container = NSPersistentCloudKitContainer(name: "Challendar")
+            guard let description = container.persistentStoreDescriptions.first else {
+                fatalError("Failed to initialize persistent Container")
             }
-        }
-        return container
-    }()
+            
+            // CloudKit 및 CoreData 설정
+            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+            
+            container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+            container.viewContext.automaticallyMergesChangesFromParent = true
+            
+            container.loadPersistentStores { storeDescription, error in
+                if let error = error as NSError? {
+                    fatalError("Unresolved error \(error), \(error.userInfo)")
+                }
+            }
+            return container
+        }()
     
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
