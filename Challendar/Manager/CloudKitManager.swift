@@ -1,18 +1,21 @@
 import Foundation
 import CloudKit
 
+// CoreData 함수용 Manager 싱글톤 (공지사항용)
 class CloudKitManager {
     
     static let shared = CloudKitManager()
     private init() {}
     
+    // CloudKit에서 데이터 가져오기
     func fetchData(completion: @escaping ([NoticeModel]) -> Void) {
         var notices: [NoticeModel] = []
-        let container = CKContainer(identifier: "iCloud.com.seungwon.Challendar") // Ensure the container identifier is correct
+        let container = CKContainer(identifier: "iCloud.com.seungwon.Challendar") // 컨테이너 식별자가 올바른지 확인
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: "Notice", predicate: predicate)
         let operation = CKQueryOperation(query: query)
         
+        // 레코드가 매칭될 때 호출
         operation.recordMatchedBlock = { recordID, result in
             switch result {
             case .success(let record):
@@ -31,6 +34,7 @@ class CloudKitManager {
             }
         }
         
+        // 쿼리 결과가 완료될 때 호출되는 블록
         operation.queryResultBlock = { result in
             switch result {
             case .success:
@@ -41,6 +45,7 @@ class CloudKitManager {
             }
         }
         
+        // 쿼리 작업을 공용 클라우드 컨테이너에 추가
         container.publicCloudDatabase.add(operation)
     }
 }

@@ -12,7 +12,7 @@ import Lottie
 protocol TodoCalendarCollectionViewCellDelegate: AnyObject {
     func editContainerTapped(in cell: TodoCalendarViewCell)
 }
-
+// 계획 탭에서 사용되는 Cell
 class TodoCalendarViewCell: UICollectionViewCell {
     static var identifier = "TodoCalendarViewCell"
     let animation = LottieAnimation.named("doneBlue")

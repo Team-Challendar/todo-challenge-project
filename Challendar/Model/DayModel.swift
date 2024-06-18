@@ -1,6 +1,6 @@
 import UIKit
 
-//
+// 달력에서 사용하는 모델
 class Day : Hashable{
     var date : Date
     var listCount : Int
@@ -31,6 +31,7 @@ class Day : Hashable{
 }
 
 extension Day {
+    // 주어진 날짜 +-1 달까지 포함해서 [Day] 리턴
     static func generateDaysForMonth(date: Date, todos: [Todo]) -> [Day] {
         var days: [Day] = []
         let calendar = Calendar.current

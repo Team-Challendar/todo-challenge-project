@@ -2,8 +2,9 @@ import UIKit
 import CoreData
 import UserNotifications
 
+// CoreData 함수용 Manager 싱글톤
 class CoreDataManager {
-    
+
     static let shared = CoreDataManager()
     
     private init() {
@@ -16,6 +17,7 @@ class CoreDataManager {
         }
     }
     
+    // Core Data persistent container 초기화
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let container = NSPersistentCloudKitContainer(name: "Challendar")
         guard let description = container.persistentStoreDescriptions.first else {
@@ -44,6 +46,7 @@ class CoreDataManager {
         return container
     }()
     
+    // Core Data context 반환
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }

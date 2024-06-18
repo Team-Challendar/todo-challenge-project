@@ -3,7 +3,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import PhotosUI
-
+// Add 화면 (사진 첨부기능 주석 처리)
 class AddTodoTitleViewController: BaseViewController {
     
     let titleLabel = EditTitleLabel(text: "어떤 계획이 생겼나요?")

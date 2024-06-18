@@ -1,7 +1,7 @@
 import UIKit
 import Lottie
 
-class TodoCalendarViewDifferableViewController: BaseViewController {
+class TodoCalendarViewDifferableViewController: BaseViewController{
     var calendarView = TodoCalendarView()
     var dimmedView = UIView()
     var dailyView = DailyView()
@@ -22,7 +22,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
     var prevMonth : Date?
     
     private var dataSource: UICollectionViewDiffableDataSource<Section, SectionItem>!
-    
+    // 뷰가 로드될 때 호출
     override func viewDidLoad() {
         configureCollectionView()
         super.viewDidLoad()
@@ -31,12 +31,14 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         configureDataSource()
         configureFloatingButton()
     }
+    // UI 구성
     override func configureUI() {
         super.configureUI()
         dimmedView.backgroundColor = UIColor.secondary900.withAlphaComponent(0)
         topContainer.backgroundColor = .clear
         dailyView.isHidden = true
     }
+    // 유틸리티 구성
     override func configureUtil() {
         super.configureUtil()
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(titleTouched))
@@ -46,14 +48,13 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         periodBtnView.delegate = self
         
     }
+    // NotificationCenter 구성
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(self, selector: #selector(dateChanged(notification:)), name: NSNotification.Name("date"), object: currentDate)
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(addDaysFront(notification:)), name: NSNotification.Name("AddDaysFront"), object: nextMonth)
-//        NotificationCenter.default.addObserver(self, selector: #selector(addDaysBack(notification:)), name: NSNotification.Name("AddDaysBack"), object: prevMonth)
     }
-    
+    // 제약 조건 구성
     override func configureConstraint() {
         super.configureConstraint()
         
@@ -101,6 +102,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         }
         
     }
+    // 버튼 뷰 표시 (달력 / 일간 변경 뷰)
     func showButtonView(){
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
@@ -111,15 +113,16 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
             }
         }
     }
-    
+    // 버튼 뷰 제거
     func removeButtonView(){
         dimmedView.removeFromSuperview()
     }
+    // 네비게이션 바 구성
     func configureNav(title: String){
         button = configureCalendarButtonNavigationBar(title: title)
         button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
     }
-    
+    // 컬렉션 뷰 구성
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.delegate = self
@@ -132,7 +135,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 83, right: 0)
                 collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
-    
+    // 컴포지셔널 레이아웃 생성
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             if self.currentState == .daily{
@@ -148,7 +151,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
             
         }
     }
-    
+    // Todo 항목 필터링
     private func filterTodoitems(date: Date = Date()){
         self.todoItems = todoItems.filter({
             $0.startDate != nil && $0.isChallenge == false
@@ -239,7 +242,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         snapshot.appendItems(completedTodo.map{.completeItem($0)}, toSection: .complete)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
-    
+    // 날짜 변경 알림 처리
     @objc func dateChanged(notification : Notification){
         guard let date = notification.object as? Date else {return}
         self.currentDate = date
@@ -249,28 +252,13 @@ class TodoCalendarViewDifferableViewController: BaseViewController {
         self.filterTodoitems(date: date)
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
-    
+    // Core Data 업데이트 알림 처리
     @objc func coreDataUpdated(){
         todoItems = CoreDataManager.shared.fetchTodos()
         self.filterTodoitems(date:  self.currentDate ?? Date())
         updateDataSource() // 데이터 업데이트 메서드 호출
     }
-    @objc func addDaysFront(notification: Notification){
-        guard let date = notification.object as? Date else {return}
-        
-        let prevDays = Day.generateDaysForMonth(date: date, todos: self.todoItems)
-        currentDate = date.prevMonth()
-        days = prevDays + days!
-        dailyView.configure(with: days!,selectedDate: currentDate)
-    }
-    @objc func addDaysBack(notification: Notification){
-        guard let date = notification.object as? Date else {return}
-        
-        let nextDays = Day.generateDaysForMonth(date: date, todos: self.todoItems)
-        currentDate = date.nextMonth()
-        days = days! + nextDays
-        dailyView.configure(with: days!,selectedDate: currentDate)
-    }
+    // 제목 터치 처리
     @objc func titleTouched() {
         guard let arrow = button.viewWithTag(1001) as? LottieAnimationView else { return }
         
@@ -366,7 +354,7 @@ extension TodoCalendarViewDifferableViewController : TodoCalendarCollectionViewC
         self.present(navi, animated: true, completion: nil)
     }
 }
-
+// (달력/날짜) pickerButtonView 터치 처리
 extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDelegate {
     func didTapDailyButton(){
         currentState = .daily
