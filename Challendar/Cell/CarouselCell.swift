@@ -8,7 +8,7 @@
 import UIKit
 
 
-// CarouselCell 클래스는 UICollectionViewCell을 상속받아 만든 사용자 정의 셀 클래스
+// UICollectionViewCell을 상속받아 만든 사용자 정의 셀 클래스
 class CarouselCell: UICollectionViewCell {
     
     // 컨테이너 뷰 설정

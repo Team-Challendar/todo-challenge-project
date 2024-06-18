@@ -8,29 +8,23 @@
 import UIKit
 import Lottie
 import SnapKit
+
+// LaunchScreenViewController 클래스는 앱의 런치 스크린을 관리
 class LaunchScreenViewController: UIViewController {
 
-    private var animationView: LottieAnimationView?
-    private var titleLabel: UILabel!
-    private var subLabel: UILabel!
+    private var animationView: LottieAnimationView? // Lottie 애니메이션 뷰
+    private var titleLabel: UILabel! // 타이틀 라벨
+    private var subLabel: UILabel! // 서브 라벨
 
+    // 뷰가 로드되었을 때 호출되는 메서드
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .secondary900
-        setupTitleLabel()
-        setupAnimation()
+        view.backgroundColor = .secondary900 // 배경 색상 설정
+        setupTitleLabel() // 타이틀 라벨 설정
+        setupAnimation() // 애니메이션 설정
     }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
-//            self.dismiss(animated: false)
-//            let tabBarViewController = TabBarViewController()
-//            tabBarViewController.modalPresentationStyle = .overFullScreen
-//            tabBarViewController.modalTransitionStyle = .crossDissolve
-//            self.show(tabBarViewController, sender: self)
-//            
-//        })
-//    }
+    // 뷰가 나타났을 때 호출되는 메서드
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
@@ -39,11 +33,11 @@ class LaunchScreenViewController: UIViewController {
             tabBarViewController.modalPresentationStyle = .overFullScreen
             tabBarViewController.modalTransitionStyle = .crossDissolve
 
-            // Set the new rootViewController to TabBarViewController
+            // 새로운 rootViewController를 TabBarViewController로 설정
             if let window = UIApplication.shared.windows.first {
                 window.rootViewController = tabBarViewController
 
-                // Add transition animation
+                // 전환 애니메이션 추가
                 let transition = CATransition()
                 transition.type = .fade
                 transition.duration = 0.3
@@ -52,6 +46,7 @@ class LaunchScreenViewController: UIViewController {
         }
     }
 
+    // 타이틀 라벨을 설정하는 함수
     private func setupTitleLabel() {
         titleLabel = UILabel()
         titleLabel.text = "챌린더"
@@ -70,18 +65,19 @@ class LaunchScreenViewController: UIViewController {
 
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        titleLabel.snp.makeConstraints{
+        titleLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(121)
             $0.centerX.equalToSuperview()
         }
         
-        subLabel.snp.makeConstraints{
+        subLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(15)
         }
         subLabel.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    // 애니메이션을 설정하는 함수
     private func setupAnimation() {
         animationView = LottieAnimationView(name: "Logo")
         if let animationView = animationView {
@@ -97,7 +93,7 @@ class LaunchScreenViewController: UIViewController {
                 animationView.heightAnchor.constraint(equalToConstant: 185)
             ])
 
-            animationView.play()
+            animationView.play() // 애니메이션 재생
         }
     }
 }

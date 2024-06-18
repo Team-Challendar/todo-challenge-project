@@ -1,5 +1,5 @@
 //
-//  CollectionViewCell.swift
+//  DailyCollectionViewCell.swift
 //  Challendar
 //
 //  Created by 채나연 on 5/30/24.
@@ -7,20 +7,20 @@
 import UIKit
 import SnapKit
 
+//UIView를 상속받아 데일리 뷰를 정의
 class DailyView: UIView {
-    var days : [Day]?
+    var days: [Day]?
     var dateLabel = UILabel()
     let layout = YZCenterFlowLayout()
-    // 상단 캐로셀 컬렉션 뷰 설정
     var collectionView: UICollectionView!
-    var currentDate : Date?
+    var currentDate: Date?
     let visibleItemsThreshold = 4
     
     // 초기화 메서드
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureCollectionView()
-        configureConstraint()
+        configureCollectionView() // 컬렉션 뷰 설정
+        configureConstraint() // 제약 조건 설정
         backgroundColor = .clear
     }
     
@@ -29,22 +29,25 @@ class DailyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // label의 텍스트를 설정하고 testCollectionView의 데이터를 다시 로드
+    // 라벨의 텍스트를 설정하고 컬렉션 뷰의 데이터를 다시 로드
     func configure(with days: [Day], selectedDate: Date?) {
-        configureDateLabel(date: selectedDate)
-        currentDate = selectedDate!
+        configureDateLabel(date: selectedDate) // 라벨 설정
+        currentDate = selectedDate
         self.days = days
         collectionView.reloadData()
-        
     }
-    func configureDateLabel(date: Date?){
+    
+    // 날짜 라벨을 설정하는 함수
+    func configureDateLabel(date: Date?) {
         dateLabel.text = DateFormatter.dateFormatter.string(from: date ?? Date())
         dateLabel.font = .pretendardBold(size: 16)
         dateLabel.backgroundColor = .clear
         dateLabel.textColor = .secondary700
         updateLabel(date ?? Date())
     }
-    func configureConstraint(){
+    
+    // 제약 조건을 설정하는 함수
+    func configureConstraint() {
         self.addSubview(dateLabel)
         self.addSubview(collectionView)
         
@@ -58,13 +61,12 @@ class DailyView: UIView {
             $0.leading.equalToSuperview().offset(16)
         }
     }
-    func configureCollectionView(){
+    
+    // 컬렉션 뷰를 설정하는 함수
+    func configureCollectionView() {
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSizeMake(198, 244)
-        // 애니메이션 모드 설정
         layout.animationMode = YZCenterFlowLayoutAnimation.scale(sideItemScale: 0.64, sideItemAlpha: 0.6, sideItemShift: 0)
-        
-        // 셀 간격 설정
         layout.spacingMode = .fixed(spacing: 16)
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
@@ -73,9 +75,9 @@ class DailyView: UIView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.delegate = self
         collectionView.dataSource = self
-        
     }
     
+    // 라벨 텍스트를 업데이트하는 함수
     func updateLabel(_ date: Date) {
         let dateString = DateFormatter.dateFormatter.string(from: date)
         let attributedString = NSMutableAttributedString(string: dateString)
@@ -87,8 +89,10 @@ class DailyView: UIView {
     }
 }
 
-extension DailyView : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
-    // 콜렉션뷰에 10개의 셀을 선언
+// UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate 프로토콜 채택
+extension DailyView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    
+    // 섹션 내 아이템 수를 반환
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return days?.count ?? 0
     }
@@ -101,24 +105,18 @@ extension DailyView : UICollectionViewDelegate, UICollectionViewDataSource, UICo
         if let days = days {
             let data = days[indexPath.row]
             cell.configure(day: data)
-            if (currentDate!.isSameDay(as: data.date)){
+            if currentDate?.isSameDay(as: data.date) == true {
                 cell.configureSelectedDate()
             }
         }
         return cell
     }
+    
+    // 스크롤이 멈췄을 때 호출되는 함수
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let page = layout.currentCenteredPage {
-            NotificationCenter.default.post(name: NSNotification.Name("date"), object: days![page].date, userInfo: nil)
-//            if page <= 4 {
-//                NotificationCenter.default.post(name: NSNotification.Name("AddDaysFront"), object: days![page].date.prevMonth(), userInfo: nil)
-//            }
-//            if let count = days?.count {
-//                if page >= count - 4 {
-//                    NotificationCenter.default.post(name: NSNotification.Name("AddDaysBack"), object: days![page].date.nextMonth(), userInfo: nil)
-//                }
-//            }
-//            
+            NotificationCenter.default.post(name: NSNotification.Name("date"), object: days?[page].date, userInfo: nil)
         }
     }
 }
+
