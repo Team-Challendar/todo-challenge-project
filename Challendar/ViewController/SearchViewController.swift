@@ -12,13 +12,14 @@ import SnapKit
 class SearchViewController: BaseViewController {
     
     private var items: [Todo] = CoreDataManager.shared.fetchTodos()
-    private var filteredChallengeItems: [Todo] = []
-    private var filteredNonChallengeItems: [Todo] = []
-    private var filteredNoDeadlineItems: [Todo] = []
-    private var filteredCompletedItems: [Todo] = []
+    private var filteredChallengeItems: [Todo] = []  // 챌린지 투두
+    private var filteredNonChallengeItems: [Todo] = []  // 챌린지가 아닌 투두 (계획, 할 일)
+    private var filteredNoDeadlineItems: [Todo] = []    // 기한 없는 투두
+    private var filteredCompletedItems: [Todo] = []     // 완료된 투두
     private var previousIndexPath: IndexPath?
     private var selectedIndexPath: IndexPath?
     
+    // 검색값에 해당하는 투두가 없는 경우의 UI
     private var emptyMainLabel: UILabel!
     private var emptyImage: UIImageView!
     
@@ -35,7 +36,6 @@ class SearchViewController: BaseViewController {
         super.viewDidLoad()
         emptyMainLabel.isHidden = true
         emptyImage.isHidden = true
-        
     }
     
     override func configureUI() {
@@ -55,6 +55,7 @@ class SearchViewController: BaseViewController {
     }
     
     override func configureNotificationCenter() {
+        // CoreData가 변경되었을 때 데이터를 다시 로드하는 노티
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(coreDataChanged(_:)),
@@ -62,11 +63,12 @@ class SearchViewController: BaseViewController {
             object: nil
         )
     }
-    
+    // CoreData가 변경되었을 때 데이터를 다시 로드
     @objc func coreDataChanged(_ notification: Notification) {
-        reloadData() // 데이터 다시 로드
+        reloadData()
     }
     
+    // 컬렉션 뷰의 제약 조건
     private func setupLayout() {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -89,12 +91,14 @@ class SearchViewController: BaseViewController {
         view.addSubview(collectionView)
     }
     
+    // 컴포지셔널 레이아웃 호출
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             return self.createTodoSection(itemHeight: .estimated(75))
         }
     }
     
+    // 데이터 리로드: 검색텍스트로 CoreData에서 투두 항목을 다시 가져와서 필터링
     private func reloadData() {
         self.items = CoreDataManager.shared.fetchTodos()
         if let searchText = searchBar.text, !searchText.isEmpty {
@@ -109,6 +113,7 @@ class SearchViewController: BaseViewController {
         self.collectionView.reloadData()
     }
     
+    // 서치바 UI 설정
     func searchBarConfigure() {
         searchBar = UISearchBar()
         searchBar.delegate = self
@@ -132,17 +137,20 @@ class SearchViewController: BaseViewController {
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // 서치바 타이핑할 때 취소 버튼 표시
         searchBar.setShowsCancelButton(true, animated: false)
         //        navigationItem.rightBarButtonItem = customCancelButton
         updateSearchTextFieldConstraints(showingCancelButton: true)
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        // 서치바 타이핑 안할 때 취소 버튼 숨김
         searchBar.setShowsCancelButton(false, animated: false)
         //        navigationItem.rightBarButtonItem = nil
         updateSearchTextFieldConstraints(showingCancelButton: false)
     }
     
+    // 서치바 TextField 커스텀
     private func searchBarTextFieldConfigure() {
         searchBar.searchTextField.backgroundColor = .secondary850
         searchBar.searchTextField.font = .pretendardMedium(size: 18)
@@ -164,7 +172,7 @@ class SearchViewController: BaseViewController {
         }
         setLeftImage(UIImage.search0, for: searchBar.searchTextField)
         
-        let attributes:[NSAttributedString.Key: Any] = [
+        let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white,
             .font: UIFont.pretendardSemiBold(size: 16)
         ]
@@ -184,16 +192,17 @@ class SearchViewController: BaseViewController {
         textField.leftViewMode = .always
     }
     
+    // 서치바 취소 버튼 상황별 제약조건
     private func updateSearchTextFieldConstraints(showingCancelButton: Bool) {
         let trailingConstant: CGFloat = showingCancelButton ? -64 : -16
         UIView.animate(withDuration: 0.3, animations: {
-            self.searchBar.searchTextField.snp.updateConstraints{
+            self.searchBar.searchTextField.snp.updateConstraints {
                 $0.trailing.equalToSuperview().offset(trailingConstant)
             }
         })
     }
     
-    // 비어있는 상태 UI 설정
+    // 검색값에 해당하는 투두가 없는 경우의 UI 요소
     private func setupEmptyStateViews() {
         emptyMainLabel = UILabel()
         emptyMainLabel.text = "검색 결과가 없어요..."
@@ -206,6 +215,7 @@ class SearchViewController: BaseViewController {
         view.addSubview(emptyImage)
     }
     
+    // 검색값에 해당하는 투두가 없는 경우의 UI 제약 조건
     private func setupEmptyStateConstraints() {
         emptyMainLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -219,6 +229,7 @@ class SearchViewController: BaseViewController {
         }
     }
     
+    // 검색값에 해당하는 투두가 없는 경우를 구분 및 업데이트
     private func updateEmptyState(hasResults: Bool, searchText: String) {
         if searchText.isEmpty {
             emptyMainLabel.isHidden = true
@@ -229,6 +240,7 @@ class SearchViewController: BaseViewController {
         }
     }
     
+    // 검색값에 해당하는 투두가 없는 경우는 빈 배열, 아닌 경우 각 기준에 따라 아이템 필터링, 최신순으로 정렬
     private func filterItems(with searchText: String) {
         if searchText.isEmpty {
             filteredChallengeItems = []
@@ -246,7 +258,7 @@ class SearchViewController: BaseViewController {
         self.collectionView.reloadData()
     }
     
-    // 최신순
+    // 최신순 정렬: 필터링된 항목들을 startDate 순으로 정렬
     private func sortByRecentStartDate() {
         func sortItems(_ items: inout [Todo]) {
             items.sort {
@@ -274,6 +286,7 @@ class SearchViewController: BaseViewController {
         filteredCompletedItems.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
     
+    // 완료 상태 비교: 두 투두 항목의 완료 상태를 비교)
     private func compareCompleted(_ todo1: Todo, _ todo2: Todo) -> ComparisonResult {
         let completed1 = todo1.todayCompleted() ?? false
         let completed2 = todo2.todayCompleted() ?? false
@@ -290,45 +303,50 @@ class SearchViewController: BaseViewController {
     @objc func dismissKeyboard() {
         searchBar.resignFirstResponder()
     }
-    
 }
 
 extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    // 비어있지 않은 배열의 수 반환
+    // 값이 없는 섹션을 제외한 섹션의 수를 구함
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].filter { !$0.isEmpty }.count
     }
     
+    // 각 섹션별 항목 수를 구함
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return getTodoItem(for: section).count
     }
     
+    // 각 섹션별 셀 설정: 각 셀을 필터된 아이템의 값에 따라 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = getTodoItem(for: indexPath.section)[indexPath.row]
         let today = Date()
         
-        // 도전 예정
+        // 도전 예정 항목 셀
         if let startDate = item.startDate, item.isChallenge == true, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "defaultCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: item)
             cell.contentView.alpha = 0.2
             cell.isUserInteractionEnabled = false
             return cell
-        } else if item.isChallenge {    // 도전 항목
+        } else if item.isChallenge {
+            // 지금 도전 중 항목 셀
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "challengeCell", for: indexPath) as! ChallengeCollectionViewCell
             cell.configure(with: item)
             return cell
+            // 계획 예정 항목 셀
         } else if let startDate = item.startDate, item.isChallenge == false, let endDate = item.endDate, !today.isBetween(startDate, endDate) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendarCell", for: indexPath) as! TodoCalendarViewCell
             cell.configure(with: item, date: today)
             cell.contentView.alpha = 0.2
             cell.isUserInteractionEnabled = false
             return cell
-        } else if item.endDate == nil { // 할 일 항목
+        } else if item.endDate == nil {
+            // 할 일 항목 셀
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TodoCollectionViewCell
             cell.configure(with: item)
             return cell
         } else {
+            // 계획 항목 셀
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "calendarCell", for: indexPath) as! TodoCalendarViewCell
             cell.configure(with: item, date: today)
             cell.contentView.alpha = 1.0
@@ -336,12 +354,14 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         }
     }
     
+    // 섹션 헤더 메소드 호출
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader
         header.sectionLabel.text = getSectionHeaderTitle(for: indexPath.section)
         return header
     }
     
+    // 항목 선택시 해당 투두의 완료/ 미완료를 토글하고 해당 투두 값에 업데이트
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = getTodoItem(for: indexPath.section)[indexPath.row]
         
@@ -356,12 +376,13 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
         collectionView.reloadData()
     }
     
-    
+    // 각 섹션의 항목들 구함
     private func getTodoItem(for section: Int) -> [Todo] {
         let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].enumerated().filter { !$0.element.isEmpty }
         return nonEmptySections[section].element
     }
     
+    // 각 인덱스 값에 해당하는 섹션의 헤더 제목을 반환
     private func getSectionHeaderTitle(for section: Int) -> String {
         let nonEmptySections = [filteredChallengeItems, filteredNonChallengeItems, filteredNoDeadlineItems, filteredCompletedItems].enumerated().filter { !$0.element.isEmpty }
         switch nonEmptySections[section].offset {
@@ -380,13 +401,15 @@ extension SearchViewController: UICollectionViewDataSource, UICollectionViewDele
 }
 
 extension SearchViewController: UISearchBarDelegate {
+    // 검색어가 변경될 때마다 필터링하게끔
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterItems(with: searchText)
     }
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        if let tabBarController = self.tabBarController as? TabBarViewController {
-//            tabBarController.goToPreviousTab()
-//        }
+        //        if let tabBarController = self.tabBarController as? TabBarViewController {
+        //            tabBarController.goToPreviousTab()
+        //        }
         searchBar.resignFirstResponder()
     }
 }
