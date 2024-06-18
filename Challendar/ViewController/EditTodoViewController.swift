@@ -38,6 +38,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         setupTapGestures()
     }
     
+    // 키보드와 텍스트 필드를 해제하는 탭 제스처 설정
     private func setupTapGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
@@ -47,11 +48,12 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         view.addGestureRecognizer(outsideTapGesture)
     }
     
-    // 제스처 인식기 메소드 추가
+    // 화면 탭 시 키보드 없앰
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
     
+    // 특정 영역 외부 탭 시 타이핑 해제
     @objc private func dismissTextField(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: self.view)
         if !dateAskView.frame.contains(location) && !todoTextField.frame.contains(location) {
@@ -61,7 +63,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // 수정 버튼을 누르지 않고 화면이 사라질 때, 원래 상태로 돌아갑니다.
+        // 수정 버튼을 누르지 않으면 기존 투두 그대로
         fetchTodo()
     }
     
@@ -105,6 +107,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         }
     }
     
+    // CoreData에서 Todo 항목을 불러온 뒤, 표시
     private func fetchTodo() {
         guard let todoId = todoId, let todoModel = CoreDataManager.shared.fetchTodoById(id: todoId) else {
             print("Todo not found")
@@ -132,6 +135,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         }
     }
 
+    // 포매터로 dateView 텍스트 설정
     private func getAttributedDateText(startDate: Date?, endDate: Date?, isHighlighted: Bool) -> NSAttributedString {
         guard let startDate = startDate, let endDate = endDate else { return NSAttributedString(string: "") }
         
@@ -155,6 +159,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         return attributedString
     }
     
+    // 투두 날짜를 dateView 텍스트에 업데이트
     private func updateDateViewTextForModel(startDate: Date, endDate: Date, isHighlighted: Bool = false) {
         self.dateView.textLabel.attributedText = self.getAttributedDateText(startDate: startDate, endDate: endDate, isHighlighted: isHighlighted)
     }
@@ -163,16 +168,19 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.dateView.textLabel.text = "나중에 정할래요"
     }
     
+    // dateViewTapped를 호출하는 GestureRecognizer
     private func configureGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dateViewTapped))
         dateAskView.addGestureRecognizer(tapGesture)
         dateAskView.isUserInteractionEnabled = true
     }
     
+    // 날짜 범위 변경 노티피케이션
     private func setupNotificationCenter() {
         NotificationCenter.default.addObserver(self, selector: #selector(startDateChanged), name: NSNotification.Name("dateRange"), object: nil)
     }
     
+    // 날짜 범위 변셕 시 dateView 텍스트 업데이트
     @objc func startDateChanged(notification: Notification) {
         guard let data = notification.object as? DateRange else { return }
         self.dateRange = data
@@ -180,9 +188,8 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         editButton.setTitleColor(.challendarGreen200, for: .normal)
     }
     
-    // dateViewTapped 메소드 수정
+    // dateView 탭 시 바텀 시트 표시, 선택한 날짜 범위로 dateView 택스트 업데이트
     @objc private func dateViewTapped() {
-        // 타이핑 상태 해제
         view.endEditing(true)
         dateAskView.layer.borderColor = UIColor.challendarGreen200.cgColor
         dateAskView.layer.borderWidth = 1.0
@@ -202,7 +209,6 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         
         bottomSheetVC.bottomSheetLaterButtonTapped = { [weak self] in
             guard let self = self else { return }
-            // 기존 투두 가져오기
             guard let todoId = self.todoId, let todoModel = CoreDataManager.shared.fetchTodoById(id: todoId) else {
                 return
             }
@@ -245,10 +251,12 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.present(bottomSheetVC, animated: false, completion: nil)
     }
     
+    //  바텀 시트를 표시
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return CustomPresentationController(presentedViewController: presented, presenting: presenting)
     }
     
+    // 선택된 새로운 날짜 범위로 newTodo 업데이트
     func dateRangeSelected(startDate: Date?, endDate: Date?) {
         guard let startDate = startDate, let endDate = endDate else { return }
         self.newTodo?.startDate = startDate
@@ -257,9 +265,10 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         // completed 배열을 초기화하지 않도록 수정
         self.updateDateViewTextForModel(startDate: startDate, endDate: endDate)
         
-        self.dismiss(animated: true, completion: nil) // 바텀시트엥 디스미스 컴플리션
+        self.dismiss(animated: true, completion: nil)
     }
     
+    // 네비게이션 바 UI
     func configureNavigationForEdit(checkFirst: Bool) {
         let closeImageView = UIImageView()
         closeImageView.snp.makeConstraints {
@@ -287,7 +296,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.navigationItem.rightBarButtonItem = editBarButtonItem
     }
     
-    // editButtonTapped 메서드에서 endDate가 nil이 아닌 경우에 대한 로직 추가
+    // 수정 버튼을 탭했을 때 새로운 값 저장
     @objc func editButtonTapped() {
         guard let todoId = todoId else { return }
         guard let title = todoTextField.text, !title.isEmpty else {
@@ -299,15 +308,15 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             return
         }
         
-        // 기존 투두의 날짜 범위
+        // 기존 투두 날짜 범위
         let oldStartDate = todoModel.startDate
         let oldEndDate = todoModel.endDate
         
-        // 새로운 투두의 날짜 범위
+        // 새로운 투두 날짜 범위
         let newStartDate = newTodo?.startDate
         let newEndDate = newTodo?.endDate
         
-        // 기존 completed 배열을 유지하면서 새로운 completed 배열 생성
+        // 기존 completed 배열을 유지, 새로운 completed 배열 생성
         var updatedCompleted: [Bool] = []
         
         if let oldStart = oldStartDate, let newStart = newStartDate, let newEnd = newEndDate {
@@ -410,7 +419,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         }
     }
 
-    
+    // isChallenge 값이 변경된 투두 업데이트
     private func updateTodoIsChallenge(isChallenge: Bool, todoModel: TodoModel, title: String, startDate: Date?, endDate: Date?, completed: [Bool]) {
         todoModel.isChallenge = isChallenge
         todoModel.title = title
@@ -428,10 +437,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         self.dismiss(animated: true, completion: nil)
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        editButton.setTitleColor(.challendarGreen200, for: .normal)
-    }
-    
+    // 타이핑 시작 시 UI 업데이트
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == todoTextField {
             titleView.layer.borderColor = UIColor.challendarGreen200.cgColor
@@ -446,6 +452,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         }
     }
     
+    // 타이핑 종료 시 UI 업데이트
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == todoTextField {
             titleView.layer.borderColor = UIColor.clear.cgColor
@@ -460,6 +467,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     }
 }
 
+// 바텀 시트 표시
 class CustomPresentationController: UIPresentationController {
     override var shouldRemovePresentersView: Bool {
         return false
