@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+// 사진 추가할 경우 Cell에 들어가는 UIImageView
 class PhotoImageView: UIImageView {
 
     override init(image: UIImage?) {

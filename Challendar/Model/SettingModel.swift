@@ -1,5 +1,5 @@
 import UIKit
-
+// 설정 페이지 데이터 모델 용
 struct SettingModel : Hashable {
     var menuTitle: String
     var toggle: Bool?

@@ -1,36 +1,34 @@
+//
+//  Todo.swift
+//  Challendar
+//
+//  Created by Sam.Lee on 6/2/24.
+//
+
 import UIKit
 
-enum RepetitionCycle : Hashable {
-    case daily
-    case weekly([Int]) // Array of weekdays, where 1 = Sunday, 7 = Saturday
-    case monthly([Int]) // Array of days of the month, where 1 = 1st, 31 = 31st
-    case yearly([DateComponents]) // Array of date components representing specific days of the year
-    case none
-}
-
-class Todo: Hashable {
-    public var id: UUID?
+class Todo : Hashable{
+    public var id : UUID?
     public var title: String
     public var memo: String?
     public var startDate: Date?
     public var endDate: Date? {
-        didSet {
-            initializeCompletedDictionary()
+        didSet{
+            guard let startDate = startDate else {return}
+            completed = [Bool](repeating: false, count: ((endDate?.daysBetween(startDate) ?? 0) + 1))
         }
     }
-    public var completed: [Date: Bool] = [:] {
-        didSet {
-            updatePercentage()
+    public var completed: [Bool] = []{
+        didSet{
+            percentage = Double(completed.filter{$0 == true}.count) / Double( completed.count)
         }
     }
     public var isChallenge: Bool = false
     public var percentage: Double = 0
     public var images: [UIImage]?
-    public var iscompleted = false
-    public var repetition: RepetitionCycle = .none // New property for repetition
-    public var reminderTime: DateComponents? // Single reminder time for all applicable dates
-
-    init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Date: Bool] = [:], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil, iscompleted: Bool = false, repetition: RepetitionCycle = .none, reminderTime: DateComponents? = nil) {
+    public var iscompleted = false  // 요게 새로 추가된 iscompleted 변수입니다.*
+    
+    init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Bool] = [], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil, iscompleted : Bool = false) {
         self.id = id
         self.title = title
         self.memo = memo
@@ -41,93 +39,49 @@ class Todo: Hashable {
         self.percentage = percentage
         self.images = images
         self.iscompleted = iscompleted
-        self.repetition = repetition
-        self.reminderTime = reminderTime
-        initializeCompletedDictionary()
     }
-
-    private func initializeCompletedDictionary() {
-        guard let startDate = startDate, let endDate = endDate else { return }
-
-        let calendar = Calendar.current
-        switch repetition {
-        case .daily:
-            var currentDate = startDate
-            while currentDate <= endDate {
-                completed[currentDate] = false
-                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+    //MARK: - 오늘기준으로 Todo의 completed 값 리턴, 매개변수 추가 안할시에는 자동으로 오늘 기준
+    func todayCompleted(date: Date = Date()) -> Bool?{
+        if let startDate = startDate, let endDate = endDate{
+            if (date.isBetween(startDate, endDate)){
+                return self.completed[date.daysBetween(startDate)]
+            }else{
+                return nil
             }
-        case .weekly(let weekdays):
-            var currentDate = startDate
-            while currentDate <= endDate {
-                let weekday = calendar.component(.weekday, from: currentDate)
-                if weekdays.contains(weekday) {
-                    completed[currentDate] = false
-                }
-                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
-            }
-        case .monthly(let days):
-            var currentDate = startDate
-            while currentDate <= endDate {
-                let day = calendar.component(.day, from: currentDate)
-                if days.contains(day) {
-                    completed[currentDate] = false
-                }
-                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
-            }
-        case .yearly(let dates):
-            var currentDate = startDate
-            while currentDate <= endDate {
-                let components = calendar.dateComponents([.month, .day], from: currentDate)
-                if dates.contains(where: { $0.month == components.month && $0.day == components.day }) {
-                    completed[currentDate] = false
-                }
-                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
-            }
-        case .none:
-            completed[startDate] = false
         }
-        updatePercentage()
+        return nil
     }
-
-    private func updatePercentage() {
-        let completedCount = completed.values.filter { $0 == true }.count
-        percentage = Double(completedCount) / Double(completed.count)
-    }
-
-    func todayCompleted(date: Date = Date()) -> Bool? {
-        return completed[date]
-    }
-
-    func toggleTodaysCompletedState() {
-        let today = Date()
-        if let currentStatus = completed[today] {
-            completed[today] = !currentStatus
+    
+    //MARK: - 오늘기준으로 Todo의 completed 배열을 toggle
+    func toggleTodaysCompletedState(){
+        if let startDate = startDate, let endDate = endDate{
+            if (Date.isTodayBetween(startDate, endDate)){
+                let today = Date()
+                self.completed[today.daysBetween(startDate)].toggle()
+            }
         }
     }
-
-    func toggleDatesCompletedState(date: Date) {
-        if let currentStatus = completed[date] {
-            completed[date] = !currentStatus
+    //MARK: - 주어진 date기준으로 Todo의 completed 배열을 toggle
+    func toggleDatesCompletedState(date: Date){
+        if let startDate = startDate, let endDate = endDate{
+            if (date.isBetween(startDate, endDate)){
+                self.completed[date.daysBetween(startDate)].toggle()
+            }
         }
     }
-
-    func setReminderTime(hour: Int, minute: Int) {
-        reminderTime = DateComponents(hour: hour, minute: minute)
+    //MARK: - 오늘까지의 달성율
+    func getPercentageToToday() -> Double{
+        if let startDate = startDate, let endDate = endDate {
+            if Date().isBetween(startDate, endDate) {
+                let count = Date().daysBetween(startDate)
+                let completedUntilToday = completed[0...count]
+                let percentage = Double(completedUntilToday.filter{$0 == true}.count) / Double( completedUntilToday.count)
+                return percentage
+            }
+        }
+            return 0
     }
-
-    func getReminderTime() -> DateComponents? {
-        return reminderTime
-    }
-
-    func getPercentageToToday() -> Double {
-        let today = Date()
-        let completedUntilToday = completed.filter { $0.key <= today }
-        let completedCount = completedUntilToday.values.filter { $0 == true }.count
-        let percentage = Double(completedCount) / Double(completedUntilToday.count)
-        return percentage
-    }
-
+    //MARK: - Hashable Protocol 용
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(title)
@@ -139,11 +93,10 @@ class Todo: Hashable {
         hasher.combine(percentage)
         hasher.combine(images)
         hasher.combine(iscompleted)
-        hasher.combine(repetition)
-        hasher.combine(reminderTime)
     }
-
-    static func == (lhs: Todo, rhs: Todo) -> Bool {
-        return lhs.id == rhs.id && lhs.title == rhs.title && lhs.memo == rhs.memo && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate && lhs.completed == rhs.completed && lhs.isChallenge == rhs.isChallenge && lhs.percentage == rhs.percentage && lhs.images == rhs.images && lhs.iscompleted == rhs.iscompleted && lhs.repetition == rhs.repetition && lhs.reminderTime == rhs.reminderTime
+    
+    // Equatable 프로토콜을 준수하도록 구현
+    static func ==(lhs: Todo, rhs: Todo) -> Bool {
+        return lhs.id == rhs.id && lhs.title == rhs.title && lhs.memo == rhs.memo && lhs.startDate == rhs.startDate && lhs.endDate == rhs.endDate && lhs.completed == rhs.completed && lhs.isChallenge == rhs.isChallenge && lhs.percentage == rhs.percentage && lhs.images == rhs.images && lhs.iscompleted == rhs.iscompleted
     }
 }
