@@ -11,22 +11,40 @@ import SnapKit
 class AddTodoBottomSheetViewController: UIViewController {
     var dimmedView = UIView()
     var bottomSheetView = UIView()
+    
+    var contentStackView = UIStackView()
     var editTitleView = UIView()
     var todoImageView = UIImageView()
     var titleTextField = UITextField()
     var bottomLine = UIView()
+    
+    var todoDateRangeView = UIView()
+    var dateImageView = UIImageView()
+    var dateRangeLabel = UILabel()
+    var calendarView = UIView()
+    
+    var alertView = UIView()
+    var alertImageView = UIImageView()
+    var alertLabel = UILabel()
     var dismissCompletion: (() -> Void)?
+    
+    private var bottomSheetInitialConstraint: Constraint?
+    private var bottomSheetKeyboardConstraint: Constraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleTextField.becomeFirstResponder()
         configureUI()
         configureConstraints()
         configureGestures()
+        configureKeyboardObservers()
+        showBottomSheet()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showBottomSheet()
+//        titleTextField.becomeFirstResponder()
+        
     }
     
     private func configureUI() {
@@ -40,9 +58,14 @@ class AddTodoBottomSheetViewController: UIViewController {
         bottomSheetView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.addSubview(bottomSheetView)
         
+        // contentStackView 설정
+        contentStackView.axis = .vertical
+        contentStackView.spacing = 16
+        bottomSheetView.addSubview(contentStackView)
+        
         // editTitleView 설정
         editTitleView.backgroundColor = .clear
-        bottomSheetView.addSubview(editTitleView)
+        contentStackView.addArrangedSubview(editTitleView)
         
         // todoImageView 설정
         todoImageView.backgroundColor = .clear
@@ -62,7 +85,41 @@ class AddTodoBottomSheetViewController: UIViewController {
         
         // bottomLine 설정
         bottomLine.backgroundColor = .secondary800
-        bottomSheetView.addSubview(bottomLine)
+        contentStackView.addArrangedSubview(bottomLine)
+        
+        // todoDateRangeView 설정
+        todoDateRangeView.backgroundColor = .clear
+        contentStackView.addArrangedSubview(todoDateRangeView)
+        
+        dateImageView.backgroundColor = .clear
+        dateImageView.image = .clock1.withTintColor(.secondary600)
+        todoDateRangeView.addSubview(dateImageView)
+        
+        dateRangeLabel.text = "기한 없음"
+        dateRangeLabel.textColor = .secondary600
+        dateRangeLabel.font = .pretendardMedium(size: 16)
+        todoDateRangeView.addSubview(dateRangeLabel)
+        
+        // calendarView 설정
+        calendarView.backgroundColor = .secondary850
+        calendarView.layer.borderWidth = 1
+        calendarView.layer.borderColor = UIColor.secondary800.cgColor
+        calendarView.layer.cornerRadius = 20
+        calendarView.isHidden = true
+        contentStackView.addArrangedSubview(calendarView)
+        
+        // alertView 설정
+        alertView.backgroundColor = .clear
+        contentStackView.addArrangedSubview(alertView)
+        
+        alertImageView.backgroundColor = .clear
+        alertImageView.image = .clock1.withTintColor(.secondary600)
+        alertView.addSubview(alertImageView)
+        
+        alertLabel.text = "알람 없음"
+        alertLabel.textColor = .secondary600
+        alertLabel.font = .pretendardMedium(size: 16)
+        alertView.addSubview(alertLabel)
     }
     
     private func configureConstraints() {
@@ -72,15 +129,18 @@ class AddTodoBottomSheetViewController: UIViewController {
         
         bottomSheetView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(142)
-            make.bottom.equalTo(view.snp.bottom)
+            self.bottomSheetInitialConstraint = make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).constraint
+            self.bottomSheetKeyboardConstraint = make.bottom.equalToSuperview().constraint
+        }
+        
+        contentStackView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().inset(32)
         }
         
         // editTitleView 제약조건
         editTitleView.snp.makeConstraints { make in
             make.height.equalTo(32)
-            make.top.equalTo(bottomSheetView.snp.top).offset(16)
-            make.leading.trailing.equalTo(bottomSheetView).inset(16)
         }
         
         // todoImageView 제약조건
@@ -101,8 +161,70 @@ class AddTodoBottomSheetViewController: UIViewController {
         // bottomLine 제약조건
         bottomLine.snp.makeConstraints { make in
             make.height.equalTo(0.5)
-            make.leading.trailing.equalTo(bottomSheetView).inset(16)
-            make.top.equalTo(editTitleView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        // todoDateRangeView 제약조건
+        todoDateRangeView.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        // dateImageView 제약조건
+        dateImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(todoDateRangeView.snp.centerY)
+            make.leading.equalTo(todoDateRangeView.snp.leading)
+            make.height.width.equalTo(24)
+        }
+        
+        // dateRangeLabel 제약조건
+        dateRangeLabel.snp.makeConstraints { make in
+            make.leading.equalTo(dateImageView.snp.trailing).offset(16)
+            make.centerY.equalTo(todoDateRangeView.snp.centerY)
+        }
+        
+        // calendarView 제약조건
+        calendarView.snp.makeConstraints { make in
+            make.width.equalTo(300)
+            make.height.equalTo(320)
+        }
+        
+        // alertView 제약조건
+        alertView.snp.makeConstraints { make in
+            make.height.equalTo(36)
+        }
+        
+        // alertImageView 제약조건
+        alertImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(alertView.snp.centerY)
+            make.leading.equalTo(alertView.snp.leading)
+            make.height.width.equalTo(24)
+        }
+        
+        // alertLabel 제약조건
+        alertLabel.snp.makeConstraints { make in
+            make.leading.equalTo(alertImageView.snp.trailing).offset(16)
+            make.centerY.equalTo(alertView.snp.centerY)
+        }
+    }
+    
+    private func configureKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            UIView.animate(withDuration: 0.0) {
+                self.bottomSheetKeyboardConstraint?.update(offset: -keyboardFrame.height)
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.0) {
+            self.bottomSheetKeyboardConstraint?.update(offset: 0)
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -110,17 +232,35 @@ class AddTodoBottomSheetViewController: UIViewController {
     private func configureGestures() {
         let dimmedTapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTapGesture)
+        
+        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
+        view.addGestureRecognizer(viewTapGesture)
+        
+        let dateRangeTapGesture = UITapGestureRecognizer(target: self, action: #selector(dateRangeTapped(_:)))
+        todoDateRangeView.addGestureRecognizer(dateRangeTapGesture)
     }
     
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
         hideBottomSheet()
     }
     
-    private func showBottomSheet() {
+    @objc private func viewTapped(_ tapRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
         UIView.animate(withDuration: 0.3) {
-            self.bottomSheetView.snp.updateConstraints { make in
-                make.bottom.equalTo(self.view.snp.bottom)
-            }
+            self.calendarView.isHidden.toggle()
+            self.view.layoutIfNeeded()
+            self.view.endEditing(true)
+        }
+    }
+    
+    private func showBottomSheet() {
+        UIView.animate(withDuration: 0.0) {
+            self.bottomSheetKeyboardConstraint?.activate()
+            self.bottomSheetInitialConstraint?.deactivate()
             self.view.layoutIfNeeded()
         }
     }
@@ -128,38 +268,12 @@ class AddTodoBottomSheetViewController: UIViewController {
     private func hideBottomSheet() {
         UIView.animate(withDuration: 0.3, animations: {
             self.bottomSheetView.snp.updateConstraints { make in
-                make.bottom.equalTo(self.view.snp.bottom)
+                make.bottom.equalToSuperview().offset(UIScreen.main.bounds.height)
             }
             self.view.layoutIfNeeded()
         }) { _ in
             self.dismiss(animated: false, completion: nil)
             self.dismissCompletion?()
         }
-    }
-}
-
-// ViewController에서 BottomSheet 호출하는 부분 예시
-class ViewController: UIViewController {
-    let showBottomSheetButton = UIButton(type: .system)
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.addSubview(showBottomSheetButton)
-        showBottomSheetButton.setTitle("Show Bottom Sheet", for: .normal)
-        showBottomSheetButton.addTarget(self, action: #selector(showBottomSheet), for: .touchUpInside)
-        
-        showBottomSheetButton.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-    }
-    
-    @objc private func showBottomSheet() {
-        let bottomSheetVC = AddTodoBottomSheetViewController()
-        bottomSheetVC.modalPresentationStyle = .overFullScreen
-        bottomSheetVC.dismissCompletion = {
-            // BottomSheet가 닫힌 후 처리할 로직
-        }
-        present(bottomSheetVC, animated: false, completion: nil)
     }
 }

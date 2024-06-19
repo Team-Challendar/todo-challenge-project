@@ -17,13 +17,19 @@ extension BaseViewController{
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
     }
     
-    @objc private func floatingButtonTapped(){
-        let editTodoVC = AddTodoTitleViewController()
-        let navigationController = UINavigationController(rootViewController: editTodoVC)
-        navigationController.modalTransitionStyle = .coverVertical
-        navigationController.modalPresentationStyle = .overFullScreen
-        self.present(navigationController, animated: true)
-        
+//    @objc private func floatingButtonTapped(){
+//        let editTodoVC = AddTodoTitleViewController()
+//        let navigationController = UINavigationController(rootViewController: editTodoVC)
+//        navigationController.modalTransitionStyle = .coverVertical
+//        navigationController.modalPresentationStyle = .overFullScreen
+//        self.present(navigationController, animated: true)
+//    }
+    
+    @objc private func floatingButtonTapped() {
+        let editTodoVC = AddTodoBottomSheetViewController()
+        editTodoVC.modalTransitionStyle = .crossDissolve
+        editTodoVC.modalPresentationStyle = .overFullScreen
+        self.present(editTodoVC, animated: true)
     }
     
     func configureTitleNavigationBar(title: String){
