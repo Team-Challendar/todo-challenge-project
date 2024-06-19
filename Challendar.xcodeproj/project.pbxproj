@@ -103,6 +103,16 @@
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
 		B9EFF60F2C1B1B2E00503165 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */; };
 		B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */; };
+		B9FB7E632C22729700364208 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FB7E622C22729700364208 /* WidgetKit.framework */; };
+		B9FB7E652C22729700364208 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FB7E642C22729700364208 /* SwiftUI.framework */; };
+		B9FB7E682C22729700364208 /* WidgetIntentsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E672C22729700364208 /* WidgetIntentsBundle.swift */; };
+		B9FB7E6A2C22729700364208 /* WidgetIntentsLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E692C22729700364208 /* WidgetIntentsLiveActivity.swift */; };
+		B9FB7E6C2C22729700364208 /* WidgetIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E6B2C22729700364208 /* WidgetIntents.swift */; };
+		B9FB7E6E2C22729700364208 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E6D2C22729700364208 /* AppIntent.swift */; };
+		B9FB7E702C22729900364208 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9FB7E6F2C22729900364208 /* Assets.xcassets */; };
+		B9FB7E742C22729900364208 /* WidgetIntentsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B9FB7E602C22729700364208 /* WidgetIntentsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B9FB7E7A2C2272D900364208 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E792C2272D900364208 /* Intents.intentdefinition */; };
+		B9FB7E7B2C2272D900364208 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E792C2272D900364208 /* Intents.intentdefinition */; };
 		DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */; };
 		DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */; };
 		DE6EBEA52C0F187E002F6800 /* ChallengeListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */; };
@@ -114,6 +124,30 @@
 		DEDEE2902C0DEA47006AD1C6 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE28D2C0DEA47006AD1C6 /* CalendarCell.swift */; };
 		DEDEE2912C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE28E2C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B9FB7E722C22729900364208 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1472AD952C082A0F00145668 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B9FB7E5F2C22729700364208;
+			remoteInfo = WidgetIntentsExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B9FB7E752C22729900364208 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B9FB7E742C22729900364208 /* WidgetIntentsExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGaugeCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -210,6 +244,16 @@
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
 		B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBtnNew.swift; sourceTree = "<group>"; };
+		B9FB7E602C22729700364208 /* WidgetIntentsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetIntentsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9FB7E622C22729700364208 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B9FB7E642C22729700364208 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		B9FB7E672C22729700364208 /* WidgetIntentsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetIntentsBundle.swift; sourceTree = "<group>"; };
+		B9FB7E692C22729700364208 /* WidgetIntentsLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetIntentsLiveActivity.swift; sourceTree = "<group>"; };
+		B9FB7E6B2C22729700364208 /* WidgetIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetIntents.swift; sourceTree = "<group>"; };
+		B9FB7E6D2C22729700364208 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		B9FB7E6F2C22729900364208 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B9FB7E712C22729900364208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B9FB7E792C2272D900364208 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
 		DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCalendarCell.swift; sourceTree = "<group>"; };
 		DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeDateCalendarView.swift; path = Challendar/Component/ChallengeDateCalendarView.swift; sourceTree = SOURCE_ROOT; };
 		DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListDetailViewController.swift; sourceTree = "<group>"; };
@@ -237,6 +281,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B9FB7E5D2C22729700364208 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9FB7E652C22729700364208 /* SwiftUI.framework in Frameworks */,
+				B9FB7E632C22729700364208 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -247,6 +300,8 @@
 				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
+				B9FB7E662C22729700364208 /* WidgetIntents */,
+				B9FB7E612C22729700364208 /* Frameworks */,
 				1472AD9E2C082A0F00145668 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -255,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				1472AD9D2C082A0F00145668 /* Challendar.app */,
+				B9FB7E602C22729700364208 /* WidgetIntentsExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -454,6 +510,29 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		B9FB7E612C22729700364208 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B9FB7E622C22729700364208 /* WidgetKit.framework */,
+				B9FB7E642C22729700364208 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B9FB7E662C22729700364208 /* WidgetIntents */ = {
+			isa = PBXGroup;
+			children = (
+				B9FB7E672C22729700364208 /* WidgetIntentsBundle.swift */,
+				B9FB7E692C22729700364208 /* WidgetIntentsLiveActivity.swift */,
+				B9FB7E6B2C22729700364208 /* WidgetIntents.swift */,
+				B9FB7E6D2C22729700364208 /* AppIntent.swift */,
+				B9FB7E6F2C22729900364208 /* Assets.xcassets */,
+				B9FB7E712C22729900364208 /* Info.plist */,
+				B9FB7E792C2272D900364208 /* Intents.intentdefinition */,
+			);
+			path = WidgetIntents;
+			sourceTree = "<group>";
+		};
 		DEDEE2882C0DEA20006AD1C6 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,10 +566,12 @@
 				1472AD992C082A0F00145668 /* Sources */,
 				1472AD9A2C082A0F00145668 /* Frameworks */,
 				1472AD9B2C082A0F00145668 /* Resources */,
+				B9FB7E752C22729900364208 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B9FB7E732C22729900364208 /* PBXTargetDependency */,
 			);
 			name = Challendar;
 			packageProductDependencies = (
@@ -506,6 +587,23 @@
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B9FB7E5F2C22729700364208 /* WidgetIntentsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B9FB7E782C22729900364208 /* Build configuration list for PBXNativeTarget "WidgetIntentsExtension" */;
+			buildPhases = (
+				B9FB7E5C2C22729700364208 /* Sources */,
+				B9FB7E5D2C22729700364208 /* Frameworks */,
+				B9FB7E5E2C22729700364208 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WidgetIntentsExtension;
+			productName = WidgetIntentsExtension;
+			productReference = B9FB7E602C22729700364208 /* WidgetIntentsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -517,6 +615,9 @@
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					1472AD9C2C082A0F00145668 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					B9FB7E5F2C22729700364208 = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
@@ -544,6 +645,7 @@
 			projectRoot = "";
 			targets = (
 				1472AD9C2C082A0F00145668 /* Challendar */,
+				B9FB7E5F2C22729700364208 /* WidgetIntentsExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -568,6 +670,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B9FB7E5E2C22729700364208 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9FB7E702C22729900364208 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -589,6 +699,7 @@
 				149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */,
 				149FEFAD2C11CEE800CDDC23 /* TodoCalendarViewCell.swift in Sources */,
 				14C6AFE52C0F136C0016B80C /* SettingModel.swift in Sources */,
+				B9FB7E7A2C2272D900364208 /* Intents.intentdefinition in Sources */,
 				14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */,
 				14C97F332C0A4AF000819B27 /* BaseViewControllerExtension.swift in Sources */,
 				DEDEE28F2C0DEA47006AD1C6 /* DateBottomSheetCollectionViewCell.swift in Sources */,
@@ -665,7 +776,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B9FB7E5C2C22729700364208 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9FB7E6A2C22729700364208 /* WidgetIntentsLiveActivity.swift in Sources */,
+				B9FB7E6E2C22729700364208 /* AppIntent.swift in Sources */,
+				B9FB7E6C2C22729700364208 /* WidgetIntents.swift in Sources */,
+				B9FB7E7B2C2272D900364208 /* Intents.intentdefinition in Sources */,
+				B9FB7E682C22729700364208 /* WidgetIntentsBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B9FB7E732C22729900364208 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B9FB7E5F2C22729700364208 /* WidgetIntentsExtension */;
+			targetProxy = B9FB7E722C22729900364208 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1472ADAE2C082A1000145668 /* LaunchScreen.storyboard */ = {
@@ -804,6 +935,7 @@
 		1472ADB52C082A1000145668 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
@@ -846,6 +978,7 @@
 		1472ADB62C082A1000145668 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
@@ -885,6 +1018,66 @@
 			};
 			name = Release;
 		};
+		B9FB7E762C22729900364208 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WidgetIntents/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WidgetIntents;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.WidgetIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B9FB7E772C22729900364208 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WidgetIntents/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WidgetIntents;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.WidgetIntents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -902,6 +1095,15 @@
 			buildConfigurations = (
 				1472ADB52C082A1000145668 /* Debug */,
 				1472ADB62C082A1000145668 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B9FB7E782C22729900364208 /* Build configuration list for PBXNativeTarget "WidgetIntentsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B9FB7E762C22729900364208 /* Debug */,
+				B9FB7E772C22729900364208 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
