@@ -436,6 +436,11 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         )
         self.dismiss(animated: true, completion: nil)
     }
+
+    // textField 수정 시 수정 버튼 컬러변경
+    @objc func textFieldDidChange(_ textField: UITextField) {
+           editButton.setTitleColor(.challendarGreen200, for: .normal)
+       }
     
     // 타이핑 시작 시 UI 업데이트
     func textFieldDidBeginEditing(_ textField: UITextField) {
