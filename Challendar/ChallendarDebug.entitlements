@@ -14,7 +14,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.seungwon.Challendar</string>
+		<string>com.seungwon.Challendar</string>
 	</array>
 </dict>
 </plist>

@@ -26,7 +26,7 @@
 			<key>INIntentIneligibleForSuggestions</key>
 			<true/>
 			<key>INIntentLastParameterTag</key>
-			<integer>1</integer>
+			<integer>15</integer>
 			<key>INIntentName</key>
 			<string>TodoList</string>
 			<key>INIntentParameters</key>
@@ -35,9 +35,9 @@
 					<key>INIntentParameterConfigurable</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>Repository</string>
+					<string>title</string>
 					<key>INIntentParameterDisplayNameID</key>
-					<string>tFqRLE</string>
+					<string>oHztku</string>
 					<key>INIntentParameterDisplayPriority</key>
 					<integer>1</integer>
 					<key>INIntentParameterMetadata</key>
@@ -45,14 +45,71 @@
 						<key>INIntentParameterMetadataCapitalization</key>
 						<string>Sentences</string>
 						<key>INIntentParameterMetadataDefaultValueID</key>
-						<string>jh8xdK</string>
+						<string>7KewZP</string>
 					</dict>
 					<key>INIntentParameterName</key>
-					<string>parameter</string>
+					<string>title</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
 					<key>INIntentParameterTag</key>
-					<integer>1</integer>
+					<integer>14</integer>
 					<key>INIntentParameterType</key>
 					<string>String</string>
+				</dict>
+				<dict>
+					<key>INIntentParameterConfigurable</key>
+					<true/>
+					<key>INIntentParameterDisplayName</key>
+					<string>Is Completed</string>
+					<key>INIntentParameterDisplayNameID</key>
+					<string>jbb8if</string>
+					<key>INIntentParameterDisplayPriority</key>
+					<integer>2</integer>
+					<key>INIntentParameterMetadata</key>
+					<dict>
+						<key>INIntentParameterMetadataFalseDisplayName</key>
+						<string>false</string>
+						<key>INIntentParameterMetadataFalseDisplayNameID</key>
+						<string>zKlLEo</string>
+						<key>INIntentParameterMetadataTrueDisplayName</key>
+						<string>true</string>
+						<key>INIntentParameterMetadataTrueDisplayNameID</key>
+						<string>ChAynz</string>
+					</dict>
+					<key>INIntentParameterName</key>
+					<string>isCompleted</string>
+					<key>INIntentParameterPromptDialogs</key>
+					<array>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Configuration</string>
+						</dict>
+						<dict>
+							<key>INIntentParameterPromptDialogCustom</key>
+							<true/>
+							<key>INIntentParameterPromptDialogType</key>
+							<string>Primary</string>
+						</dict>
+					</array>
+					<key>INIntentParameterTag</key>
+					<integer>15</integer>
+					<key>INIntentParameterType</key>
+					<string>Boolean</string>
 				</dict>
 			</array>
 			<key>INIntentResponse</key>
@@ -68,6 +125,52 @@
 					<dict>
 						<key>INIntentResponseCodeName</key>
 						<string>failure</string>
+					</dict>
+				</array>
+				<key>INIntentResponseLastParameterTag</key>
+				<integer>8</integer>
+				<key>INIntentResponseParameters</key>
+				<array>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Title</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>pWZTxu</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>1</integer>
+						<key>INIntentResponseParameterName</key>
+						<string>title</string>
+						<key>INIntentResponseParameterSupportsMultipleValues</key>
+						<true/>
+						<key>INIntentResponseParameterTag</key>
+						<integer>4</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>String</string>
+					</dict>
+					<dict>
+						<key>INIntentResponseParameterDisplayName</key>
+						<string>Is Completed</string>
+						<key>INIntentResponseParameterDisplayNameID</key>
+						<string>0GHGIF</string>
+						<key>INIntentResponseParameterDisplayPriority</key>
+						<integer>2</integer>
+						<key>INIntentResponseParameterMetadata</key>
+						<dict>
+							<key>INIntentResponseParameterMetadataFalseDisplayName</key>
+							<string>false</string>
+							<key>INIntentResponseParameterMetadataFalseDisplayNameID</key>
+							<string>eAjint</string>
+							<key>INIntentResponseParameterMetadataTrueDisplayName</key>
+							<string>true</string>
+							<key>INIntentResponseParameterMetadataTrueDisplayNameID</key>
+							<string>vJZMVz</string>
+						</dict>
+						<key>INIntentResponseParameterName</key>
+						<string>isCompleted</string>
+						<key>INIntentResponseParameterTag</key>
+						<integer>8</integer>
+						<key>INIntentResponseParameterType</key>
+						<string>Boolean</string>
 					</dict>
 				</array>
 			</dict>

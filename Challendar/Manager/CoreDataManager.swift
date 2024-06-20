@@ -2,6 +2,17 @@ import UIKit
 import CoreData
 import UserNotifications
 
+extension URL {
+    /// Returns a URL for the given app group and database pointing to the sqlite database.
+    static func storeURL(for appGroup: String, databaseName: String) -> URL {
+        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("Shared file container could not be created.")
+        }
+        
+        return fileContainer.appendingPathComponent("\(databaseName).sqlite")
+    }
+}
+
 // CoreData 함수용 Manager 싱글톤
 class CoreDataManager {
 
@@ -20,19 +31,24 @@ class CoreDataManager {
     // Core Data persistent container 초기화
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let container = NSPersistentCloudKitContainer(name: "Challendar")
+        let storeURL = URL.storeURL(for: "com.seungwon.Challendar", databaseName: "Challendar")
+        let storeDescription = NSPersistentStoreDescription(url: storeURL)
+        container.persistentStoreDescriptions = [storeDescription]
+
+        
         guard let description = container.persistentStoreDescriptions.first else {
             fatalError("Failed to initialize persistent Container")
         }
         
         // CloudKit 및 CoreData 설정
-        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-        
-        // CloudKit 컨테이너 식별자 설정
-        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
-        
-        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-        container.viewContext.automaticallyMergesChangesFromParent = true
+//        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+//        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+//
+//        // CloudKit 컨테이너 식별자 설정
+//        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
+//
+//        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+//        container.viewContext.automaticallyMergesChangesFromParent = true
         
         container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {

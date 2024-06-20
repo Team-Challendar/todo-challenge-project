@@ -10,8 +10,8 @@ import SwiftUI
 
 @main
 struct WidgetIntentsBundle: WidgetBundle {
+    @WidgetBundleBuilder
     var body: some Widget {
-        WidgetIntents()
-        WidgetIntentsLiveActivity()
+        TodoWidget()
     }
 }

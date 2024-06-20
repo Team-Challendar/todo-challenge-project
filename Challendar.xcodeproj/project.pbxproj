@@ -101,18 +101,23 @@
 		B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA762C10D60000926B53 /* DailyViewController.swift */; };
 		B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */; };
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
+		B95BF7452C24419D002DDCCA /* TodoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA102C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift */; };
+		B95BF7462C2441B6002DDCCA /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA152C0C8B0F00ACAFB6 /* Todo.swift */; };
+		B95BF7472C2441EE002DDCCA /* TodoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA112C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift */; };
+		B95BF7532C2442B1002DDCCA /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FD2C0B1CE500D63368 /* DateExtension.swift */; };
+		B95BF7572C2448CC002DDCCA /* TodoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7EA62C23DC2900364208 /* TodoWidget.swift */; };
+		B95BF7582C2448D3002DDCCA /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149FEFAE2C122C2300CDDC23 /* UILabelExtension.swift */; };
 		B9EFF60F2C1B1B2E00503165 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */; };
 		B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */; };
-		B9FB7E632C22729700364208 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FB7E622C22729700364208 /* WidgetKit.framework */; };
-		B9FB7E652C22729700364208 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9FB7E642C22729700364208 /* SwiftUI.framework */; };
 		B9FB7E682C22729700364208 /* WidgetIntentsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E672C22729700364208 /* WidgetIntentsBundle.swift */; };
 		B9FB7E6A2C22729700364208 /* WidgetIntentsLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E692C22729700364208 /* WidgetIntentsLiveActivity.swift */; };
-		B9FB7E6C2C22729700364208 /* WidgetIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E6B2C22729700364208 /* WidgetIntents.swift */; };
-		B9FB7E6E2C22729700364208 /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E6D2C22729700364208 /* AppIntent.swift */; };
 		B9FB7E702C22729900364208 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9FB7E6F2C22729900364208 /* Assets.xcassets */; };
 		B9FB7E742C22729900364208 /* WidgetIntentsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B9FB7E602C22729700364208 /* WidgetIntentsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B9FB7E7A2C2272D900364208 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E792C2272D900364208 /* Intents.intentdefinition */; };
 		B9FB7E7B2C2272D900364208 /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7E792C2272D900364208 /* Intents.intentdefinition */; };
+		B9FB7E9C2C23BE4100364208 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
+		B9FB7EA72C23DC2900364208 /* TodoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FB7EA62C23DC2900364208 /* TodoWidget.swift */; };
+		B9FB7EA92C241F4300364208 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA0E2C0C7D0A00ACAFB6 /* CoreDataManager.swift */; };
 		DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */; };
 		DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */; };
 		DE6EBEA52C0F187E002F6800 /* ChallengeListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */; };
@@ -242,18 +247,17 @@
 		B90CAA762C10D60000926B53 /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
+		B95BF75C2C247206002DDCCA /* ChallendarDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChallendarDebug.entitlements; sourceTree = "<group>"; };
 		B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBtnNew.swift; sourceTree = "<group>"; };
 		B9FB7E602C22729700364208 /* WidgetIntentsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetIntentsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		B9FB7E622C22729700364208 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
-		B9FB7E642C22729700364208 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		B9FB7E672C22729700364208 /* WidgetIntentsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetIntentsBundle.swift; sourceTree = "<group>"; };
 		B9FB7E692C22729700364208 /* WidgetIntentsLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetIntentsLiveActivity.swift; sourceTree = "<group>"; };
-		B9FB7E6B2C22729700364208 /* WidgetIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetIntents.swift; sourceTree = "<group>"; };
-		B9FB7E6D2C22729700364208 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		B9FB7E6F2C22729900364208 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9FB7E712C22729900364208 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B9FB7E792C2272D900364208 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		B9FB7EA62C23DC2900364208 /* TodoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoWidget.swift; sourceTree = "<group>"; };
+		B9FB7EAA2C2421B800364208 /* WidgetIntentsExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetIntentsExtension.entitlements; sourceTree = "<group>"; };
 		DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCalendarCell.swift; sourceTree = "<group>"; };
 		DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeDateCalendarView.swift; path = Challendar/Component/ChallengeDateCalendarView.swift; sourceTree = SOURCE_ROOT; };
 		DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListDetailViewController.swift; sourceTree = "<group>"; };
@@ -285,8 +289,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9FB7E652C22729700364208 /* SwiftUI.framework in Frameworks */,
-				B9FB7E632C22729700364208 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,12 +298,12 @@
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
+				B9FB7EAA2C2421B800364208 /* WidgetIntentsExtension.entitlements */,
 				142052D42C1BFC8000BC4831 /* Settings.bundle */,
 				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
 				B9FB7E662C22729700364208 /* WidgetIntents */,
-				B9FB7E612C22729700364208 /* Frameworks */,
 				1472AD9E2C082A0F00145668 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -319,6 +321,7 @@
 			isa = PBXGroup;
 			children = (
 				14C3FA192C0C9EA700ACAFB6 /* Challendar.entitlements */,
+				B95BF75C2C247206002DDCCA /* ChallendarDebug.entitlements */,
 				14C3FA0D2C0C7CFF00ACAFB6 /* Manager */,
 				1472ADED2C0850C200145668 /* Component */,
 				DEDEE2882C0DEA20006AD1C6 /* Cell */,
@@ -510,25 +513,15 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		B9FB7E612C22729700364208 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				B9FB7E622C22729700364208 /* WidgetKit.framework */,
-				B9FB7E642C22729700364208 /* SwiftUI.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		B9FB7E662C22729700364208 /* WidgetIntents */ = {
 			isa = PBXGroup;
 			children = (
 				B9FB7E672C22729700364208 /* WidgetIntentsBundle.swift */,
 				B9FB7E692C22729700364208 /* WidgetIntentsLiveActivity.swift */,
-				B9FB7E6B2C22729700364208 /* WidgetIntents.swift */,
-				B9FB7E6D2C22729700364208 /* AppIntent.swift */,
 				B9FB7E6F2C22729900364208 /* Assets.xcassets */,
 				B9FB7E712C22729900364208 /* Info.plist */,
 				B9FB7E792C2272D900364208 /* Intents.intentdefinition */,
+				B9FB7EA62C23DC2900364208 /* TodoWidget.swift */,
 			);
 			path = WidgetIntents;
 			sourceTree = "<group>";
@@ -757,6 +750,7 @@
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
 				142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */,
+				B9FB7EA72C23DC2900364208 /* TodoWidget.swift in Sources */,
 				14AAA9072C0E1F110085E22F /* ChallengeCheckViewController.swift in Sources */,
 				14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */,
 				14C97F232C09ACF300819B27 /* DateBottomSheet.swift in Sources */,
@@ -780,10 +774,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9FB7EA92C241F4300364208 /* CoreDataManager.swift in Sources */,
 				B9FB7E6A2C22729700364208 /* WidgetIntentsLiveActivity.swift in Sources */,
-				B9FB7E6E2C22729700364208 /* AppIntent.swift in Sources */,
-				B9FB7E6C2C22729700364208 /* WidgetIntents.swift in Sources */,
+				B95BF7462C2441B6002DDCCA /* Todo.swift in Sources */,
+				B9FB7E9C2C23BE4100364208 /* Challendar.xcdatamodeld in Sources */,
+				B95BF7572C2448CC002DDCCA /* TodoWidget.swift in Sources */,
+				B95BF7532C2442B1002DDCCA /* DateExtension.swift in Sources */,
+				B95BF7472C2441EE002DDCCA /* TodoModel+CoreDataProperties.swift in Sources */,
+				B95BF7452C24419D002DDCCA /* TodoModel+CoreDataClass.swift in Sources */,
 				B9FB7E7B2C2272D900364208 /* Intents.intentdefinition in Sources */,
+				B95BF7582C2448D3002DDCCA /* UILabelExtension.swift in Sources */,
 				B9FB7E682C22729700364208 /* WidgetIntentsBundle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -940,11 +940,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				DEVELOPMENT_TEAM = 7942AH4RU2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Challendar/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "챌린더";
@@ -964,7 +962,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarAppStore;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -983,11 +980,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				DEVELOPMENT_TEAM = 7942AH4RU2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Challendar/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "챌린더";
@@ -1007,7 +1002,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarAppStore;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1023,11 +1017,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WidgetIntentsExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7942AH4RU2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetIntents/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WidgetIntents;
@@ -1041,6 +1035,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.WidgetIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1053,11 +1048,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WidgetIntentsExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 7942AH4RU2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WidgetIntents/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WidgetIntents;
@@ -1071,6 +1066,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.WidgetIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
