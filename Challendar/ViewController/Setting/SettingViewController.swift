@@ -199,6 +199,8 @@ extension SettingViewController: UITableViewDelegate {
                     if let nextVC = model.nextVC {
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     }
+                }else{
+                    show(EmptyViewController(), sender: self)
                 }
             case .shareItem(let model):
                 if model.menuTitle == "문의하기" {

@@ -4,7 +4,7 @@ import Lottie
 
 extension BaseViewController{
     
-    func configureFloatingButton(){
+    func configureFloatingButton() -> FloatingButton{
         let floatingButton = FloatingButton()
         self.view.addSubview(floatingButton)
         floatingButton.translatesAutoresizingMaskIntoConstraints = false
@@ -15,6 +15,7 @@ extension BaseViewController{
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
         }
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
+        return floatingButton
     }
     
     @objc private func floatingButtonTapped(){

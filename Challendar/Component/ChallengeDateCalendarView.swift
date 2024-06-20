@@ -80,7 +80,7 @@ class ChallengeDateCalendarView: UIView {
     }
     
     private func configureConstraint(){
-        [calendarView,calendarLabel,prevButton,prevButton,nextButton].forEach{
+        [calendarView,calendarLabel,prevButton,nextButton].forEach{
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
