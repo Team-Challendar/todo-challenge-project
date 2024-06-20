@@ -12,6 +12,7 @@ protocol NewCalendarDelegate {
     func singleDateSelected(firstDate : Date)
     func rangeOfDateSelected(firstDate: Date, lastDate: Date)
     func deSelectedDate()
+
 }
 
 // Ver 2.0 추가/ 수정 페이지용 CalendarView
@@ -77,6 +78,7 @@ class NewCalendarView : UIView {
         self.layer.cornerCurve = .continuous
         self.backgroundColor = .secondary850
         self.layer.borderColor = UIColor.secondary800.cgColor
+        self.layer.borderWidth = 1
         self.clipsToBounds = true
         
         // 월 년도 표시 Label

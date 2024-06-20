@@ -21,8 +21,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     var todoDateRangeView = UIView()
     var dateImageView = UIImageView()
     var dateRangeLabel = UILabel()
-    var calendarContainerView = UIView()
-    var calendarView = UIView()
+    var calendarContainerView = NewCalendarView()
     
     var alertView = UIView()
     var alertImageView = UIImageView()
@@ -106,11 +105,11 @@ class AddTodoBottomSheetViewController: UIViewController {
         contentStackView.addArrangedSubview(calendarContainerView)
 
         // calendarView 설정
-        calendarView.backgroundColor = .secondary850
-        calendarView.layer.borderWidth = 1
-        calendarView.layer.borderColor = UIColor.secondary800.cgColor
-        calendarView.layer.cornerRadius = 20
-        calendarContainerView.addSubview(calendarView)
+//        calendarView.backgroundColor = .secondary850
+//        calendarView.layer.borderWidth = 1
+//        calendarView.layer.borderColor = UIColor.secondary800.cgColor
+//        calendarView.layer.cornerRadius = 20
+//        calendarContainerView.addSubview(calendarView)
         
         // alertView 설정
         alertView.backgroundColor = .clear
@@ -187,17 +186,17 @@ class AddTodoBottomSheetViewController: UIViewController {
         }
         
         calendarContainerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(30.5)
             make.height.equalTo(320)
             make.centerX.equalTo(bottomSheetView.snp.centerX)
         }
         
         // calendarView 제약조건
-        calendarView.snp.makeConstraints { make in
-            make.width.equalTo(300)
-            make.height.equalTo(320)
-            make.centerX.equalTo(bottomSheetView.snp.centerX)
-        }
+//        calendarView.snp.makeConstraints { make in
+//            make.width.equalTo(300)
+//            make.height.equalTo(320)
+//            make.centerX.equalTo(bottomSheetView.snp.centerX)
+//        }
         
         // alertView 제약조건
         alertView.snp.makeConstraints { make in
@@ -262,10 +261,10 @@ class AddTodoBottomSheetViewController: UIViewController {
     
     @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
         calendarContainerView.isHidden.toggle()
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutIfNeeded()
             self.view.endEditing(true)
-        }
+        }) 
     }
     
     private func showBottomSheet() {
