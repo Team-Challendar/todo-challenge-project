@@ -14,6 +14,7 @@
 		142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */; };
 		142052D32C1BFB5E00BC4831 /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = 142052D22C1BFB5E00BC4831 /* MarkdownView */; };
 		142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 142052D42C1BFC8000BC4831 /* Settings.bundle */; };
+		1433C08F2C2346CF006DC0E3 /* NewCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
@@ -121,6 +122,7 @@
 		142052C52C1BE08700BC4831 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeTableViewCell.swift; sourceTree = "<group>"; };
 		142052D42C1BFC8000BC4831 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
 		146A27B22C20B63400624239 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1472AD9D2C082A0F00145668 /* Challendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1472ADA02C082A0F00145668 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */,
 				2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */,
 				DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */,
+				1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				DEDEE2912C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift in Sources */,
 				14C3FA182C0C900400ACAFB6 /* SelectedDateTypeEnum.swift in Sources */,
 				B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */,
+				1433C08F2C2346CF006DC0E3 /* NewCalendarView.swift in Sources */,
 				14C97F212C09A71800819B27 /* DateView.swift in Sources */,
 				14C97F1D2C09A4C800819B27 /* BottomSheetViewController.swift in Sources */,
 				14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */,
