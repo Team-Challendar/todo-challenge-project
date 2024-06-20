@@ -26,7 +26,11 @@ class AddTodoBottomSheetViewController: UIViewController {
     var alertView = UIView()
     var alertImageView = UIImageView()
     var alertLabel = UILabel()
+    
+    var registerButton = UIButton()
     var dismissCompletion: (() -> Void)?
+    
+    var newTodo = Todo()
     
     private var bottomSheetInitialConstraint: Constraint?
     private var bottomSheetKeyboardConstraint: Constraint?
@@ -43,8 +47,6 @@ class AddTodoBottomSheetViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        titleTextField.becomeFirstResponder()
-        
     }
     
     private func configureUI() {
@@ -81,6 +83,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             string: "할 일을 입력해주세요.",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
         )
+        titleTextField.addTarget(self, action: #selector(titleTextFieldDidEndEditing(_:)), for: .editingDidEnd)
         editTitleView.addSubview(titleTextField)
         
         // bottomLine 설정
@@ -103,13 +106,6 @@ class AddTodoBottomSheetViewController: UIViewController {
         calendarContainerView.backgroundColor = .clear
         calendarContainerView.isHidden = true
         contentStackView.addArrangedSubview(calendarContainerView)
-
-        // calendarView 설정
-//        calendarView.backgroundColor = .secondary850
-//        calendarView.layer.borderWidth = 1
-//        calendarView.layer.borderColor = UIColor.secondary800.cgColor
-//        calendarView.layer.cornerRadius = 20
-//        calendarContainerView.addSubview(calendarView)
         
         // alertView 설정
         alertView.backgroundColor = .clear
@@ -123,36 +119,45 @@ class AddTodoBottomSheetViewController: UIViewController {
         alertLabel.textColor = .secondary600
         alertLabel.font = .pretendardMedium(size: 16)
         alertView.addSubview(alertLabel)
+        
+        // registerButton 설정
+        registerButton.setTitle("할 일 추가하기", for: .normal)
+        registerButton.titleLabel?.font = .pretendardSemiBold(size: 18)
+        registerButton.setTitleColor(.white, for: .normal)
+        registerButton.backgroundColor = .alertTomato
+        registerButton.layer.cornerRadius = 20
+        registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
+        bottomSheetView.addSubview(registerButton)
     }
     
     private func configureConstraints() {
         dimmedView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         bottomSheetView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             self.bottomSheetInitialConstraint = make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).constraint
             self.bottomSheetKeyboardConstraint = make.bottom.equalToSuperview().constraint
         }
-        
+
         contentStackView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(32)
+            make.bottom.equalTo(registerButton.snp.top).offset(-24)
         }
-        
+
         // editTitleView 제약조건
         editTitleView.snp.makeConstraints { make in
             make.height.equalTo(32)
         }
-        
+
         // todoImageView 제약조건
         todoImageView.snp.makeConstraints { make in
             make.height.width.equalTo(20)
             make.leading.equalTo(editTitleView.snp.leading)
             make.centerY.equalTo(editTitleView.snp.centerY)
         }
-        
+
         // titleTextField 제약조건
         titleTextField.snp.makeConstraints { make in
             make.height.equalTo(24)
@@ -160,60 +165,62 @@ class AddTodoBottomSheetViewController: UIViewController {
             make.trailing.equalTo(editTitleView.snp.trailing)
             make.centerY.equalTo(editTitleView.snp.centerY)
         }
-        
+
         // bottomLine 제약조건
         bottomLine.snp.makeConstraints { make in
             make.height.equalTo(0.5)
+            make.top.equalTo(editTitleView.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
         }
-        
+
         // todoDateRangeView 제약조건
         todoDateRangeView.snp.makeConstraints { make in
             make.height.equalTo(36)
+            make.top.equalTo(bottomLine.snp.bottom).offset(16)
         }
-        
+
         // dateImageView 제약조건
         dateImageView.snp.makeConstraints { make in
             make.centerY.equalTo(todoDateRangeView.snp.centerY)
             make.leading.equalTo(todoDateRangeView.snp.leading)
             make.height.width.equalTo(24)
         }
-        
+
         // dateRangeLabel 제약조건
         dateRangeLabel.snp.makeConstraints { make in
             make.leading.equalTo(dateImageView.snp.trailing).offset(16)
             make.centerY.equalTo(todoDateRangeView.snp.centerY)
         }
-        
+
         calendarContainerView.snp.makeConstraints { make in
+            make.top.equalTo(todoDateRangeView.snp.bottom).offset(4)
             make.leading.trailing.equalToSuperview().inset(30.5)
             make.height.equalTo(320)
-            make.centerX.equalTo(bottomSheetView.snp.centerX)
         }
-        
-        // calendarView 제약조건
-//        calendarView.snp.makeConstraints { make in
-//            make.width.equalTo(300)
-//            make.height.equalTo(320)
-//            make.centerX.equalTo(bottomSheetView.snp.centerX)
-//        }
-        
+
         // alertView 제약조건
         alertView.snp.makeConstraints { make in
             make.height.equalTo(36)
         }
-        
+
         // alertImageView 제약조건
         alertImageView.snp.makeConstraints { make in
             make.centerY.equalTo(alertView.snp.centerY)
             make.leading.equalTo(alertView.snp.leading)
             make.height.width.equalTo(24)
         }
-        
+
         // alertLabel 제약조건
         alertLabel.snp.makeConstraints { make in
             make.leading.equalTo(alertImageView.snp.trailing).offset(16)
             make.centerY.equalTo(alertView.snp.centerY)
+        }
+
+        // registerButton 제약조건
+        registerButton.snp.makeConstraints { make in
+            make.height.equalTo(64)
+            make.leading.trailing.equalToSuperview().inset(18)
+            make.bottom.equalToSuperview().inset(37)
         }
     }
     
@@ -224,20 +231,28 @@ class AddTodoBottomSheetViewController: UIViewController {
     
     @objc private func keyboardWillShow(notification: NSNotification) {
         if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            UIView.animate(withDuration: 0.0) {
-                self.bottomSheetKeyboardConstraint?.update(offset: -keyboardFrame.height)
+            self.bottomSheetKeyboardConstraint?.update(offset: -keyboardFrame.height)
+            UIView.animate(withDuration: 0.3) {
+                self.registerButton.snp.updateConstraints { make in
+                    make.height.equalTo(8)
+                }
+                self.registerButton.isHidden = true
                 self.view.layoutIfNeeded()
             }
         }
     }
-    
+
     @objc private func keyboardWillHide(notification: NSNotification) {
-        UIView.animate(withDuration: 0.0) {
-            self.bottomSheetKeyboardConstraint?.update(offset: 0)
+        self.bottomSheetKeyboardConstraint?.update(offset: 0)
+        UIView.animate(withDuration: 0.3) {
+            self.registerButton.snp.updateConstraints { make in
+                make.height.equalTo(64)
+            }
+            self.registerButton.isHidden = false
             self.view.layoutIfNeeded()
         }
     }
-    
+
     // 바텀시트 외의 부분 터치 시 GestureRecognizer
     private func configureGestures() {
         let dimmedTapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
@@ -264,15 +279,22 @@ class AddTodoBottomSheetViewController: UIViewController {
         UIView.animate(withDuration: 0.3, animations: {
             self.view.layoutIfNeeded()
             self.view.endEditing(true)
-        }) 
+        })
     }
     
+    @objc private func titleTextFieldDidEndEditing(_ textField: UITextField) {
+        newTodo.title = textField.text ?? ""
+    }
+    
+    @objc private func registerButtonTapped() {
+        CoreDataManager.shared.createTodo(newTodo: newTodo)
+        hideBottomSheet()
+    }
+
     private func showBottomSheet() {
-        UIView.animate(withDuration: 0.0) {
-            self.bottomSheetKeyboardConstraint?.activate()
-            self.bottomSheetInitialConstraint?.deactivate()
-            self.view.layoutIfNeeded()
-        }
+        self.bottomSheetKeyboardConstraint?.activate()
+        self.bottomSheetInitialConstraint?.deactivate()
+        self.view.layoutIfNeeded()
     }
     
     private func hideBottomSheet() {
