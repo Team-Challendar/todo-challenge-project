@@ -31,7 +31,7 @@ class CoreDataManager {
     // Core Data persistent container 초기화
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
         let container = NSPersistentCloudKitContainer(name: "Challendar")
-        let storeURL = URL.storeURL(for: "com.seungwon.Challendar", databaseName: "Challendar")
+        let storeURL = URL.storeURL(for: "group.com.seungwon.ChallendarGroup", databaseName: "Challendar")
         let storeDescription = NSPersistentStoreDescription(url: storeURL)
         container.persistentStoreDescriptions = [storeDescription]
 

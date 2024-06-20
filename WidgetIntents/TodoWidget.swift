@@ -1,13 +1,3 @@
-//
-//  TodoWidget.swift
-//  Challendar
-//
-//  Created by 채나연 on 6/20/24.
-//
-
-
-//TodoWidget을 설정하고 Core Data에서 데이터를 가져와 위젯에 표시하는 기능 제공
-
 import WidgetKit
 import SwiftUI
 import Intents
@@ -34,16 +24,16 @@ struct Provider: IntentTimelineProvider {
     func getTimeline(for configuration: TodoListIntent, in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
         var entries: [SimpleEntry] = []
 
-
         // Fetch todos from Core Data
-        do {
-            let todos = CoreDataManager.shared.fetchTodos()
-            for todo in todos {
-                let entry = SimpleEntry(date: Date(), title: todo.title, isCompleted: todo.iscompleted)
-                entries.append(entry)
-            }
-        } catch {
-            print("Error fetching todos: \(error)")
+        let todos = CoreDataManager.shared.fetchTodos()
+
+        if let randomTodo = todos.randomElement() {
+            let entry = SimpleEntry(date: Date(), title: randomTodo.title, isCompleted: randomTodo.iscompleted)
+            entries.append(entry)
+        } else {
+            // If no todos are found, add a placeholder entry
+            let entry = SimpleEntry(date: Date(), title: "No Tasks", isCompleted: false)
+            entries.append(entry)
         }
 
         let timeline = Timeline(entries: entries, policy: .atEnd)
@@ -57,8 +47,12 @@ struct TodoWidgetEntryView: View {
     var body: some View {
         VStack {
             Text(entry.title)
+                .font(.headline)
             Text(entry.isCompleted ? "Completed" : "Not Completed")
+                .font(.subheadline)
+                .foregroundColor(entry.isCompleted ? .green : .red)
         }
+        .padding()
     }
 }
 
@@ -70,7 +64,6 @@ struct TodoWidget: Widget {
             TodoWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Todo Widget")
-        .description("Displays a list of todos.")
+        .description("Displays a random todo.")
     }
 }
-

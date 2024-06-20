@@ -19,6 +19,8 @@
 		<dict>
 			<key>INIntentCategory</key>
 			<string>information</string>
+			<key>INIntentDescription</key>
+			<string>TEST</string>
 			<key>INIntentDescriptionID</key>
 			<string>XA2jgg</string>
 			<key>INIntentEligibleForWidgets</key>
