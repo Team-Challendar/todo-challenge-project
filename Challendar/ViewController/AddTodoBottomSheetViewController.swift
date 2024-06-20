@@ -21,6 +21,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     var todoDateRangeView = UIView()
     var dateImageView = UIImageView()
     var dateRangeLabel = UILabel()
+    var calendarContainerView = UIView()
     var calendarView = UIView()
     
     var alertView = UIView()
@@ -100,13 +101,16 @@ class AddTodoBottomSheetViewController: UIViewController {
         dateRangeLabel.font = .pretendardMedium(size: 16)
         todoDateRangeView.addSubview(dateRangeLabel)
         
+        calendarContainerView.backgroundColor = .clear
+        calendarContainerView.isHidden = true
+        contentStackView.addArrangedSubview(calendarContainerView)
+
         // calendarView 설정
         calendarView.backgroundColor = .secondary850
         calendarView.layer.borderWidth = 1
         calendarView.layer.borderColor = UIColor.secondary800.cgColor
         calendarView.layer.cornerRadius = 20
-        calendarView.isHidden = true
-        contentStackView.addArrangedSubview(calendarView)
+        calendarContainerView.addSubview(calendarView)
         
         // alertView 설정
         alertView.backgroundColor = .clear
@@ -182,10 +186,17 @@ class AddTodoBottomSheetViewController: UIViewController {
             make.centerY.equalTo(todoDateRangeView.snp.centerY)
         }
         
+        calendarContainerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(320)
+            make.centerX.equalTo(bottomSheetView.snp.centerX)
+        }
+        
         // calendarView 제약조건
         calendarView.snp.makeConstraints { make in
             make.width.equalTo(300)
             make.height.equalTo(320)
+            make.centerX.equalTo(bottomSheetView.snp.centerX)
         }
         
         // alertView 제약조건
@@ -250,8 +261,8 @@ class AddTodoBottomSheetViewController: UIViewController {
     }
     
     @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
+        calendarContainerView.isHidden.toggle()
         UIView.animate(withDuration: 0.3) {
-            self.calendarView.isHidden.toggle()
             self.view.layoutIfNeeded()
             self.view.endEditing(true)
         }
