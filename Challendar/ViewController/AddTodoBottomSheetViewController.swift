@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class AddTodoBottomSheetViewController: UIViewController {
+class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
     var dimmedView = UIView()
     var bottomSheetView = UIView()
     
@@ -105,6 +105,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         
         calendarContainerView.backgroundColor = .clear
         calendarContainerView.isHidden = true
+        calendarContainerView.delegate = self // NewCalendarDelegate 설정
         contentStackView.addArrangedSubview(calendarContainerView)
         
         // alertView 설정
@@ -307,5 +308,24 @@ class AddTodoBottomSheetViewController: UIViewController {
             self.dismiss(animated: false, completion: nil)
             self.dismissCompletion?()
         }
+    }
+    
+    // NewCalendarDelegate 메소드 추가
+    func singleDateSelected(firstDate: Date) {
+        newTodo.startDate = firstDate
+        newTodo.endDate = firstDate
+        dateRangeLabel.text = "\(firstDate.dateToString())"
+    }
+    
+    func rangeOfDateSelected(firstDate: Date, lastDate: Date) {
+        newTodo.startDate = firstDate
+        newTodo.endDate = lastDate
+        dateRangeLabel.text = "\(firstDate.dateToString()) - \(lastDate.dateToString())"
+    }
+    
+    func deSelectedDate() {
+        newTodo.startDate = nil
+        newTodo.endDate = nil
+        dateRangeLabel.text = "기한 없음"
     }
 }
