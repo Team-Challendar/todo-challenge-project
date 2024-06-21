@@ -316,7 +316,6 @@ extension NewCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance, FS
     }
     // 날짜 별로 Cell 그리는 함수
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
-        
         guard let cell = calendar.dequeueReusableCell(withIdentifier: CalendarCell.identifier, for: date, at: position) as? CalendarCell else { return FSCalendarCell() }
         cell.setColor(isChallenge: isChallenge)
         cell.updateBackImage(typeOfDate(date))

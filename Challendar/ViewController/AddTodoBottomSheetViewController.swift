@@ -7,8 +7,9 @@
 
 import UIKit
 import SnapKit
+import FSCalendar
 
-class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
+class AddTodoBottomSheetViewController: UIViewController {
     var dimmedView = UIView()
     var bottomSheetView = UIView()
     
@@ -104,6 +105,7 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         calendarContainerView.isHidden = true
         calendarContainerView.delegate = self
         contentStackView.addArrangedSubview(calendarContainerView)
+        
         
         // alertView 설정
         alertView.backgroundColor = .clear
@@ -258,8 +260,8 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         let dimmedTapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTapGesture)
         
-        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
-        view.addGestureRecognizer(viewTapGesture)
+//        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
+//        bottomSheetView.addGestureRecognizer(viewTapGesture)
         
         let dateRangeTapGesture = UITapGestureRecognizer(target: self, action: #selector(dateRangeTapped(_:)))
         todoDateRangeView.addGestureRecognizer(dateRangeTapGesture)
@@ -308,7 +310,17 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
             self.dismissCompletion?()
         }
     }
-    
+
+    private func updateStatus() {
+        todoImageView.tintColor = .alertBlue
+        registerButton.backgroundColor = .alertBlue
+        registerButton.setTitle("계획 추가하기", for: .normal)
+        alertView.isHidden = false
+    }
+}
+
+
+extension AddTodoBottomSheetViewController : NewCalendarDelegate {
     // NewCalendarDelegate 메소드
     func singleDateSelected(firstDate: Date) {
         newTodo.startDate = firstDate
@@ -329,12 +341,5 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         newTodo.endDate = Date().endOfDay()
         dateRangeLabel.text = "기한 없음"
         alertView.isHidden = true
-    }
-
-    private func updateStatus() {
-        todoImageView.tintColor = .alertBlue
-        registerButton.backgroundColor = .alertBlue
-        registerButton.setTitle("계획 추가하기", for: .normal)
-        alertView.isHidden = false
     }
 }
