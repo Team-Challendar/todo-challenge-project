@@ -20,7 +20,6 @@ extension UIView {
             for (index, subview) in view.subviews.enumerated() {
                 let indentation = String(repeating: "  ", count: level)
                 print("\(indentation)Subview \(index): \(type(of: subview)), Frame: \(subview.frame)")
-                
                 // 재귀적으로 서브뷰의 서브뷰를 탐색
                 printSubviews(of: subview, level: level + 1)
             }

@@ -29,14 +29,14 @@ class AlarmPickerView : UIView{
         //View UI 구성
         self.layer.cornerRadius = 20
         self.layer.cornerCurve = .continuous
-        self.backgroundColor = .secondary850
+        self.backgroundColor = .clear
         self.layer.borderColor = UIColor.secondary800.cgColor
         self.layer.borderWidth = 1
         self.clipsToBounds = true
         
         pickerView.delegate = self
         pickerView.dataSource = self
-        
+
         // 서브뷰 수정
         
     }
@@ -57,11 +57,10 @@ class AlarmPickerView : UIView{
     override func layoutSubviews() {
         super.layoutSubviews()
         UIView.printSubviews(of: pickerView, level: 0)
-        
-        pickerView.subviews[1].backgroundColor = .secondary800.withAlphaComponent(0.5)
-        pickerView.subviews[1].layer.cornerRadius = 4
-        
-        
+        pickerView.subviews[1].isHidden = true
+//        pickerView.subviews[1].backgroundColor = .secondary800.withAlphaComponent(0.0)
+//        pickerView.subviews[1].layer.cornerRadius = 4
+        pickerView.subviews[0].subviews[0].subviews[2].subviews[0].subviews[0].subviews[1].backgroundColor = .red
     }
 }
 
@@ -107,7 +106,6 @@ extension AlarmPickerView : UIPickerViewDelegate, UIPickerViewDataSource {
         label.textColor = .white
         label.font = .pretendardSemiBold(size: 28)
         
-        
         return componentView
     }
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
@@ -125,5 +123,31 @@ extension AlarmPickerView : UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         return self.frame.width / 2
+    }
+}
+
+
+extension UIPickerView {
+    func disableZoom() {
+        for subview in self.subviews {
+            if let scrollView = subview as? UIScrollView {
+                scrollView.maximumZoomScale = 5.0
+                scrollView.minimumZoomScale = 5.0
+                scrollView.zoomScale = 5.0
+            }
+            // 만약 더 깊은 계층 구조에 UIScrollView가 있을 경우 재귀적으로 찾음
+            disableZoomInSubviews(of: subview)
+        }
+    }
+    
+    private func disableZoomInSubviews(of view: UIView) {
+        for subview in view.subviews {
+            if let scrollView = subview as? UIScrollView {
+                scrollView.maximumZoomScale = 1.0
+                scrollView.minimumZoomScale = 1.0
+                scrollView.zoomScale = 1.0
+            }
+            disableZoomInSubviews(of: subview)
+        }
     }
 }

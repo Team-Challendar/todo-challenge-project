@@ -16,6 +16,7 @@
 		142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 142052D42C1BFC8000BC4831 /* Settings.bundle */; };
 		1433C08F2C2346CF006DC0E3 /* NewCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */; };
 		1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */; };
+		14386F242C2524A900F2BD22 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F232C2524A900F2BD22 /* PickerView.swift */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
@@ -126,6 +127,7 @@
 		142052D42C1BFC8000BC4831 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
 		1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPickerView.swift; sourceTree = "<group>"; };
+		14386F232C2524A900F2BD22 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		146A27B22C20B63400624239 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1472AD9D2C082A0F00145668 /* Challendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1472ADA02C082A0F00145668 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */,
 				14F4DB112C19874A00B5CE45 /* UICollectionViewCellExtension.swift */,
 				14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */,
+				14386F232C2524A900F2BD22 /* PickerView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -596,6 +599,7 @@
 				DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */,
 				1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */,
 				149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */,
+				14386F242C2524A900F2BD22 /* PickerView.swift in Sources */,
 				149FEFAD2C11CEE800CDDC23 /* TodoCalendarViewCell.swift in Sources */,
 				14C6AFE52C0F136C0016B80C /* SettingModel.swift in Sources */,
 				14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */,
