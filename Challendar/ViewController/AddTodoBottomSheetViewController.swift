@@ -45,10 +45,6 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         showBottomSheet()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     private func configureUI() {
         // Dimmed view 설정
         dimmedView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -225,7 +221,6 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
             make.bottom.equalToSuperview().inset(37)
             make.height.equalTo(64)
         }
-
     }
     
     private func configureKeyboardObservers() {
@@ -237,10 +232,8 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
             self.bottomSheetKeyboardConstraint?.update(offset: -keyboardFrame.height)
             UIView.animate(withDuration: 0.3) {
-                self.registerButton.snp.updateConstraints{ make in
+                self.registerButton.snp.updateConstraints { make in
                     make.height.equalTo(0)
-                    make.top.equalTo(self.contentStackView.snp.bottom).offset(24)
-                    make.bottom.equalToSuperview().inset(0)
                 }
                 self.registerButton.isHidden = true
                 self.calendarContainerView.isHidden = true
@@ -252,10 +245,8 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
     @objc private func keyboardWillHide(notification: NSNotification) {
         self.bottomSheetKeyboardConstraint?.update(offset: 0)
         UIView.animate(withDuration: 0.3) {
-            self.registerButton.snp.updateConstraints{ make in
+            self.registerButton.snp.updateConstraints { make in
                 make.height.equalTo(64)
-                make.top.equalTo(self.contentStackView.snp.bottom).offset(24)
-                make.bottom.equalToSuperview().inset(37)
             }
             self.registerButton.isHidden = false
             self.view.layoutIfNeeded()
@@ -323,14 +314,14 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         newTodo.startDate = firstDate
         newTodo.endDate = firstDate
         dateRangeLabel.text = "\(firstDate.dateToString())"
-        alertView.isHidden = false
+        updateStatus()
     }
     
     func rangeOfDateSelected(firstDate: Date, lastDate: Date) {
         newTodo.startDate = firstDate
         newTodo.endDate = lastDate
         dateRangeLabel.text = "\(firstDate.dateToString()) - \(lastDate.dateToString())"
-        alertView.isHidden = false
+        updateStatus()
     }
     
     func deSelectedDate() {
@@ -338,5 +329,12 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         newTodo.endDate = Date().endOfDay()
         dateRangeLabel.text = "기한 없음"
         alertView.isHidden = true
+    }
+
+    private func updateStatus() {
+        todoImageView.tintColor = .alertBlue
+        registerButton.backgroundColor = .alertBlue
+        registerButton.setTitle("계획 추가하기", for: .normal)
+        alertView.isHidden = false
     }
 }
