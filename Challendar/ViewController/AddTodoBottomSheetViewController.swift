@@ -63,6 +63,7 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         // contentStackView 설정
         contentStackView.axis = .vertical
         contentStackView.spacing = 16
+        contentStackView.backgroundColor = .clear
         bottomSheetView.addSubview(contentStackView)
         
         // editTitleView 설정
@@ -105,11 +106,12 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         
         calendarContainerView.backgroundColor = .clear
         calendarContainerView.isHidden = true
-        calendarContainerView.delegate = self // NewCalendarDelegate 설정
+        calendarContainerView.delegate = self
         contentStackView.addArrangedSubview(calendarContainerView)
         
         // alertView 설정
         alertView.backgroundColor = .clear
+        alertView.isHidden = true
         contentStackView.addArrangedSubview(alertView)
         
         alertImageView.backgroundColor = .clear
@@ -135,30 +137,29 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         dimmedView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
+        
         bottomSheetView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             self.bottomSheetInitialConstraint = make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).constraint
             self.bottomSheetKeyboardConstraint = make.bottom.equalToSuperview().constraint
         }
-
+        
         contentStackView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview().inset(16)
-            make.bottom.equalTo(registerButton.snp.top).offset(-24)
         }
-
+        
         // editTitleView 제약조건
         editTitleView.snp.makeConstraints { make in
             make.height.equalTo(32)
         }
-
+        
         // todoImageView 제약조건
         todoImageView.snp.makeConstraints { make in
             make.height.width.equalTo(20)
             make.leading.equalTo(editTitleView.snp.leading)
             make.centerY.equalTo(editTitleView.snp.centerY)
         }
-
+        
         // titleTextField 제약조건
         titleTextField.snp.makeConstraints { make in
             make.height.equalTo(24)
@@ -166,63 +167,65 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
             make.trailing.equalTo(editTitleView.snp.trailing)
             make.centerY.equalTo(editTitleView.snp.centerY)
         }
-
+        
         // bottomLine 제약조건
         bottomLine.snp.makeConstraints { make in
             make.height.equalTo(0.5)
             make.top.equalTo(editTitleView.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
         }
-
+        
         // todoDateRangeView 제약조건
         todoDateRangeView.snp.makeConstraints { make in
             make.height.equalTo(36)
             make.top.equalTo(bottomLine.snp.bottom).offset(16)
         }
-
+        
         // dateImageView 제약조건
         dateImageView.snp.makeConstraints { make in
             make.centerY.equalTo(todoDateRangeView.snp.centerY)
             make.leading.equalTo(todoDateRangeView.snp.leading)
             make.height.width.equalTo(24)
         }
-
+        
         // dateRangeLabel 제약조건
         dateRangeLabel.snp.makeConstraints { make in
             make.leading.equalTo(dateImageView.snp.trailing).offset(16)
             make.centerY.equalTo(todoDateRangeView.snp.centerY)
         }
-
+        
         calendarContainerView.snp.makeConstraints { make in
             make.top.equalTo(todoDateRangeView.snp.bottom).offset(4)
             make.leading.trailing.equalToSuperview().inset(30.5)
             make.height.equalTo(320)
         }
-
+        
         // alertView 제약조건
         alertView.snp.makeConstraints { make in
             make.height.equalTo(36)
         }
-
+        
         // alertImageView 제약조건
         alertImageView.snp.makeConstraints { make in
             make.centerY.equalTo(alertView.snp.centerY)
             make.leading.equalTo(alertView.snp.leading)
             make.height.width.equalTo(24)
         }
-
+        
         // alertLabel 제약조건
         alertLabel.snp.makeConstraints { make in
             make.leading.equalTo(alertImageView.snp.trailing).offset(16)
             make.centerY.equalTo(alertView.snp.centerY)
         }
-
+        
         // registerButton 제약조건
         registerButton.snp.makeConstraints { make in
-            make.height.equalTo(64)
             make.leading.trailing.equalToSuperview().inset(18)
+            make.top.equalTo(contentStackView.snp.bottom).offset(24)
             make.bottom.equalToSuperview().inset(37)
+            make.height.equalTo(64)
         }
+
     }
     
     private func configureKeyboardObservers() {
@@ -234,10 +237,13 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
             self.bottomSheetKeyboardConstraint?.update(offset: -keyboardFrame.height)
             UIView.animate(withDuration: 0.3) {
-                self.registerButton.snp.updateConstraints { make in
-                    make.height.equalTo(8)
+                self.registerButton.snp.updateConstraints{ make in
+                    make.height.equalTo(0)
+                    make.top.equalTo(self.contentStackView.snp.bottom).offset(24)
+                    make.bottom.equalToSuperview().inset(0)
                 }
                 self.registerButton.isHidden = true
+                self.calendarContainerView.isHidden = true
                 self.view.layoutIfNeeded()
             }
         }
@@ -246,8 +252,10 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
     @objc private func keyboardWillHide(notification: NSNotification) {
         self.bottomSheetKeyboardConstraint?.update(offset: 0)
         UIView.animate(withDuration: 0.3) {
-            self.registerButton.snp.updateConstraints { make in
+            self.registerButton.snp.updateConstraints{ make in
                 make.height.equalTo(64)
+                make.top.equalTo(self.contentStackView.snp.bottom).offset(24)
+                make.bottom.equalToSuperview().inset(37)
             }
             self.registerButton.isHidden = false
             self.view.layoutIfNeeded()
@@ -291,7 +299,7 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         CoreDataManager.shared.createTodo(newTodo: newTodo)
         hideBottomSheet()
     }
-
+    
     private func showBottomSheet() {
         self.bottomSheetKeyboardConstraint?.activate()
         self.bottomSheetInitialConstraint?.deactivate()
@@ -310,22 +318,25 @@ class AddTodoBottomSheetViewController: UIViewController, NewCalendarDelegate {
         }
     }
     
-    // NewCalendarDelegate 메소드 추가
+    // NewCalendarDelegate 메소드
     func singleDateSelected(firstDate: Date) {
         newTodo.startDate = firstDate
         newTodo.endDate = firstDate
         dateRangeLabel.text = "\(firstDate.dateToString())"
+        alertView.isHidden = false
     }
     
     func rangeOfDateSelected(firstDate: Date, lastDate: Date) {
         newTodo.startDate = firstDate
         newTodo.endDate = lastDate
         dateRangeLabel.text = "\(firstDate.dateToString()) - \(lastDate.dateToString())"
+        alertView.isHidden = false
     }
     
     func deSelectedDate() {
-        newTodo.startDate = nil
-        newTodo.endDate = nil
+        newTodo.startDate = Date()
+        newTodo.endDate = Date().endOfDay()
         dateRangeLabel.text = "기한 없음"
+        alertView.isHidden = true
     }
 }
