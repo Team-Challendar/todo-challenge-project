@@ -31,7 +31,11 @@ class AddTodoBottomSheetViewController: UIViewController {
     var registerButton = UIButton()
     var dismissCompletion: (() -> Void)?
     
-    var newTodo = Todo()
+    var newTodo = Todo() {
+        didSet {
+            updateUI()
+        }
+    }
     
     private var bottomSheetInitialConstraint: Constraint?
     private var bottomSheetKeyboardConstraint: Constraint?
@@ -44,9 +48,13 @@ class AddTodoBottomSheetViewController: UIViewController {
         configureGestures()
         configureKeyboardObservers()
         showBottomSheet()
+        updateUI()
     }
     
     private func configureUI() {
+        [dimmedView, bottomSheetView, contentStackView, editTitleView, todoImageView, titleTextField, bottomLine, todoDateRangeView, dateImageView, dateRangeLabel, calendarContainerView, alertView, alertImageView, alertLabel, registerButton].forEach{
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
         // Dimmed view 설정
         dimmedView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.addSubview(dimmedView)
@@ -105,7 +113,6 @@ class AddTodoBottomSheetViewController: UIViewController {
         calendarContainerView.isHidden = true
         calendarContainerView.delegate = self
         contentStackView.addArrangedSubview(calendarContainerView)
-        
         
         // alertView 설정
         alertView.backgroundColor = .clear
@@ -235,7 +242,9 @@ class AddTodoBottomSheetViewController: UIViewController {
             self.bottomSheetKeyboardConstraint?.update(offset: -keyboardFrame.height)
             UIView.animate(withDuration: 0.3) {
                 self.registerButton.snp.updateConstraints { make in
+                    make.bottom.equalToSuperview().inset(0)
                     make.height.equalTo(0)
+                    
                 }
                 self.registerButton.isHidden = true
                 self.calendarContainerView.isHidden = true
@@ -248,6 +257,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         self.bottomSheetKeyboardConstraint?.update(offset: 0)
         UIView.animate(withDuration: 0.3) {
             self.registerButton.snp.updateConstraints { make in
+                make.bottom.equalToSuperview().inset(37)
                 make.height.equalTo(64)
             }
             self.registerButton.isHidden = false
@@ -260,9 +270,6 @@ class AddTodoBottomSheetViewController: UIViewController {
         let dimmedTapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTapGesture)
         
-//        let viewTapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_:)))
-//        bottomSheetView.addGestureRecognizer(viewTapGesture)
-        
         let dateRangeTapGesture = UITapGestureRecognizer(target: self, action: #selector(dateRangeTapped(_:)))
         todoDateRangeView.addGestureRecognizer(dateRangeTapGesture)
     }
@@ -270,10 +277,6 @@ class AddTodoBottomSheetViewController: UIViewController {
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
         view.endEditing(true)
         hideBottomSheet()
-    }
-    
-    @objc private func viewTapped(_ tapRecognizer: UITapGestureRecognizer) {
-        view.endEditing(true)
     }
     
     @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
@@ -284,8 +287,14 @@ class AddTodoBottomSheetViewController: UIViewController {
         })
     }
     
+    @objc private func titleTextFieldDidChange(_ textField: UITextField) {
+        newTodo.title = textField.text ?? ""
+        updateUI()
+    }
+
     @objc private func titleTextFieldDidEndEditing(_ textField: UITextField) {
         newTodo.title = textField.text ?? ""
+        updateUI()
     }
     
     @objc private func registerButtonTapped() {
@@ -310,36 +319,60 @@ class AddTodoBottomSheetViewController: UIViewController {
             self.dismissCompletion?()
         }
     }
+    
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy. MM. dd. EE"
+        return dateFormatter.string(from: date)
+    }
 
-    private func updateStatus() {
-        todoImageView.tintColor = .alertBlue
-        registerButton.backgroundColor = .alertBlue
-        registerButton.setTitle("계획 추가하기", for: .normal)
-        alertView.isHidden = false
+    private func updateUI() {
+        if let startDate = newTodo.startDate, let endDate = newTodo.endDate {
+            todoImageView.image = .done3.withTintColor(.alertBlue)
+            registerButton.backgroundColor = .alertBlue
+            registerButton.setTitle("계획 추가하기", for: .normal)
+            dateRangeLabel.text = startDate == endDate ? formatDate(startDate) : "\(formatDate(startDate)) - \(formatDate(endDate))"
+            alertView.isHidden = false
+        } else {
+            todoImageView.image = .done3.withTintColor(.alertTomato)
+            registerButton.backgroundColor = .alertTomato
+            registerButton.setTitle("할 일 추가하기", for: .normal)
+            dateRangeLabel.text = "기한 없음"
+            alertView.isHidden = true
+        }
+        
+        // titleTextField에 값에 따라 registerButton 활성 상태 변경
+        if let titleText = titleTextField.text, titleText.isEmpty {
+            registerButton.isEnabled = false
+            registerButton.backgroundColor = .secondary800
+            registerButton.setTitleColor(.secondary700, for: .normal)
+        } else {
+            registerButton.isEnabled = true
+            registerButton.backgroundColor = newTodo.startDate != nil && newTodo.endDate != nil ? .alertBlue : .alertTomato
+            registerButton.setTitleColor(.white, for: .normal)
+        }
     }
 }
 
-
-extension AddTodoBottomSheetViewController : NewCalendarDelegate {
+extension AddTodoBottomSheetViewController: NewCalendarDelegate {
     // NewCalendarDelegate 메소드
     func singleDateSelected(firstDate: Date) {
         newTodo.startDate = firstDate
         newTodo.endDate = firstDate
-        dateRangeLabel.text = "\(firstDate.dateToString())"
-        updateStatus()
+        updateUI()
     }
     
     func rangeOfDateSelected(firstDate: Date, lastDate: Date) {
         newTodo.startDate = firstDate
         newTodo.endDate = lastDate
-        dateRangeLabel.text = "\(firstDate.dateToString()) - \(lastDate.dateToString())"
-        updateStatus()
+        updateUI()
     }
     
     func deSelectedDate() {
-        newTodo.startDate = Date()
-        newTodo.endDate = Date().endOfDay()
-        dateRangeLabel.text = "기한 없음"
-        alertView.isHidden = true
+        let today = Date()
+        newTodo.startDate = today
+        newTodo.endDate = today.endOfDay()
+        updateUI()
     }
 }
