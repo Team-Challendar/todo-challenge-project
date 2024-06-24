@@ -21,7 +21,9 @@ class AddTodoBottomSheetViewController: UIViewController {
     
     var todoDateRangeView = UIView()
     var dateImageView = UIImageView()
-    var dateRangeLabel = UILabel()
+    var startDateLabel = UILabel()
+    var arrowLabel = UILabel()
+    var endDateLabel = UILabel()
     var calendarContainerView = NewCalendarView()
     
     var alertView = UIView()
@@ -29,10 +31,10 @@ class AddTodoBottomSheetViewController: UIViewController {
     var alertLabel = UILabel()
     var alertPickerView = UIView() // pickerView 불러올 예정
     
-    var         repetitionView = UIView()
+    var repetitionView = UIView()
     var repetitionImageView = UIImageView()
     var repetitionLabel = UILabel()
-    var repetitionCollectionView = UIView() // collectionView 불러올 예정
+    var repetitionCollectionView = RepetitionCollectionView()
     
     var challengeCheckView = UIView()
     var challengeCheckImageView = UIImageView()
@@ -62,7 +64,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     }
     
     private func configureUI() {
-        [dimmedView, bottomSheetView, contentStackView, editTitleView, todoImageView, titleTextField, bottomLine, todoDateRangeView, dateImageView, dateRangeLabel, calendarContainerView, alertView, alertImageView, alertLabel, alertPickerView,         repetitionView, repetitionImageView, repetitionLabel, repetitionCollectionView, challengeCheckView, challengeCheckImageView, challengeCheckLabel, registerButton].forEach{
+        [dimmedView, bottomSheetView, contentStackView, editTitleView, todoImageView, titleTextField, bottomLine, todoDateRangeView, dateImageView, calendarContainerView, alertView, alertImageView, alertLabel, alertPickerView, repetitionView, repetitionImageView, repetitionLabel, repetitionCollectionView, challengeCheckView, challengeCheckImageView, challengeCheckLabel, registerButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         // Dimmed view 설정
@@ -115,10 +117,21 @@ class AddTodoBottomSheetViewController: UIViewController {
         dateImageView.image = .clock1.withTintColor(.secondary600)
         todoDateRangeView.addSubview(dateImageView)
         
-        dateRangeLabel.text = "기한 없음"
-        dateRangeLabel.textColor = .secondary600
-        dateRangeLabel.font = .pretendardMedium(size: 16)
-        todoDateRangeView.addSubview(dateRangeLabel)
+        startDateLabel.font = .pretendardMedium(size: 16)
+        startDateLabel.textColor = .secondary600
+        startDateLabel.isHidden = true
+        todoDateRangeView.addSubview(startDateLabel)
+        
+        arrowLabel.font = .pretendardMedium(size: 16)
+        arrowLabel.textColor = .secondary700
+        arrowLabel.text = "->"
+        arrowLabel.isHidden = true
+        todoDateRangeView.addSubview(arrowLabel)
+        
+        endDateLabel.font = .pretendardMedium(size: 16)
+        endDateLabel.textColor = .secondary600
+        endDateLabel.isHidden = true
+        todoDateRangeView.addSubview(endDateLabel)
         
         calendarContainerView.backgroundColor = .clear
         calendarContainerView.isHidden = true
@@ -134,35 +147,34 @@ class AddTodoBottomSheetViewController: UIViewController {
         alertImageView.image = .notification1.withTintColor(.secondary600)
         alertView.addSubview(alertImageView)
         
-        alertLabel.text = "알람 없음"
+        alertLabel.text = "알림 없음"
         alertLabel.textColor = .secondary600
         alertLabel.font = .pretendardMedium(size: 16)
         alertView.addSubview(alertLabel)
         
-                alertPickerView.backgroundColor = .clear
-                alertPickerView.isHidden = true
-//                alertPickerView.delegate = self
-                contentStackView.addArrangedSubview(alertPickerView)
+        alertPickerView.backgroundColor = .clear
+        alertPickerView.isHidden = true
+        contentStackView.addArrangedSubview(alertPickerView)
         
         // repetitionView 설정
-                repetitionView.backgroundColor = .clear
-                repetitionView.isHidden = true
-        contentStackView.addArrangedSubview(        repetitionView)
+        repetitionView.backgroundColor = .clear
+        repetitionView.isHidden = true
+        contentStackView.addArrangedSubview(repetitionView)
         
         repetitionImageView.backgroundColor = .clear
         repetitionImageView.image = .re1.withTintColor(.secondary600)
-                repetitionView.addSubview(repetitionImageView)
+        repetitionView.addSubview(repetitionImageView)
         
         repetitionLabel.text = "반복 안 함"
         repetitionLabel.textColor = .secondary600
         repetitionLabel.font = .pretendardMedium(size: 16)
-                repetitionView.addSubview(repetitionLabel)
+        repetitionView.addSubview(repetitionLabel)
         
-              repetitionCollectionView.backgroundColor = .clear
-              repetitionCollectionView.isHidden = true
-//              repetitionCollectionView.delegate = self
-              contentStackView.addArrangedSubview(repetitionCollectionView)
+        repetitionCollectionView.items = ["매일", "월", "화", "수", "목", "금", "토", "일"]
+        repetitionCollectionView.isHidden = true
+        repetitionView.addSubview(repetitionCollectionView)
         
+        // challengeCheckView 설정
         challengeCheckView.backgroundColor = .clear
         challengeCheckView.isHidden = true
         contentStackView.addArrangedSubview(challengeCheckView)
@@ -242,8 +254,18 @@ class AddTodoBottomSheetViewController: UIViewController {
             make.height.width.equalTo(24)
         }
         
-        dateRangeLabel.snp.makeConstraints { make in
+        startDateLabel.snp.makeConstraints { make in
             make.leading.equalTo(dateImageView.snp.trailing).offset(16)
+            make.centerY.equalTo(todoDateRangeView.snp.centerY)
+        }
+        
+        arrowLabel.snp.makeConstraints { make in
+            make.leading.equalTo(startDateLabel.snp.trailing).offset(12)
+            make.centerY.equalTo(todoDateRangeView.snp.centerY)
+        }
+        
+        endDateLabel.snp.makeConstraints { make in
+            make.leading.equalTo(arrowLabel.snp.trailing).offset(12)
             make.centerY.equalTo(todoDateRangeView.snp.centerY)
         }
         
@@ -272,28 +294,34 @@ class AddTodoBottomSheetViewController: UIViewController {
             make.centerY.equalTo(alertView.snp.centerY)
         }
         
-        // repetitionView 제약조건
-                repetitionView.snp.makeConstraints { make in
+        repetitionView.snp.makeConstraints { make in
             make.height.equalTo(36)
             make.top.equalTo(alertView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
         }
         
         repetitionImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(        repetitionView.snp.centerY)
-            make.leading.equalTo(        repetitionView.snp.leading)
+            make.centerY.equalTo(repetitionView.snp.centerY)
+            make.leading.equalTo(repetitionView.snp.leading)
             make.height.width.equalTo(24)
         }
         
         repetitionLabel.snp.makeConstraints { make in
             make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
-            make.centerY.equalTo(        repetitionView.snp.centerY)
+            make.centerY.equalTo(repetitionView.snp.centerY)
         }
+        
+        //        repetitionCollectionView.snp.makeConstraints { make in
+        //            make.height.equalTo(36)
+        //            make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
+        //            make.trailing.equalToSuperview().inset(16)
+        //            make.centerY.equalTo(repetitionView.snp.centerY)
+        //        }
         
         // challengeCheckView 제약조건
         challengeCheckView.snp.makeConstraints { make in
             make.height.equalTo(36)
-            make.top.equalTo(        repetitionView.snp.bottom).offset(16)
+            make.top.equalTo(repetitionView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -349,7 +377,6 @@ class AddTodoBottomSheetViewController: UIViewController {
         }
     }
     
-    // TapGestureRecognizer
     private func configureGestures() {
         let dimmedTapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTapGesture)
@@ -357,14 +384,24 @@ class AddTodoBottomSheetViewController: UIViewController {
         let dateRangeTapGesture = UITapGestureRecognizer(target: self, action: #selector(dateRangeTapped(_:)))
         todoDateRangeView.addGestureRecognizer(dateRangeTapGesture)
         
-        let alartViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(alertTapped(_:)))
-        alertView.addGestureRecognizer(alartViewTapGesture)
+        let alertViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(alertTapped(_:)))
+        alertView.addGestureRecognizer(alertViewTapGesture)
         
-        let repetitionViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(repetitionTapped(_:)))
-                repetitionView.addGestureRecognizer(repetitionViewTapGesture)
+        // repetitionView 탭 제스처
+        let repetitionLabelTapGesture = UITapGestureRecognizer(target: self, action: #selector(repetitionTapped(_:)))
+        repetitionLabel.addGestureRecognizer(repetitionLabelTapGesture)
+        repetitionLabel.isUserInteractionEnabled = true
+        
+        let repetitionImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(repetitionTapped(_:)))
+        repetitionImageView.addGestureRecognizer(repetitionImageViewTapGesture)
+        repetitionImageView.isUserInteractionEnabled = true
         
         let challengeCheckViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(challengeCheckTapped(_:)))
         challengeCheckView.addGestureRecognizer(challengeCheckViewTapGesture)
+        
+        let outsideTapGesture = UITapGestureRecognizer(target: self, action: #selector(outsideTapped(_:)))
+        outsideTapGesture.cancelsTouchesInView = false // 다른 뷰의 터치 이벤트를 취소하지 않음
+        view.addGestureRecognizer(outsideTapGesture)
     }
     
     @objc private func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
@@ -372,25 +409,71 @@ class AddTodoBottomSheetViewController: UIViewController {
         hideBottomSheet()
     }
     
+    @objc private func outsideTapped(_ tapRecognizer: UITapGestureRecognizer) {
+        let location = tapRecognizer.location(in: view)
+        
+        // alertPickerView가 보이는 상태에서 alertPickerView 외부를 탭했을 때
+        if !alertPickerView.isHidden && !alertPickerView.point(inside: view.convert(location, to: alertPickerView), with: nil) {
+            alertPickerView.isHidden = true
+            alertImageView.image = .notification1
+        }
+        
+        // repetitionCollectionView가 보이는 상태에서 repetitionCollectionView 외부를 탭했을 때
+        if !repetitionCollectionView.isHidden && !repetitionCollectionView.point(inside: view.convert(location, to: repetitionCollectionView), with: nil) {
+            repetitionCollectionView.isHidden = true
+            repetitionLabel.isHidden = false
+            repetitionLabel.snp.remakeConstraints { make in
+                make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
+                make.centerY.equalTo(repetitionView.snp.centerY)
+            }
+        }
+        
+        // calendarContainerView가 보이는 상태에서 calendarContainerView 외부를 탭했을 때
+        if !calendarContainerView.isHidden && !calendarContainerView.point(inside: view.convert(location, to: calendarContainerView), with: nil) {
+            calendarContainerView.isHidden = true
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
         calendarContainerView.isHidden.toggle()
-        let today = Date()
-
+        
         if calendarContainerView.isHidden {
-            if newTodo.startDate == today && newTodo.endDate == nil {
+            if newTodo.endDate == nil {
                 dateImageView.image = .clock1.withTintColor(.secondary600)
-                dateRangeLabel.textColor = .secondary600
-            } else if newTodo.startDate != today && newTodo.endDate != nil {
+                startDateLabel.textColor = .secondary600
+                endDateLabel.isHidden = true
+                arrowLabel.isHidden = true
+            } else if newTodo.startDate == newTodo.endDate {
                 dateImageView.image = .clock2.withTintColor(.alertRed)
-                dateRangeLabel.textColor = .challendarWhite
+                startDateLabel.text = formatDate(newTodo.startDate!)
+                startDateLabel.textColor = .challendarWhite
+                endDateLabel.isHidden = true
+                arrowLabel.isHidden = true
             } else {
-                dateImageView.image = .clock1.withTintColor(.secondary600)
-                dateRangeLabel.textColor = .secondary600
+                dateImageView.image = .clock2.withTintColor(.alertRed)
+                startDateLabel.text = formatDate(newTodo.startDate!)
+                endDateLabel.text = formatDate(newTodo.endDate!)
+                startDateLabel.textColor = .challendarWhite
+                endDateLabel.textColor = .challendarWhite
+                arrowLabel.isHidden = false
+                endDateLabel.isHidden = false
             }
         } else {
             DispatchQueue.main.async(execute: {
                 self.dateImageView.image = .clock2.withTintColor(.alertRed)
-                self.dateRangeLabel.textColor = .alertBlue
+                self.startDateLabel.textColor = .alertBlue
+                self.endDateLabel.textColor = .alertBlue
+                if self.newTodo.endDate != nil && self.newTodo.endDate != self.newTodo.startDate {
+                    self.endDateLabel.isHidden = false
+                    self.arrowLabel.isHidden = false
+                } else {
+                    self.endDateLabel.isHidden = true
+                    self.arrowLabel.isHidden = true
+                }
             })
         }
         UIView.animate(withDuration: 0.3) {
@@ -401,16 +484,45 @@ class AddTodoBottomSheetViewController: UIViewController {
     
     @objc private func alertTapped(_ tapRecognizer: UITapGestureRecognizer) {
         alertPickerView.isHidden.toggle()
+        
+        if alertPickerView.isHidden {
+            //            if newTodo.
+            alertImageView.image = .notification1
+            
+        } else {
+            alertImageView.image = .notification2
+        }
     }
     
     @objc private func repetitionTapped(_ tapRecognizer: UITapGestureRecognizer) {
         repetitionCollectionView.isHidden.toggle()
         
+        if repetitionCollectionView.isHidden {
+            repetitionImageView.image = .re1
+            repetitionLabel.isHidden = false
+            repetitionLabel.snp.remakeConstraints { make in
+                make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
+                make.centerY.equalTo(repetitionView.snp.centerY)
+            }
+        } else {
+            repetitionImageView.image = .re2
+            repetitionLabel.isHidden = true
+            repetitionCollectionView.snp.remakeConstraints { make in
+                make.height.equalTo(36)
+                make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
+                make.trailing.equalToSuperview().inset(16)
+                make.centerY.equalTo(repetitionView.snp.centerY)
+            }
+        }
         
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc private func challengeCheckTapped(_ tapRecognizer: UITapGestureRecognizer) {
         newTodo.isChallenge.toggle()
+        updateUI()
         
         if newTodo.isChallenge {
             challengeCheckImageView.image = .challengeCheck2
@@ -441,9 +553,12 @@ class AddTodoBottomSheetViewController: UIViewController {
         self.bottomSheetKeyboardConstraint?.activate()
         self.bottomSheetInitialConstraint?.deactivate()
         self.view.layoutIfNeeded()
+        
         let today = Date()
+        
         newTodo.startDate = today
         newTodo.endDate = nil
+        newTodo.isChallenge = false
     }
     
     private func hideBottomSheet() {
@@ -462,31 +577,54 @@ class AddTodoBottomSheetViewController: UIViewController {
     private func formatDate(_ date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.dateFormat = "yyyy. MM. dd. EE"
+        dateFormatter.dateFormat = "yyyy. M. d. EE"
         return dateFormatter.string(from: date)
     }
     
     private func updateUI() {
         if let startDate = newTodo.startDate, let endDate = newTodo.endDate {
-            todoImageView.image = .done3.withTintColor(.alertBlue)
-            registerButton.backgroundColor = .alertBlue
-            registerButton.setTitle("계획 추가하기", for: .normal)
-            dateRangeLabel.text = startDate == endDate ? formatDate(startDate) : "\(formatDate(startDate)) - \(formatDate(endDate))"
+            todoImageView.image = newTodo.isChallenge ? .done3.withTintColor(.challendarGreen200) : .done3.withTintColor(.alertBlue)
+            registerButton.backgroundColor = newTodo.isChallenge ? .challendarGreen200 : .alertBlue
+            registerButton.setTitleColor(newTodo.isChallenge ?  UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
+            registerButton.setTitle(newTodo.isChallenge ? "챌린지 추가하기" : "계획 추가하기", for: .normal)
             alertView.isHidden = false
+            
+            if calendarContainerView.isHidden == false {
+                if newTodo.startDate == self.newTodo.endDate {
+                    startDateLabel.textColor = .alertBlue
+                    startDateLabel.text = formatDate(newTodo.startDate!)
+                    endDateLabel.isHidden = true
+                    arrowLabel.isHidden = true
+                } else if newTodo.endDate == nil {
+                    startDateLabel.textColor = .alertBlue
+                    startDateLabel.text = "기한 없음"
+                    endDateLabel.isHidden = true
+                    arrowLabel.isHidden = true
+                } else {
+                    startDateLabel.textColor = .alertBlue
+                    endDateLabel.textColor = .alertBlue
+                    startDateLabel.text = formatDate(newTodo.startDate!)
+                    endDateLabel.text = formatDate(newTodo.endDate!)
+                    endDateLabel.isHidden = false
+                    arrowLabel.isHidden = false
+                }
+            }
             
             // rangeOfDateSelected 때 repetitionView와 challengeCheckView 표시
             let shouldShowAdditionalViews = startDate != endDate
-                    repetitionView.isHidden = !shouldShowAdditionalViews
+            repetitionView.isHidden = !shouldShowAdditionalViews
             challengeCheckView.isHidden = !shouldShowAdditionalViews
             
         } else {
-            todoImageView.image = .done3.withTintColor(.alertTomato)
-//            dateImageView.image = .clock1.withTintColor(.secondary600)
+            todoImageView.image = newTodo.isChallenge ? .done3.withTintColor(.challendarGreen200) : .done3.withTintColor(.alertTomato)
             registerButton.backgroundColor = .alertTomato
             registerButton.setTitle("할 일 추가하기", for: .normal)
-            dateRangeLabel.text = "기한 없음"
+            startDateLabel.text = "기한 없음"
+            startDateLabel.isHidden = false
+            arrowLabel.isHidden = true
+            endDateLabel.isHidden = true
             alertView.isHidden = true
-                    repetitionView.isHidden = true
+            repetitionView.isHidden = true
             challengeCheckView.isHidden = true
         }
         
@@ -497,8 +635,8 @@ class AddTodoBottomSheetViewController: UIViewController {
             registerButton.setTitleColor(.secondary700, for: .normal)
         } else {
             registerButton.isEnabled = true
-            registerButton.backgroundColor = newTodo.startDate != nil && newTodo.endDate != nil ? .alertBlue : .alertTomato
-            registerButton.setTitleColor(.white, for: .normal)
+            registerButton.backgroundColor = newTodo.isChallenge ? .challendarGreen400 : (newTodo.startDate != nil && newTodo.endDate != nil ? .alertBlue : .alertTomato)
+            registerButton.setTitleColor(newTodo.isChallenge ?  UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
         }
     }
 }
@@ -521,6 +659,7 @@ extension AddTodoBottomSheetViewController: NewCalendarDelegate {
         let today = Date()
         newTodo.startDate = today
         newTodo.endDate = nil
+        newTodo.isChallenge = false
         updateUI()
     }
 }
