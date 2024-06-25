@@ -275,7 +275,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         calendarContainerView.snp.makeConstraints { make in
             make.top.equalTo(todoDateRangeView.snp.bottom).offset(4)
             make.leading.trailing.equalToSuperview().inset(30.5)
-            make.height.equalTo(320)
+            make.height.equalTo(0)
         }
         
         // alertView 제약조건
@@ -295,10 +295,17 @@ class AddTodoBottomSheetViewController: UIViewController {
             make.leading.equalTo(alertImageView.snp.trailing).offset(16)
             make.centerY.equalTo(alertView.snp.centerY)
         }
+    
+        alertPickerView.snp.makeConstraints { make in
+            make.top.equalTo(alertLabel.snp.bottom).offset(4)
+            make.leading.equalToSuperview().inset(30.5)
+            make.width.equalTo(300)
+            make.height.equalTo(0)
+        }
         
         repetitionView.snp.makeConstraints { make in
             make.height.equalTo(36)
-            make.top.equalTo(alertView.snp.bottom).offset(16)
+            make.top.equalTo(alertPickerView.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -312,14 +319,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
             make.centerY.equalTo(repetitionView.snp.centerY)
         }
-        
-        //        repetitionCollectionView.snp.makeConstraints { make in
-        //            make.height.equalTo(36)
-        //            make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
-        //            make.trailing.equalToSuperview().inset(16)
-        //            make.centerY.equalTo(repetitionView.snp.centerY)
-        //        }
-        
+    
         // challengeCheckView 제약조건
         challengeCheckView.snp.makeConstraints { make in
             make.height.equalTo(36)
@@ -408,8 +408,6 @@ class AddTodoBottomSheetViewController: UIViewController {
         hideBottomSheet()
     }
     
-    
-    
     @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideAllExcept(calendarContainerView)
         calendarContainerView.isHidden.toggle()
@@ -430,23 +428,39 @@ class AddTodoBottomSheetViewController: UIViewController {
                 }
             }
         }
-        UIView.animate(withDuration: 0.3) {
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            if self.calendarContainerView.isHidden {
+                self.calendarContainerView.snp.updateConstraints { make in
+                    make.height.equalTo(0)
+                }
+            } else {
+                self.calendarContainerView.snp.updateConstraints { make in
+                    make.height.equalTo(320)
+                }
+            }
             self.view.layoutIfNeeded()
-            self.view.endEditing(true)
-        }
+        })
     }
 
     @objc private func alertTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideAllExcept(alertPickerView)
         alertPickerView.isHidden.toggle()
-        if alertPickerView.isHidden {
-            alertImageView.image = .notification1
-        } else {
-            alertImageView.image = .notification2
-        }
-        UIView.animate(withDuration: 0.3) {
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            if self.alertPickerView.isHidden {
+                self.alertPickerView.snp.updateConstraints { make in
+                    make.height.equalTo(0)
+                }
+                self.alertImageView.image = .notification1
+            } else {
+                self.alertPickerView.snp.updateConstraints { make in
+                    make.height.equalTo(126)
+                }
+                self.alertImageView.image = .notification2
+            }
             self.view.layoutIfNeeded()
-        }
+        })
     }
     
     @objc private func repetitionTapped(_ tapRecognizer: UITapGestureRecognizer) {
@@ -491,13 +505,28 @@ class AddTodoBottomSheetViewController: UIViewController {
 
     private func hideAllExcept(_ viewToExclude: UIView?) {
         if viewToExclude != calendarContainerView && !calendarContainerView.isHidden {
-            calendarContainerView.isHidden = true
-            handleCalendarContainerViewHidden()
-        }
+              UIView.animate(withDuration: 0.3, animations: {
+                  self.calendarContainerView.snp.updateConstraints { make in
+                      make.height.equalTo(0)
+                  }
+                  self.view.layoutIfNeeded()
+              }) { _ in
+                  self.calendarContainerView.isHidden = true
+                  self.handleCalendarContainerViewHidden()
+              }
+          }
+        
         if viewToExclude != alertPickerView && !alertPickerView.isHidden {
-            alertPickerView.isHidden = true
-            alertImageView.image = .notification1
-        }
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.alertPickerView.snp.updateConstraints { make in
+                        make.height.equalTo(0)
+                    }
+                    self.alertImageView.image = .notification1
+                    self.view.layoutIfNeeded()
+                }) { _ in
+                    self.alertPickerView.isHidden = true
+                }
+            }
         if viewToExclude != repetitionCollectionView && !repetitionCollectionView.isHidden {
             repetitionCollectionView.isHidden = true
             repetitionImageView.image = .re1
@@ -529,6 +558,15 @@ class AddTodoBottomSheetViewController: UIViewController {
             endDateLabel.textColor = .challendarWhite
             arrowLabel.isHidden = false
             endDateLabel.isHidden = false
+        }
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.calendarContainerView.snp.updateConstraints { make in
+                make.height.equalTo(0)
+            }
+            self.view.layoutIfNeeded()
+        }) { _ in
+            self.calendarContainerView.isHidden = true
         }
     }
 
@@ -611,6 +649,8 @@ class AddTodoBottomSheetViewController: UIViewController {
             
             let selectedItems = selectedRepetitionDates.sorted().map { repetitionCollectionView.items[$0] }
             repetitionLabel.text = selectedItems.isEmpty ? "반복 안 함" : selectedItems.joined(separator: ", ")
+            repetitionLabel.textColor = selectedItems.isEmpty ? UIColor.secondary600 : UIColor.challendarWhite
+            repetitionImageView.image = selectedItems.isEmpty ? UIImage.re1 : UIImage.re2
             
             // rangeOfDateSelected 때 repetitionView와 challengeCheckView 표시
             let shouldShowAdditionalViews = startDate != endDate
