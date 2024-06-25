@@ -8,9 +8,15 @@
 import UIKit
 import SnapKit
 
+protocol RepetitionCollectionViewDelegate: AnyObject {
+    func repetitionCollectionView(_ collectionView: RepetitionCollectionView, didSelectItemAt index: Int)
+}
+
 class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var items: [String] = []
+    var selectedDates: [Int] = []
+    weak var delegate: RepetitionCollectionViewDelegate?
     private let collectionView: UICollectionView
     
     override init(frame: CGRect) {
@@ -72,5 +78,25 @@ class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if selectedDates.contains(indexPath.row) {
+            selectedDates.removeAll { $0 == indexPath.row }
+        } else {
+            selectedDates.append(indexPath.row)
+        }
+        selectedDates.sort()
+        delegate?.repetitionCollectionView(self, didSelectItemAt: indexPath.row)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if selectedDates.contains(indexPath.row) {
+            selectedDates.removeAll { $0 == indexPath.row }
+        } else {
+            selectedDates.append(indexPath.row)
+        }
+        selectedDates.sort()
+        delegate?.repetitionCollectionView(self, didSelectItemAt: indexPath.row)
     }
 }
