@@ -298,8 +298,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     
         alertPickerView.snp.makeConstraints { make in
             make.top.equalTo(alertLabel.snp.bottom).offset(4)
-            make.leading.equalToSuperview().inset(30.5)
-            make.width.equalTo(300)
+            make.leading.trailing.equalToSuperview().inset(30.5)
             make.height.equalTo(0)
         }
         

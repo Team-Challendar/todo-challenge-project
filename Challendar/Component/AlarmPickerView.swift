@@ -36,6 +36,7 @@ class AlarmPickerView : UIView{
         self.clipsToBounds = true
         pickerView.datePickerMode = .time
         pickerView.preferredDatePickerStyle = .wheels
+        pickerView.locale = Locale(identifier: "en_GB")
         pickerView.minuteInterval = 5
         // 서브뷰 수정
         
@@ -56,6 +57,7 @@ class AlarmPickerView : UIView{
     }
     
     @objc func pickerViewChanged(datePicker : UIDatePicker){
+        print(datePicker.date.dateToString())
         self.delegate?.timeDidChanged(date: datePicker.date)
     }
 
