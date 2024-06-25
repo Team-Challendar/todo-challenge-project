@@ -65,6 +65,21 @@
 		14AAA9092C0E217E0085E22F /* ChallengePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */; };
 		14AAA90B2C0E231D0085E22F /* Speech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90A2C0E231C0085E22F /* Speech.swift */; };
 		14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */; };
+		14B5607C2C2A978600DED1EB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14379BB02C2A909C00808968 /* WidgetKit.framework */; };
+		14B5607D2C2A978600DED1EB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14379BB22C2A909D00808968 /* SwiftUI.framework */; };
+		14B560802C2A978600DED1EB /* ChallendarWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B5607F2C2A978600DED1EB /* ChallendarWidgetBundle.swift */; };
+		14B560822C2A978600DED1EB /* ChallendarWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560812C2A978600DED1EB /* ChallendarWidget.swift */; };
+		14B560842C2A978600DED1EB /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560832C2A978600DED1EB /* AppIntent.swift */; };
+		14B560862C2A978700DED1EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B560852C2A978700DED1EB /* Assets.xcassets */; };
+		14B5608A2C2A978700DED1EB /* ChallendarWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		14B5608F2C2A986800DED1EB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA0E2C0C7D0A00ACAFB6 /* CoreDataManager.swift */; };
+		14B560902C2A986F00DED1EB /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA152C0C8B0F00ACAFB6 /* Todo.swift */; };
+		14B560912C2A987500DED1EB /* TodoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA102C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift */; };
+		14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA112C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift */; };
+		14B560932C2A987E00DED1EB /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
+		14B560942C2A991900DED1EB /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FD2C0B1CE500D63368 /* DateExtension.swift */; };
+		14B560C12C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */; };
+		14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */; };
 		14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */; };
 		14BB8F042C1013E000FA92E8 /* TodoCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */; };
 		14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F052C1019BC00FA92E8 /* TodoCalendarView.swift */; };
@@ -101,7 +116,6 @@
 		2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */; };
 		2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */; };
 		2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */; };
-		2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */; };
 		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
 		B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */; };
 		B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */; };
@@ -124,6 +138,30 @@
 		DEDEE2912C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE28E2C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		14B560882C2A978700DED1EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1472AD952C082A0F00145668 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14B5607A2C2A978600DED1EB;
+			remoteInfo = ChallendarWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		14379BC42C2A909E00808968 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				14B5608A2C2A978700DED1EB /* ChallendarWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGaugeCollectionViewCell.swift; sourceTree = "<group>"; };
 		142052C32C1BDC1C00BC4831 /* NoticeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeModel.swift; sourceTree = "<group>"; };
@@ -132,6 +170,8 @@
 		142052D42C1BFC8000BC4831 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
 		1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPickerView.swift; sourceTree = "<group>"; };
+		14379BB02C2A909C00808968 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		14379BB22C2A909D00808968 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		14386F232C2524A900F2BD22 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlarmView.swift; sourceTree = "<group>"; };
 		14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerRowView.swift; sourceTree = "<group>"; };
@@ -182,6 +222,21 @@
 		14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengePopUpView.swift; sourceTree = "<group>"; };
 		14AAA90A2C0E231C0085E22F /* Speech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speech.swift; sourceTree = "<group>"; };
 		14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeDelegate.swift; sourceTree = "<group>"; };
+		14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChallendarWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		14B5607F2C2A978600DED1EB /* ChallendarWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallendarWidgetBundle.swift; sourceTree = "<group>"; };
+		14B560812C2A978600DED1EB /* ChallendarWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallendarWidget.swift; sourceTree = "<group>"; };
+		14B560832C2A978600DED1EB /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		14B560852C2A978700DED1EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14B560872C2A978700DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14B5608E2C2A97EE00DED1EB /* ChallendarWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChallendarWidgetExtension.entitlements; sourceTree = "<group>"; };
+		14B560A02C2AAA4E00DED1EB /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		14B560A32C2AAA4E00DED1EB /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		14B560A52C2AAA4E00DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		14B560AE2C2AAA4E00DED1EB /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
+		14B560B12C2AAA4E00DED1EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		14B560B32C2AAA4E00DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonIntent.swift; sourceTree = "<group>"; };
 		14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarCell.swift; sourceTree = "<group>"; };
 		14BB8F052C1019BC00FA92E8 /* TodoCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoCalendarView.swift; sourceTree = "<group>"; };
@@ -217,7 +272,6 @@
 		2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSuccessViewController.swift; sourceTree = "<group>"; };
 		2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionView.swift; sourceTree = "<group>"; };
 		2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionViewCell.swift; sourceTree = "<group>"; };
-		2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
 		B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerBtnView.swift; sourceTree = "<group>"; };
 		B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YZCenterFlowLayout.swift; sourceTree = "<group>"; };
@@ -255,16 +309,41 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		14B560782C2A978600DED1EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14B5607D2C2A978600DED1EB /* SwiftUI.framework in Frameworks */,
+				14B5607C2C2A978600DED1EB /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14379BAF2C2A909C00808968 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				14379BB02C2A909C00808968 /* WidgetKit.framework */,
+				14379BB22C2A909D00808968 /* SwiftUI.framework */,
+				14B560A02C2AAA4E00DED1EB /* Intents.framework */,
+				14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
+				14B5608E2C2A97EE00DED1EB /* ChallendarWidgetExtension.entitlements */,
 				142052D42C1BFC8000BC4831 /* Settings.bundle */,
 				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
+				14B5607E2C2A978600DED1EB /* ChallendarWidget */,
+				14B560A22C2AAA4E00DED1EB /* ChallendarWidgetIntent */,
+				14B560AD2C2AAA4E00DED1EB /* ChallendarWidgetIntentUI */,
+				14379BAF2C2A909C00808968 /* Frameworks */,
 				1472AD9E2C082A0F00145668 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -273,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				1472AD9D2C082A0F00145668 /* Challendar.app */,
+				14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -301,7 +381,6 @@
 				14C97F132C098BE500819B27 /* AddTodo */,
 				1472ADD72C083AD400145668 /* SearchViewController.swift */,
 				DEA8E4C82C19C3F3007AAF93 /* EditTodoViewController.swift */,
-				2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */,
 				2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
 				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
@@ -420,6 +499,38 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		14B5607E2C2A978600DED1EB /* ChallendarWidget */ = {
+			isa = PBXGroup;
+			children = (
+				14B5607F2C2A978600DED1EB /* ChallendarWidgetBundle.swift */,
+				14B560812C2A978600DED1EB /* ChallendarWidget.swift */,
+				14B560832C2A978600DED1EB /* AppIntent.swift */,
+				14B560852C2A978700DED1EB /* Assets.xcassets */,
+				14B560872C2A978700DED1EB /* Info.plist */,
+				14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */,
+			);
+			path = ChallendarWidget;
+			sourceTree = "<group>";
+		};
+		14B560A22C2AAA4E00DED1EB /* ChallendarWidgetIntent */ = {
+			isa = PBXGroup;
+			children = (
+				14B560A32C2AAA4E00DED1EB /* IntentHandler.swift */,
+				14B560A52C2AAA4E00DED1EB /* Info.plist */,
+			);
+			path = ChallendarWidgetIntent;
+			sourceTree = "<group>";
+		};
+		14B560AD2C2AAA4E00DED1EB /* ChallendarWidgetIntentUI */ = {
+			isa = PBXGroup;
+			children = (
+				14B560AE2C2AAA4E00DED1EB /* IntentViewController.swift */,
+				14B560B02C2AAA4E00DED1EB /* MainInterface.storyboard */,
+				14B560B32C2AAA4E00DED1EB /* Info.plist */,
+			);
+			path = ChallendarWidgetIntentUI;
+			sourceTree = "<group>";
+		};
 		14C3FA0D2C0C7CFF00ACAFB6 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,10 +625,12 @@
 				1472AD992C082A0F00145668 /* Sources */,
 				1472AD9A2C082A0F00145668 /* Frameworks */,
 				1472AD9B2C082A0F00145668 /* Resources */,
+				14379BC42C2A909E00808968 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				14B560892C2A978700DED1EB /* PBXTargetDependency */,
 			);
 			name = Challendar;
 			packageProductDependencies = (
@@ -533,6 +646,23 @@
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
 			productType = "com.apple.product-type.application";
 		};
+		14B5607A2C2A978600DED1EB /* ChallendarWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14B5608B2C2A978700DED1EB /* Build configuration list for PBXNativeTarget "ChallendarWidgetExtension" */;
+			buildPhases = (
+				14B560772C2A978600DED1EB /* Sources */,
+				14B560782C2A978600DED1EB /* Frameworks */,
+				14B560792C2A978600DED1EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChallendarWidgetExtension;
+			productName = ChallendarWidgetExtension;
+			productReference = 14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -544,6 +674,9 @@
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					1472AD9C2C082A0F00145668 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					14B5607A2C2A978600DED1EB = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
@@ -571,6 +704,7 @@
 			projectRoot = "";
 			targets = (
 				1472AD9C2C082A0F00145668 /* Challendar */,
+				14B5607A2C2A978600DED1EB /* ChallendarWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -592,6 +726,14 @@
 				1472ADCF2C082B8300145668 /* Pretendard-Thin.ttf in Resources */,
 				1472ADC72C082B8300145668 /* Pretendard-Black.ttf in Resources */,
 				1472ADCB2C082B8300145668 /* Pretendard-Light.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14B560792C2A978600DED1EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14B560862C2A978700DED1EB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,6 +803,7 @@
 				B90CAA712C10C9AC00926B53 /* DailyCollectionViewCell.swift in Sources */,
 				B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */,
 				DEDEE2902C0DEA47006AD1C6 /* CalendarCell.swift in Sources */,
+				14B560C12C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
 				B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
@@ -675,7 +818,6 @@
 				14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */,
 				DEA8E4C92C19C3F3007AAF93 /* EditTodoViewController.swift in Sources */,
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
-				2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */,
 				2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
 				142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */,
@@ -701,7 +843,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		14B560772C2A978600DED1EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14B560802C2A978600DED1EB /* ChallendarWidgetBundle.swift in Sources */,
+				14B560822C2A978600DED1EB /* ChallendarWidget.swift in Sources */,
+				14B5608F2C2A986800DED1EB /* CoreDataManager.swift in Sources */,
+				14B560912C2A987500DED1EB /* TodoModel+CoreDataClass.swift in Sources */,
+				14B560942C2A991900DED1EB /* DateExtension.swift in Sources */,
+				14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
+				14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */,
+				14B560932C2A987E00DED1EB /* Challendar.xcdatamodeld in Sources */,
+				14B560842C2A978600DED1EB /* AppIntent.swift in Sources */,
+				14B560902C2A986F00DED1EB /* Todo.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		14B560892C2A978700DED1EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14B5607A2C2A978600DED1EB /* ChallendarWidgetExtension */;
+			targetProxy = 14B560882C2A978700DED1EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1472ADAE2C082A1000145668 /* LaunchScreen.storyboard */ = {
@@ -711,6 +878,14 @@
 				146A27B22C20B63400624239 /* ko */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		14B560B02C2AAA4E00DED1EB /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14B560B12C2AAA4E00DED1EB /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -840,6 +1015,7 @@
 		1472ADB52C082A1000145668 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
@@ -882,6 +1058,7 @@
 		1472ADB62C082A1000145668 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
@@ -921,6 +1098,82 @@
 			};
 			name = Release;
 		};
+		14B5608C2C2A978700DED1EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ChallendarWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChallendarWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChallendarWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.ChallendarWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarWidget;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		14B5608D2C2A978700DED1EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ChallendarWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChallendarWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChallendarWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.ChallendarWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarWidget;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -938,6 +1191,15 @@
 			buildConfigurations = (
 				1472ADB52C082A1000145668 /* Debug */,
 				1472ADB62C082A1000145668 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		14B5608B2C2A978700DED1EB /* Build configuration list for PBXNativeTarget "ChallendarWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14B5608C2C2A978700DED1EB /* Debug */,
+				14B5608D2C2A978700DED1EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,4 +1,5 @@
 import UIKit
+import WidgetKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -39,11 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // 타이머 중지
         stopSyncTimer()
+        WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
         // 타이머 중지
         stopSyncTimer()
+        WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
     }
     
     private func startSyncTimer() {
