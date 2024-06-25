@@ -99,6 +99,9 @@
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
 		2EBF439B2C188C8E00064A77 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
 		2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */; };
+		2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */; };
+		2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */; };
+		2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */; };
 		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
 		B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */; };
 		B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */; };
@@ -212,6 +215,9 @@
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSuccessViewController.swift; sourceTree = "<group>"; };
+		2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionView.swift; sourceTree = "<group>"; };
+		2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionViewCell.swift; sourceTree = "<group>"; };
+		2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
 		B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerBtnView.swift; sourceTree = "<group>"; };
 		B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YZCenterFlowLayout.swift; sourceTree = "<group>"; };
@@ -295,6 +301,7 @@
 				14C97F132C098BE500819B27 /* AddTodo */,
 				1472ADD72C083AD400145668 /* SearchViewController.swift */,
 				DEA8E4C82C19C3F3007AAF93 /* EditTodoViewController.swift */,
+				2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */,
 				2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
 				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
@@ -389,6 +396,7 @@
 				2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */,
 				DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */,
 				1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */,
+				2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */,
 				1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */,
 				14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */,
 				14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */,
@@ -476,6 +484,7 @@
 			isa = PBXGroup;
 			children = (
 				DEDEE2852C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift */,
+				2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */,
 				DEDEE2862C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift */,
 				DEDEE2872C0DEA20006AD1C6 /* SearchCollectionViewCell.swift */,
 				DEDEE28D2C0DEA47006AD1C6 /* CalendarCell.swift */,
@@ -660,10 +669,13 @@
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
+				2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */,
+				2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */,
 				14C6AFE32C0F12AA0016B80C /* SettingViewController.swift in Sources */,
 				14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */,
 				DEA8E4C92C19C3F3007AAF93 /* EditTodoViewController.swift in Sources */,
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
+				2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */,
 				2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
 				142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */,
