@@ -17,6 +17,8 @@
 		1433C08F2C2346CF006DC0E3 /* NewCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */; };
 		1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */; };
 		14386F242C2524A900F2BD22 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F232C2524A900F2BD22 /* PickerView.swift */; };
+		14386F262C2586BE00F2BD22 /* CustomAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */; };
+		14386F282C25941F00F2BD22 /* CustomPickerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
@@ -128,6 +130,8 @@
 		1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
 		1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPickerView.swift; sourceTree = "<group>"; };
 		14386F232C2524A900F2BD22 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
+		14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlarmView.swift; sourceTree = "<group>"; };
+		14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerRowView.swift; sourceTree = "<group>"; };
 		146A27B22C20B63400624239 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1472AD9D2C082A0F00145668 /* Challendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1472ADA02C082A0F00145668 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -386,6 +390,8 @@
 				DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */,
 				1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */,
 				1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */,
+				14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */,
+				14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -618,6 +624,7 @@
 				149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */,
 				DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */,
 				14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */,
+				14386F262C2586BE00F2BD22 /* CustomAlarmView.swift in Sources */,
 				142052C42C1BDC1C00BC4831 /* NoticeModel.swift in Sources */,
 				14F4DB122C19874A00B5CE45 /* UICollectionViewCellExtension.swift in Sources */,
 				14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */,
@@ -660,6 +667,7 @@
 				2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
 				142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */,
+				14386F282C25941F00F2BD22 /* CustomPickerRowView.swift in Sources */,
 				14AAA9072C0E1F110085E22F /* ChallengeCheckViewController.swift in Sources */,
 				14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */,
 				14C97F232C09ACF300819B27 /* DateBottomSheet.swift in Sources */,

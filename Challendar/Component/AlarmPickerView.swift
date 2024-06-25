@@ -8,17 +8,18 @@
 import UIKit
 import SnapKit
 
+protocol AlarmPickerViewDelegate {
+    func timeDidChanged(date: Date)
+}
 class AlarmPickerView : UIView{
-    let pickerView = UIPickerView()
-    
-    let hour = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"]
-    let minute = ["00","05","10","15","20","25","30","35","40","45","50","55"]
-    let multiplier = 1000
+    let pickerView = UIDatePicker()
+    var delegate : AlarmPickerViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
         configureConstraint()
+        configureUtil()
     }
     
     required init?(coder: NSCoder) {
@@ -33,10 +34,9 @@ class AlarmPickerView : UIView{
         self.layer.borderColor = UIColor.secondary800.cgColor
         self.layer.borderWidth = 1
         self.clipsToBounds = true
-        
-        pickerView.delegate = self
-        pickerView.dataSource = self
-
+        pickerView.datePickerMode = .time
+        pickerView.preferredDatePickerStyle = .wheels
+        pickerView.minuteInterval = 5
         // 서브뷰 수정
         
     }
@@ -52,102 +52,11 @@ class AlarmPickerView : UIView{
     }
     
     func configureUtil(){
-        
+        pickerView.addTarget(self, action: #selector(pickerViewChanged(datePicker:)), for: .valueChanged)
     }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        UIView.printSubviews(of: pickerView, level: 0)
-        pickerView.subviews[1].isHidden = true
-//        pickerView.subviews[1].backgroundColor = .secondary800.withAlphaComponent(0.0)
-//        pickerView.subviews[1].layer.cornerRadius = 4
-        pickerView.subviews[0].subviews[0].subviews[2].subviews[0].subviews[0].subviews[1].backgroundColor = .red
+    
+    @objc func pickerViewChanged(datePicker : UIDatePicker){
+        self.delegate?.timeDidChanged(date: datePicker.date)
     }
-}
 
-extension AlarmPickerView : UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if component == 0 {
-            return hour.count * multiplier
-        }else{
-            return minute.count * multiplier
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let componentView = UIView()
-        let label = UILabel()
-        
-        componentView.addSubview(label)
-        [componentView,label].forEach{
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        componentView.snp.makeConstraints{
-            $0.width.equalTo(149.5)
-            $0.height.equalTo(34)
-        }
-        if component == 0 {
-            label.text = hour[row % hour.count]
-            label.snp.makeConstraints{
-                $0.trailing.equalTo(componentView.snp.trailing).offset(-12)
-                $0.height.equalTo(componentView)
-            }
-        }else{
-            label.text = minute[row % minute.count]
-            label.snp.makeConstraints{
-                $0.trailing.equalToSuperview()
-                $0.leading.equalToSuperview().offset(12)
-                $0.height.equalTo(componentView)
-            }
-        }
-        label.textColor = .white
-        label.font = .pretendardSemiBold(size: 28)
-        
-        return componentView
-    }
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 34
-    }
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if component == 0 {
-            let middleRow = (multiplier / 2) * hour.count + (row % hour.count)
-            pickerView.selectRow(middleRow, inComponent: component, animated: false)
-        } else {
-            let middleRow = (multiplier / 2) * minute.count + (row % minute.count)
-            pickerView.selectRow(middleRow, inComponent: component, animated: false)
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-        return self.frame.width / 2
-    }
-}
-
-
-extension UIPickerView {
-    func disableZoom() {
-        for subview in self.subviews {
-            if let scrollView = subview as? UIScrollView {
-                scrollView.maximumZoomScale = 5.0
-                scrollView.minimumZoomScale = 5.0
-                scrollView.zoomScale = 5.0
-            }
-            // 만약 더 깊은 계층 구조에 UIScrollView가 있을 경우 재귀적으로 찾음
-            disableZoomInSubviews(of: subview)
-        }
-    }
-    
-    private func disableZoomInSubviews(of view: UIView) {
-        for subview in view.subviews {
-            if let scrollView = subview as? UIScrollView {
-                scrollView.maximumZoomScale = 1.0
-                scrollView.minimumZoomScale = 1.0
-                scrollView.zoomScale = 1.0
-            }
-            disableZoomInSubviews(of: subview)
-        }
-    }
 }
