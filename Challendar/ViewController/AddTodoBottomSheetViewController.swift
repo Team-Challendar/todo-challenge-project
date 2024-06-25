@@ -462,7 +462,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             repetitionCollectionView.snp.remakeConstraints { make in
                 make.height.equalTo(36)
                 make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
-                make.trailing.equalToSuperview().inset(16)
+                make.trailing.equalToSuperview()
                 make.centerY.equalTo(repetitionView.snp.centerY)
             }
         }
