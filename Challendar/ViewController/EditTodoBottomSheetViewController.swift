@@ -1,15 +1,15 @@
 //
-//  AddTodoBottomSheetViewController.swift
+//  EditTodoBottomSheetViewController.swift
 //  Challendar
 //
-//  Created by 서혜림 on 6/19/24.
+//  Created by 서혜림 on 6/24/24.
 //
 
 import UIKit
 import SnapKit
 import FSCalendar
 
-class AddTodoBottomSheetViewController: UIViewController {
+class EditTodoBottomSheetViewController: UIViewController {
     var dimmedView = UIView()
     var bottomSheetView = UIView()
     
@@ -29,7 +29,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     var alertView = UIView()
     var alertImageView = UIImageView()
     var alertLabel = UILabel()
-    var alertPickerView = AlarmPickerView()
+    var alertPickerView = UIView() // pickerView 불러올 예정
     
     var repetitionView = UIView()
     var repetitionImageView = UIImageView()
@@ -49,6 +49,8 @@ class AddTodoBottomSheetViewController: UIViewController {
         }
     }
     
+    var todoId: UUID?
+
     private var bottomSheetInitialConstraint: Constraint?
     private var bottomSheetKeyboardConstraint: Constraint?
     
@@ -60,6 +62,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         configureGestures()
         configureKeyboardObservers()
         showBottomSheet()
+        fetchTodo()
         updateUI()
     }
     
@@ -189,7 +192,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         challengeCheckView.addSubview(challengeCheckLabel)
         
         // registerButton 설정
-        registerButton.setTitle("할 일 추가하기", for: .normal)
+        registerButton.setTitle("할 일 수정하기", for: .normal)
         registerButton.titleLabel?.font = .pretendardSemiBold(size: 18)
         registerButton.setTitleColor(.white, for: .normal)
         registerButton.backgroundColor = .alertTomato
@@ -311,13 +314,6 @@ class AddTodoBottomSheetViewController: UIViewController {
             make.centerY.equalTo(repetitionView.snp.centerY)
         }
         
-        //        repetitionCollectionView.snp.makeConstraints { make in
-        //            make.height.equalTo(36)
-        //            make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
-        //            make.trailing.equalToSuperview().inset(16)
-        //            make.centerY.equalTo(repetitionView.snp.centerY)
-        //        }
-        
         // challengeCheckView 제약조건
         challengeCheckView.snp.makeConstraints { make in
             make.height.equalTo(36)
@@ -406,8 +402,6 @@ class AddTodoBottomSheetViewController: UIViewController {
         hideBottomSheet()
     }
     
-    
-    
     @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideAllExcept(calendarContainerView)
         calendarContainerView.isHidden.toggle()
@@ -462,7 +456,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             repetitionCollectionView.snp.remakeConstraints { make in
                 make.height.equalTo(36)
                 make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
-                make.trailing.equalToSuperview()
+                make.trailing.equalToSuperview().inset(16)
                 make.centerY.equalTo(repetitionView.snp.centerY)
             }
         }
@@ -538,9 +532,16 @@ class AddTodoBottomSheetViewController: UIViewController {
         updateUI()
     }
     
-    // 투두 생성 시점
+    // 투두 수정 시점
     @objc private func registerButtonTapped() {
-        CoreDataManager.shared.createTodo(newTodo: newTodo)
+        guard let todoId = todoId else { return }
+        CoreDataManager.shared.updateTodoById(
+            id: todoId,
+            newTitle: newTodo.title,
+            newStartDate: newTodo.startDate,
+            newEndDate: newTodo.endDate,
+            newIsChallenge: newTodo.isChallenge
+        )
         hideBottomSheet()
     }
     
@@ -548,12 +549,6 @@ class AddTodoBottomSheetViewController: UIViewController {
         self.bottomSheetKeyboardConstraint?.activate()
         self.bottomSheetInitialConstraint?.deactivate()
         self.view.layoutIfNeeded()
-        
-        let today = Date()
-        
-        newTodo.startDate = today
-        newTodo.endDate = nil
-        newTodo.isChallenge = false
     }
     
     private func hideBottomSheet() {
@@ -576,12 +571,32 @@ class AddTodoBottomSheetViewController: UIViewController {
         return dateFormatter.string(from: date)
     }
     
+    private func fetchTodo() {
+        guard let todoId = todoId, let todoModel = CoreDataManager.shared.fetchTodoById(id: todoId) else {
+            print("Todo not found")
+            return
+        }
+        newTodo = Todo(
+            id: todoModel.id,
+            title: todoModel.title,
+            memo: todoModel.memo,
+            startDate: todoModel.startDate,
+            endDate: todoModel.endDate,
+            completed: todoModel.completed,
+            isChallenge: todoModel.isChallenge,
+            percentage: todoModel.percentage,
+            iscompleted: todoModel.isCompleted
+        )
+        updateUI()
+    }
+    
     private func updateUI() {
+        titleTextField.text = newTodo.title
         if let startDate = newTodo.startDate, let endDate = newTodo.endDate {
             todoImageView.image = newTodo.isChallenge ? .done3.withTintColor(.challendarGreen200) : .done3.withTintColor(.alertBlue)
             registerButton.backgroundColor = newTodo.isChallenge ? .challendarGreen200 : .alertBlue
-            registerButton.setTitleColor(newTodo.isChallenge ?  UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
-            registerButton.setTitle(newTodo.isChallenge ? "챌린지 추가하기" : "계획 추가하기", for: .normal)
+            registerButton.setTitleColor(newTodo.isChallenge ? UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
+            registerButton.setTitle(newTodo.isChallenge ? "챌린지 수정하기" : "계획 수정하기", for: .normal)
             alertView.isHidden = false
             
             if calendarContainerView.isHidden == false {
@@ -613,7 +628,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         } else {
             todoImageView.image = newTodo.isChallenge ? .done3.withTintColor(.challendarGreen200) : .done3.withTintColor(.alertTomato)
             registerButton.backgroundColor = .alertTomato
-            registerButton.setTitle("할 일 추가하기", for: .normal)
+            registerButton.setTitle("할 일 수정하기", for: .normal)
             startDateLabel.text = "기한 없음"
             startDateLabel.isHidden = false
             arrowLabel.isHidden = true
@@ -631,12 +646,12 @@ class AddTodoBottomSheetViewController: UIViewController {
         } else {
             registerButton.isEnabled = true
             registerButton.backgroundColor = newTodo.isChallenge ? .challendarGreen400 : (newTodo.startDate != nil && newTodo.endDate != nil ? .alertBlue : .alertTomato)
-            registerButton.setTitleColor(newTodo.isChallenge ?  UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
+            registerButton.setTitleColor(newTodo.isChallenge ? UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
         }
     }
 }
 
-extension AddTodoBottomSheetViewController: NewCalendarDelegate {
+extension EditTodoBottomSheetViewController: NewCalendarDelegate {
     // NewCalendarDelegate 메소드
     func singleDateSelected(firstDate: Date) {
         newTodo.startDate = firstDate
@@ -657,11 +672,4 @@ extension AddTodoBottomSheetViewController: NewCalendarDelegate {
         newTodo.isChallenge = false
         updateUI()
     }
-}
-
-extension AddTodoBottomSheetViewController: AlarmPickerViewDelegate {
-    func timeDidChanged(date: Date) {
-        
-    }
-    
 }
