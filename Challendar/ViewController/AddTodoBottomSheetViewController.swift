@@ -35,6 +35,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     var repetitionImageView = UIImageView()
     var repetitionLabel = UILabel()
     var repetitionCollectionView = RepetitionCollectionView()
+    var selectedRepetitionDates: [Int] = []
     
     var challengeCheckView = UIView()
     var challengeCheckImageView = UIImageView()
@@ -172,6 +173,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         
         repetitionCollectionView.items = ["매일", "월", "화", "수", "목", "금", "토", "일"]
         repetitionCollectionView.isHidden = true
+        repetitionCollectionView.delegate = self
         repetitionView.addSubview(repetitionCollectionView)
         
         // challengeCheckView 설정
@@ -411,6 +413,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     @objc private func dateRangeTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideAllExcept(calendarContainerView)
         calendarContainerView.isHidden.toggle()
+        
         if calendarContainerView.isHidden {
             handleCalendarContainerViewHidden()
         } else {
@@ -445,7 +448,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-
+    
     @objc private func repetitionTapped(_ tapRecognizer: UITapGestureRecognizer) {
         hideAllExcept(repetitionCollectionView)
         repetitionCollectionView.isHidden.toggle()
@@ -456,6 +459,7 @@ class AddTodoBottomSheetViewController: UIViewController {
                 make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
                 make.centerY.equalTo(repetitionView.snp.centerY)
             }
+            updateUI()
         } else {
             repetitionImageView.image = .re2
             repetitionLabel.isHidden = true
@@ -605,6 +609,9 @@ class AddTodoBottomSheetViewController: UIViewController {
                 }
             }
             
+            let selectedItems = selectedRepetitionDates.sorted().map { repetitionCollectionView.items[$0] }
+            repetitionLabel.text = selectedItems.isEmpty ? "반복 안 함" : selectedItems.joined(separator: ", ")
+            
             // rangeOfDateSelected 때 repetitionView와 challengeCheckView 표시
             let shouldShowAdditionalViews = startDate != endDate
             repetitionView.isHidden = !shouldShowAdditionalViews
@@ -663,5 +670,15 @@ extension AddTodoBottomSheetViewController: AlarmPickerViewDelegate {
     func timeDidChanged(date: Date) {
         
     }
-    
 }
+
+extension AddTodoBottomSheetViewController: RepetitionCollectionViewDelegate {
+    func repetitionCollectionView(_ collectionView: RepetitionCollectionView, didSelectItemAt index: Int) {
+        if selectedRepetitionDates.contains(index) {
+            selectedRepetitionDates.removeAll { $0 == index }
+        } else {
+            selectedRepetitionDates.append(index)
+        }
+    }
+}
+
