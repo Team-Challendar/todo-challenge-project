@@ -115,7 +115,7 @@ class CoreDataManager {
     // CRUD Operations
     
     // Create
-    func createTodo(newTodo: Todo) {
+    public func createTodo(newTodo: Todo) {
         let todo = TodoModel(context: context)
         todo.id = UUID()
         todo.title = newTodo.title
@@ -123,7 +123,8 @@ class CoreDataManager {
         todo.startDate = newTodo.startDate
         todo.endDate = newTodo.endDate
         todo.completed = newTodo.completed
-        
+        todo.repetition = newTodo.repetition
+        todo.reminderTime = newTodo.reminderTime
         todo.isChallenge = newTodo.isChallenge
         todo.percentage = newTodo.percentage
         if let imagesArray = newTodo.images {
@@ -175,7 +176,9 @@ class CoreDataManager {
                     isChallenge: model.isChallenge,
                     percentage: model.percentage,
                     images: images,
-                    iscompleted: model.isCompleted
+                    iscompleted: model.isCompleted,
+                    repetition: model.repetition,
+                    reminderTime: model.reminderTime
                 )
             }
         } catch {
@@ -198,7 +201,7 @@ class CoreDataManager {
     }
     
     // Update
-    func updateTodoById(id: UUID, newTitle: String? = nil, newMemo: String? = nil, newStartDate: Date? = nil, newEndDate: Date? = nil, newCompleted: [Bool]? = nil, newIsChallenge: Bool? = nil, newPercentage: Double? = nil, newImages: [UIImage]? = nil, newIsCompleted: Bool? = nil) {
+    func updateTodoById(id: UUID, newTitle: String? = nil, newMemo: String? = nil, newStartDate: Date? = nil, newEndDate: Date? = nil, newCompleted: [Date: Bool]? = nil, newIsChallenge: Bool? = nil, newPercentage: Double? = nil, newImages: [UIImage]? = nil, newIsCompleted: Bool? = nil, newRepetition: [Int]? = nil, newReminderTime: Date? = nil) {
         guard let todoToUpdate = fetchTodoById(id: id) else {
             print("Todo not found")
             return
@@ -218,7 +221,7 @@ class CoreDataManager {
         }
         if let newCompleted = newCompleted {
             todoToUpdate.completed = newCompleted
-            todoToUpdate.percentage = Double(newCompleted.filter{$0 == true}.count) / Double(newCompleted.count)
+            todoToUpdate.percentage = Double(newCompleted.filter{$0.value == true}.count) / Double(newCompleted.count)
         }
         if let newIsChallenge = newIsChallenge {
             todoToUpdate.isChallenge = newIsChallenge
@@ -232,6 +235,12 @@ class CoreDataManager {
         }
         if let newIsCompleted = newIsCompleted {
             todoToUpdate.isCompleted = newIsCompleted
+        }
+        if let newRepetition = newRepetition {
+            todoToUpdate.repetition = newRepetition
+        }
+        if let newReminderTime = newReminderTime {
+            todoToUpdate.reminderTime = newReminderTime
         }
         
         saveContext()

@@ -21,11 +21,13 @@ extension TodoModel {
     @NSManaged public var memo: String?
     @NSManaged public var startDate: Date?
     @NSManaged public var endDate: Date?
-    @NSManaged public var completed: [Bool]
+    @NSManaged public var completed: [Date: Bool]
     @NSManaged public var isChallenge: Bool
     @NSManaged public var percentage: Double
     @NSManaged public var images: Data?
     @NSManaged public var isCompleted: Bool
+    @NSManaged public var repetition: [Int]
+    @NSManaged public var reminderTime: Date?
 
 }
 

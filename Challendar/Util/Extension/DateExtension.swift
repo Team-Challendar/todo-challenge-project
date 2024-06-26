@@ -1,6 +1,13 @@
 import Foundation
 
 extension Date {
+    var weekdayIndex: Int {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: self)
+        // Calendar의 weekday는 1(일요일)부터 7(토요일)까지 반환하므로 0부터 6까지로 변환
+        return (weekday + 5) % 7
+    }
+    
     func startOfDay() -> Date? {
         let calendar = Calendar.current
         var components = calendar.dateComponents([.year, .month, .day], from: self)
