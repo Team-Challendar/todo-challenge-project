@@ -25,6 +25,8 @@ class Todo : Hashable{
     }
     public var completed: [Date: Bool] = [:]{
         didSet{
+            print("COMPLETED")
+            print(completed)
             updatePercentage()
         }
     }
@@ -32,10 +34,14 @@ class Todo : Hashable{
     public var percentage: Double = 0
     public var images: [UIImage]?
     public var iscompleted = false
-    public var repetition: [Int] = []  // 0~6 index로 요일과 비교        (월,수,금) 반복 날짜 입력받아서 다시 Text로 반환하는 함수
+    public var repetition: [Int] = [] {
+        didSet{
+            initializeCompletedDictionary()
+        }
+    } // 0~6 index로 요일과 비교        (월,수,금) 반복 날짜 입력받아서 다시 Text로 반환하는 함수
     public var reminderTime: Date?  // 추후에 시간만 추출하는 함수 구현
     
-    init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Date: Bool] = [:], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil, iscompleted: Bool = false, repetition: [Int] = [], reminderTime: Date? = nil) {
+    init(id: UUID? = nil, title: String = "", memo: String? = nil, startDate: Date? = nil, endDate: Date? = nil, completed: [Date: Bool] = [:], isChallenge: Bool = false, percentage: Double = 0, images: [UIImage]? = nil, iscompleted: Bool = false, repetition: [Int] = [0,1,2,3,4,5,6], reminderTime: Date? = nil) {
         self.id = id
         self.title = title
         self.memo = memo
@@ -48,10 +54,11 @@ class Todo : Hashable{
         self.iscompleted = iscompleted
         self.repetition = repetition
         self.reminderTime = reminderTime
-        initializeCompletedDictionary()
     }
     
     private func initializeCompletedDictionary() {
+        print(repetition)
+        completed = [:]
         guard let startDate = startDate, let endDate = endDate else { return }
         let days = endDate.daysBetween(startDate)
         for day in 0...days {
