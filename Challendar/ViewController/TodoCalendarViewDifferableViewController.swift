@@ -133,7 +133,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
         collectionView.register(TodoCalendarViewCell.self, forCellWithReuseIdentifier: TodoCalendarViewCell.identifier)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 83, right: 0)
-                collectionView.scrollIndicatorInsets = collectionView.contentInset
+        collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
     // 컴포지셔널 레이아웃 생성
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -167,7 +167,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
         calendarView.dayModelForCurrentPage = days
         calendarView.selectedDate = date
         calendarView.calendar.select(date)
-//        calendarView.calendar.reloadData()
+        //        calendarView.calendar.reloadData()
         dailyView.configure(with: days!,selectedDate: date)
         let targetIndex = date.indexForDate()
         self.dailyView.layout.scrollToPage(atIndex: targetIndex, animated: false)
@@ -237,7 +237,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
         }else{
             snapshot.appendSections([.incomplete, .complete])
         }
-
+        
         snapshot.appendItems(inCompletedTodo.map{.incompleteItem($0)}, toSection: .incomplete)
         snapshot.appendItems(completedTodo.map{.completeItem($0)}, toSection: .complete)
         dataSource.apply(snapshot, animatingDifferences: true)
@@ -315,15 +315,17 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
             
             if translation.y > 0 {
                 // 아래로 스크롤
-                self.calendarView.calendar.setScope(.month, animated: true)
-                UIView.animate(withDuration: 0.5) {
-                    self.topContainer.snp.updateConstraints {
-                        $0.height.equalTo(maxCalendarHeight)
+                if scrollView.contentOffset.y <= 0 {
+                    self.calendarView.calendar.setScope(.month, animated: true)
+                    UIView.animate(withDuration: 0.5) {
+                        self.topContainer.snp.updateConstraints {
+                            $0.height.equalTo(maxCalendarHeight)
+                        }
+                        self.view.layoutIfNeeded()
                     }
-                    self.view.layoutIfNeeded()
+                    self.calendarView.calendar.reloadData()
+                    
                 }
-                self.calendarView.calendar.reloadData()
-                
             } else if translation.y < 0 {
                 // 위로 스크롤
                 UIView.animate(withDuration: 0.5, animations: {
@@ -333,7 +335,7 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
                     self.calendarView.calendar.setScope(.week, animated: true)
                     self.view.layoutIfNeeded()
                 }, completion: { _ in
-//                    self.calendarView.calendar.reloadData()
+                    //                    self.calendarView.calendar.reloadData()
                 })
                 
                 
@@ -369,7 +371,7 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
             let targetIndex = Date().indexForDate()
             self.dailyView.layout.scrollToPage(atIndex: targetIndex, animated: false)
         }
-       
+        
         UIView.animate(withDuration: 0.5) {
             self.topContainer.snp.updateConstraints {
                 $0.height.equalTo(300)
@@ -393,7 +395,7 @@ extension TodoCalendarViewDifferableViewController : PeriodPickerButtonViewDeleg
         }
         self.calendarView.calendar.setScope(.month, animated: false)
         self.calendarView.calendar.select(self.currentDate)
-//        self.calendarView.calendar.reloadData()
+        //        self.calendarView.calendar.reloadData()
         updateDataSource()
     }
 }
