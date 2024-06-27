@@ -10,7 +10,7 @@ import UIKit
 let now = Date()
 let yesterday = now - 86400
 let tomorrow = now + 86400
-let todoDummy = Todo(id: UUID(), title: "CRUD", memo: "혹시?", startDate: yesterday, endDate: tomorrow, completed: [yesterday: true, now: true, tomorrow: false], isChallenge: true, percentage: 33.3, images: nil, iscompleted: true, repetition: [1, 3, 5], reminderTime: nil)
+
 
 class Todo : Hashable{
     public var id : UUID?
