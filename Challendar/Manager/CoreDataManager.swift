@@ -1,4 +1,5 @@
 import UIKit
+import WidgetKit
 import CoreData
 import UserNotifications
 
@@ -139,7 +140,8 @@ class CoreDataManager {
         if context.hasChanges {
             do {
                 try context.save()
-//                NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")

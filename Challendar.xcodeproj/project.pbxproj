@@ -19,7 +19,6 @@
 		14386F242C2524A900F2BD22 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F232C2524A900F2BD22 /* PickerView.swift */; };
 		14386F262C2586BE00F2BD22 /* CustomAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */; };
 		14386F282C25941F00F2BD22 /* CustomPickerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */; };
-		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
 		1472ADAD2C082A1000145668 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAC2C082A1000145668 /* Assets.xcassets */; };
@@ -53,6 +52,11 @@
 		1472ADFB2C08868100145668 /* AddPhotoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFA2C08868100145668 /* AddPhotoButton.swift */; };
 		1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */; };
 		1479C8F72C214D0D00183C34 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479C8F62C214D0D00183C34 /* Transformer.swift */; };
+		1489D4862C2AFA60003791A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAC2C082A1000145668 /* Assets.xcassets */; };
+		1489D4882C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
+		1489D4892C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
+		1489D48B2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */; };
+		1489D48C2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */; };
 		149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F52C0B024E00D63368 /* BaseViewController.swift */; };
 		149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F92C0B065200D63368 /* UIViewControllerExtension.swift */; };
 		149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */; };
@@ -80,6 +84,9 @@
 		14B560942C2A991900DED1EB /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FD2C0B1CE500D63368 /* DateExtension.swift */; };
 		14B560C12C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */; };
 		14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */; };
+		14B755C62C2BE2F000B69ABB /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560832C2A978600DED1EB /* AppIntent.swift */; };
+		14B755C72C2BE2F300B69ABB /* ChallendarWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560812C2A978600DED1EB /* ChallendarWidget.swift */; };
+		14B755C92C2BE32300B69ABB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */; };
 		14BB8F042C1013E000FA92E8 /* TodoCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */; };
 		14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F052C1019BC00FA92E8 /* TodoCalendarView.swift */; };
@@ -210,6 +217,8 @@
 		1472ADFA2C08868100145668 /* AddPhotoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoButton.swift; sourceTree = "<group>"; };
 		1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoImageView.swift; sourceTree = "<group>"; };
 		1479C8F62C214D0D00183C34 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
+		1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SUITE-Bold.ttf"; path = "../../../../../../Downloads/SUITE-ttf/SUITE-Bold.ttf"; sourceTree = "<group>"; };
+		1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-BoldItalic.ttf"; path = "../../../../../../Downloads/Roboto/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		149228F52C0B024E00D63368 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		149228F92C0B065200D63368 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
@@ -447,6 +456,8 @@
 		1472ADD02C082B8600145668 /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */,
+				1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */,
 				1472ADC62C082B8300145668 /* Pretendard */,
 			);
 			path = Font;
@@ -726,6 +737,8 @@
 				1472ADCF2C082B8300145668 /* Pretendard-Thin.ttf in Resources */,
 				1472ADC72C082B8300145668 /* Pretendard-Black.ttf in Resources */,
 				1472ADCB2C082B8300145668 /* Pretendard-Light.ttf in Resources */,
+				1489D48B2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */,
+				1489D4882C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,6 +746,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1489D4892C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */,
+				1489D4862C2AFA60003791A0 /* Assets.xcassets in Resources */,
+				1489D48C2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */,
 				14B560862C2A978700DED1EB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -792,7 +808,6 @@
 				1472ADEA2C0840AD00145668 /* TabBarViewController.swift in Sources */,
 				14AAA9092C0E217E0085E22F /* ChallengePopUpView.swift in Sources */,
 				14C3FA0F2C0C7D0A00ACAFB6 /* CoreDataManager.swift in Sources */,
-				1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */,
 				14C97F312C0A4AD000819B27 /* UIFontExtension.swift in Sources */,
 				1472ADF72C08720900145668 /* TodoTitleTextField.swift in Sources */,
 				149944002C1C0D82005EE584 /* EditChallengeCheckViewController.swift in Sources */,
@@ -805,6 +820,7 @@
 				DEDEE2902C0DEA47006AD1C6 /* CalendarCell.swift in Sources */,
 				14B560C12C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
 				B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */,
+				14B755C92C2BE32300B69ABB /* AppDelegate.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
 				141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */,
@@ -812,6 +828,7 @@
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
+				14B755C62C2BE2F000B69ABB /* AppIntent.swift in Sources */,
 				2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */,
 				2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */,
 				14C6AFE32C0F12AA0016B80C /* SettingViewController.swift in Sources */,
@@ -836,6 +853,7 @@
 				14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */,
 				1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
+				14B755C72C2BE2F300B69ABB /* ChallendarWidget.swift in Sources */,
 				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
 				DEDEE28B2C0DEA20006AD1C6 /* SearchCollectionViewCell.swift in Sources */,
@@ -1035,7 +1053,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1078,7 +1096,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

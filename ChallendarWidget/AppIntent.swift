@@ -7,61 +7,46 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var description = IntentDescription("This is an example widget.")
 
     @Parameter(title: "Select Todo")
-    var selectedTodo: TodoItemShort?
+    var todoType: TodoItemType?
 }
 
-struct TodoItemShort: AppEntity {
-    var id: UUID
-    var title: String
+enum TodoItemType: String, AppEntity {
+    case todo = "할 일"
+    case plan = "계획"
+    case challenge = "챌린지"
 
     // Required for AppEntity
     static var typeDisplayRepresentation: TypeDisplayRepresentation {
-        TypeDisplayRepresentation(name: "Todo")
+        TypeDisplayRepresentation(name: "Todo Type")
     }
 
     // Required for AppEntity
     var displayRepresentation: DisplayRepresentation {
-        DisplayRepresentation(title: "\(title)")
+        DisplayRepresentation(title: LocalizedStringResource(stringLiteral: self.rawValue))
     }
 
-    // Initializer
-    init(from todo: Todo) {
-        self.id = todo.id ?? UUID()
-        self.title = todo.title
+    static var allTodoItemTypes: [TodoItemType] = [.todo, .plan, .challenge]
+
+    static var defaultQuery = TodoItemTypeQuery()
+}
+
+struct TodoItemTypeQuery: EntityQuery {
+    func entities(for identifiers: [String]) async throws -> [TodoItemType] {
+        return TodoItemType.allTodoItemTypes
     }
-
-    static var allTodoItem: [TodoItemShort] = {
-        return CoreDataManager.shared.fetchTodos()
-            .filter{
-                if let endDate = $0.endDate, let startDate = $0.startDate {
-                    return endDate > Date() && startDate < Date()
-                }
-                return false
-            }
-            .map { TodoItemShort(from: $0) }
-            .sorted(by: { $0.title < $1.title })
-    }()
-}
-
-extension TodoItemShort {
-    typealias ID = UUID
-    static var defaultQuery = TodoItemShortQuery()
-}
-
-struct TodoItemShortQuery: EntityStringQuery {
-    func entities(matching string: String) async throws -> [TodoItemShort] {
-        return TodoItemShort.allTodoItem.filter {
-            $0.title.localizedCaseInsensitiveContains(string)
+    
+    func entities(matching string: String) async throws -> [TodoItemType] {
+        return TodoItemType.allTodoItemTypes.filter {
+            $0.rawValue.localizedCaseInsensitiveContains(string)
         }
     }
 
-    func entities(for identifiers: [UUID]) async throws -> [TodoItemShort] {
-        return TodoItemShort.allTodoItem.filter {
-            identifiers.contains($0.id)
-        }
+    func entities(for identifiers: [UUID]) async throws -> [TodoItemType] {
+        return TodoItemType.allTodoItemTypes
     }
 
-    func suggestedEntities() async throws -> [TodoItemShort] {
-        return TodoItemShort.allTodoItem
+    func suggestedEntities() async throws -> [TodoItemType] {
+        return TodoItemType.allTodoItemTypes
     }
 }
+

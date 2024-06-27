@@ -20,20 +20,27 @@ struct ButtonIntent: AppIntent {
     @Parameter(title: "Todo ID")
     var todoID: String // Using String instead of UUID
 
-    init(todoID: String) {
+    @Parameter(title: "Todo Type")
+    var todoType: TodoItemType
+    
+    init(todoID: String, todoType: TodoItemType) {
         self.todoID = todoID
+        self.todoType = todoType
     }
     
     func perform() async throws -> some IntentResult {
-        guard let uuid = UUID(uuidString: todoID) else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid UUID string"])
+        guard let todo = CoreDataManager.shared.fetchTodos().first(where: {
+            $0.id?.uuidString == todoID
+        }) else {
+            return .result()
         }
-        guard let selectedTodo = CoreDataManager.shared.fetchTodos().first(where: {
-            $0.id == UUID(uuidString: todoID)
-        }) else { return .result()}
-        selectedTodo.toggleTodaysCompletedState()
-        CoreDataManager.shared.updateTodoById(id: UUID(uuidString: todoID)!, newCompleted: selectedTodo.completed)
-        WidgetCenter.shared.reloadAllTimelines()
+        if todoType == .todo {
+            todo.iscompleted.toggle()
+            CoreDataManager.shared.updateTodoById(id: todo.id!, newIsCompleted: todo.iscompleted)
+        }else{
+            todo.toggleTodaysCompletedState()
+            CoreDataManager.shared.updateTodoById(id: todo.id!, newCompleted: todo.completed)
+        }
         return .result()
     }
 }

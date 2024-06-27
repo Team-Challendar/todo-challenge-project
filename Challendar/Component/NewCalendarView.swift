@@ -204,6 +204,8 @@ class NewCalendarView : UIView {
         updateLabel(Date())
         calendarView.reloadData()
     }
+    
+
 }
 
 

@@ -25,6 +25,8 @@
 		<string>Pretendard-SemiBold.ttf</string>
 		<string>Pretendard-Thin.ttf</string>
 		<string>PretendardVariable.ttf</string>
+		<string>SUITE-Bold.ttf</string>
+		<string>Roboto-BoldItalic.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
