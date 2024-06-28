@@ -611,6 +611,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     @objc private func registerButtonTapped() {
         CoreDataManager.shared.createTodo(newTodo: newTodo)
         hideBottomSheet()
+        print(newTodo.completed)
     }
     
     private func showBottomSheet() {
