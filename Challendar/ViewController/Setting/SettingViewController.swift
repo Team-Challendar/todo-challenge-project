@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import MessageUI
 import LinkPresentation
+import AcknowList
 
 class SettingViewController: BaseViewController {
     
@@ -129,9 +130,12 @@ class SettingViewController: BaseViewController {
     }
     
     func openSetting(){
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            UIApplication.shared.open(url)
-        }
+//        if let url = URL(string: UIApplication.openSettingsURLString) {
+//            UIApplication.shared.open(url)
+//        }
+        
+        let viewController = AcknowListViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     func shareToFriend() {

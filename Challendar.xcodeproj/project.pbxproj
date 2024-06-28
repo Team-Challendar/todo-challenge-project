@@ -100,6 +100,8 @@
 		B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA762C10D60000926B53 /* DailyViewController.swift */; };
 		B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */; };
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
+		B9C62E492C2E397B00988DB2 /* AcknowList in Frameworks */ = {isa = PBXBuildFile; productRef = B9C62E482C2E397B00988DB2 /* AcknowList */; };
+		B9C62E4B2C2E439100988DB2 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = B9C62E4A2C2E439000988DB2 /* Package.resolved */; };
 		B9EFF60F2C1B1B2E00503165 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */; };
 		B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */; };
 		DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */; };
@@ -206,6 +208,7 @@
 		B90CAA762C10D60000926B53 /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
+		B9C62E4A2C2E439000988DB2 /* Package.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Package.resolved; path = Challendar.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
 		B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBtnNew.swift; sourceTree = "<group>"; };
 		DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCalendarCell.swift; sourceTree = "<group>"; };
@@ -226,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1472ADE52C08404D00145668 /* RxSwift in Frameworks */,
+				B9C62E492C2E397B00988DB2 /* AcknowList in Frameworks */,
 				1472ADE32C08404D00145668 /* RxCocoa in Frameworks */,
 				1472ADE82C08406D00145668 /* RAMAnimatedTabBarController in Frameworks */,
 				14C97F2C2C0A1D1600819B27 /* FSCalendar in Frameworks */,
@@ -241,6 +245,7 @@
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
+				B9C62E4A2C2E439000988DB2 /* Package.resolved */,
 				142052D42C1BFC8000BC4831 /* Settings.bundle */,
 				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
@@ -498,6 +503,7 @@
 				14C97F2B2C0A1D1600819B27 /* FSCalendar */,
 				141744D82C1821C8002335F7 /* Lottie */,
 				142052D22C1BFB5E00BC4831 /* MarkdownView */,
+				B9C62E482C2E397B00988DB2 /* AcknowList */,
 			);
 			productName = Challendar;
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
@@ -535,6 +541,7 @@
 				14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				142052D12C1BFB5E00BC4831 /* XCRemoteSwiftPackageReference "MarkdownView" */,
+				B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */,
 			);
 			productRefGroup = 1472AD9E2C082A0F00145668 /* Products */;
 			projectDirPath = "";
@@ -558,6 +565,7 @@
 				1472ADC92C082B8300145668 /* Pretendard-ExtraBold.ttf in Resources */,
 				1472ADCA2C082B8300145668 /* Pretendard-ExtraLight.ttf in Resources */,
 				1472ADCD2C082B8300145668 /* Pretendard-Regular.ttf in Resources */,
+				B9C62E4B2C2E439100988DB2 /* Package.resolved in Resources */,
 				1472ADC82C082B8300145668 /* Pretendard-Bold.ttf in Resources */,
 				1472ADCF2C082B8300145668 /* Pretendard-Thin.ttf in Resources */,
 				1472ADC72C082B8300145668 /* Pretendard-Black.ttf in Resources */,
@@ -953,6 +961,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vtourraine/AcknowList.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -990,6 +1006,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		B9C62E482C2E397B00988DB2 /* AcknowList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */;
+			productName = AcknowList;
 		};
 /* End XCSwiftPackageProductDependency section */
 
