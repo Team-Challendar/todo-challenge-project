@@ -130,13 +130,22 @@ class SettingViewController: BaseViewController {
     }
     
     func openSetting(){
-//        if let url = URL(string: UIApplication.openSettingsURLString) {
-//            UIApplication.shared.open(url)
-//        }
+        //        if let url = URL(string: UIApplication.openSettingsURLString) {
+        //            UIApplication.shared.open(url)
+        //        }
         
-        let viewController = AcknowListViewController()
+        //        let viewController = AcknowListViewController()
+        //        navigationController?.pushViewController(viewController, animated: true)
+        
+        
+        let acknows: [Acknow] = AcknowParser.defaultAcknowList()?.acknowledgements ?? []
+        
+        let viewController = AcknowListViewController(acknowledgements: acknows, style: .insetGrouped)
         navigationController?.pushViewController(viewController, animated: true)
+        
     }
+    
+    
     
     func shareToFriend() {
         let url = URL(string: "https://apps.apple.com/us/app/%EC%B1%8C%EB%A6%B0%EB%8D%94-challendar/id6504077858")!
@@ -164,7 +173,7 @@ class SettingViewController: BaseViewController {
         // activityVC.excludedActivityTypes = [.airDrop, .addToReadingList]
         self.present(activityVC, animated: true, completion: nil)
     }
-
+    
 }
 
 
