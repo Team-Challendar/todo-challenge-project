@@ -160,17 +160,17 @@ class ChallengeListViewController: BaseViewController {
     // 투두 필터링: 투두 리스트를 완료, 미완료, 예정으로 필터링함
     private func filterTodos() {
         let today = Date()
-        let filteredItems = CoreDataManager.shared.fetchTodos().filter { // endDate가 오늘이거나 과거인 도전 항목
+        let filteredItems = CoreDataManager.shared.fetchTodos().filter {
             $0.isChallenge && ($0.endDate ?? today) >= today
         }
         // 왼료 도전
         completedTodos = filteredItems.filter {
-            ($0.todayCompleted(date: today) ?? false)
+            ($0.completed[Date().startOfDay() ?? Date()] ?? false)
         }
         // 미완료 도전
         incompleteTodos = filteredItems.filter {
             guard let startDate = $0.startDate else { return false }
-            return !($0.todayCompleted(date: today) ?? false) && startDate <= today
+            return !($0.completed[Date().startOfDay() ?? Date()] ?? false) && startDate <= today
         }
         // 도전 예정 항목
         upcomingTodos = filteredItems.filter {
@@ -178,6 +178,7 @@ class ChallengeListViewController: BaseViewController {
             return startDate > today
         }
     }
+
     
     // 최신순 정렬: 필터링된 항목들을 startDate 순으로 내림차순 정렬
     private func sortByRecentStartDate() {
@@ -370,12 +371,11 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
 extension ChallengeListViewController : ChallengeCollectionViewCellDelegate {
     
     func editContainerTapped(in cell: ChallengeCollectionViewCell) {
-        let editVC = EditTodoViewController()
+        let editVC = EditTodoBottomSheetViewController()
         editVC.todoId = cell.todoItem?.id
         editVC.modalTransitionStyle = .coverVertical
-        editVC.modalPresentationStyle = .fullScreen
-        let navi = UINavigationController(rootViewController: editVC)
-        navi.modalPresentationStyle = .overFullScreen
-        self.present(navi, animated: true, completion: nil)
+        editVC.modalPresentationStyle = .overFullScreen
+        self.present(editVC, animated: true)
     }
 }
+
