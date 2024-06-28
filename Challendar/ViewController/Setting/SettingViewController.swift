@@ -138,6 +138,9 @@ class SettingViewController: BaseViewController {
         let acknows: [Acknow] = AcknowParser.defaultAcknowList()?.acknowledgements ?? []
         
         let viewController = AcknowListViewController(acknowledgements: acknows, style: .insetGrouped)
+        viewController.configureBackground()
+        viewController.configureBackAndTitleNavigationBar(title: "오픈소스 라이선스", checkSetting: false)
+        viewController.title = ""
         navigationController?.pushViewController(viewController, animated: true)
         
     }
