@@ -1,10 +1,9 @@
 //
-//  SearchViewController.swift
+//  ChallengeListViewController.swift
 //  Challendar
 //
 //  Created by Sam.Lee on 5/30/24.
 //
-
 
 import UIKit
 import SnapKit
@@ -38,7 +37,6 @@ class ChallengeListViewController: BaseViewController {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
-//        setupResetButton()
         setupDateView()
     }
     
@@ -65,12 +63,17 @@ class ChallengeListViewController: BaseViewController {
         )
     }
     
+    // CoreData가 변경되었을 때 데이터를 다시 로드
     @objc func coreDataChanged(_ notification: Notification) {
         loadData()
     }
+
+    // 체크박스가 탭되었을 때마다 모든 챌린지가 완료되었는지 확인
     @objc func checkBoxTapped(){
         checkIfAllChallengesCompleted()
     }
+
+    // CoreData에서 투두 리스트를 가져와서 필터링, 디폴트로 최신순 정렬
     private func loadData() {
         self.todoItems = CoreDataManager.shared.fetchTodos()
         filterTodos()
@@ -82,7 +85,6 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
-    // 레이아웃 설정
     private func setupLayout() {
         dateView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -97,6 +99,7 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
+    // 상단 날짜 뷰
     private func setupDateView() {
         dateView = UIView()
         dateView.backgroundColor = .clear
@@ -134,28 +137,6 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
-    private func setupResetButton() {
-           resetBtn = UIButton(type: .system)
-           resetBtn.setTitle("Reset All", for: .normal)
-           resetBtn.setTitleColor(.white, for: .normal)
-           resetBtn.backgroundColor = .red
-           resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
-           view.addSubview(resetBtn)
-
-           resetBtn.snp.makeConstraints { make in
-               make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
-               make.centerX.equalToSuperview()
-               make.width.equalTo(200)
-               make.height.equalTo(50)
-           }
-       }
-    
-    @objc private func resetButtonTapped() {
-        CoreDataManager.shared.deleteAllTodos()
-        loadData()
-    }
-
-    // 컬렉션뷰 설정
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
@@ -165,63 +146,61 @@ class ChallengeListViewController: BaseViewController {
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = false
         view.addSubview(collectionView)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 83, right: 0)
-                collectionView.scrollIndicatorInsets = collectionView.contentInset
+        collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
     
-    // 컬렉션뷰 레이아웃 생성
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             return self.createTodoSection(itemHeight: .absolute(75))
         }
     }
     
-    // 오늘 기준 투두 필터링
+    // 투두 필터링: 투두 리스트를 완료, 미완료, 예정으로 필터링함
     private func filterTodos() {
         let today = Date()
-        let filteredItems = CoreDataManager.shared.fetchTodos().filter {
+        let filteredItems = CoreDataManager.shared.fetchTodos().filter { // endDate가 오늘이거나 과거인 도전 항목
             $0.isChallenge && ($0.endDate ?? today) >= today
         }
-        
+        // 왼료 도전
         completedTodos = filteredItems.filter {
             ($0.todayCompleted(date: today) ?? false)
         }
-        
+        // 미완료 도전
         incompleteTodos = filteredItems.filter {
             guard let startDate = $0.startDate else { return false }
             return !($0.todayCompleted(date: today) ?? false) && startDate <= today
         }
-        
+        // 도전 예정 항목
         upcomingTodos = filteredItems.filter {
             guard let startDate = $0.startDate else { return false }
             return startDate > today
         }
     }
     
-    // 최신순
+    // 최신순 정렬: 필터링된 항목들을 startDate 순으로 내림차순 정렬
     private func sortByRecentStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         upcomingTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
     
-    // 등록순
+    // 등록순 정렬: 필터링된 항목들을 startDate 순으로 오름차순 정렬
     private func sortByOldestStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
         upcomingTodos.sort { ($0.startDate ?? Date.distantPast) < ($1.startDate ?? Date.distantPast) }
     }
     
-    // 기한 임박
+    // 기한 임박 정렬: 필터링된 항목들을 endDate 순으로 오름차순 정렬
     private func sortByNearestEndDate() {
         completedTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
         incompleteTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
         upcomingTodos.sort { ($0.endDate ?? Date.distantFuture) < ($1.endDate ?? Date.distantFuture) }
     }
     
-    // 비어있는 상태 UI 설정
+    // 리스트가 없는 상태 UI
     private func setupEmptyStateViews() {
         emptyMainLabel = UILabel()
         emptyMainLabel.text = "리스트가 없어요..."
@@ -235,12 +214,12 @@ class ChallengeListViewController: BaseViewController {
         emptySubLabel.textColor = .secondary500
         view.addSubview(emptySubLabel)
         
-         emptyImage = UIImageView()
-         emptyImage.image = UIImage(named: "bullseye")
-         view.addSubview(emptyImage)
+        emptyImage = UIImageView()
+        emptyImage.image = UIImage(named: "bullseye")
+        view.addSubview(emptyImage)
     }
     
-    // 비어있는 상태 제약 조건 설정
+    // 리스트가 없는 상태 UI 제약조건
     private func setupEmptyStateConstraints() {
         emptyMainLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -252,14 +231,14 @@ class ChallengeListViewController: BaseViewController {
             make.bottom.equalTo(emptyImage.snp.top).offset(-32)
         }
         
-         emptyImage.snp.makeConstraints { make in
-             make.width.height.equalTo(100)
-             make.centerX.equalToSuperview()
-             make.centerY.equalToSuperview()
+        emptyImage.snp.makeConstraints { make in
+            make.width.height.equalTo(100)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
         }
     }
     
-    // 비어있는 상태 업데이트
+    // 리스트가 있을 경우 UI 숨김
     private func updateEmptyStateVisibility() {
         let isEmpty = completedTodos.isEmpty && incompleteTodos.isEmpty && upcomingTodos.isEmpty
         emptyMainLabel.isHidden = !isEmpty
@@ -267,29 +246,29 @@ class ChallengeListViewController: BaseViewController {
         emptyImage.isHidden = !isEmpty
     }
     
+    // 모든 챌린지 완료 확인: 모든 챌린지가 완료되었으면 successViewController 표시
     private func checkIfAllChallengesCompleted() {
         if incompleteTodos.isEmpty {
             let successViewController = ChallengeSuccessViewController()
             successViewController.modalPresentationStyle = .fullScreen
             successViewController.modalTransitionStyle = .crossDissolve
-//            let navigationController = UINavigationController(rootViewController: successViewController)
-//            navigationController.modalTransitionStyle = .coverVertical
-//            navigationController.modalPresentationStyle = .overFullScreen
             self.present(successViewController, animated: true, completion: nil)
         }
     }
 }
 
 extension ChallengeListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    // 비어있지 않은 배열의 수 반환
+    // 값이 없는 섹션을 제외한 섹션의 수를 구함
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return [completedTodos, incompleteTodos, upcomingTodos].filter { !$0.isEmpty }.count
     }
     
+    // 각 섹션별 항목 수를 구함
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return getTodoItemCount(for: section)
     }
     
+    // 각 섹션별 셀 설정: 각 셀을 필터된 아이템의 값에 따라 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let todo = getTodoItem(for: indexPath)
         let today = Date()
@@ -297,7 +276,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         if let startDate = todo.startDate, startDate > today {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "enabledCell", for: indexPath) as! SearchCollectionViewCell
             cell.configure(with: todo)
-            cell.contentView.alpha = 0.2 // 불투명도 20%로 설정
+            cell.contentView.alpha = 0.2
             cell.isUserInteractionEnabled = false
             return cell
         } else {
@@ -308,6 +287,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         }
     }
     
+    // indexPath에 해당하는 섹션 헤더 dequeue, getSectionHeaderTitle 호출해서 섹션헤더 설정
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
@@ -319,6 +299,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         return header
     }
     
+    // 각 섹션별 항목 수를 구함
     private func getTodoItemCount(for section: Int) -> Int {
         switch getSectionType(for: section) {
         case .completed:
@@ -330,6 +311,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         }
     }
     
+    // indexPath에 해당하는 투두 아이템 값 구함
     private func getTodoItem(for indexPath: IndexPath) -> Todo {
         switch getSectionType(for: indexPath.section) {
         case .completed:
@@ -341,17 +323,19 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
         }
     }
     
+    // 각 아이템을 선택했을 때 detailVC 표시
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let todo = getTodoItem(for: indexPath)
         let detailVC = ChallengeListDetailViewController()
         detailVC.newTodo = todo
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
+    
     private enum SectionType {
         case completed, incomplete, upcoming
     }
     
-    // 섹션 인덱스로 각 섹션 타입 반환
+    // 각 인덱스에 해당하는 섹션 타입 반환
     private func getSectionType(for section: Int) -> SectionType {
         var index = 0
         
@@ -367,9 +351,10 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
             if index == section { return .upcoming }
         }
         print("Invalid section: \(section)")
-        return .incomplete // 기본값을 반환하거나 적절한 오류 처리를 합니다.
+        return .incomplete
     }
-    // 각 섹션 헤더 반환
+    
+    // 각 섹션의 헤더 제목 구함
     private func getSectionHeaderTitle(for section: Int) -> String {
         switch getSectionType(for: section) {
         case .completed:
@@ -383,6 +368,7 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
 }
 
 extension ChallengeListViewController : ChallengeCollectionViewCellDelegate {
+    
     func editContainerTapped(in cell: ChallengeCollectionViewCell) {
         let editVC = EditTodoViewController()
         editVC.todoId = cell.todoItem?.id

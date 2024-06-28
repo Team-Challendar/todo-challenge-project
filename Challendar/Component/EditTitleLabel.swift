@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+// Add/ Edit Todo 항목 타이틀 Label
 class EditTitleLabel: UILabel {
 
     init(text: String) {

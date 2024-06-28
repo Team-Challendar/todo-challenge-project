@@ -1,5 +1,5 @@
 import Foundation
-
+// 챌린지 등록 여부 확인 페이지용 글
 struct Speech {
     let text: String
 }

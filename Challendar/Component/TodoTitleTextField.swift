@@ -1,5 +1,5 @@
 import UIKit
-
+// 투두 작성페이지용 Custom TextField
 class TodoTitleTextField: UITextField {
     
     init(placeholder: String) {

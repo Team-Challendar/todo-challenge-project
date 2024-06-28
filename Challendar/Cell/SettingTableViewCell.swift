@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-
+// 설정화면 Cell
 class SettingTableViewCell: UITableViewCell {
     var titleLabel : UILabel!
     var image : UIImageView!

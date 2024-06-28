@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import MarkdownView
 
+// 공지사항 Cell (MarkdownView 포함)
 class NoticeTableViewCell: UITableViewCell {
     var topContainer = UIView()
     var dateLabel = UILabel()
