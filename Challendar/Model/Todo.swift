@@ -60,9 +60,10 @@ class Todo : Hashable{
         print(repetition)
         completed = [:]
         guard let startDate = startDate, let endDate = endDate else { return }
-        let days = endDate.daysBetween(startDate)
+        let days = endDate.daysBetween(startDate)+1
         for day in 0...days {
             let date = startDate.addingDays(day)!
+
             if repetition.contains(date.weekdayIndex) {
                 completed[date] = false
             }

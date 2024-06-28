@@ -871,9 +871,19 @@ extension AddTodoBottomSheetViewController: AlarmPickerViewDelegate {
 extension AddTodoBottomSheetViewController: RepetitionCollectionViewDelegate {
     func selectedDates(dates: [Int]) {
         if dates.contains(0){
-            newTodo.repetition = [0,1,2,3,4,5,6]
+            newTodo.repetition = [0,1,2,3,4,5,6,7]
         } else {
-            newTodo.repetition = dates.map {$0 - 1}
+            if dates.contains(7){
+                var dates = dates
+                dates.removeAll(where: {
+                    $0 == 7
+                })
+                dates.append(0)
+                newTodo.repetition = dates.map {$0}
+            }else{
+                newTodo.repetition = dates.map {$0}
+            }
+
         }
     }
     
