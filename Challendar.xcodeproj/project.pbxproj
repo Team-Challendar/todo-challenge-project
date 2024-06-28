@@ -345,6 +345,8 @@
 				14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */,
 			);
 			name = Frameworks;
+            sourceTree = "<group>";
+        };
 		1412AB6D2C2D319F00575E6F /* Transformer */ = {
 			isa = PBXGroup;
 			children = (
