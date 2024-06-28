@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1412AB6F2C2D31B000575E6F /* DictionaryTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */; };
 		1412AB712C2D34FD00575E6F /* IntArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */; };
+		1412AB722C2E89A400575E6F /* DictionaryTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */; };
+		1412AB732C2E89A600575E6F /* IntArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */; };
 		141744D92C1821C8002335F7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 141744D82C1821C8002335F7 /* Lottie */; };
 		141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */; };
 		142052C42C1BDC1C00BC4831 /* NoticeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C32C1BDC1C00BC4831 /* NoticeModel.swift */; };
@@ -336,6 +338,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1412AB6D2C2D319F00575E6F /* Transformer */ = {
+			isa = PBXGroup;
+			children = (
+				1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */,
+				1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */,
+			);
+			path = Transformer;
+			sourceTree = "<group>";
+		};
 		14379BAF2C2A909C00808968 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -345,15 +356,6 @@
 				14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */,
 			);
 			name = Frameworks;
-            sourceTree = "<group>";
-        };
-		1412AB6D2C2D319F00575E6F /* Transformer */ = {
-			isa = PBXGroup;
-			children = (
-				1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */,
-				1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */,
-			);
-			path = Transformer;
 			sourceTree = "<group>";
 		};
 		1472AD942C082A0F00145668 = {
@@ -890,7 +892,9 @@
 				14B5608F2C2A986800DED1EB /* CoreDataManager.swift in Sources */,
 				14B560912C2A987500DED1EB /* TodoModel+CoreDataClass.swift in Sources */,
 				14B560942C2A991900DED1EB /* DateExtension.swift in Sources */,
+				1412AB732C2E89A600575E6F /* IntArrayTransformer.swift in Sources */,
 				14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
+				1412AB722C2E89A400575E6F /* DictionaryTransformer.swift in Sources */,
 				14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */,
 				14B560932C2A987E00DED1EB /* Challendar.xcdatamodeld in Sources */,
 				14B560842C2A978600DED1EB /* AppIntent.swift in Sources */,

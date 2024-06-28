@@ -91,6 +91,9 @@ class CoreDataManager {
                 }
                 try self.context.save()
                 NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                DispatchQueue.main.async {
+                                WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
+                            }
                 // 로컬 알림 생성
 //                self.sendLocalNotification()
                 
@@ -141,11 +144,22 @@ class CoreDataManager {
         if context.hasChanges {
             do {
                 try context.save()
-                NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
-                WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
+                print("HELSDJKASL")
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
             } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                if let nserror = error as NSError? {
+                    if nserror.code == 134419 {
+                        // 시스템에 의해 요청이 지연된 경우, 일정 시간 후 다시 시도
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            self.saveContext()
+                        }
+                    } else {
+                        fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                    }
+                }
             }
         }
     }

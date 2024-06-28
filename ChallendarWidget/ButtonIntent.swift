@@ -11,9 +11,7 @@ import CoreData
 import WidgetKit
 
 struct ButtonIntent: AppIntent {
-    init() {
-        self.todoID = ""
-    }
+    init() {}
     
     static var title: LocalizedStringResource = "Update Todo"
     
@@ -41,6 +39,7 @@ struct ButtonIntent: AppIntent {
             todo.toggleTodaysCompletedState()
             CoreDataManager.shared.updateTodoById(id: todo.id!, newCompleted: todo.completed)
         }
+        WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
         return .result()
     }
 }

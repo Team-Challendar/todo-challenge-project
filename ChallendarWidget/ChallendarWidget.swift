@@ -11,50 +11,56 @@ import CoreData
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), todo: nil, type: TodoItemType.todo)
+        SimpleEntry(date: Date(), todo: nil, type: TodoItemType.todo, totalCount: 0, completedList: 0)
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        return SimpleEntry(date: Date(), todo: nil, type: configuration.todoType ?? .todo)
+        return SimpleEntry(date: Date(), todo: nil, type: configuration.todoType ?? .todo, totalCount: 0, completedList: 0)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
         let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            var todoList : [Todo] = CoreDataManager.shared.fetchTodos()
-            
-            switch configuration.todoType{
-            case .todo:
-                todoList = todoList.filter{
-                    $0.endDate == nil
+        
+        // fetchTodos를 호출하여 최신 데이터를 가져옵니다.
+        let todoList = fetchTodos(for: configuration.todoType)
+        let totalCount = todoList.count
+        let completedCount = todoList.filter { $0.todayCompleted() ?? false }.count
+        
+        let entry = SimpleEntry(date: currentDate, todo: todoList, type: configuration.todoType ?? .todo, totalCount: totalCount, completedList: completedCount)
+        entries.append(entry)
+        
+        // 5분 후에 다시 업데이트되도록 설정
+        let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
+        
+        return Timeline(entries: entries, policy: .after(nextUpdateDate))
+    }
+    
+    private func fetchTodos(for type: TodoItemType?) -> [Todo] {
+        var todoList: [Todo] = CoreDataManager.shared.fetchTodos()
+        
+        switch type {
+        case .todo:
+            todoList = todoList.filter { $0.endDate == nil }
+        case .plan:
+            todoList = todoList.filter {
+                if let endDate = $0.endDate, let startDate = $0.startDate {
+                    return !$0.isChallenge && $0.completed[Date().startOfDay()!] != nil
                 }
-                print("todo: \(todoList.count) ")
-            case .plan:
-                todoList = todoList.filter{
-                    if let endDate = $0.endDate, let startDate = $0.startDate {
-                        return $0.isChallenge == false && endDate >= Date() && startDate <= Date()
-                    }
-                    return false
-                }
-                print("PLAN: \(todoList.count) ")
-            case .challenge:
-                todoList = todoList.filter{
-                    if let endDate = $0.endDate, let startDate =  $0.startDate {
-                        return $0.isChallenge == true && endDate >= Date() && startDate <= Date()
-                    }
-                    return false
-                }
-                print("challenge: \(todoList.count) ")
-            default:
-                todoList = []
+                return false
             }
-            let entry = SimpleEntry(date: entryDate, todo: todoList, type: configuration.todoType ?? .todo)
-            entries.append(entry)
+        case .challenge:
+            todoList = todoList.filter {
+                if let endDate = $0.endDate, let startDate = $0.startDate {
+                    return $0.isChallenge && $0.completed[Date().startOfDay()!] != nil
+                }
+                return false
+            }
+        default:
+            todoList = []
         }
         
-        return Timeline(entries: entries, policy: .atEnd)
+        return todoList
     }
     
     private func fetchDetailedTodoById(id: UUID) -> Todo? {
@@ -69,6 +75,8 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
     let todo: [Todo]?
     let type : TodoItemType
+    let totalCount : Int
+    let completedList: Int
 }
 
 struct ChallendarWidgetEntryView: View {
@@ -78,11 +86,11 @@ struct ChallendarWidgetEntryView: View {
     var body: some View {
         switch widgetFamily {
         case .systemSmall:
-            SmallWidgetView(todos: entry.todo, type: entry.type)
+            SmallWidgetView(todos: entry.todo, type: entry.type, totalCount: entry.totalCount, completedCount: entry.completedList)
         case .systemMedium:
-            MediumWidgetView(todos: entry.todo, type: entry.type)
+            MediumWidgetView(todos: entry.todo, type: entry.type, totalCount: entry.totalCount, completedCount: entry.completedList)
         case .systemLarge:
-            LargeWidgetView(todos: entry.todo, type: entry.type)
+            LargeWidgetView(todos: entry.todo, type: entry.type, totalCount: entry.totalCount, completedCount: entry.completedList)
         default:
             Text("Unsupported size")
         }
@@ -90,8 +98,10 @@ struct ChallendarWidgetEntryView: View {
 }
 
 struct SmallWidgetView: View {
-    let todos: [Todo]?
-    let type : TodoItemType?
+    @State var todos: [Todo]?
+    @State var type : TodoItemType?
+    @State var totalCount : Int?
+    @State var completedCount : Int?
     
     private func colorsAndTitle(for type: TodoItemType?) -> (UIColor, UIColor, String) {
         switch type {
@@ -121,10 +131,10 @@ struct SmallWidgetView: View {
                             .lineLimit(1)
                         Spacer(minLength: 10)
                         HStack(alignment: .bottom, spacing: 0) {
-                            Text("1")
+                            Text("\(completedCount!)")
                                 .font(Font.custom("Roboto-BoldItalic", size: 24))
                                 .foregroundStyle(Color(subColor))
-                            Text(" / 4")
+                            Text(" / \(totalCount!)")
                                 .font(Font.custom("Roboto-BoldItalic", size: 20))
                                 .foregroundStyle(Color(uiColor: .secondary600))
                         }
@@ -147,7 +157,7 @@ struct SmallWidgetView: View {
                                     .frame(width: 24, height: 24)
                                     .background(.clear)
                                     .tint(.clear)
-                                    .invalidatableContent()
+//                                    .invalidatableContent()
                                     VStack(alignment: .leading) {
                                         Text(todo.title)
                                             .font(Font.custom("Pretendard-Regular", size: 13))
@@ -199,6 +209,9 @@ struct DashedLine: Shape {
 struct MediumWidgetView: View {
     let todos: [Todo]?
     let type : TodoItemType?
+    var totalCount : Int?
+    var completedCount: Int?
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("할 일 목록")
@@ -220,6 +233,9 @@ struct MediumWidgetView: View {
 struct LargeWidgetView: View {
     let todos: [Todo]?
     let type : TodoItemType?
+    var totalCount : Int?
+    var completedCount : Int?
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("할 일 목록")
@@ -254,21 +270,10 @@ struct ChallendarWidget: Widget {
             ChallendarWidgetEntryView(entry: entry)
                 .containerBackground(.secondary850, for: .widget)
         }
+        .supportedFamilies([.systemSmall, .systemMedium,.systemLarge])
         .configurationDisplayName("챌린더 위젯")
         .description("화면을 선택해라")
         .contentMarginsDisabled()
-    }
-}
-
-extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        return intent
-    }
-    
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        return intent
     }
 }
 

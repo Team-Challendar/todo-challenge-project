@@ -41,10 +41,6 @@ struct TodoItemTypeQuery: EntityQuery {
         }
     }
 
-    func entities(for identifiers: [UUID]) async throws -> [TodoItemType] {
-        return TodoItemType.allTodoItemTypes
-    }
-
     func suggestedEntities() async throws -> [TodoItemType] {
         return TodoItemType.allTodoItemTypes
     }
