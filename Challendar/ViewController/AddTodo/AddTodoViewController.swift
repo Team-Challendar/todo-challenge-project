@@ -108,7 +108,7 @@ class AddTodoTitleViewController: BaseViewController {
             .subscribe(onNext: {[weak self] _ in
                 self?.todoTextField.resignFirstResponder()
                 guard let text = self?.todoTextField.text else {return}
-                self?.newTodo = Todo(title: text, completed: [], images: self?.images)
+                self?.newTodo = Todo(title: text, completed: [:], images: self?.images)
                 let nextVC = AddTodoDateViewController()
                 nextVC.newTodo = self?.newTodo
                 

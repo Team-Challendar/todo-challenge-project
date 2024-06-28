@@ -204,9 +204,18 @@ class NewCalendarView : UIView {
         updateLabel(Date())
         calendarView.reloadData()
     }
-    
-
+    func deseleteDates(){
+           for day in calendarView.selectedDates {
+               calendarView.deselect(day)
+           }
+           lastDate = nil
+           firstDate = nil
+           datesRange = []
+           calendarView.reloadData()
+       }
 }
+
+
 
 
 extension NewCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance, FSCalendarDataSource {

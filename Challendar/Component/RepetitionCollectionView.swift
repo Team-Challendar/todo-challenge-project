@@ -8,9 +8,16 @@
 import UIKit
 import SnapKit
 
+protocol RepetitionCollectionViewDelegate: AnyObject {
+    func repetitionCollectionView(_ collectionView: RepetitionCollectionView, didSelectItemAt index: Int)
+    func selectedDates(dates: [Int])
+}
+
 class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var items: [String] = []
+    var selectedDates: [Int] = [0]
+    weak var delegate: RepetitionCollectionViewDelegate?
     private let collectionView: UICollectionView
     
     override init(frame: CGRect) {
@@ -57,6 +64,9 @@ class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollection
             return UICollectionViewCell()
         }
         cell.configure(with: items[indexPath.row])
+        if indexPath.row == 0 {
+            collectionView.selectItem(at: IndexPath.init(row: 0, section: 0), animated: false, scrollPosition: .left)
+        }
         return cell
     }
     
@@ -72,5 +82,46 @@ class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 8
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            selectedDates.forEach{
+                collectionView.deselectItem(at: IndexPath.init(row: $0, section: 0), animated: true)
+            }
+            selectedDates = [0]
+        }
+//        if selectedDates.contains(indexPath.row) {
+//            selectedDates.removeAll { $0 == indexPath.row }
+//        } 
+        else {
+            if selectedDates.contains(0){
+                collectionView.deselectItem(at: IndexPath.init(row: 0, section: 0), animated: true)
+            }
+            selectedDates.removeAll {
+                $0 == 0
+            }
+            selectedDates.append(indexPath.row)
+        }
+        selectedDates.sort()
+        delegate?.selectedDates(dates: selectedDates)
+        delegate?.repetitionCollectionView(self, didSelectItemAt: indexPath.row)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+//        if selectedDates.contains(indexPath.row) {
+//            selectedDates.removeAll { $0 == indexPath.row }
+//        } else {
+//            selectedDates.append(indexPath.row)
+//        }
+        selectedDates.removeAll { $0 == indexPath.row }
+        
+        if selectedDates.isEmpty {
+            selectedDates.append(0)
+            collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: [])
+        }
+        selectedDates.sort()
+        delegate?.selectedDates(dates: selectedDates)
+        delegate?.repetitionCollectionView(self, didSelectItemAt: indexPath.row)
     }
 }

@@ -126,7 +126,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
             self.newTodo?.iscompleted = false
         } else {
             // endDate가 nil인 경우 초기화
-            self.newTodo?.completed = []
+            self.newTodo?.completed = [:]
             self.newTodo?.iscompleted = false
         }
         
@@ -218,14 +218,14 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
                 newTitle: todoModel.title,
                 newStartDate: todoModel.startDate,
                 newEndDate: nil,
-                newCompleted: [],
+                newCompleted: [:],
                 newIsChallenge: todoModel.isChallenge,
                 newIsCompleted: false
             )
             
             self.newTodo?.endDate = nil
             self.newTodo?.isChallenge = false
-            self.newTodo?.completed = []
+            self.newTodo?.completed = [:]
             self.newTodo?.iscompleted = false
             self.updateDateViewTextForLater()
             print("BottomSheet Later Button Tapped - endDate set to nil, isChallenge set to false")
@@ -317,7 +317,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         let newEndDate = newTodo?.endDate
         
         // 기존 completed 배열을 유지, 새로운 completed 배열 생성
-        var updatedCompleted: [Bool] = []
+        var updatedCompleted: [Date: Bool] = [:]
         
         if let oldStart = oldStartDate, let newStart = newStartDate, let newEnd = newEndDate {
             let calendar = Calendar.current
@@ -329,13 +329,13 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
                 if let oldEnd = oldEndDate, currentDate >= oldStart && currentDate <= oldEnd {
                     let dayIndex = calendar.dateComponents([.day], from: oldStart, to: currentDate).day!
                     if dayIndex >= 0 && dayIndex < todoModel.completed.count {
-                        updatedCompleted.append(todoModel.completed[dayIndex])
+//                        updatedCompleted.append(todoModel.completed[dayIndex])
                     } else {
-                        updatedCompleted.append(false)
+//                        updatedCompleted.append(false)
                     }
                 } else {
                     // 새로운 날짜는 기본값 false로 설정
-                    updatedCompleted.append(false)
+//                    updatedCompleted.append(false)
                 }
                 currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
             }
@@ -343,7 +343,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
         
         // 새로운 endDate가 nil인 경우 completed 배열 초기화 및 iscompleted false로 설정
         if newEndDate == nil {
-            newTodo?.completed = []
+            newTodo?.completed = [:]
             newTodo?.iscompleted = false
         } else {
             newTodo?.completed = updatedCompleted
@@ -420,7 +420,7 @@ class EditTodoViewController: BaseViewController, UITextFieldDelegate, UIViewCon
     }
 
     // isChallenge 값이 변경된 투두 업데이트
-    private func updateTodoIsChallenge(isChallenge: Bool, todoModel: TodoModel, title: String, startDate: Date?, endDate: Date?, completed: [Bool]) {
+    private func updateTodoIsChallenge(isChallenge: Bool, todoModel: TodoModel, title: String, startDate: Date?, endDate: Date?, completed: [Date: Bool]) {
         todoModel.isChallenge = isChallenge
         todoModel.title = title
         todoModel.startDate = startDate
