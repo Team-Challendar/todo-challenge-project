@@ -6,7 +6,7 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "Configuration"
     static var description = IntentDescription("This is an example widget.")
 
-    @Parameter(title: "Select Todo")
+    @Parameter(title: "표시 내용", default: TodoItemType.plan)
     var todoType: TodoItemType?
 }
 

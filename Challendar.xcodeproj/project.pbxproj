@@ -121,6 +121,7 @@
 		14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */; };
 		14FDB6B92C319E8100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
 		14FDB6BA2C319E9100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
+		14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B560852C2A978700DED1EB /* Assets.xcassets */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
@@ -749,6 +750,7 @@
 				1472ADAD2C082A1000145668 /* Assets.xcassets in Resources */,
 				1472ADCE2C082B8300145668 /* Pretendard-SemiBold.ttf in Resources */,
 				1472ADB02C082A1000145668 /* Base in Resources */,
+				14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */,
 				142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */,
 				1472ADC92C082B8300145668 /* Pretendard-ExtraBold.ttf in Resources */,
 				1472ADCA2C082B8300145668 /* Pretendard-ExtraLight.ttf in Resources */,
@@ -1064,9 +1066,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 27X8924SNC;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Challendar/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "챌린더";
@@ -1086,6 +1090,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Challendar Development";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1146,9 +1151,11 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = ChallendarWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 27X8924SNC;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ChallendarWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ChallendarWidget;
@@ -1163,6 +1170,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.ChallendarWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarWidget;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

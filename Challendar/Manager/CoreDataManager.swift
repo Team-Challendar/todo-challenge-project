@@ -5,7 +5,7 @@ import UserNotifications
 
 // CoreData 함수용 Manager 싱글톤
 class CoreDataManager {
-
+    
     static let shared = CoreDataManager()
     
     private init() {
@@ -20,37 +20,37 @@ class CoreDataManager {
     
     // Core Data persistent container 초기화
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
-            let container = NSPersistentCloudKitContainer(name: "Challendar")
-            
-            // 앱 그룹 디렉토리 설정
-            guard let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.seungwon.ChallendarGroup") else {
-                fatalError("Failed to get app group container URL")
+        let container = NSPersistentCloudKitContainer(name: "Challendar")
+        
+        // 앱 그룹 디렉토리 설정
+        guard let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.seungwon.ChallendarGroup") else {
+            fatalError("Failed to get app group container URL")
+        }
+        let storeURL = appGroupURL.appendingPathComponent("Challendar.sqlite")
+        let description = NSPersistentStoreDescription(url: storeURL)
+        
+        // CloudKit 및 CoreData 설정
+        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        
+        // CloudKit 컨테이너 식별자 설정
+        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
+        
+        container.persistentStoreDescriptions = [description]
+        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            let storeURL = appGroupURL.appendingPathComponent("Challendar.sqlite")
-            let description = NSPersistentStoreDescription(url: storeURL)
-            
-            // CloudKit 및 CoreData 설정
-            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-            
-            // CloudKit 컨테이너 식별자 설정
-            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
-            
-            container.persistentStoreDescriptions = [description]
-            container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-            container.viewContext.automaticallyMergesChangesFromParent = true
-            
-            container.loadPersistentStores { storeDescription, error in
-                if let error = error as NSError? {
-                    fatalError("Unresolved error \(error), \(error.userInfo)")
-                }
-            }
-            
-            // 원격 변경 알림 구독
-            NotificationCenter.default.addObserver(self, selector: #selector(storeRemoteChange(_:)), name: .NSPersistentStoreRemoteChange, object: container.persistentStoreCoordinator)
-            
-            return container
-        }()
+        }
+        
+        // 원격 변경 알림 구독
+        NotificationCenter.default.addObserver(self, selector: #selector(storeRemoteChange(_:)), name: .NSPersistentStoreRemoteChange, object: container.persistentStoreCoordinator)
+        
+        return container
+    }()
     
     // Core Data context 반환
     var context: NSManagedObjectContext {
@@ -122,41 +122,38 @@ class CoreDataManager {
     
     // Create
     public func createTodo(newTodo: Todo) {
-        let todo = TodoModel(context: context)
-        todo.id = UUID()
-        todo.title = newTodo.title
-        todo.memo = newTodo.memo
-        todo.startDate = newTodo.startDate
-        todo.endDate = newTodo.endDate
-        todo.completed = newTodo.completed
-        todo.repetition = newTodo.repetition
-        todo.reminderTime = newTodo.reminderTime
-        todo.isChallenge = newTodo.isChallenge
-        todo.percentage = newTodo.percentage
-        if let imagesArray = newTodo.images {
-            let imageData = imagesArray.map { $0.pngData() }
-            todo.images = try? JSONEncoder().encode(imageData)
+        context.perform {
+            let todo = TodoModel(context: self.context)
+            todo.id = UUID()
+            todo.title = newTodo.title
+            todo.memo = newTodo.memo
+            todo.startDate = newTodo.startDate
+            todo.endDate = newTodo.endDate
+            todo.completed = newTodo.completed
+            todo.repetition = newTodo.repetition
+            todo.reminderTime = newTodo.reminderTime
+            todo.isChallenge = newTodo.isChallenge
+            todo.percentage = newTodo.percentage
+            if let imagesArray = newTodo.images {
+                let imageData = imagesArray.map { $0.pngData() }
+                todo.images = try? JSONEncoder().encode(imageData)
+            }
+            todo.isCompleted = newTodo.iscompleted
+            self.saveContext()
         }
-        todo.isCompleted = newTodo.iscompleted
-        saveContext()
     }
     
     // Save context
     func saveContext() {
-        if context.hasChanges {
-            do {
-                try context.save()
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
-                }
-            } catch {
-                if let nserror = error as NSError? {
-                    if nserror.code == 134419 {
-                        // 시스템에 의해 요청이 지연된 경우, 일정 시간 후 다시 시도
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                            self.saveContext()
-                        }
-                    } else {
+        context.perform {
+            if self.context.hasChanges {
+                do {
+                    try self.context.save()
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                    }
+                } catch {
+                    if let nserror = error as NSError? {
                         fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
                     }
                 }
@@ -166,53 +163,57 @@ class CoreDataManager {
     
     // Read
     func fetchTodos() -> [Todo] {
-        let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
-        
-        // 날짜 내림차순 정렬 요청
-        let dateOrder = NSSortDescriptor(key: "startDate", ascending: false)
-        fetchRequest.sortDescriptors = [dateOrder]
-        
-        do {
-            let todoModels = try context.fetch(fetchRequest)
-            return todoModels.map { model in
-                let images: [UIImage]? = {
-                    if let imageData = model.images, let decodedData = try? JSONDecoder().decode([Data].self, from: imageData) {
-                        return decodedData.compactMap { UIImage(data: $0) }
-                    }
-                    return []
-                }()
-                return Todo(
-                    id: model.id,
-                    title: model.title,
-                    memo: model.memo,
-                    startDate: model.startDate,
-                    endDate: model.endDate,
-                    completed: model.completed,
-                    isChallenge: model.isChallenge,
-                    percentage: model.percentage,
-                    images: images,
-                    iscompleted: model.isCompleted,
-                    repetition: model.repetition,
-                    reminderTime: model.reminderTime
-                )
+        var todos: [Todo] = []
+        context.performAndWait {
+            let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
+            let dateOrder = NSSortDescriptor(key: "startDate", ascending: false)
+            fetchRequest.sortDescriptors = [dateOrder]
+            
+            do {
+                let todoModels = try self.context.fetch(fetchRequest)
+                todos = todoModels.map { model in
+                    let images: [UIImage]? = {
+                        if let imageData = model.images, let decodedData = try? JSONDecoder().decode([Data].self, from: imageData) {
+                            return decodedData.compactMap { UIImage(data: $0) }
+                        }
+                        return []
+                    }()
+                    return Todo(
+                        id: model.id,
+                        title: model.title,
+                        memo: model.memo,
+                        startDate: model.startDate,
+                        endDate: model.endDate,
+                        completed: model.completed,
+                        isChallenge: model.isChallenge,
+                        percentage: model.percentage,
+                        images: images,
+                        iscompleted: model.isCompleted,
+                        repetition: model.repetition,
+                        reminderTime: model.reminderTime
+                    )
+                }
+            } catch {
+                print("Failed to fetch todos: \(error)")
             }
-        } catch {
-            print("Failed to fetch todos: \(error)")
-            return []
         }
+        return todos
     }
     
     func fetchTodoById(id: UUID) -> TodoModel? {
-        let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
-        
-        do {
-            let todos = try context.fetch(fetchRequest)
-            return todos.first
-        } catch {
-            print("Failed to fetch todo by id: \(error)")
-            return nil
+        var todo: TodoModel?
+        context.performAndWait {
+            let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+            
+            do {
+                let todos = try self.context.fetch(fetchRequest)
+                todo = todos.first
+            } catch {
+                print("Failed to fetch todo by id: \(error)")
+            }
         }
+        return todo
     }
     
     // Update
@@ -222,43 +223,45 @@ class CoreDataManager {
             return
         }
         
-        if let newTitle = newTitle {
-            todoToUpdate.title = newTitle
+        context.perform {
+            if let newTitle = newTitle {
+                todoToUpdate.title = newTitle
+            }
+            if let newMemo = newMemo {
+                todoToUpdate.memo = newMemo
+            }
+            if let newStartDate = newStartDate {
+                todoToUpdate.startDate = newStartDate
+            }
+            if let newEndDate = newEndDate {
+                todoToUpdate.endDate = newEndDate
+            }
+            if let newCompleted = newCompleted {
+                todoToUpdate.completed = newCompleted
+                todoToUpdate.percentage = Double(newCompleted.filter { $0.value == true }.count) / Double(newCompleted.count)
+            }
+            if let newIsChallenge = newIsChallenge {
+                todoToUpdate.isChallenge = newIsChallenge
+            }
+            if let newPercentage = newPercentage {
+                todoToUpdate.percentage = newPercentage
+            }
+            if let newImages = newImages {
+                let imageData = newImages.map { $0.pngData() }
+                todoToUpdate.images = try? JSONEncoder().encode(imageData)
+            }
+            if let newIsCompleted = newIsCompleted {
+                todoToUpdate.isCompleted = newIsCompleted
+            }
+            if let newRepetition = newRepetition {
+                todoToUpdate.repetition = newRepetition
+            }
+            if let newReminderTime = newReminderTime {
+                todoToUpdate.reminderTime = newReminderTime
+            }
+            
+            self.saveContext()
         }
-        if let newMemo = newMemo {
-            todoToUpdate.memo = newMemo
-        }
-        if let newStartDate = newStartDate {
-            todoToUpdate.startDate = newStartDate
-        }
-        if let newEndDate = newEndDate {
-            todoToUpdate.endDate = newEndDate
-        }
-        if let newCompleted = newCompleted {
-            todoToUpdate.completed = newCompleted
-            todoToUpdate.percentage = Double(newCompleted.filter{$0.value == true}.count) / Double(newCompleted.count)
-        }
-        if let newIsChallenge = newIsChallenge {
-            todoToUpdate.isChallenge = newIsChallenge
-        }
-        if let newPercentage = newPercentage {
-            todoToUpdate.percentage = newPercentage
-        }
-        if let newImages = newImages {
-            let imageData = newImages.map { $0.pngData() }
-            todoToUpdate.images = try? JSONEncoder().encode(imageData)
-        }
-        if let newIsCompleted = newIsCompleted {
-            todoToUpdate.isCompleted = newIsCompleted
-        }
-        if let newRepetition = newRepetition {
-            todoToUpdate.repetition = newRepetition
-        }
-        if let newReminderTime = newReminderTime {
-            todoToUpdate.reminderTime = newReminderTime
-        }
-        
-        saveContext()
     }
     
     // Delete
@@ -268,19 +271,23 @@ class CoreDataManager {
             return
         }
         
-        context.delete(todoToDelete)
-        saveContext()
+        context.perform {
+            self.context.delete(todoToDelete)
+            self.saveContext()
+        }
     }
     
     func deleteAllTodos() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TodoModel.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
-        do {
-            try context.execute(deleteRequest)
-            saveContext()
-        } catch {
-            print("Failed to delete all todos: \(error)")
+        context.perform {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TodoModel.fetchRequest()
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            
+            do {
+                try self.context.execute(deleteRequest)
+                self.saveContext()
+            } catch {
+                print("Failed to delete all todos: \(error)")
+            }
         }
     }
 }

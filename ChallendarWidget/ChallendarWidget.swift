@@ -25,7 +25,7 @@ struct Provider: AppIntentTimelineProvider {
         // fetchTodos를 호출하여 최신 데이터를 가져옵니다.
         let todoList = fetchTodos(for: configuration.todoType)
         let totalCount = todoList.count
-        let completedCount = todoList.filter { $0.todayCompleted() ?? false }.count
+        let completedCount = (configuration.todoType == .todo) ? (todoList.filter { $0.iscompleted }.count) : (todoList.filter { $0.todayCompleted() ?? false }.count)
         
         let entry = SimpleEntry(date: currentDate, todo: todoList, type: configuration.todoType ?? .todo, totalCount: totalCount, completedList: completedCount)
         entries.append(entry)
@@ -35,7 +35,10 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     private func fetchTodos(for type: TodoItemType?) -> [Todo] {
-        var todoList: [Todo] = CoreDataManager.shared.fetchTodos()
+        var todoList: [Todo] = []
+        CoreDataManager.shared.context.performAndWait {
+            todoList = CoreDataManager.shared.fetchTodos()
+        }
         
         switch type {
         case .todo:
@@ -43,7 +46,7 @@ struct Provider: AppIntentTimelineProvider {
         case .plan:
             todoList = todoList.filter {
                 if let endDate = $0.endDate, let startDate = $0.startDate {
-                    return !$0.isChallenge && $0.completed[Date().startOfDay()!] != nil 
+                    return !$0.isChallenge && $0.completed[Date().startOfDay()!] != nil
                 }
                 return false
             }
@@ -62,9 +65,10 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     private func fetchDetailedTodoById(id: UUID) -> Todo? {
-        let todo = CoreDataManager.shared.fetchTodos().first(where: {
-            $0.id == id
-        })
+        var todo: Todo?
+        CoreDataManager.shared.context.performAndWait {
+            todo = CoreDataManager.shared.fetchTodos().first(where: { $0.id == id })
+        }
         return todo
     }
 }
@@ -137,7 +141,7 @@ struct SmallWidgetView: View {
                         }
                     }
                     VStack(alignment: .leading) {
-                        if let todos = todos {
+                        if let todos = todos, todos.count > 0 {
                             ForEach(Array(todos.prefix(3).enumerated()), id: \.element.id) { index, todo in
                                 HStack(alignment: .top, spacing: 10) {
                                     Button(intent: ButtonIntent(todoID: todo.id!.uuidString, todoType: type!)) {
@@ -179,7 +183,7 @@ struct SmallWidgetView: View {
                                 Spacer()
                                 Text("리스트가 없어요")
                                     .font(Font.custom("Pretendard-Regular", size: 13))
-                                    .foregroundStyle(.secondary050)
+                                    .foregroundStyle(.secondary700)
                                 Spacer()
                             }
                             Spacer()
@@ -189,7 +193,6 @@ struct SmallWidgetView: View {
                 Spacer(minLength: 16)
             }
         }
-        .widgetBackground(Color(UIColor.secondary800))
     }
 }
 
@@ -203,50 +206,231 @@ struct DashedLine: Shape {
 }
 
 struct MediumWidgetView: View {
-    let todos: [Todo]?
-    let type : TodoItemType?
-    var totalCount : Int?
-    var completedCount: Int?
+    @State var todos: [Todo]?
+    @State var type: TodoItemType?
+    @State var totalCount: Int?
+    @State var completedCount: Int?
+    
+    private func colorsAndTitle(for type: TodoItemType?) -> (UIColor, UIColor, String, Image) {
+        switch type {
+        case .todo:
+            return (.alertTomato, .alertTomato300, "할 일", Image(.todoLogo))
+        case .plan:
+            return (.challendarBlue600, .challendarBlue300, "남은 계획", Image(.scheduleLogo))
+        case .challenge:
+            return (.challendarGreen200, .challendarGreen100, "챌린지", Image(.challengeLogo))
+        case .none:
+            return (.challendarGreen200, .challendarGreen100, "챌린지", Image(.challengeLogo))
+        }
+    }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("할 일 목록")
-                .font(.headline)
-            if let todos = todos {
-                ForEach(todos.prefix(3), id: \.id) { todo in
-                    Text(todo.title)
-                        .font(.subheadline)
+        let (mainUIColor, subColor, title, logo) = colorsAndTitle(for: type)
+        HStack(alignment: .center, spacing: 24){
+            VStack(alignment: .leading){
+                logo
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                Spacer()
+                HStack(alignment: .bottom, spacing: 0) {
+                    Text("\(completedCount ?? 0)")
+                        .font(Font.custom("Roboto-BoldItalic", size: 24))
+                        .foregroundStyle(Color(subColor))
+                    Text(" / \(totalCount ?? 0)")
+                        .font(Font.custom("Roboto-BoldItalic", size: 20))
+                        .foregroundStyle(Color(uiColor: .secondary600))
                 }
-            } else {
-                Text("No Todos Available")
-                    .font(.subheadline)
+                Text(title)
+                    .font(Font.custom("SUITE-Bold", size: 16))
+                    .foregroundStyle(Color(mainUIColor))
+                    .lineLimit(1)
+                    .kerning(0.1)
             }
+            .padding(0)
+            .frame(width: 75, height: 125, alignment: .leading)
+            VStack(alignment: .center, spacing: 0) {
+                if let todos = todos, todos.count > 0 {
+                    ForEach(Array(todos.prefix(4).enumerated()), id: \.element.id) { index, todo in
+                        HStack() {
+                            HStack(spacing: 0) {
+                                ZStack() {
+                                    Button(intent: ButtonIntent(todoID: todo.id!.uuidString, todoType: type!)) {
+                                        if type == .todo {
+                                            Image(uiImage: (todo.iscompleted ? UIImage(named: "done1")! : UIImage(named: "done0"))!)
+                                                .renderingMode(.template)
+                                                .foregroundColor(todo.iscompleted ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800))
+                                        } else {
+                                            Image(uiImage: (todo.todayCompleted()! ? UIImage(named: "done1")! : UIImage(named: "done0"))!)
+                                                .renderingMode(.template)
+                                                .foregroundColor(todo.todayCompleted()! ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800))
+                                        }
+                                    }
+                                    .background(.clear)
+                                    .tint(.clear)
+                                    .contentTransition(.interpolate)
+                                }
+                                .frame(width: 24, height: 24)
+                            }
+                            .frame(width: 24, height: 24)
+                            Text(todo.title)
+                                .font(Font.custom("Pretendard", size: 13))
+                                .lineSpacing(17.55)
+                                .foregroundStyle(.secondary050)
+                                .frame(maxWidth: .infinity, minHeight: 21.5, maxHeight: 21.5, alignment: .leading)
+                        }
+                        .padding(0)
+                        .frame(maxWidth: .infinity, minHeight: 35, maxHeight: 35)
+                        ZStack() {
+                            if index != todos.prefix(4).count - 1 {
+                                Image(.separator)
+                            }else{
+                                Spacer()
+                            }
+                        }
+                        .frame(width: 208, height: 1)
+                    }
+                } else {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Text("리스트가 없어요")
+                            .font(Font.custom("Pretendard-Regular", size: 13))
+                            .foregroundStyle(.secondary700)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+            }
+            .padding(0)
+            .frame(width: 208, alignment: .topLeading)
         }
-        .padding()
+        .padding(.leading, 16)
+        .padding(.trailing, 15)
+        .padding(.vertical, 6)
     }
 }
 
 struct LargeWidgetView: View {
-    let todos: [Todo]?
-    let type : TodoItemType?
-    var totalCount : Int?
-    var completedCount : Int?
+    @State var todos: [Todo]?
+    @State var type: TodoItemType?
+    @State var totalCount: Int?
+    @State var completedCount: Int?
+    
+    private func colorsAndTitle(for type: TodoItemType?) -> (UIColor, UIColor, String, Image) {
+        switch type {
+        case .todo:
+            return (.alertTomato, .alertTomato300, "할 일", Image(.todoLogo))
+        case .plan:
+            return (.challendarBlue600, .challendarBlue300, "남은 계획", Image(.scheduleLogo))
+        case .challenge:
+            return (.challendarGreen200, .challendarGreen100, "챌린지", Image(.challengeLogo))
+        case .none:
+            return (.challendarGreen200, .challendarGreen100, "챌린지", Image(.challengeLogo))
+        }
+    }
+    
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("할 일 목록")
-                .font(.headline)
-            if let todos = todos {
-                ForEach(todos, id: \.id) { todo in
-                    Text(todo.title)
-                        .font(.subheadline)
+        let (mainUIColor, subColor, title, logo) = colorsAndTitle(for: type)
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading) {
+                    HStack(alignment: .bottom, spacing: 0) {
+                        Text("\(completedCount ?? 0)")
+                            .font(Font.custom("Roboto-BoldItalic", size: 32))
+                            .foregroundStyle(Color(subColor))
+                        Text(" / \(totalCount ?? 0)")
+                            .font(Font.custom("Roboto-BoldItalic", size: 24))
+                            .foregroundStyle(Color(uiColor: .secondary600))
+                    }
+                    Spacer(minLength: 12)
+                    Text(title)
+                        .font(Font.custom("SUITE-Bold", size: 16))
+                        .foregroundStyle(Color(mainUIColor))
+                        .lineLimit(1)
+                        .kerning(0.1)
                 }
-            } else {
-                Text("No Todos Available")
-                    .font(.subheadline)
+                .padding(0)
+                .frame(width: 242, height: 66, alignment: .leading)
+                Spacer()
+                HStack(alignment: .top) {
+                    // Space Between
+                    Spacer()
+                    // Alternative Views and Spacers
+                    VStack(alignment: .trailing){
+                        logo
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                    }
+                }
+                .padding(0)
+                .frame(maxWidth: .infinity, alignment: .top)
             }
+            Rectangle()
+            .foregroundColor(.clear)
+            .frame(maxWidth: .infinity, minHeight: 2, maxHeight: 2)
+            .background(Color(mainUIColor))
+            .cornerRadius(1)
+            .padding(.vertical , 4)
+            VStack(alignment: .center, spacing: 0) {
+                if let todos = todos, todos.count > 0 {
+                    ForEach(Array(todos.prefix(6).enumerated()), id: \.element.id) { index, todo in
+                        HStack(alignment: .center, spacing: 10) {
+                            HStack(spacing: 0) {
+                                ZStack() {
+                                    Button(intent: ButtonIntent(todoID: todo.id!.uuidString, todoType: type!)) {
+                                        if type == .todo {
+                                            Image(uiImage: (todo.iscompleted ? UIImage(named: "done1")! : UIImage(named: "done0"))!)
+                                                .renderingMode(.template)
+                                                .foregroundColor(todo.iscompleted ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800))
+                                        } else {
+                                            Image(uiImage: (todo.todayCompleted()! ? UIImage(named: "done1")! : UIImage(named: "done0"))!)
+                                                .renderingMode(.template)
+                                                .foregroundColor(todo.todayCompleted()! ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800))
+                                        }
+                                    }
+                                    .background(.clear)
+                                    .tint(.clear)
+                                    .contentTransition(.interpolate)
+                                }
+                                .frame(width: 24, height: 24)
+                            }
+                            .frame(width: 24, height: 24)
+                            Text(todo.title)
+                                .font(Font.custom("Pretendard", size: 13))
+                                .foregroundStyle(.secondary050)
+                                .frame(maxWidth: .infinity, minHeight: 21.5, maxHeight: 21.5, alignment: .leading)
+                        }
+                        .padding(0)
+                        .frame(maxWidth: .infinity, minHeight: 37, maxHeight: 37)
+                        HStack(spacing: 0) {
+                            if index != todos.prefix(6).count - 1 {
+                                Image(.separator2)
+                                    .resizable()
+                                    .frame(width: 272, height: 0.9)
+                            }else{
+                                Spacer()
+                            }
+                        }
+                        .padding(EdgeInsets(top: 0, leading: 34, bottom: 0.10, trailing: 0))
+                        .frame(width: 272, height: 1)
+                    }
+                } else {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        Text("리스트가 없어요")
+                            .font(Font.custom("Pretendard-Regular", size: 13))
+                            .foregroundStyle(.secondary700)
+                        Spacer()
+                    }
+                    Spacer()
+                }
+            }
+            Spacer()
         }
-        
+        .padding(.vertical, 16)
+        .frame(minWidth: 306, maxWidth: 306, maxHeight: .infinity, alignment: .topLeading)
     }
     
 }
@@ -265,10 +449,11 @@ struct ChallendarWidget: Widget {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             ChallendarWidgetEntryView(entry: entry)
                 .containerBackground(.secondary850, for: .widget)
+                .invalidatableContent()
         }
         .supportedFamilies([.systemSmall, .systemMedium,.systemLarge])
         .configurationDisplayName("챌린더 위젯")
-        .description("화면을 선택해라")
+        .description("위젯에 표시할 내용을 선택하세요")
         .contentMarginsDisabled()
     }
 }

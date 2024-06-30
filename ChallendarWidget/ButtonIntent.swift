@@ -28,12 +28,12 @@ struct ButtonIntent: AppIntent {
     
     func perform() async throws -> some IntentResult {
         // Perform the action
-        
-        guard let todo = CoreDataManager.shared.fetchTodos().first(where: {
-            $0.id?.uuidString == todoID
-        }) else {
-            return .result()
-        }
+        guard let todoUUID = UUID(uuidString: todoID),
+            let todo = CoreDataManager.shared.fetchTodos().first(where: {
+                $0.id?.uuidString == todoID
+            }) else {
+                return .result()
+            }
         if todoType == .todo {
             todo.iscompleted.toggle()
             CoreDataManager.shared.updateTodoById(id: todo.id!, newIsCompleted: todo.iscompleted)
@@ -42,6 +42,12 @@ struct ButtonIntent: AppIntent {
             CoreDataManager.shared.updateTodoById(id: todo.id!, newCompleted: todo.completed)
         }
         
+        // Delay for 1 second
+        try await Task.sleep(for: .seconds(1))
+        DispatchQueue.main.async {
+            WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
+        }
+        // Reload widget timeline
         
         return .result()
     }
