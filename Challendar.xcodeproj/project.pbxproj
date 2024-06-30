@@ -55,7 +55,6 @@
 		1472ADF92C087B5900145668 /* EditTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADF82C087B5900145668 /* EditTitleLabel.swift */; };
 		1472ADFB2C08868100145668 /* AddPhotoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFA2C08868100145668 /* AddPhotoButton.swift */; };
 		1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */; };
-		1479C8F72C214D0D00183C34 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479C8F62C214D0D00183C34 /* Transformer.swift */; };
 		1489D4862C2AFA60003791A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAC2C082A1000145668 /* Assets.xcassets */; };
 		1489D4882C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
 		1489D4892C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
@@ -120,6 +119,8 @@
 		14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */; };
 		14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */; };
 		14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */; };
+		14FDB6B92C319E8100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
+		14FDB6BA2C319E9100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
@@ -223,7 +224,6 @@
 		1472ADF82C087B5900145668 /* EditTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTitleLabel.swift; sourceTree = "<group>"; };
 		1472ADFA2C08868100145668 /* AddPhotoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoButton.swift; sourceTree = "<group>"; };
 		1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoImageView.swift; sourceTree = "<group>"; };
-		1479C8F62C214D0D00183C34 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
 		1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SUITE-Bold.ttf"; path = "../../../../../../Downloads/SUITE-ttf/SUITE-Bold.ttf"; sourceTree = "<group>"; };
 		1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-BoldItalic.ttf"; path = "../../../../../../Downloads/Roboto/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		149228F52C0B024E00D63368 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +282,7 @@
 		14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
 		14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataForWidget.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -434,7 +435,6 @@
 				1472ADAC2C082A1000145668 /* Assets.xcassets */,
 				1472ADEB2C0840EB00145668 /* CustomBounceAnimation.swift */,
 				1472ADF22C086AE300145668 /* Constraint.swift */,
-				1479C8F62C214D0D00183C34 /* Transformer.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -538,6 +538,7 @@
 				14B560852C2A978700DED1EB /* Assets.xcassets */,
 				14B560872C2A978700DED1EB /* Info.plist */,
 				14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */,
+				14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */,
 			);
 			path = ChallendarWidget;
 			sourceTree = "<group>";
@@ -845,7 +846,6 @@
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
 				141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */,
-				1479C8F72C214D0D00183C34 /* Transformer.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
 				1412AB712C2D34FD00575E6F /* IntArrayTransformer.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
@@ -876,6 +876,7 @@
 				1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
 				14B755C72C2BE2F300B69ABB /* ChallendarWidget.swift in Sources */,
+				14FDB6BA2C319E9100C3F8FE /* CoreDataForWidget.swift in Sources */,
 				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
 				DEDEE28B2C0DEA20006AD1C6 /* SearchCollectionViewCell.swift in Sources */,
@@ -896,6 +897,7 @@
 				14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
 				1412AB722C2E89A400575E6F /* DictionaryTransformer.swift in Sources */,
 				14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */,
+				14FDB6B92C319E8100C3F8FE /* CoreDataForWidget.swift in Sources */,
 				14B560932C2A987E00DED1EB /* Challendar.xcdatamodeld in Sources */,
 				14B560842C2A978600DED1EB /* AppIntent.swift in Sources */,
 				14B560902C2A986F00DED1EB /* Todo.swift in Sources */,
@@ -1062,11 +1064,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				DEVELOPMENT_TEAM = 27X8924SNC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Challendar/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "챌린더";
@@ -1086,7 +1086,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Challendar Development";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1147,11 +1146,9 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = ChallendarWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				DEVELOPMENT_TEAM = 27X8924SNC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ChallendarWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ChallendarWidget;
@@ -1166,7 +1163,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.ChallendarWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarWidget;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

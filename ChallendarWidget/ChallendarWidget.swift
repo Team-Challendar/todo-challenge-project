@@ -30,10 +30,8 @@ struct Provider: AppIntentTimelineProvider {
         let entry = SimpleEntry(date: currentDate, todo: todoList, type: configuration.todoType ?? .todo, totalCount: totalCount, completedList: completedCount)
         entries.append(entry)
         
-        // 5분 후에 다시 업데이트되도록 설정
-        let nextUpdateDate = Calendar.current.date(byAdding: .minute, value: 5, to: currentDate)!
-        
-        return Timeline(entries: entries, policy: .after(nextUpdateDate))
+        // .never 정책을 사용하여 명시적으로 reloadTimeline 호출할 때까지 업데이트하지 않음
+        return Timeline(entries: entries, policy: .never)
     }
     
     private func fetchTodos(for type: TodoItemType?) -> [Todo] {
@@ -45,7 +43,7 @@ struct Provider: AppIntentTimelineProvider {
         case .plan:
             todoList = todoList.filter {
                 if let endDate = $0.endDate, let startDate = $0.startDate {
-                    return !$0.isChallenge && $0.completed[Date().startOfDay()!] != nil
+                    return !$0.isChallenge && $0.completed[Date().startOfDay()!] != nil 
                 }
                 return false
             }
@@ -99,9 +97,9 @@ struct ChallendarWidgetEntryView: View {
 
 struct SmallWidgetView: View {
     @State var todos: [Todo]?
-    @State var type : TodoItemType?
-    @State var totalCount : Int?
-    @State var completedCount : Int?
+    @State var type: TodoItemType?
+    @State var totalCount: Int?
+    @State var completedCount: Int?
     
     private func colorsAndTitle(for type: TodoItemType?) -> (UIColor, UIColor, String) {
         switch type {
@@ -116,25 +114,24 @@ struct SmallWidgetView: View {
         }
     }
     
-    
     var body: some View {
         let (mainUIColor, subColor, title) = colorsAndTitle(for: type)
-        VStack{
+        VStack {
             Spacer(minLength: 8)
-            HStack(alignment: .top){
+            HStack(alignment: .top) {
                 Spacer(minLength: 16)
                 VStack(alignment: .leading, spacing: 6) {
-                    HStack(alignment: .center){
+                    HStack(alignment: .center) {
                         Text(title)
                             .font(Font.custom("SUITE-Bold", size: 16))
                             .foregroundStyle(Color(mainUIColor))
                             .lineLimit(1)
                         Spacer(minLength: 10)
                         HStack(alignment: .bottom, spacing: 0) {
-                            Text("\(completedCount!)")
+                            Text("\(completedCount ?? 0)")
                                 .font(Font.custom("Roboto-BoldItalic", size: 24))
                                 .foregroundStyle(Color(subColor))
-                            Text(" / \(totalCount!)")
+                            Text(" / \(totalCount ?? 0)")
                                 .font(Font.custom("Roboto-BoldItalic", size: 20))
                                 .foregroundStyle(Color(uiColor: .secondary600))
                         }
@@ -145,41 +142,40 @@ struct SmallWidgetView: View {
                                 HStack(alignment: .top, spacing: 10) {
                                     Button(intent: ButtonIntent(todoID: todo.id!.uuidString, todoType: type!)) {
                                         if type == .todo {
-                                            Image(uiImage: (todo.iscompleted ? UIImage(named: "done2")! : UIImage(named: "done0"))!)
-                                                .renderingMode(.template) // 이미지 렌더링 모드 설정
-                                                .foregroundColor(todo.iscompleted ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800)) // 완료 여부에 따라 색상 설정
-                                        }else{
-                                            Image(uiImage: (todo.todayCompleted()! ? UIImage(named: "done2")! : UIImage(named: "done0"))!)
-                                                .renderingMode(.template) // 이미지 렌더링 모드 설정
-                                                .foregroundColor(todo.todayCompleted()! ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800)) // 완료 여부에 따라 색상 설정
+                                            Image(uiImage: (todo.iscompleted ? UIImage(named: "done1")! : UIImage(named: "done0"))!)
+                                                .renderingMode(.template)
+                                                .foregroundColor(todo.iscompleted ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800))
+                                        } else {
+                                            Image(uiImage: (todo.todayCompleted()! ? UIImage(named: "done1")! : UIImage(named: "done0"))!)
+                                                .renderingMode(.template)
+                                                .foregroundColor(todo.todayCompleted()! ? Color(uiColor: mainUIColor) : Color(uiColor: .secondary800))
                                         }
                                     }
                                     .frame(width: 24, height: 24)
                                     .background(.clear)
                                     .tint(.clear)
-//                                    .invalidatableContent()
+                                    .contentTransition(.interpolate)
                                     VStack(alignment: .leading) {
                                         Text(todo.title)
                                             .font(Font.custom("Pretendard-Regular", size: 13))
                                             .foregroundStyle(.secondary050)
                                             .frame(height: 21.5)
-                                        
-                                        // 마지막 항목이 아닌 경우에만 점선 추가
+                                            .invalidatableContent()
                                         if index != todos.prefix(3).count - 1 {
                                             DashedLine()
                                                 .stroke(style: StrokeStyle(lineWidth: 1, dash: [1]))
                                                 .foregroundColor(Color(uiColor: .secondary800))
                                                 .frame(height: 1)
-                                        }else{
+                                        } else {
                                             Spacer()
                                         }
                                     }
                                 }
                                 Spacer(minLength: 8)
                             }
-                        }else{
+                        } else {
                             Spacer()
-                            HStack{
+                            HStack {
                                 Spacer()
                                 Text("리스트가 없어요")
                                     .font(Font.custom("Pretendard-Regular", size: 13))

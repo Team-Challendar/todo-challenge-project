@@ -3,13 +3,11 @@ import WidgetKit
 import CoreData
 import UserNotifications
 
-// CoreData 함수용 Manager 싱글톤
-class CoreDataManager {
-
-    static let shared = CoreDataManager()
+class CoreDataForWidget {
+    
+    static let shared = CoreDataForWidget()
     
     private init() {
-        // 요청 알림 권한
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
@@ -18,46 +16,34 @@ class CoreDataManager {
         }
     }
     
-    // Core Data persistent container 초기화
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
-            let container = NSPersistentCloudKitContainer(name: "Challendar")
-            
-            // 앱 그룹 디렉토리 설정
-            guard let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.seungwon.ChallendarGroup") else {
-                fatalError("Failed to get app group container URL")
+        let container = NSPersistentCloudKitContainer(name: "Challendar")
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("Failed to initialize persistent Container")
+        }
+        
+        description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
+        
+        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            let storeURL = appGroupURL.appendingPathComponent("Challendar.sqlite")
-            let description = NSPersistentStoreDescription(url: storeURL)
-            
-            // CloudKit 및 CoreData 설정
-            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
-            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-            
-            // CloudKit 컨테이너 식별자 설정
-            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.seungwon.Challendar")
-            
-            container.persistentStoreDescriptions = [description]
-            container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
-            container.viewContext.automaticallyMergesChangesFromParent = true
-            
-            container.loadPersistentStores { storeDescription, error in
-                if let error = error as NSError? {
-                    fatalError("Unresolved error \(error), \(error.userInfo)")
-                }
-            }
-            
-            // 원격 변경 알림 구독
-            NotificationCenter.default.addObserver(self, selector: #selector(storeRemoteChange(_:)), name: .NSPersistentStoreRemoteChange, object: container.persistentStoreCoordinator)
-            
-            return container
-        }()
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(storeRemoteChange(_:)), name: .NSPersistentStoreRemoteChange, object: container.persistentStoreCoordinator)
+        
+        return container
+    }()
     
-    // Core Data context 반환
     var context: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
     
-    // 변경 토큰을 저장할 변수
     private var lastHistoryToken: NSPersistentHistoryToken? {
         get {
             guard let data = UserDefaults.standard.data(forKey: "lastHistoryToken") else { return nil }
@@ -70,33 +56,29 @@ class CoreDataManager {
         }
     }
     
-    // 원격 변경 알림 처리
     @objc private func storeRemoteChange(_ notification: Notification) {
         fetchHistoryAndUpdateContext()
     }
     
-    // 앱 시작 시 동기화 트리거
     func triggerSync() {
         fetchHistoryAndUpdateContext()
     }
     
-    // 변경 사항 가져와서 컨텍스트 업데이트
     private func fetchHistoryAndUpdateContext() {
         context.perform {
             do {
-                // 변경 사항 가져오기
                 let fetchRequest = NSPersistentHistoryChangeRequest.fetchHistory(after: self.lastHistoryToken)
                 if let historyResult = try self.context.execute(fetchRequest) as? NSPersistentHistoryResult,
                    let transactions = historyResult.result as? [NSPersistentHistoryTransaction] {
                     for transaction in transactions {
                         self.context.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
                     }
-                    // 마지막 토큰 업데이트
                     self.lastHistoryToken = transactions.last?.token
                 }
                 try self.context.save()
                 NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
                 DispatchQueue.main.async {
+                    print("Reloading widget timelines")
                     WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
                 }
             } catch {
@@ -105,7 +87,6 @@ class CoreDataManager {
         }
     }
     
-    // 로컬 알림 생성 메서드
     private func sendLocalNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Data Updated"
@@ -118,9 +99,6 @@ class CoreDataManager {
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     
-    // CRUD Operations
-    
-    // Create
     public func createTodo(newTodo: Todo) {
         let todo = TodoModel(context: context)
         todo.id = UUID()
@@ -141,18 +119,18 @@ class CoreDataManager {
         saveContext()
     }
     
-    // Save context
     func saveContext() {
         if context.hasChanges {
             do {
                 try context.save()
+                print("Context saved successfully")
                 DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                    print("Reloading widget timelines")
+                    WidgetCenter.shared.reloadAllTimelines()
                 }
             } catch {
                 if let nserror = error as NSError? {
                     if nserror.code == 134419 {
-                        // 시스템에 의해 요청이 지연된 경우, 일정 시간 후 다시 시도
                         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                             self.saveContext()
                         }
@@ -161,14 +139,13 @@ class CoreDataManager {
                     }
                 }
             }
+        } else {
+            print("No changes in context to save")
         }
     }
     
-    // Read
     func fetchTodos() -> [Todo] {
         let fetchRequest: NSFetchRequest<TodoModel> = TodoModel.fetchRequest()
-        
-        // 날짜 내림차순 정렬 요청
         let dateOrder = NSSortDescriptor(key: "startDate", ascending: false)
         fetchRequest.sortDescriptors = [dateOrder]
         
@@ -215,7 +192,6 @@ class CoreDataManager {
         }
     }
     
-    // Update
     func updateTodoById(id: UUID, newTitle: String? = nil, newMemo: String? = nil, newStartDate: Date? = nil, newEndDate: Date? = nil, newCompleted: [Date: Bool]? = nil, newIsChallenge: Bool? = nil, newPercentage: Double? = nil, newImages: [UIImage]? = nil, newIsCompleted: Bool? = nil, newRepetition: [Int]? = nil, newReminderTime: Date? = nil) {
         guard let todoToUpdate = fetchTodoById(id: id) else {
             print("Todo not found")
@@ -261,7 +237,6 @@ class CoreDataManager {
         saveContext()
     }
     
-    // Delete
     func deleteTodoById(id: UUID) {
         guard let todoToDelete = fetchTodoById(id: id) else {
             print("Todo not found")

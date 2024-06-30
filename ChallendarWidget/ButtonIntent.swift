@@ -16,8 +16,8 @@ struct ButtonIntent: AppIntent {
     static var title: LocalizedStringResource = "Update Todo"
     
     @Parameter(title: "Todo ID")
-    var todoID: String // Using String instead of UUID
-
+    var todoID: String
+    
     @Parameter(title: "Todo Type")
     var todoType: TodoItemType
     
@@ -27,6 +27,8 @@ struct ButtonIntent: AppIntent {
     }
     
     func perform() async throws -> some IntentResult {
+        // Perform the action
+        
         guard let todo = CoreDataManager.shared.fetchTodos().first(where: {
             $0.id?.uuidString == todoID
         }) else {
@@ -35,11 +37,12 @@ struct ButtonIntent: AppIntent {
         if todoType == .todo {
             todo.iscompleted.toggle()
             CoreDataManager.shared.updateTodoById(id: todo.id!, newIsCompleted: todo.iscompleted)
-        }else{
+        } else {
             todo.toggleTodaysCompletedState()
             CoreDataManager.shared.updateTodoById(id: todo.id!, newCompleted: todo.completed)
         }
-        WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
+        
+        
         return .result()
     }
 }
