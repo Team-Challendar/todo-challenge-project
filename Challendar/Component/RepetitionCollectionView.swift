@@ -64,7 +64,11 @@ class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollection
             return UICollectionViewCell()
         }
         cell.configure(with: items[indexPath.row])
-        if indexPath.row == 0 {
+        if selectedDates.sorted().first != 0 {
+            selectedDates.forEach{
+                collectionView.selectItem(at: IndexPath.init(row: $0, section: 0), animated: false, scrollPosition: .left)
+            }
+        }else {
             collectionView.selectItem(at: IndexPath.init(row: 0, section: 0), animated: false, scrollPosition: .left)
         }
         return cell

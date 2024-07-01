@@ -852,7 +852,8 @@ class EditTodoBottomSheetViewController: UIViewController {
         }
         
         // repetitionLabel 업데이트
-        let selectedItems = repetitionCollectionView.selectedDates.sorted().map { repetitionCollectionView.items[$0] }
+        let selectedItems = newTodo.repetition.sorted().map { repetitionCollectionView.items[$0] }
+        repetitionCollectionView.selectedDates = newTodo.repetition
         var formattedItems: String
         
         if selectedItems.contains("매일") {
@@ -870,7 +871,6 @@ class EditTodoBottomSheetViewController: UIViewController {
             repetitionLabel.textColor = .challendarWhite
             repetitionImageView.image = .re2
         }
-        
         repetitionLabel.text = formattedItems
         
         saveButton.setTitle(newTodo.isChallenge ? "챌린지 추가하기" : (newTodo.startDate != nil && newTodo.endDate != nil ? "계획 추가하기" : "할 일 추가하기"), for: .normal)

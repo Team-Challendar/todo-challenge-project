@@ -403,6 +403,7 @@
 		1472ADB72C082B0B00145668 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				14FDB6BF2C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift */,
 				14C6AFE62C0F14E00016B80C /* Setting */,
 				149228F42C0B023900D63368 /* Base */,
 				14C97F132C098BE500819B27 /* AddTodo */,
@@ -574,7 +575,6 @@
 		14C97F132C098BE500819B27 /* AddTodo */ = {
 			isa = PBXGroup;
 			children = (
-				14FDB6BF2C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift */,
 				1472ADDD2C083B2A00145668 /* AddTodoViewController.swift */,
 				14C97F142C098C6200819B27 /* AddTodoDateViewController.swift */,
 				14AAA9042C0E08A00085E22F /* SuccessViewController.swift */,
