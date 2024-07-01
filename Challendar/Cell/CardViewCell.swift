@@ -88,13 +88,13 @@ class CardViewCell: UIView {
         }
         
         slashLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1.5)
             make.trailing.equalTo(totalLabel.snp.leading).offset(-4)
         }
         
         totalLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.centerY.equalToSuperview().offset(1.5)
+            make.trailing.equalToSuperview().offset(-2)
         }
         
         self.snp.makeConstraints { make in

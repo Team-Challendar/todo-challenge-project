@@ -209,14 +209,13 @@ class ChallengeListViewController: BaseViewController {
           }
       }
 
-    private func addLineViewToStackView() {
+    private func createLineView() -> UIView {
         let lineView = UIView()
         lineView.backgroundColor = .secondary800
-        stackView.addArrangedSubview(lineView)
         lineView.snp.makeConstraints { make in
             make.height.equalTo(0.5)
-            make.leading.trailing.equalToSuperview().inset(24)
         }
+        return lineView
     }
     
     private func updateCard() {
@@ -224,29 +223,47 @@ class ChallengeListViewController: BaseViewController {
         let planTodos = todoItems.filter { !$0.isChallenge && $0.endDate != nil }
         let todos = todoItems.filter { !$0.isChallenge && $0.endDate == nil }
 
+        // 스택뷰의 모든 서브뷰 제거
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+        var previousCard: UIView?
+        
         if !challengeTodos.isEmpty {
             let completedChallenges = challengeTodos.filter { $0.completed[Date().startOfDay() ?? Date()] ?? false }
             challengeCardView.isHidden = false
             challengeCardView.completeLabel.text = "\(completedChallenges.count)"
             challengeCardView.totalLabel.text = "\(challengeTodos.count)"
+            stackView.addArrangedSubview(challengeCardView)
+            previousCard = challengeCardView
         } else {
             challengeCardView.isHidden = true
         }
 
         if !todos.isEmpty {
-            let completedPlans = planTodos.filter { $0.iscompleted == true }
+            if let previousCard = previousCard {
+                let lineView = createLineView()
+                stackView.addArrangedSubview(lineView)
+            }
+            let completedPlans = todos.filter { $0.iscompleted == true }
             todoCardView.isHidden = false
             todoCardView.completeLabel.text = "\(completedPlans.count)"
             todoCardView.totalLabel.text = "\(todos.count)"
+            stackView.addArrangedSubview(todoCardView)
+            previousCard = todoCardView
         } else {
             todoCardView.isHidden = true
         }
 
         if !planTodos.isEmpty {
+            if let previousCard = previousCard {
+                let lineView = createLineView()
+                stackView.addArrangedSubview(lineView)
+            }
             let completedPlans = planTodos.filter { $0.completed[Date().startOfDay() ?? Date()] ?? false }
             planCardView.isHidden = false
             planCardView.completeLabel.text = "\(completedPlans.count)"
             planCardView.totalLabel.text = "\(planTodos.count)"
+            stackView.addArrangedSubview(planCardView)
         } else {
             planCardView.isHidden = true
         }
@@ -359,7 +376,7 @@ class ChallengeListViewController: BaseViewController {
     
     // 리스트가 있을 경우 UI 숨김
     private func updateEmptyStateVisibility() {
-        let isEmpty = completedTodos.isEmpty && incompleteTodos.isEmpty && upcomingTodos.isEmpty
+        let isEmpty = CoreDataManager.shared.fetchTodos().count == 0
         emptyMainLabel.isHidden = !isEmpty
         emptySubLabel.isHidden = !isEmpty
         emptyImage.isHidden = !isEmpty
