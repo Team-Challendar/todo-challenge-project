@@ -98,6 +98,7 @@ class EditTodoBottomSheetViewController: UIViewController {
         titleTextField.font = .pretendardMedium(size: 20)
         titleTextField.textColor = .challendarWhite
         titleTextField.tintColor = .alertTomato
+        titleTextField.delegate = self
         titleTextField.attributedPlaceholder = NSAttributedString(
             string: "할 일을 입력해주세요.",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray]
@@ -952,4 +953,12 @@ extension EditTodoBottomSheetViewController: RepetitionCollectionViewDelegate {
             selectedRepetitionDates.append(index)
         }
     }
+}
+
+extension EditTodoBottomSheetViewController : UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+           // 키보드 내리기
+           textField.resignFirstResponder()
+           return true
+       }
 }
