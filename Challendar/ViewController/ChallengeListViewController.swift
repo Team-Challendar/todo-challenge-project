@@ -24,6 +24,11 @@ class ChallengeListViewController: BaseViewController {
     private var dayLabel: UILabel!
     private var yearLabel: UILabel!
     
+    private var cardImageView: UIImageView!
+    private var cardTitleLabel: UILabel!
+    private var cardTodoState: UIView!
+    private var cardView: UIView!
+    
     private var stackView: UIStackView!
     private var collectionView: UICollectionView!
     private var resetBtn: UIButton!
@@ -104,13 +109,13 @@ class ChallengeListViewController: BaseViewController {
            }
 
            stackView.snp.makeConstraints { make in
-               make.top.equalTo(dateView.snp.bottom).offset(16)
+               make.top.equalTo(dateView.snp.bottom).offset(12)
                make.leading.trailing.equalToSuperview().inset(16)
-               make.height.equalTo(208)
+//               make.height.equalTo(208)
            }
 
            collectionView.snp.makeConstraints { make in
-               make.top.equalTo(stackView.snp.bottom).offset(8)
+               make.top.equalTo(stackView.snp.bottom).offset(24)
                make.leading.trailing.equalToSuperview()
                make.bottom.equalToSuperview()
            }
@@ -163,16 +168,51 @@ class ChallengeListViewController: BaseViewController {
         stackView.backgroundColor = .secondary850
         stackView.layer.cornerRadius = 20
         stackView.layer.masksToBounds = true
-
+        
         view.addSubview(stackView)
-
-        let innerView = UIView()
-        innerView.backgroundColor = .clear
-
-        stackView.addArrangedSubview(innerView)
-
-        innerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(24)
+        
+        cardView = UIView()
+        cardView.backgroundColor = .clear
+        stackView.addSubview(cardView)
+        
+        cardImageView = UIImageView()
+        cardImageView.image = .done0.withTintColor(.challendarGreen200)
+        cardView.addSubview(cardImageView)
+        
+        cardTitleLabel = UILabel()
+        cardTitleLabel.text = "도전 중인 챌린지"
+        cardTitleLabel.font = .pretendardMedium(size: 16)
+        cardTitleLabel.textColor = .challendarWhite
+        cardView.addSubview(cardTitleLabel)
+        
+        cardTodoState = UIView()
+        cardTodoState.backgroundColor = .clear
+        cardView.addSubview(cardTodoState)
+//        
+//        let complete = UILabel()
+//        complete.text =
+        
+    }
+    
+    private func setupStackViewConstrains() {
+        cardView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().offset(-24)
+        }
+        
+        cardImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(cardView.snp.leading)
+            make.height.width.equalTo(32)
+        }
+        
+        cardTitleLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(cardView.snp.leading).offset(12)
+        }
+        
+        cardTodoState.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
         }
     }
     
