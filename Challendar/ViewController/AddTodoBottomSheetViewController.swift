@@ -397,7 +397,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     }
     
     private var repetitionViewTapGesture: UITapGestureRecognizer?
-
+    
     private func configureGestures() {
         let dimmedTapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTapGesture)
@@ -583,7 +583,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             }
         }
         if !alertPickerView.isHidden {
-            newReminderTime = nil
+            alertPickerView.timeDeselected()
             UIView.animate(withDuration: 0.3, animations: {
                 self.alertPickerView.snp.updateConstraints { make in
                     make.height.equalTo(0)
@@ -611,7 +611,23 @@ class AddTodoBottomSheetViewController: UIViewController {
     @objc private func registerButtonTapped() {
         CoreDataManager.shared.createTodo(newTodo: newTodo)
         hideBottomSheet()
-        print(newTodo.completed)
+        
+        print(newTodo.title, newTodo.memo, newTodo.startDate, newTodo.endDate, newTodo.completed, newTodo.isChallenge, newTodo.percentage, newTodo.iscompleted, newTodo.repetition, newTodo.reminderTime)
+        
+        let successViewController = SuccessViewController()
+        successViewController.isChallenge = newTodo.isChallenge
+        successViewController.endDate = newTodo.endDate
+        let navigationController = UINavigationController(rootViewController: successViewController)
+        navigationController.modalTransitionStyle = .coverVertical
+        navigationController.modalPresentationStyle = .overFullScreen
+        
+        self.dismiss(animated: true) {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first,
+               let rootVC = window.rootViewController as? TabBarViewController {
+                rootVC.present(navigationController, animated: true, completion: nil)
+            }
+        }
     }
     
     private func showBottomSheet() {
@@ -791,24 +807,24 @@ class AddTodoBottomSheetViewController: UIViewController {
         // repetitionLabel 업데이트
         let selectedItems = repetitionCollectionView.selectedDates.sorted().map { repetitionCollectionView.items[$0] }
         var formattedItems: String
-            
-            if selectedItems.contains("매일") {
+        
+        if selectedItems.contains("매일") {
+            formattedItems = "매일"
+            repetitionLabel.textColor = .secondary600
+            repetitionImageView.image = .re1
+            if !repetitionCollectionView.isHidden{
                 formattedItems = "매일"
-                repetitionLabel.textColor = .secondary600
-                repetitionImageView.image = .re1
-                if !repetitionCollectionView.isHidden{
-                    formattedItems = "매일"
-                    repetitionImageView.image = .re2
-                }
-            } else {
-                formattedItems = selectedItems.enumerated().map { index, item in
-                    index == selectedItems.count - 1 ? "\(item)요일" : item
-                }.joined(separator: ", ")
-                repetitionLabel.textColor = .challendarWhite
                 repetitionImageView.image = .re2
             }
-            
-            repetitionLabel.text = formattedItems
+        } else {
+            formattedItems = selectedItems.enumerated().map { index, item in
+                index == selectedItems.count - 1 ? "\(item)요일" : item
+            }.joined(separator: ", ")
+            repetitionLabel.textColor = .challendarWhite
+            repetitionImageView.image = .re2
+        }
+        
+        repetitionLabel.text = formattedItems
         
         registerButton.setTitle(newTodo.isChallenge ? "챌린지 추가하기" : (newTodo.startDate != nil && newTodo.endDate != nil ? "계획 추가하기" : "할 일 추가하기"), for: .normal)
         registerButton.setTitleColor(newTodo.isChallenge ?  UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
@@ -860,6 +876,12 @@ extension AddTodoBottomSheetViewController: NewCalendarDelegate {
 }
 
 extension AddTodoBottomSheetViewController: AlarmPickerViewDelegate {
+    func timeDeselected() {
+        newReminderTime = nil
+        newTodo.reminderTime = newReminderTime
+        updateUI()
+    }
+    
     func timeDidChanged(date: Date) {
         newReminderTime = date
         newTodo.reminderTime = newReminderTime
@@ -883,7 +905,7 @@ extension AddTodoBottomSheetViewController: RepetitionCollectionViewDelegate {
             }else{
                 newTodo.repetition = dates.map {$0}
             }
-
+            
         }
     }
     
