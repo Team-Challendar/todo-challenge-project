@@ -180,18 +180,21 @@ class ChallengeListViewController: BaseViewController {
           challengeCardView = CardViewCell()
           stackView.addArrangedSubview(challengeCardView)
           challengeCardView.imageView.image = .done3.withTintColor(.challendarGreen200)
+        challengeCardView.innerImageView.image = .challengeOff
           challengeCardView.titleLabel.text = "도전 중인 챌린지"
           challengeCardView.titleLabel.textColor = .challendarWhite
 
           todoCardView = CardViewCell()
           stackView.addArrangedSubview(todoCardView)
           todoCardView.imageView.image = .done3.withTintColor(.alertTomato)
+        todoCardView.innerImageView.image = .done2.withTintColor(.secondary900)
           todoCardView.titleLabel.text = "남은 할일"
           todoCardView.titleLabel.textColor = .challendarWhite
 
           planCardView = CardViewCell()
           stackView.addArrangedSubview(planCardView)
           planCardView.imageView.image = .done3.withTintColor(.alertBlue)
+        planCardView.innerImageView.image = .calendar
           planCardView.titleLabel.text = "오늘의 계획"
           planCardView.titleLabel.textColor = .challendarWhite
 
@@ -206,6 +209,16 @@ class ChallengeListViewController: BaseViewController {
           }
       }
 
+    private func addLineViewToStackView() {
+        let lineView = UIView()
+        lineView.backgroundColor = .secondary800
+        stackView.addArrangedSubview(lineView)
+        lineView.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+    }
+    
     private func updateCard() {
         let challengeTodos = todoItems.filter { $0.isChallenge }
         let planTodos = todoItems.filter { !$0.isChallenge && $0.endDate != nil }

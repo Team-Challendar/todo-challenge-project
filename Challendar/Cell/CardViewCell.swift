@@ -10,6 +10,7 @@ import SnapKit
 
 class CardViewCell: UIView {
     var imageView: UIImageView!
+    var innerImageView: UIImageView!
     var titleLabel: UILabel!
     var todoStateView: UIView!
     var completeLabel: UILabel!
@@ -32,6 +33,9 @@ class CardViewCell: UIView {
         
         imageView = UIImageView()
         self.addSubview(imageView)
+        
+        innerImageView = UIImageView()
+        imageView.addSubview(innerImageView)
         
         titleLabel = UILabel()
         self.addSubview(titleLabel)
@@ -64,6 +68,10 @@ class CardViewCell: UIView {
             make.width.height.equalTo(32)
         }
         
+        innerImageView.snp.makeConstraints { make in
+            make.centerY.centerX.equalToSuperview()
+            make.width.height.equalTo(20)
+        }
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(12)
             make.centerY.equalToSuperview()
