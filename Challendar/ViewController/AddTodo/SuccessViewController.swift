@@ -22,7 +22,7 @@ class SuccessViewController: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.dismiss(animated: true, completion: nil)
         }
     }
