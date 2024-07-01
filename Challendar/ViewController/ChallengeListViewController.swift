@@ -12,26 +12,27 @@ import SnapKit
 class ChallengeListViewController: BaseViewController {
     
     private var todoItems: [Todo] = CoreDataManager.shared.fetchTodos()
-    private var completedTodos: [Todo] = []         // 완료 투두
-    private var incompleteTodos: [Todo] = []        // 미완료 투두
-    private var upcomingTodos: [Todo] = []          // 예정 투두
-    
-    private var emptyMainLabel: UILabel!
-    private var emptySubLabel: UILabel!
-    private var emptyImage: UIImageView!
-    
-    private var dateView: UIView!
-    private var dayLabel: UILabel!
-    private var yearLabel: UILabel!
-    
-    private var cardImageView: UIImageView!
-    private var cardTitleLabel: UILabel!
-    private var cardTodoState: UIView!
-    private var cardView: UIView!
-    
-    private var stackView: UIStackView!
-    private var collectionView: UICollectionView!
-    private var resetBtn: UIButton!
+       private var completedTodos: [Todo] = []         // 완료 투두
+       private var incompleteTodos: [Todo] = []        // 미완료 투두
+       private var upcomingTodos: [Todo] = []          // 예정 투두
+       
+       private var emptyMainLabel: UILabel!
+       private var emptySubLabel: UILabel!
+       private var emptyImage: UIImageView!
+       
+       private var dateView: UIView!
+       private var dayLabel: UILabel!
+       private var yearLabel: UILabel!
+       
+       private var challengeCardView: CardViewCell!
+       private var todoCardView: CardViewCell!
+       private var planCardView: CardViewCell!
+       private var lineView: UIView!
+
+       private var stackContainerView: UIView!
+       private var stackView: UIStackView!
+       private var collectionView: UICollectionView!
+       private var resetBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,21 +98,9 @@ class ChallengeListViewController: BaseViewController {
         filterTodos()
         sortByRecentStartDate()
         updateEmptyStateVisibility()
-        
-        let challengeTodos = todoItems.filter { $0.isChallenge }
-         if !challengeTodos.isEmpty {
-             let completedChallenges = challengeTodos.filter { $0.completed[Date().startOfDay() ?? Date()] ?? false }
-             cardImageView.image = .done0.withTintColor(.challendarGreen200)
-             cardTitleLabel.text = "도전 중인 챌린지"
-             cardTitleLabel.textColor = .challendarWhite
-             
-             let completeLabel = cardTodoState.subviews.compactMap { $0 as? UILabel }.first { $0.font.pointSize == 18 }
-             completeLabel?.text = "\(completedChallenges.count)"
-             
-             let totalLabel = cardTodoState.subviews.compactMap { $0 as? UILabel }.first { $0.font.pointSize == 12 && $0.textColor == .secondary600 }
-             totalLabel?.text = "\(challengeTodos.count)"
-         }
-        
+        updateCard()
+
+        stackView.layoutIfNeeded()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.updateEmptyStateVisibility()
@@ -120,24 +109,23 @@ class ChallengeListViewController: BaseViewController {
     
     private func setupLayout() {
         dateView.snp.makeConstraints { make in
-               make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-               make.leading.trailing.equalToSuperview().inset(16)
-               make.height.equalTo(44)
-           }
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(44)
+        }
 
-           stackView.snp.makeConstraints { make in
-               make.top.equalTo(dateView.snp.bottom).offset(12)
-               make.leading.trailing.equalToSuperview().inset(16)
-//               make.height.equalTo(208)
-           }
+        stackContainerView.snp.makeConstraints { make in
+            make.top.equalTo(dateView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
 
-           collectionView.snp.makeConstraints { make in
-               make.top.equalTo(stackView.snp.bottom).offset(24)
-               make.leading.trailing.equalToSuperview()
-               make.bottom.equalToSuperview()
-           }
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom).offset(24)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
     }
-    
+
     // 상단 날짜 뷰
     private func setupDateView() {
         dateView = UIView()
@@ -177,77 +165,115 @@ class ChallengeListViewController: BaseViewController {
     }
     
     private func setupStackView() {
-        stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.spacing = 16
-        stackView.backgroundColor = .clear
-        view.addSubview(stackView)
-        
-        cardView = UIView()
-        cardView.backgroundColor = .secondary850
-        cardView.layer.cornerRadius = 20
-        cardView.layer.masksToBounds = true
-        stackView.addArrangedSubview(cardView)
-        
-        cardImageView = UIImageView()
-        cardView.addSubview(cardImageView)
-        
-        cardTitleLabel = UILabel()
-        cardView.addSubview(cardTitleLabel)
-        
-        cardTodoState = UIView()
-        cardTodoState.backgroundColor = .clear
-        cardView.addSubview(cardTodoState)
-        
-        let completeLabel = UILabel()
-        completeLabel.font = .pretendardMedium(size: 18)
-        completeLabel.textColor = .white
-        cardTodoState.addSubview(completeLabel)
-        
-        let slashLabel = UILabel()
-        slashLabel.font = .pretendardMedium(size: 12)
-        slashLabel.textColor = .secondary600
-        slashLabel.text = "/"
-        cardTodoState.addSubview(slashLabel)
-        
-        let totalLabel = UILabel()
-        totalLabel.font = .pretendardMedium(size: 12)
-        totalLabel.textColor = .secondary600
-        cardTodoState.addSubview(totalLabel)
-        
-        cardImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.width.height.equalTo(32)
+          stackContainerView = UIView()
+          stackContainerView.backgroundColor = .clear
+          stackContainerView.layer.cornerRadius = 20
+          stackContainerView.layer.masksToBounds = true
+          stackContainerView.backgroundColor = .secondary850
+          view.addSubview(stackContainerView)
+          
+          stackView = UIStackView()
+          stackView.axis = .vertical
+          stackView.distribution = .fill
+          stackView.alignment = .fill
+          stackView.spacing = 16
+          stackContainerView.addSubview(stackView)
+          
+          challengeCardView = CardViewCell()
+          stackView.addArrangedSubview(challengeCardView)
+          challengeCardView.imageView.image = .done3.withTintColor(.challendarGreen200)
+        challengeCardView.innerImageView.image = .challengeOff
+          challengeCardView.titleLabel.text = "도전 중인 챌린지"
+          challengeCardView.titleLabel.textColor = .challendarWhite
+
+          todoCardView = CardViewCell()
+          stackView.addArrangedSubview(todoCardView)
+          todoCardView.imageView.image = .done3.withTintColor(.alertTomato)
+        todoCardView.innerImageView.image = .done2.withTintColor(.secondary900)
+          todoCardView.titleLabel.text = "남은 할일"
+          todoCardView.titleLabel.textColor = .challendarWhite
+
+          planCardView = CardViewCell()
+          stackView.addArrangedSubview(planCardView)
+          planCardView.imageView.image = .done3.withTintColor(.alertBlue)
+        planCardView.innerImageView.image = .calendar
+          planCardView.titleLabel.text = "오늘의 계획"
+          planCardView.titleLabel.textColor = .challendarWhite
+
+          // 스택뷰 컨테이너뷰 제약 조건
+          stackContainerView.snp.makeConstraints { make in
+              make.top.equalTo(dateView.snp.bottom).offset(12)
+              make.leading.trailing.equalToSuperview().inset(16)
+          }
+          
+          stackView.snp.makeConstraints { make in
+              make.edges.equalToSuperview().inset(UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24))
+          }
+      }
+
+    private func createLineView() -> UIView {
+        let lineView = UIView()
+        lineView.backgroundColor = .secondary800
+        lineView.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
         }
-        
-        cardTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(cardImageView.snp.trailing).offset(12)
-            make.centerY.equalToSuperview()
-        }
-        
-        cardTodoState.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
-        
-        completeLabel.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview()
-        }
-        
-        slashLabel.snp.makeConstraints { make in
-            make.leading.equalTo(completeLabel.snp.trailing).offset(4)
-            make.centerY.equalToSuperview()
-        }
-        
-        totalLabel.snp.makeConstraints { make in
-            make.leading.equalTo(slashLabel.snp.trailing).offset(4)
-            make.trailing.top.bottom.equalToSuperview()
-        }
+        return lineView
     }
     
+    private func updateCard() {
+        let challengeTodos = todoItems.filter { $0.isChallenge }
+        let planTodos = todoItems.filter { !$0.isChallenge && $0.endDate != nil }
+        let todos = todoItems.filter { !$0.isChallenge && $0.endDate == nil }
+
+        // 스택뷰의 모든 서브뷰 제거
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+        var previousCard: UIView?
+        
+        if !challengeTodos.isEmpty {
+            let completedChallenges = challengeTodos.filter { $0.completed[Date().startOfDay() ?? Date()] ?? false }
+            challengeCardView.isHidden = false
+            challengeCardView.completeLabel.text = "\(completedChallenges.count)"
+            challengeCardView.totalLabel.text = "\(challengeTodos.count)"
+            stackView.addArrangedSubview(challengeCardView)
+            previousCard = challengeCardView
+        } else {
+            challengeCardView.isHidden = true
+        }
+
+        if !todos.isEmpty {
+            if let previousCard = previousCard {
+                let lineView = createLineView()
+                stackView.addArrangedSubview(lineView)
+            }
+            let completedPlans = todos.filter { $0.iscompleted == true }
+            todoCardView.isHidden = false
+            todoCardView.completeLabel.text = "\(completedPlans.count)"
+            todoCardView.totalLabel.text = "\(todos.count)"
+            stackView.addArrangedSubview(todoCardView)
+            previousCard = todoCardView
+        } else {
+            todoCardView.isHidden = true
+        }
+
+        if !planTodos.isEmpty {
+            if let previousCard = previousCard {
+                let lineView = createLineView()
+                stackView.addArrangedSubview(lineView)
+            }
+            let completedPlans = planTodos.filter { $0.completed[Date().startOfDay() ?? Date()] ?? false }
+            planCardView.isHidden = false
+            planCardView.completeLabel.text = "\(completedPlans.count)"
+            planCardView.totalLabel.text = "\(planTodos.count)"
+            stackView.addArrangedSubview(planCardView)
+        } else {
+            planCardView.isHidden = true
+        }
+
+        let isAllCardsHidden = challengeCardView.isHidden && todoCardView.isHidden && planCardView.isHidden
+        stackContainerView.isHidden = isAllCardsHidden
+    }
+
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
@@ -352,7 +378,7 @@ class ChallengeListViewController: BaseViewController {
     
     // 리스트가 있을 경우 UI 숨김
     private func updateEmptyStateVisibility() {
-        let isEmpty = completedTodos.isEmpty && incompleteTodos.isEmpty && upcomingTodos.isEmpty
+        let isEmpty = CoreDataManager.shared.fetchTodos().count == 0
         emptyMainLabel.isHidden = !isEmpty
         emptySubLabel.isHidden = !isEmpty
         emptyImage.isHidden = !isEmpty
