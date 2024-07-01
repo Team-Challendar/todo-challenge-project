@@ -11,13 +11,13 @@ import RxSwift
 import RxCocoa
 import FSCalendar
 
-// 챌린지 상세페이지
 class ChallengeListDetailViewController: BaseViewController {
     
     // DayModel 데이터 연결부
     var changedMonth : Date?
     var currentDate : Date = Date()
     private var collectionView: UICollectionView!
+//    var newTodo: Todo? = challenge
     var newTodo: Todo? = CoreDataManager.shared.fetchTodos().last
     var dateLabel = UILabel()
     
@@ -31,12 +31,11 @@ class ChallengeListDetailViewController: BaseViewController {
         
     }
     
-//  추후 추가될 todoitems section
+//    추후 추가될 todoitems section
     private func filterTodoitems(date: Date = Date()){
         
     }
     
-    // 날짜 변화 obsever가 등록된 NotificationCenter
     override func configureNotificationCenter(){
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(
@@ -63,8 +62,6 @@ class ChallengeListDetailViewController: BaseViewController {
         self.filterTodoitems(date: month.addingDays(1)!)
         collectionView.reloadData()
     }
-    
-    // Base
     override func configureUI() {
         super.configureUI()
         dateLabel.text = DateFormatter.dateFormatterALL.string(from: Date())
@@ -91,7 +88,6 @@ class ChallengeListDetailViewController: BaseViewController {
         }
     }
     
-    // CollectionView Compositional Layout
     private func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompostionalLayout())
         collectionView.dataSource = self
@@ -107,7 +103,6 @@ class ChallengeListDetailViewController: BaseViewController {
         view.addSubview(collectionView)
     }
     
-    // CompostionalLayout Section
     private func createCompostionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             switch sectionIndex {
@@ -121,7 +116,7 @@ class ChallengeListDetailViewController: BaseViewController {
         }
     }
     
-    // 캘린더 날짜 생성
+    
     func createDate(year: Int, month: Int, day: Int) -> Date? {
         let calendar = Calendar.current
         var components = DateComponents()
@@ -130,10 +125,10 @@ class ChallengeListDetailViewController: BaseViewController {
         components.day = day
         return calendar.date(from: components)
     }
+    
 }
 
 extension ChallengeListDetailViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    // 현재 Section 2개 -> 추후 늘어날 수 있음
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
@@ -150,16 +145,15 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // 각 섹션에 표현해야할 cell
         switch indexPath.section {
-        case 0:     // 반원 차트(SwiftUI)
+        case 0:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HalfCircleChartViewCell.identifier, for: indexPath) as? HalfCircleChartViewCell else { return UICollectionViewCell() }
             if let newTodo = newTodo {
                 cell.configureDetail(with: newTodo)
             }
             
             return cell
-        case 1:     // 챌린지 세부페이지에서 쓰이는 캘린더
+        case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailCalendarCell.identifier, for: indexPath) as? DetailCalendarCell else { return UICollectionViewCell() }
             if let newTodo = newTodo {
                 cell.configureCalenderView(todo: newTodo)
@@ -171,7 +165,6 @@ extension ChallengeListDetailViewController: UICollectionViewDataSource, UIColle
         }
     }
     
-    // 도전 장려 문구
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! SectionHeader

@@ -9,22 +9,22 @@ import UIKit
 
 // 아이템 간의 간격을 설정하는 열거형
 enum YZCenterFlowLayoutSpacingMode {
-    case fixed(spacing: CGFloat) // 고정 간격
+    case fixed(spacing: CGFloat)
     case overlap(visibleOffset: CGFloat) // 겹치는 간격
 }
 
 // 애니메이션 모드를 설정하는 열거형
 enum YZCenterFlowLayoutAnimation {
-    case rotation(sideItemAngle: CGFloat, sideItemAlpha: CGFloat, sideItemShift: CGFloat) // 회전 애니메이션
-    case scale(sideItemScale: CGFloat, sideItemAlpha: CGFloat, sideItemShift: CGFloat) // 크기 조정 애니메이션
+    case rotation(sideItemAngle: CGFloat, sideItemAlpha: CGFloat, sideItemShift: CGFloat)
+    case scale(sideItemScale: CGFloat, sideItemAlpha: CGFloat, sideItemShift: CGFloat)
 }
 
 class YZCenterFlowLayout: UICollectionViewFlowLayout {
     
     // 레이아웃 상태 구조체
     fileprivate struct LayoutState {
-        var size: CGSize // 컬렉션 뷰 크기
-        var direction: UICollectionView.ScrollDirection // 스크롤 방향
+        var size: CGSize
+        var direction: UICollectionView.ScrollDirection
         
         // 현재 상태와 다른 상태를 비교하는 함수
         func isEqual(_ otherState: LayoutState) -> Bool {
@@ -32,12 +32,10 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
         }
     }
     
-    // 현재 레이아웃 상태를 저장하는 변수
+    // 레이아웃 상태 구조체
     fileprivate var state = LayoutState(size: CGSize.zero, direction: .horizontal)
-    var spacingMode = YZCenterFlowLayoutSpacingMode.fixed(spacing: 10) // 셀 사이 간격 설정
-    var animationMode = YZCenterFlowLayoutAnimation.scale(sideItemScale: 0.8, sideItemAlpha: 0.8, sideItemShift: 0.0) // 양옆 셀 크기 설정
-    
-    // 페이지 너비 계산
+    var spacingMode = YZCenterFlowLayoutSpacingMode.fixed(spacing: 10) // 셀 사이 간격을 줄임
+    var animationMode = YZCenterFlowLayoutAnimation.scale(sideItemScale: 0.8, sideItemAlpha: 0.8, sideItemShift: 0.0) // 양옆 셀 크기를 키움
     fileprivate var pageWidth: CGFloat {
         switch self.scrollDirection {
         case .horizontal:
@@ -49,20 +47,17 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
         }
     }
     
-    /// 현재 중심에 위치한 페이지를 계산하는 변수
+    /// Calculates the current centered page.
     var currentCenteredIndexPath: IndexPath? {
         guard let collectionView = self.collectionView else { return nil }
-        let currentCenteredPoint = CGPoint(x: collectionView.contentOffset.x + collectionView.bounds.width / 2,
-                                           y: collectionView.contentOffset.y + collectionView.bounds.height / 2)
+        let currentCenteredPoint = CGPoint(x: collectionView.contentOffset.x + collectionView.bounds.width/2, y: collectionView.contentOffset.y + collectionView.bounds.height/2)
         return collectionView.indexPathForItem(at: currentCenteredPoint)
     }
     
-    // 현재 중심에 위치한 페이지 인덱스를 반환
     var currentCenteredPage: Int? {
         return currentCenteredIndexPath?.row
     }
     
-    // 레이아웃을 준비하는 함수
     override func prepare() {
         super.prepare()
         guard let collectionView = self.collectionView else { return }
@@ -75,12 +70,10 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
         }
     }
     
-    // 레이아웃 경계가 변경될 때 레이아웃을 무효화할지 결정하는 함수
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
     
-    // 주어진 사각형 내의 모든 레이아웃 속성을 반환하는 함수
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let superAttributes = super.layoutAttributesForElements(in: rect),
               let attributes = NSArray(array: superAttributes, copyItems: true) as? [UICollectionViewLayoutAttributes]
@@ -88,33 +81,27 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
         return attributes.map({ self.transformLayoutAttributes($0) })
     }
     
-    // 스크롤이 끝난 후의 목표 콘텐츠 오프셋을 결정하는 함수
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
-        guard let collectionView = collectionView, !collectionView.isPagingEnabled,
+        guard let collectionView = collectionView , !collectionView.isPagingEnabled,
               let layoutAttributes = self.layoutAttributesForElements(in: collectionView.bounds)
         else { return super.targetContentOffset(forProposedContentOffset: proposedContentOffset) }
         
         let isHorizontal = (self.scrollDirection == .horizontal)
+        
         let midSide = (isHorizontal ? collectionView.bounds.size.width : collectionView.bounds.size.height) / 2
         let proposedCenterOffset = (isHorizontal ? proposedContentOffset.x : proposedContentOffset.y) + midSide
         
         var targetContentOffset: CGPoint
         if isHorizontal {
-            let closest = layoutAttributes.sorted {
-                abs($0.center.x - proposedCenterOffset) < abs($1.center.x - proposedCenterOffset)
-            }.first ?? UICollectionViewLayoutAttributes()
+            let closest = layoutAttributes.sorted { abs($0.center.x - proposedCenterOffset) < abs($1.center.x - proposedCenterOffset) }.first ?? UICollectionViewLayoutAttributes()
             targetContentOffset = CGPoint(x: floor(closest.center.x - midSide), y: proposedContentOffset.y)
         } else {
-            let closest = layoutAttributes.sorted {
-                abs($0.center.y - proposedCenterOffset) < abs($1.center.y - proposedCenterOffset)
-            }.first ?? UICollectionViewLayoutAttributes()
+            let closest = layoutAttributes.sorted { abs($0.center.y - proposedCenterOffset) < abs($1.center.y - proposedCenterOffset) }.first ?? UICollectionViewLayoutAttributes()
             targetContentOffset = CGPoint(x: proposedContentOffset.x, y: floor(closest.center.y - midSide))
         }
         
         return targetContentOffset
     }
-    
-    // 특정 인덱스 페이지로 스크롤하는 함수
     func scrollToPage(atIndex index: Int, animated: Bool = true) {
         guard let collectionView = self.collectionView else { return }
 
@@ -123,14 +110,14 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
 
         switch scrollDirection {
         case .horizontal:
-            // 섹션 인셋을 고려하여 아이템을 중심에 두는 올바른 오프셋 계산
+            // Calculate the correct offset to center the item, considering sectionInsets
             let collectionViewCenter = (collectionView.bounds.size.width - collectionView.contentInset.left - collectionView.contentInset.right) / 2
             let itemCenter = CGFloat(index) * self.pageWidth + self.itemSize.width / 2 + self.sectionInset.left
             let offset = itemCenter - collectionViewCenter
             proposedContentOffset = CGPoint(x: offset - collectionView.contentInset.left, y: collectionView.contentOffset.y)
             shouldAnimate = abs(collectionView.contentOffset.x - offset) > 1 ? animated : false
         case .vertical:
-            // 섹션 인셋을 고려하여 아이템을 중심에 두는 올바른 오프셋 계산
+            // Calculate the correct offset to center the item, considering sectionInsets
             let collectionViewCenter = (collectionView.bounds.size.height - collectionView.contentInset.top - collectionView.contentInset.bottom) / 2
             let itemCenter = CGFloat(index) * self.pageWidth + self.itemSize.height / 2 + self.sectionInset.top
             let offset = itemCenter - collectionViewCenter
@@ -143,12 +130,14 @@ class YZCenterFlowLayout: UICollectionViewFlowLayout {
 
         collectionView.setContentOffset(proposedContentOffset, animated: shouldAnimate)
     }
+
+
+
 }
 
 // MARK: - Private Methods
 private extension YZCenterFlowLayout {
     
-    // 컬렉션 뷰 설정 함수
     func setupCollectionView() {
         guard let collectionView = self.collectionView else { return }
         if collectionView.decelerationRate != UIScrollView.DecelerationRate.fast {
@@ -156,7 +145,6 @@ private extension YZCenterFlowLayout {
         }
     }
     
-    // 레이아웃 업데이트 함수
     func updateLayout() {
         guard let collectionView = self.collectionView else { return }
         
@@ -186,13 +174,15 @@ private extension YZCenterFlowLayout {
         case .overlap(let visibleOffset):
             self.minimumLineSpacing = visibleOffset - scaledItemOffset
         }
+        
+        // Debug: 간격 확인
     }
     
-    // 레이아웃 속성 변환 함수
     func transformLayoutAttributes(_ attributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard let collectionView = self.collectionView else { return attributes }
         
         let isHorizontal = (self.scrollDirection == .horizontal)
+        
         let collectionCenter: CGFloat = isHorizontal ? collectionView.frame.size.width / 2 : collectionView.frame.size.height / 2
         let offset = isHorizontal ? collectionView.contentOffset.x : collectionView.contentOffset.y
         let normalizedCenter = (isHorizontal ? attributes.center.x : attributes.center.y) - offset
@@ -217,7 +207,7 @@ private extension YZCenterFlowLayout {
             attributes.alpha = alpha
             attributes.transform3D = CATransform3DScale(CATransform3DIdentity, scale, scale, 1)
             
-            // sideItemAlpha가 1인 경우 scale 기반으로 zIndex 관리
+            // If side Item alpha 1 then manage zindex based on a scale
             if sideItemAlpha == 1 {
                 attributes.zIndex = Int(scale * 10)
             } else {

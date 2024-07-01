@@ -3,7 +3,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import PhotosUI
-// Add 화면 (사진 첨부기능 주석 처리)
+
 class AddTodoTitleViewController: BaseViewController {
     
     let titleLabel = EditTitleLabel(text: "어떤 계획이 생겼나요?")
@@ -108,7 +108,7 @@ class AddTodoTitleViewController: BaseViewController {
             .subscribe(onNext: {[weak self] _ in
                 self?.todoTextField.resignFirstResponder()
                 guard let text = self?.todoTextField.text else {return}
-                self?.newTodo = Todo(title: text, completed: [:], images: self?.images)
+                self?.newTodo = Todo(title: text, completed: [], images: self?.images)
                 let nextVC = AddTodoDateViewController()
                 nextVC.newTodo = self?.newTodo
                 

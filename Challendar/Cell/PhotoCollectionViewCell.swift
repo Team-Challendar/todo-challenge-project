@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 import RxSwift
-// 사진 불러오기 하고 보여주는 Cell
+
 class PhotoCollectionViewCell: UICollectionViewCell {
     static let identifier: String = "PhotoCollectionViewCell"
     let deleteButton = UIButton(type: .custom)

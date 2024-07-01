@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1412AB6F2C2D31B000575E6F /* DictionaryTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */; };
-		1412AB712C2D34FD00575E6F /* IntArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */; };
 		141744D92C1821C8002335F7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 141744D82C1821C8002335F7 /* Lottie */; };
 		141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */; };
 		142052C42C1BDC1C00BC4831 /* NoticeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C32C1BDC1C00BC4831 /* NoticeModel.swift */; };
@@ -16,11 +14,6 @@
 		142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */; };
 		142052D32C1BFB5E00BC4831 /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = 142052D22C1BFB5E00BC4831 /* MarkdownView */; };
 		142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 142052D42C1BFC8000BC4831 /* Settings.bundle */; };
-		1433C08F2C2346CF006DC0E3 /* NewCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */; };
-		1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */; };
-		14386F242C2524A900F2BD22 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F232C2524A900F2BD22 /* PickerView.swift */; };
-		14386F262C2586BE00F2BD22 /* CustomAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */; };
-		14386F282C25941F00F2BD22 /* CustomPickerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */; };
 		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
@@ -54,7 +47,6 @@
 		1472ADF92C087B5900145668 /* EditTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADF82C087B5900145668 /* EditTitleLabel.swift */; };
 		1472ADFB2C08868100145668 /* AddPhotoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFA2C08868100145668 /* AddPhotoButton.swift */; };
 		1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */; };
-		1479C8F72C214D0D00183C34 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479C8F62C214D0D00183C34 /* Transformer.swift */; };
 		149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F52C0B024E00D63368 /* BaseViewController.swift */; };
 		149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F92C0B065200D63368 /* UIViewControllerExtension.swift */; };
 		149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */; };
@@ -96,14 +88,10 @@
 		14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */; };
 		14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */; };
 		14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */; };
-		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
 		2EBF439B2C188C8E00064A77 /* TodoCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */; };
 		2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */; };
-		2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */; };
-		2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */; };
-		2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */; };
 		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
 		B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */; };
 		B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */; };
@@ -112,13 +100,8 @@
 		B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA762C10D60000926B53 /* DailyViewController.swift */; };
 		B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */; };
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
-		B9C62E492C2E397B00988DB2 /* AcknowList in Frameworks */ = {isa = PBXBuildFile; productRef = B9C62E482C2E397B00988DB2 /* AcknowList */; };
-		B9C62E4B2C2E439100988DB2 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = B9C62E4A2C2E439000988DB2 /* Package.resolved */; };
-		B9C62E4F2C2ECEDE00988DB2 /* Acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9C62E4E2C2ECEDD00988DB2 /* Acknowledgements.plist */; };
-		B9C62E512C2ED92C00988DB2 /* UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C62E502C2ED92C00988DB2 /* UITableViewController.swift */; };
 		B9EFF60F2C1B1B2E00503165 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */; };
 		B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */; };
-		DE15E4972C2ADEF60080F3F4 /* CrudTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */; };
 		DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */; };
 		DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */; };
 		DE6EBEA52C0F187E002F6800 /* ChallengeListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */; };
@@ -132,18 +115,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryTransformer.swift; sourceTree = "<group>"; };
-		1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntArrayTransformer.swift; sourceTree = "<group>"; };
 		141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGaugeCollectionViewCell.swift; sourceTree = "<group>"; };
 		142052C32C1BDC1C00BC4831 /* NoticeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeModel.swift; sourceTree = "<group>"; };
 		142052C52C1BE08700BC4831 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		142052C72C1BE73000BC4831 /* NoticeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeTableViewCell.swift; sourceTree = "<group>"; };
 		142052D42C1BFC8000BC4831 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
-		1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPickerView.swift; sourceTree = "<group>"; };
-		14386F232C2524A900F2BD22 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
-		14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlarmView.swift; sourceTree = "<group>"; };
-		14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerRowView.swift; sourceTree = "<group>"; };
 		146A27B22C20B63400624239 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1472AD9D2C082A0F00145668 /* Challendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1472ADA02C082A0F00145668 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -178,7 +154,6 @@
 		1472ADF82C087B5900145668 /* EditTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTitleLabel.swift; sourceTree = "<group>"; };
 		1472ADFA2C08868100145668 /* AddPhotoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoButton.swift; sourceTree = "<group>"; };
 		1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoImageView.swift; sourceTree = "<group>"; };
-		1479C8F62C214D0D00183C34 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
 		149228F52C0B024E00D63368 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		149228F92C0B065200D63368 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
@@ -221,12 +196,8 @@
 		14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
-		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSuccessViewController.swift; sourceTree = "<group>"; };
-		2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionView.swift; sourceTree = "<group>"; };
-		2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionViewCell.swift; sourceTree = "<group>"; };
-		2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
 		B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerBtnView.swift; sourceTree = "<group>"; };
 		B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YZCenterFlowLayout.swift; sourceTree = "<group>"; };
@@ -235,12 +206,8 @@
 		B90CAA762C10D60000926B53 /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
-		B9C62E4A2C2E439000988DB2 /* Package.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Package.resolved; path = Challendar.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
-		B9C62E4E2C2ECEDD00988DB2 /* Acknowledgements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Acknowledgements.plist; path = Settings.bundle/Acknowledgements.plist; sourceTree = SOURCE_ROOT; };
-		B9C62E502C2ED92C00988DB2 /* UITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewController.swift; sourceTree = "<group>"; };
 		B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBtnNew.swift; sourceTree = "<group>"; };
-		DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrudTestViewController.swift; sourceTree = "<group>"; };
 		DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCalendarCell.swift; sourceTree = "<group>"; };
 		DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeDateCalendarView.swift; path = Challendar/Component/ChallengeDateCalendarView.swift; sourceTree = SOURCE_ROOT; };
 		DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListDetailViewController.swift; sourceTree = "<group>"; };
@@ -259,7 +226,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1472ADE52C08404D00145668 /* RxSwift in Frameworks */,
-				B9C62E492C2E397B00988DB2 /* AcknowList in Frameworks */,
 				1472ADE32C08404D00145668 /* RxCocoa in Frameworks */,
 				1472ADE82C08406D00145668 /* RAMAnimatedTabBarController in Frameworks */,
 				14C97F2C2C0A1D1600819B27 /* FSCalendar in Frameworks */,
@@ -272,19 +238,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1412AB6D2C2D319F00575E6F /* Transformer */ = {
-			isa = PBXGroup;
-			children = (
-				1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */,
-				1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */,
-			);
-			path = Transformer;
-			sourceTree = "<group>";
-		};
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
-				B9C62E4A2C2E439000988DB2 /* Package.resolved */,
 				142052D42C1BFC8000BC4831 /* Settings.bundle */,
 				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
@@ -304,7 +260,6 @@
 		1472AD9F2C082A0F00145668 /* Challendar */ = {
 			isa = PBXGroup;
 			children = (
-				B9C62E4E2C2ECEDD00988DB2 /* Acknowledgements.plist */,
 				14C3FA192C0C9EA700ACAFB6 /* Challendar.entitlements */,
 				14C3FA0D2C0C7CFF00ACAFB6 /* Manager */,
 				1472ADED2C0850C200145668 /* Component */,
@@ -326,8 +281,6 @@
 				14C97F132C098BE500819B27 /* AddTodo */,
 				1472ADD72C083AD400145668 /* SearchViewController.swift */,
 				DEA8E4C82C19C3F3007AAF93 /* EditTodoViewController.swift */,
-				2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */,
-				2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
 				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
 				1472ADE92C0840AD00145668 /* TabBarViewController.swift */,
@@ -338,7 +291,6 @@
 				DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */,
 				B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */,
 				149943FF2C1C0D82005EE584 /* EditChallengeCheckViewController.swift */,
-				DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -346,7 +298,6 @@
 		1472ADB82C082B1B00145668 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				1412AB6D2C2D319F00575E6F /* Transformer */,
 				14C97F2F2C0A4ABE00819B27 /* Extension */,
 				1472ADD02C082B8600145668 /* Font */,
 				1472ADA02C082A0F00145668 /* AppDelegate.swift */,
@@ -354,7 +305,6 @@
 				1472ADAC2C082A1000145668 /* Assets.xcassets */,
 				1472ADEB2C0840EB00145668 /* CustomBounceAnimation.swift */,
 				1472ADF22C086AE300145668 /* Constraint.swift */,
-				1479C8F62C214D0D00183C34 /* Transformer.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -422,11 +372,6 @@
 				B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */,
 				2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */,
 				DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */,
-				1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */,
-				2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */,
-				1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */,
-				14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */,
-				14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -502,8 +447,6 @@
 				2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */,
 				14F4DB112C19874A00B5CE45 /* UICollectionViewCellExtension.swift */,
 				14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */,
-				B9C62E502C2ED92C00988DB2 /* UITableViewController.swift */,
-				14386F232C2524A900F2BD22 /* PickerView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -512,7 +455,6 @@
 			isa = PBXGroup;
 			children = (
 				DEDEE2852C0DEA20006AD1C6 /* ChallengeCollectionViewCell.swift */,
-				2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */,
 				DEDEE2862C0DEA20006AD1C6 /* HalfCircleChartViewCell.swift */,
 				DEDEE2872C0DEA20006AD1C6 /* SearchCollectionViewCell.swift */,
 				DEDEE28D2C0DEA47006AD1C6 /* CalendarCell.swift */,
@@ -556,7 +498,6 @@
 				14C97F2B2C0A1D1600819B27 /* FSCalendar */,
 				141744D82C1821C8002335F7 /* Lottie */,
 				142052D22C1BFB5E00BC4831 /* MarkdownView */,
-				B9C62E482C2E397B00988DB2 /* AcknowList */,
 			);
 			productName = Challendar;
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
@@ -594,7 +535,6 @@
 				14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				142052D12C1BFB5E00BC4831 /* XCRemoteSwiftPackageReference "MarkdownView" */,
-				B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */,
 			);
 			productRefGroup = 1472AD9E2C082A0F00145668 /* Products */;
 			projectDirPath = "";
@@ -617,9 +557,7 @@
 				142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */,
 				1472ADC92C082B8300145668 /* Pretendard-ExtraBold.ttf in Resources */,
 				1472ADCA2C082B8300145668 /* Pretendard-ExtraLight.ttf in Resources */,
-				B9C62E4F2C2ECEDE00988DB2 /* Acknowledgements.plist in Resources */,
 				1472ADCD2C082B8300145668 /* Pretendard-Regular.ttf in Resources */,
-				B9C62E4B2C2E439100988DB2 /* Package.resolved in Resources */,
 				1472ADC82C082B8300145668 /* Pretendard-Bold.ttf in Resources */,
 				1472ADCF2C082B8300145668 /* Pretendard-Thin.ttf in Resources */,
 				1472ADC72C082B8300145668 /* Pretendard-Black.ttf in Resources */,
@@ -638,17 +576,14 @@
 				B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */,
 				2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */,
 				1472ADF32C086AE300145668 /* Constraint.swift in Sources */,
-				DE15E4972C2ADEF60080F3F4 /* CrudTestViewController.swift in Sources */,
 				149228FE2C0B1CE500D63368 /* DateExtension.swift in Sources */,
 				14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */,
-				1412AB6F2C2D31B000575E6F /* DictionaryTransformer.swift in Sources */,
 				1472ADF12C0868E600145668 /* EmptyView.swift in Sources */,
 				14E1EF8A2C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift in Sources */,
 				14C3FA162C0C8B0F00ACAFB6 /* Todo.swift in Sources */,
 				DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */,
 				1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */,
 				149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */,
-				14386F242C2524A900F2BD22 /* PickerView.swift in Sources */,
 				149FEFAD2C11CEE800CDDC23 /* TodoCalendarViewCell.swift in Sources */,
 				14C6AFE52C0F136C0016B80C /* SettingModel.swift in Sources */,
 				14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */,
@@ -667,7 +602,6 @@
 				149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */,
 				DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */,
 				14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */,
-				14386F262C2586BE00F2BD22 /* CustomAlarmView.swift in Sources */,
 				142052C42C1BDC1C00BC4831 /* NoticeModel.swift in Sources */,
 				14F4DB122C19874A00B5CE45 /* UICollectionViewCellExtension.swift in Sources */,
 				14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */,
@@ -699,23 +633,15 @@
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
 				141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */,
-				1479C8F72C214D0D00183C34 /* Transformer.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
-				1412AB712C2D34FD00575E6F /* IntArrayTransformer.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
-				B9C62E512C2ED92C00988DB2 /* UITableViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
-				2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */,
-				2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */,
 				14C6AFE32C0F12AA0016B80C /* SettingViewController.swift in Sources */,
 				14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */,
 				DEA8E4C92C19C3F3007AAF93 /* EditTodoViewController.swift in Sources */,
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
-				2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */,
-				2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
 				142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */,
-				14386F282C25941F00F2BD22 /* CustomPickerRowView.swift in Sources */,
 				14AAA9072C0E1F110085E22F /* ChallengeCheckViewController.swift in Sources */,
 				14C3FA132C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift in Sources */,
 				14C97F232C09ACF300819B27 /* DateBottomSheet.swift in Sources */,
@@ -724,11 +650,9 @@
 				DEDEE2912C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift in Sources */,
 				14C3FA182C0C900400ACAFB6 /* SelectedDateTypeEnum.swift in Sources */,
 				B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */,
-				1433C08F2C2346CF006DC0E3 /* NewCalendarView.swift in Sources */,
 				14C97F212C09A71800819B27 /* DateView.swift in Sources */,
 				14C97F1D2C09A4C800819B27 /* BottomSheetViewController.swift in Sources */,
 				14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */,
-				1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
 				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
@@ -880,7 +804,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -904,7 +828,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Challendar Development";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarAppStore;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -922,7 +846,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -946,7 +870,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Challendar Development";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarAppStore;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1029,14 +953,6 @@
 				minimumVersion = 2.8.4;
 			};
 		};
-		B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/vtourraine/AcknowList.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.2.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1074,11 +990,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
-		};
-		B9C62E482C2E397B00988DB2 /* AcknowList */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */;
-			productName = AcknowList;
 		};
 /* End XCSwiftPackageProductDependency section */
 

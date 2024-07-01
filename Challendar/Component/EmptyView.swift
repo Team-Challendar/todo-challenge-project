@@ -6,7 +6,7 @@
 //
 
 import UIKit
-// 뒤에 배경흐림 효과용 UIView
+
 class EmptyView: UIView {
 
     override init(frame: CGRect) {

@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import FSCalendar
 
-// 챌린지 세부페이지 캘린더용 cell
 class DetailCalendarCell: UICollectionViewCell {
     static var identifier = "DetailCalendarCell"
     var calanderView = ChallengeDateCalendarView()
@@ -23,7 +22,6 @@ class DetailCalendarCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // cell 내부의 캘린더
     func configureCalenderView(todo: Todo){
         self.addSubview(calanderView)
         self.backgroundColor = .clear

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-// Add / Edit 페이지에서 날짜 선택 UIView
+
 class DateView: UIView {
 
     var textLabel = UILabel()

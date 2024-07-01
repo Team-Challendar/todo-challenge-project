@@ -21,8 +21,6 @@ class TodoCalendarView: UIView {
             calendar.reloadData()
         }
     }
-    
-    // 초기화 메서드
     override init(frame: CGRect) {
         super.init(frame: .zero)
         configureUI()
@@ -36,13 +34,11 @@ class TodoCalendarView: UIView {
         configureNotificationCenter()
     }
     
-    // 알림센터 설정
     func configureNotificationCenter(){
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataChanged), name: NSNotification.Name("CoreDataChanged"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(calendarToggle(notification:)), name: NSNotification.Name("CalendarToggle"), object: currentState)
     }
     
-    // UI 구성 설정
     private func configureUI(){
         calendar.scope = .month
         calendarLabel.text = DateFormatter.dateFormatter.string(from: Date())
@@ -62,12 +58,12 @@ class TodoCalendarView: UIView {
         self.backgroundColor = .secondary850
         self.clipsToBounds = true
         
-        // 헤더뷰 설정
+        //MARK: - 헤더뷰 설정
         calendar.locale = Locale(identifier: "ko_KR")
         calendar.appearance.headerTitleColor = .clear
         calendar.headerHeight = 0
         
-        // 캘린더 관련 설정
+        //MARK: -캘린더 관련
         calendar.register(TodoCalendarFSCell.self, forCellReuseIdentifier: TodoCalendarFSCell.identifier)
         calendar.backgroundColor = .secondary850
         calendar.weekdayHeight = 44
@@ -88,7 +84,6 @@ class TodoCalendarView: UIView {
         calendar.dataSource = self
     }
     
-    // UI 제약 조건 설정
     private func configureConstraint(){
         [calendar,calendarLabel,prevButton,nextButton].forEach{
             self.addSubview($0)
@@ -117,7 +112,6 @@ class TodoCalendarView: UIView {
         }
     }
     
-    // 이전 버튼 클릭 핸들러
     @objc func prevButtonClicked(){
         if calendar.scope == .month{
             if let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: calendar.currentPage) {
@@ -127,7 +121,7 @@ class TodoCalendarView: UIView {
                 selectedDate = previousMonth
                 calendar.reloadData()
             }
-        } else {
+        }else{
             if let prevWeek = Calendar.current.date(byAdding: .day, value: -7, to: calendar.currentPage) {
                 calendar.setCurrentPage(prevWeek, animated: true)
                 updateLabel(prevWeek)
@@ -136,9 +130,9 @@ class TodoCalendarView: UIView {
                 calendar.reloadData()
             }
         }
+        
     }
     
-    // 다음 버튼 클릭 핸들러
     @objc func nextButtonClicked(){
         if calendar.scope == .month{
             if let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: calendar.currentPage) {
@@ -148,7 +142,7 @@ class TodoCalendarView: UIView {
                 selectedDate = nextMonth
                 calendar.reloadData()
             }
-        } else {
+        }else{
             if let nextWeek = Calendar.current.date(byAdding: .day, value: 7, to: calendar.currentPage) {
                 calendar.setCurrentPage(nextWeek, animated: true)
                 updateLabel(nextWeek)
@@ -159,7 +153,6 @@ class TodoCalendarView: UIView {
         }
     }
     
-    // 라벨 업데이트
     func updateLabel(_ date: Date) {
         let dateString = DateFormatter.dateFormatter.string(from: date)
         let attributedString = NSMutableAttributedString(string: dateString)
@@ -169,13 +162,11 @@ class TodoCalendarView: UIView {
         
         calendarLabel.attributedText = attributedString
     }
-    
-    // CoreData 변경 시 호출
+
     @objc func coreDataChanged(){
         calendar.reloadData()
     }
     
-    // 캘린더 토글
     @objc func calendarToggle(notification: Notification){
         guard let state = notification.object as? currentCalendar else {return}
         currentState = state
@@ -191,14 +182,20 @@ class TodoCalendarView: UIView {
 }
 
 extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
-    // 캘린더 크기 변경 시 호출
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
+        //        calendarView.snp.updateConstraints{
+        //            $0.bottom.equalToSuperview().inset(10)
+        //            $0.leading.equalToSuperview().inset(20)
+        //            $0.top.equalTo(calendarLabel.snp.bottom).offset(8)
+        //            $0.trailing.equalToSuperview().inset(19)
+        //        }
+        
         UIView.animate(withDuration: 0.5) {
             if calendar.scope == .month {
                 calendar.snp.updateConstraints{
                     $0.height.equalTo(332)
                 }
-            } else {
+            }else{
                 calendar.snp.updateConstraints{
                     $0.height.equalTo(102)
                 }
@@ -206,57 +203,59 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
             self.layoutIfNeeded()
         }
     }
-    
-    // 날짜 선택 시 호출
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        //        print(DateFormatter.dateFormatterALL.string(from: date))
         if !date.isSameMonth(as: calendar.currentPage){
             calendar.setCurrentPage(date, animated: true)
             calendar.select(date)
         }
         updateLabel(date)
+//        selectedDate = date
         NotificationCenter.default.post(name: NSNotification.Name("date"), object: calendar.selectedDate, userInfo: nil)
     }
-    
-    // 날짜 선택 해제 시 호출
-    func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {}
-    
-    // 현재 페이지 변경 시 호출
+    func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        
+    }
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        if !calendar.currentPage.isSameMonth(as: selectedDate!) {
+        if  !calendar.currentPage.isSameMonth(as: selectedDate!) {
             let date = calendar.currentPage
+    //        calendar.deselect(selectedDate!)
             selectedDate = date
+    //        calendar.select(selectedDate!)
             updateLabel(selectedDate!)
             NotificationCenter.default.post(name: NSNotification.Name("date"), object: date, userInfo: nil)
-        } else {
+        }else{
             updateLabel(selectedDate!)
             NotificationCenter.default.post(name: NSNotification.Name("date"), object: selectedDate, userInfo: nil)
         }
+        
+        
     }
-    
-    // 날짜 텍스트 색상 설정
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
-        switch calendar.scope {
+        switch calendar.scope{
         case .month:
             if date.isSameDay(as: selectedDate ?? Date()) {
                 return .challendarWhite
             }
             if !date.isSameMonth(as: calendar.currentPage){
                 return .secondary800
-            } else {
+            }else{
                 if let day = dayModelForCurrentPage?.first(where: {
                     $0.date.isSameDay(as: date)
-                }) {
-                    switch day.percentage {
+                }){
+                    switch day.percentage{
                     case 0:
                         if day.date < Date(){
                             return .challendarWhite
-                        } else {
+                        }else{
                             return .challendarWhite
                         }
+                        
                     default:
                         return .challendarBlack
                     }
-                } else {
+                }
+                else{
                     return .challendarBlack
                 }
             }
@@ -266,75 +265,81 @@ extension TodoCalendarView : FSCalendarDelegate, FSCalendarDelegateAppearance {
             }
             if !date.isSameMonth(as: self.selectedDate!){
                 return .secondary800
-            } else {
+            }else{
                 if let day = dayModelForCurrentPage?.first(where: {
                     $0.date.isSameDay(as: date)
-                }) {
-                    switch day.percentage {
+                }){
+                    switch day.percentage{
                     case 0:
                         if day.date < Date(){
                             return .challendarWhite
-                        } else {
+                        }else{
                             return .challendarWhite
                         }
+                        
                     default:
                         return .challendarBlack
                     }
-                } else {
+                }
+                else{
                     return .challendarBlack
                 }
             }
         @unknown default:
             return .challendarWhite
         }
+        
     }
+    
 }
 
 extension TodoCalendarView : FSCalendarDataSource {
-    // 캘린더 셀 설정
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
+        
         guard let cell = calendar.dequeueReusableCell(withIdentifier: TodoCalendarFSCell.identifier, for: date, at: position) as? TodoCalendarFSCell else { return FSCalendarCell() }
+        
         switch calendar.scope {
         case .month:
             if let day = dayModelForCurrentPage?.first(where: {
                 $0.date.isSameDay(as: date) && $0.date.isSameMonth(as: selectedDate ?? Date())
-            }) {
+            }){
                 cell.setViewWithData(day: day)
                 if let selectedDate = selectedDate {
-                    if date.isSameDay(as: selectedDate) {
+                    if date.isSameDay(as: selectedDate){
                         cell.selectDate()
                     }
-                } else {
-                    if date.isSameDay(as: Date()) {
+                }else{
+                    if date.isSameDay(as: Date()){
                         cell.selectDate()
                     }
                 }
             }
-            if date.isSameDay(as: Date()) {
+            if date.isSameDay(as: Date()){
                 cell.setTodayView()
             }
             return cell
         case .week:
             if let day = dayModelForCurrentPage?.first(where: {
                 $0.date.isSameDay(as: date)
-            }) {
+            }){
                 cell.setViewWithData(day: day)
                 if let selectedDate = selectedDate {
-                    if date.isSameDay(as: selectedDate) {
+                    if date.isSameDay(as: selectedDate){
                         cell.selectDate()
                     }
-                } else {
-                    if date.isSameDay(as: Date()) {
+                }else{
+                    if date.isSameDay(as: Date()){
                         cell.selectDate()
                     }
                 }
             }
-            if date.isSameDay(as: Date()) {
+            if date.isSameDay(as: Date()){
                 cell.setTodayView()
             }
             return cell
-        @unknown default:
-            return FSCalendarCell()
         }
+        
+        
     }
 }
+

@@ -7,10 +7,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        ValueTransformer.setValueTransformer(DictionaryTransformer(), forName: NSValueTransformerName("DictionaryTransformer"))
-        
-        ValueTransformer.setValueTransformer(IntArrayTransformer(), forName: NSValueTransformerName("IntArrayTransformer"))
-        
         if #available(iOS 15, *) {
             // MARK: Navigation bar appearance
             let navigationBarAppearance = UINavigationBarAppearance()
@@ -26,11 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         }
         
-//        // Fetch todos on app launch
-//        CoreDataManager.shared.triggerSync()
-//        
-//        // 주기적인 동기화 설정
-//        startSyncTimer()
+        // Fetch todos on app launch
+        CoreDataManager.shared.triggerSync()
+        
+        // 주기적인 동기화 설정
+        startSyncTimer()
 
         return true
     }
