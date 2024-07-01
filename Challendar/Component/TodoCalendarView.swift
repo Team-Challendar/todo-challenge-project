@@ -172,7 +172,10 @@ class TodoCalendarView: UIView {
     
     // CoreData 변경 시 호출
     @objc func coreDataChanged(){
-        calendar.reloadData()
+        DispatchQueue.main.async{
+            self.calendar.reloadData()
+        }
+        
     }
     
     // 캘린더 토글

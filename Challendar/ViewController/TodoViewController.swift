@@ -105,7 +105,9 @@ class TodoViewController: BaseViewController {
     
     // Core Data가 업데이트되었을 때 호출되는 함수
     @objc func coreDataUpdated(_ notification: Notification) {
-        loadData()
+        DispatchQueue.main.async {
+            self.loadData()
+        }
     }
     
     // 섹션 헤더를 설정하는 함수

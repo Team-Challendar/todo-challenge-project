@@ -1,9 +1,10 @@
 import UIKit
+import WidgetKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var syncTimer: Timer?
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -26,41 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         }
         
-//        // Fetch todos on app launch
-//        CoreDataManager.shared.triggerSync()
-//        
-//        // 주기적인 동기화 설정
-//        startSyncTimer()
+        // Fetch todos on app launch
+        CoreDataManager.shared.triggerSync()
+        
+        // 주기적인 동기화 설정
+        
 
         return true
     }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // 앱이 포그라운드로 돌아올 때 동기화 트리거
-        CoreDataManager.shared.triggerSync()
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // 타이머 중지
-        stopSyncTimer()
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        // 타이머 중지
-        stopSyncTimer()
-    }
-    
-    private func startSyncTimer() {
-        syncTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
-            CoreDataManager.shared.triggerSync()
-        }
-    }
-    
-    private func stopSyncTimer() {
-        syncTimer?.invalidate()
-        syncTimer = nil
-    }
-    
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

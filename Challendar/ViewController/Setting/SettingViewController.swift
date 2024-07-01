@@ -2,6 +2,8 @@ import UIKit
 import SnapKit
 import MessageUI
 import LinkPresentation
+import AcknowList
+
 // 설정페이지 ViewController
 class SettingViewController: BaseViewController {
     
@@ -124,13 +126,31 @@ class SettingViewController: BaseViewController {
             self.present(alertController, animated: true)
         }
     }
-    
-    // 설정 열기 기능
-    func openSetting() {
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            UIApplication.shared.open(url)
-        }
+    func openSetting(){
+        //        if let url = URL(string: UIApplication.openSettingsURLString) {
+        //            UIApplication.shared.open(url)
+        //        }
+        
+        //        let viewController = AcknowListViewController()
+        //        navigationController?.pushViewController(viewController, animated: true)
+        
+        
+        let acknows: [Acknow] = AcknowParser.defaultAcknowList()?.acknowledgements ?? []
+        
+        let viewController = AcknowListViewController(acknowledgements: acknows, style: .insetGrouped)
+        viewController.configureBackground()
+        viewController.configureBackAndTitleNavigationBar(title: "오픈소스 라이선스", checkSetting: false)
+        viewController.title = ""
+        navigationController?.pushViewController(viewController, animated: true)
+        
     }
+
+    // 설정 열기 기능
+//    func openSetting() {
+//        if let url = URL(string: UIApplication.openSettingsURLString) {
+//            UIApplication.shared.open(url)
+//        }
+//    }
     
     // 친구에게 공유하기 기능
     func shareToFriend() {
