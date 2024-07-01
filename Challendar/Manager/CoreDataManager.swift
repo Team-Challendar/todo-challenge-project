@@ -238,9 +238,7 @@ class CoreDataManager {
         if let newRepetition = newRepetition {
             todoToUpdate.repetition = newRepetition
         }
-        if let newReminderTime = newReminderTime {
-            todoToUpdate.reminderTime = newReminderTime
-        }
+        todoToUpdate.reminderTime = newReminderTime
         
         saveContext()
     }

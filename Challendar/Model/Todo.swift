@@ -77,7 +77,7 @@ class Todo : Hashable{
     }
     
     func todayCompleted(date: Date = Date()) -> Bool? {
-        return completed[date]
+        return completed[date.startOfDay()!]
     }
     
     func toggleTodaysCompletedState() {

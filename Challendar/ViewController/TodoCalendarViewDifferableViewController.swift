@@ -26,11 +26,12 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
     override func viewDidLoad() {
         configureCollectionView()
         super.viewDidLoad()
-        filterTodoitems(date: currentDate ?? Date())
+        self.filterTodoitems()
         configureNav(title: "달력")
         configureDataSource()
         configureFloatingButton()
     }
+    
     // UI 구성
     override func configureUI() {
         super.configureUI()
@@ -162,6 +163,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
         inCompletedTodo = todoItems.filter({
             $0.todayCompleted(date: date) == false
         })
+        
         days = Day.generateDaysForMonth(date: date, todos: self.todoItems)
         day = days?.first(where: {$0.date.isSameDay(as: date) })
         calendarView.dayModelForCurrentPage = days
