@@ -347,13 +347,11 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
 
 extension TodoCalendarViewDifferableViewController : TodoCalendarCollectionViewCellDelegate {
     func editContainerTapped(in cell: TodoCalendarViewCell) {
-        let editVC = EditTodoViewController()
+        let editVC = EditTodoBottomSheetViewController()
         editVC.todoId = cell.todoItem?.id
-        editVC.modalTransitionStyle = .coverVertical
+        editVC.modalTransitionStyle = .crossDissolve
         editVC.modalPresentationStyle = .overFullScreen
-        let navi = UINavigationController(rootViewController: editVC)
-        navi.modalPresentationStyle = .overFullScreen
-        self.present(navi, animated: true, completion: nil)
+        self.present(editVC, animated: true)
     }
 }
 // (달력/날짜) pickerButtonView 터치 처리
