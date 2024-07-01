@@ -133,6 +133,7 @@ class CoreDataManager {
         let startDate = todo.startDate ?? Date()
         let endDate = todo.endDate ?? Date()
         let repetitionDays = todo.repetition
+        var notificationIdentifiers = [String]()
         
         for dayOffset in stride(from: 0, to: calendar.dateComponents([.day], from: startDate, to: endDate).day!, by: 1) {
             guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: startDate) else { continue }
@@ -146,54 +147,16 @@ class CoreDataManager {
                 guard let finalReminderDate = calendar.date(from: reminderDateComponents) else { continue }
                 
                 let identifier = "Todo_\(todo.id?.uuidString ?? UUID().uuidString)_\(dayOffset)"
+                notificationIdentifiers.append(identifier)
                 sendLocalNotification(title: "\(todo.title)를 수행해야해요!", body: todo.isChallenge ? "오늘의 챌린지를 지금 바로 확인해보세요" :  "오늘의 계획을 지금 바로 확인해보세요", triggerDate: finalReminderDate, identifier: identifier)
+                
             }
         }
+        if let todoID = todo.id, let todoModel = fetchTodoById(id: todoID) {
+                todoModel.notificationIdentifiers = notificationIdentifiers
+                saveContext()
+            }
     }
-    
-    //    func scheduleNotification(newTodo: Todo) {
-    //        guard let reminderTime = newTodo.reminderTime else { return }
-    //
-    //        if newTodo.reminderTime != nil {
-    //            if newTodo.isChallenge == true {    // 챌린지
-    //                let content = UNMutableNotificationContent()
-    //                content.title = "\(newTodo.title)를 수행해야해요!"
-    //                content.body = "오늘의 챌린지를 지금 바로 확인해보세요"
-    //                content.sound = UNNotificationSound.default
-    //
-    //                let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTime)
-    //                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-    //
-    //                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-    //
-    //                UNUserNotificationCenter.current().add(request) { error in
-    //                    if let error = error {
-    //                        print("Failed to schedule notification: \(error)")
-    //                    } else {
-    //                        print("Notification scheduled for \(newTodo.title) at \(String(describing: newTodo.reminderTime))")
-    //                    }
-    //                }
-    //            } else {        // 계획
-    //                let content = UNMutableNotificationContent()
-    //                content.title = "\(newTodo.title)를 수행해야해요!"
-    //                content.body = "오늘의 계획을 지금 바로 확인해보세요"
-    //                content.sound = UNNotificationSound.default
-    //
-    //                let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTime)
-    //                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
-    //
-    //                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-    //
-    //                UNUserNotificationCenter.current().add(request) { error in
-    //                    if let error = error {
-    //                        print("Failed to schedule notification: \(error)")
-    //                    } else {
-    //                        print("Notification scheduled for \(newTodo.title) at \(String(describing: newTodo.reminderTime))")
-    //                    }
-    //                }
-    //            }
-    //        }
-    
     
     // CRUD Operations
     
@@ -218,9 +181,7 @@ class CoreDataManager {
             todo.isCompleted = newTodo.iscompleted
             self.saveContext()
         }
-        todo.isCompleted = newTodo.iscompleted
         scheduleNotificationsForTodo(todo: newTodo)
-        saveContext()
     }
     
     // Save context
@@ -370,12 +331,19 @@ class CoreDataManager {
 
     
     func removeNotificationsForTodoId(id: UUID) {
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: [id.uuidString])
+        guard let todo = fetchTodoById(id: id), let identifiers = todo.notificationIdentifiers else {
+            print("No notifications to remove for Todo ID \(id)")
+            return
+        }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        todo.notificationIdentifiers = []
+        saveContext()
     }
+
     
     // Delete
     func deleteTodoById(id: UUID) {
+        removeNotificationsForTodoId(id: id)
         guard let todoToDelete = fetchTodoById(id: id) else {
             print("Todo not found")
             return
@@ -385,6 +353,7 @@ class CoreDataManager {
             self.context.delete(todoToDelete)
             self.saveContext()
         }
+        
     }
     
     func deleteAllTodos() {

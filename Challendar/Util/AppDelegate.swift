@@ -10,7 +10,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         ValueTransformer.setValueTransformer(IntArrayTransformer(), forName: NSValueTransformerName("IntArrayTransformer"))
         
-        
+        ValueTransformer.setValueTransformer(StringArrayTransformer(), forName: NSValueTransformerName("StringArrayTransformer"))
+
         if #available(iOS 15, *) {
             // MARK: Navigation bar appearance
             let navigationBarAppearance = UINavigationBarAppearance()
@@ -26,12 +27,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         }
         
-//        // 앱 실행 시 사용자에게 알림 허용 권한 -> CoreDataManager
-//         UNUserNotificationCenter.current().delegate = self
+        // 앱 실행 시 사용자에게 알림 허용 권한 -> CoreDataManager
+         UNUserNotificationCenter.current().delegate = self
         
-//         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-//         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in}
-//         )
+         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in}
+         )
         
 //        // Fetch todos on app launch
 //        CoreDataManager.shared.triggerSync()

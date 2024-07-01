@@ -120,6 +120,7 @@
 		14FDB6C22C328A9100C3F8FE /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */; };
 		14FDB6C72C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */; };
 		14FDB6C82C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */; };
+		14FDB6CB2C32B6F900C3F8FE /* StringArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6CA2C32B6F900C3F8FE /* StringArrayTransformer.swift */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
@@ -279,6 +280,7 @@
 		14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
 		14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Bold.ttf"; sourceTree = "<group>"; };
 		14FDB6C92C329C8D00C3F8FE /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
+		14FDB6CA2C32B6F900C3F8FE /* StringArrayTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringArrayTransformer.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 			children = (
 				1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */,
 				1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */,
+				14FDB6CA2C32B6F900C3F8FE /* StringArrayTransformer.swift */,
 			);
 			path = Transformer;
 			sourceTree = "<group>";
@@ -408,7 +411,6 @@
 				14C97F1C2C09A4C800819B27 /* BottomSheetViewController.swift */,
 				2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
-				2E41FA9D2C32994700CDA22D /* EditTodoBottomSheetViewController.swift */,
 				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
 				1472ADE92C0840AD00145668 /* TabBarViewController.swift */,
 				1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */,
@@ -849,6 +851,7 @@
 				14C6AFE32C0F12AA0016B80C /* SettingViewController.swift in Sources */,
 				14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */,
 				DEA8E4C92C19C3F3007AAF93 /* EditTodoViewController.swift in Sources */,
+				14FDB6CB2C32B6F900C3F8FE /* StringArrayTransformer.swift in Sources */,
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
 				2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,

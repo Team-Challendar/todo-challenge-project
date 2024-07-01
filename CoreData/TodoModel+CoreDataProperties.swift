@@ -28,7 +28,7 @@ extension TodoModel {
     @NSManaged public var isCompleted: Bool
     @NSManaged public var repetition: [Int]
     @NSManaged public var reminderTime: Date?
-
+    @NSManaged public var notificationIdentifiers: [String]?
 }
 
 extension TodoModel : Identifiable {
