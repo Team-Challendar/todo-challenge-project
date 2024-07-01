@@ -9,10 +9,11 @@ import UIKit
 import SnapKit
 import Lottie
 
+// 수정 페이지 이동을 위한 프로토콜
 protocol TodoCalendarCollectionViewCellDelegate: AnyObject {
     func editContainerTapped(in cell: TodoCalendarViewCell)
 }
-
+// 계획 탭에서 사용되는 Cell
 class TodoCalendarViewCell: UICollectionViewCell {
     static var identifier = "TodoCalendarViewCell"
     let animation = LottieAnimation.named("doneBlue")
@@ -209,15 +210,17 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.center.equalTo(checkButton)
             $0.size.equalTo(96)
         }
+        // 왼쪽에서 스와이프
         let swipeGestureLeft = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeCellLeft))
         swipeGestureLeft.direction = .left
         self.addGestureRecognizer(swipeGestureLeft)
         
+        // 오른쪽에서 스와이프
         let swipeGestureRight = UISwipeGestureRecognizer(target: self, action:  #selector(didSwipeCellRight))
         swipeGestureRight.direction = .right
         self.addGestureRecognizer(swipeGestureRight)
         
-        // 스와이프 버튼
+        // 스와이프 시 버튼 동작 함수
         enrollTapGestureRecognizer()
         deleteTapGestureRecognizer()
         editTapGestureRecognizer()
@@ -233,6 +236,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0?.isHidden.toggle()
         }
     }
+    // 왼쪽 스와이프 시 유효성 검사
     @objc func didSwipeCellLeft() {
         UIView.animate(withDuration: 0.3, animations: {
             if self.swipeRight == true {
@@ -256,6 +260,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
             }
         })
     }
+    // 오른쪽 스와이프 시 유효성 검사
     @objc func didSwipeCellRight() {
         UIView.animate(withDuration: 0.3, animations: {
             if self.swipeLeft ==  true {
@@ -281,6 +286,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         })
     }
     
+    // 등록 버튼
     private func enrollTapGestureRecognizer() {
         enrollChallengeButton.addTarget(self, action: #selector(enrollButtonTapped), for: .touchUpInside)
     }
@@ -299,6 +305,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newIsChallenge: item.isChallenge)
     }
     
+    // 삭제 버튼
     private func deleteTapGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(deleteContainerTapped(_:)))
         deleteContainer.addGestureRecognizer(tapGesture)
@@ -318,6 +325,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         CoreDataManager.shared.deleteTodoById(id: item.id ?? UUID())
     }
     
+    // 수정 버튼
     private func editTapGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(editContainerTapped(_:)))
         editContainer.addGestureRecognizer(tapGesture)

@@ -33,12 +33,20 @@ class CalendarCell: FSCalendarCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         todayView.backgroundColor = .challendarBlack
-        circleView.backgroundColor = .challendarGreen200
-        leftView.backgroundColor = .challendarGreen400
-        rightView.backgroundColor = .challendarGreen400
         self.titleLabel.textAlignment = .center
     }
     
+    func setColor(isChallenge: Bool) {
+        if isChallenge {
+            circleView.backgroundColor = .challendarGreen200
+            leftView.backgroundColor = .challendarGreen400
+            rightView.backgroundColor = .challendarGreen400
+        }else{
+            circleView.backgroundColor = .challendarBlue600
+            leftView.backgroundColor = .challendarBlue300
+            rightView.backgroundColor = .challendarBlue300
+        }
+    }
     func setConstraint(){
         self.titleLabel.snp.makeConstraints {             
             $0.center.equalTo(contentView)

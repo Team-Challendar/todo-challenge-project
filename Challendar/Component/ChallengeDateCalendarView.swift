@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import FSCalendar
 
+// 챌린지 세부페이지에서 쓰이는 캘린더
 class ChallengeDateCalendarView: UIView {
     var calendarView = FSCalendar(frame: .zero)
     var calendarLabel = UILabel()
@@ -79,7 +80,7 @@ class ChallengeDateCalendarView: UIView {
     }
     
     private func configureConstraint(){
-        [calendarView,calendarLabel,prevButton,prevButton,nextButton].forEach{
+        [calendarView,calendarLabel,prevButton,nextButton].forEach{
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -121,6 +122,7 @@ class ChallengeDateCalendarView: UIView {
         }
     }
     
+    // 캘린더 날짜 업데이트
     func updateLabel(_ date: Date){
         let dateString = DateFormatter.dateFormatter.string(from: date)
         let attributedString = NSMutableAttributedString(string: dateString)
@@ -148,6 +150,7 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
         updateLabel(selectedDate)
         calendar.reloadData()
     }
+    // 각 날짜별 완료 여부에 따른 날짜 표현
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
         if !date.isSameMonth(as: calendar.currentPage){
             return .secondary800

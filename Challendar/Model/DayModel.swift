@@ -1,13 +1,13 @@
 import UIKit
 
-//
-class Day : Hashable{
-    var date : Date
-    var listCount : Int
-    var completedListCount : Int
-    var percentage : Double
+// 달력에서 사용하는 모델
+class Day: Hashable {
+    var date: Date
+    var listCount: Int
+    var completedListCount: Int
+    var percentage: Double
     var toDo: [Todo]
-    
+
     // 해당하는 ID 혹은
     init(date: Date, listCount: Int, completedListCount: Int, percentage: Double, todo: [Todo]) {
         self.date = date
@@ -16,6 +16,7 @@ class Day : Hashable{
         self.percentage = percentage
         self.toDo = todo
     }
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(date)
         hasher.combine(listCount)
@@ -23,19 +24,17 @@ class Day : Hashable{
         hasher.combine(percentage)
         hasher.combine(toDo)
     }
-    
-    // Implementing the == operator for Hashable
+
     static func == (lhs: Day, rhs: Day) -> Bool {
         return lhs.date == rhs.date && lhs.listCount == rhs.listCount && lhs.completedListCount == rhs.completedListCount && lhs.percentage == rhs.percentage && lhs.toDo == rhs.toDo
     }
 }
 
 extension Day {
+    // 주어진 날짜 +-1 달까지 포함해서 [Day] 리턴
     static func generateDaysForMonth(date: Date, todos: [Todo]) -> [Day] {
         var days: [Day] = []
         let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
         
         // 지정된 날짜의 연도와 월 설정
         let components = calendar.dateComponents([.year, .month], from: date)
@@ -68,9 +67,8 @@ extension Day {
                 }
                 
                 let listCount = dailyTodos.count
-                
                 let completedListCount = dailyTodos.filter {
-                    $0.completed[currentDate.daysBetween($0.startDate!)] == true
+                    $0.completed[currentDate] == true
                 }.count
                 let percentage = listCount > 0 ? Double(completedListCount) / Double(listCount) * 100.0 : 0.0
                 
@@ -81,6 +79,4 @@ extension Day {
         
         return days
     }
-
-    
 }

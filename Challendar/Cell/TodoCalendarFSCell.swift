@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import FSCalendar
 
+// Add / Edit 화면에서 달력에서 사용하는 FSCalendarCell
 class TodoCalendarFSCell: FSCalendarCell {
     static var identifier = "TodoCalendarFSCell"
     var circleView = UIView()
