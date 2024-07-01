@@ -20,6 +20,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
     var animationView : LottieAnimationView!
     var checkButton: UIButton!
     var titleLabel: UILabel!
+    var alertImageView: UIImageView!
     private var dateLabel: UILabel!
     private var stateLabel : UILabel!
     private var container : UIView!
@@ -128,6 +129,13 @@ class TodoCalendarViewCell: UICollectionViewCell {
         dateLabel.textColor = .secondary400
         dateLabel.font = .pretendardMedium(size: 12)
         container.addSubview(dateLabel)
+        
+        alertImageView = UIImageView()
+        alertImageView.translatesAutoresizingMaskIntoConstraints = false
+        alertImageView.image = .notification2
+        alertImageView.isHidden = true
+        container.addSubview(alertImageView)
+        
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
         stateLabel.textColor = .challendarBlue600
@@ -201,6 +209,13 @@ class TodoCalendarViewCell: UICollectionViewCell {
             $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
             $0.leading.equalTo(stateLabel.snp.trailing).offset(4)
         }
+        
+        alertImageView.snp.makeConstraints {
+            $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            $0.leading.equalTo(dateLabel.snp.trailing).offset(4)
+            $0.width.height.equalTo(14)
+        }
+        
         checkButton.snp.makeConstraints {
             $0.centerY.equalTo(titleLabel.snp.centerY)
             $0.trailing.equalTo(container.snp.trailing).offset(-24)
@@ -386,6 +401,7 @@ class TodoCalendarViewCell: UICollectionViewCell {
         // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
         checkButton.isSelected = item.todayCompleted(date: date) ?? false
         updateTitleLabel()
+        updateReminderTime(for: item)
     }
     
     private func updateTitleLabel() {
@@ -402,6 +418,14 @@ class TodoCalendarViewCell: UICollectionViewCell {
         }
     }
 
+    private func updateReminderTime(for item: Todo) {
+        if item.reminderTime != nil {
+            alertImageView.isHidden = false
+        } else {
+            alertImageView.isHidden = true
+        }
+    }
+    
     private func formatDate(_ date: Date?) -> String {
         guard let date = date else { return "날짜 없음" }
         let dateFormatter = DateFormatter()
