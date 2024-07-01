@@ -121,6 +121,7 @@
 		14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */; };
 		14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B560852C2A978700DED1EB /* Assets.xcassets */; };
 		14FDB6C02C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6BF2C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift */; };
+		14FDB6C22C328A9100C3F8FE /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
@@ -280,6 +281,7 @@
 		14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		14FDB6BF2C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditTodoBottomSheetViewController.swift; path = Challendar/ViewController/EditTodoBottomSheetViewController.swift; sourceTree = SOURCE_ROOT; };
+		14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -547,6 +549,7 @@
 			children = (
 				14C3FA0E2C0C7D0A00ACAFB6 /* CoreDataManager.swift */,
 				14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */,
+				14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14FDB6C22C328A9100C3F8FE /* CloudKitHelper.swift in Sources */,
 				2EBF439B2C188C8E00064A77 /* TodoCalendarViewController.swift in Sources */,
 				B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */,
 				2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */,
