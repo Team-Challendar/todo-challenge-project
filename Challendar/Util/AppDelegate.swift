@@ -11,7 +11,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ValueTransformer.setValueTransformer(IntArrayTransformer(), forName: NSValueTransformerName("IntArrayTransformer"))
         
         ValueTransformer.setValueTransformer(StringArrayTransformer(), forName: NSValueTransformerName("StringArrayTransformer"))
-
+        
         if #available(iOS 15, *) {
             // MARK: Navigation bar appearance
             let navigationBarAppearance = UINavigationBarAppearance()
@@ -28,37 +28,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         // 앱 실행 시 사용자에게 알림 허용 권한 -> CoreDataManager
-         UNUserNotificationCenter.current().delegate = self
+        UNUserNotificationCenter.current().delegate = self
         
-         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in}
-         )
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in}
+        )
         
-//        // Fetch todos on app launch
-//        CoreDataManager.shared.triggerSync()
-//        
-//        // 주기적인 동기화 설정
-//        startSyncTimer()
-
+        //        // Fetch todos on app launch
+        //        CoreDataManager.shared.triggerSync()
+        //
+        //        // 주기적인 동기화 설정
+        //        startSyncTimer()
+        
         // Fetch todos on app launch
         
         CloudKitHelper.shared.checkSchemaUpdateStatus { isSchemaUpdated in
-                    if !isSchemaUpdated {
-                        CoreDataManager.shared.deleteAllTodos()
-                        CoreDataManager.shared.saveContext()
-                        CloudKitHelper.shared.markSchemaAsUpdated { success in
-                            if success {
-                                print("Schema marked as updated.")
-                            } else {
-                                print("Failed to mark schema as updated.")
-                            }
-                        }
+            if !isSchemaUpdated {
+                CoreDataManager.shared.deleteAllTodos()
+                CoreDataManager.shared.saveContext()
+                CloudKitHelper.shared.markSchemaAsUpdated { success in
+                    if success {
+                        print("Schema marked as updated.")
                     } else {
-                        CoreDataManager.shared.triggerSync()
+                        print("Failed to mark schema as updated.")
                     }
                 }
+            } else {
+                CoreDataManager.shared.triggerSync()
+            }
+        }
+        
         return true
     }
+    
     // MARK: UISceneSession Lifecycle
     private func isFirstLaunch() -> Bool {
         return !UserDefaults.standard.bool(forKey: "hasLaunchedBefore")

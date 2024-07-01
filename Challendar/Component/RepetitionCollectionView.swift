@@ -95,15 +95,10 @@ class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollection
             }
             selectedDates = [0]
         }
-//        if selectedDates.contains(indexPath.row) {
-//            selectedDates.removeAll { $0 == indexPath.row }
-//        } 
         else {
             if selectedDates.contains(0){
                 collectionView.deselectItem(at: IndexPath.init(row: 0, section: 0), animated: true)
-            }
-            selectedDates.removeAll {
-                $0 == 0
+                selectedDates = []
             }
             selectedDates.append(indexPath.row)
         }
@@ -113,11 +108,6 @@ class RepetitionCollectionView: UIView, UICollectionViewDataSource, UICollection
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        if selectedDates.contains(indexPath.row) {
-//            selectedDates.removeAll { $0 == indexPath.row }
-//        } else {
-//            selectedDates.append(indexPath.row)
-//        }
         selectedDates.removeAll { $0 == indexPath.row }
         
         if selectedDates.isEmpty {

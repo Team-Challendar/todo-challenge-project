@@ -55,10 +55,9 @@ class Todo : Hashable{
     }
     
     private func initializeCompletedDictionary() {
-        print(repetition)
         completed = [:]
         guard let startDate = startDate, let endDate = endDate else { return }
-        let days = endDate.daysBetween(startDate)+1
+        let days = endDate.daysBetween(startDate)
         for day in 0...days {
             let date = startDate.addingDays(day)!
 

@@ -79,28 +79,35 @@ class CoreDataManager {
     func triggerSync() {
         fetchHistoryAndUpdateContext()
     }
-    
+    func resetHistoryToken() {
+        UserDefaults.standard.removeObject(forKey: "lastHistoryToken")
+    }
     // 변경 사항 가져와서 컨텍스트 업데이트
     private func fetchHistoryAndUpdateContext() {
         context.perform {
             do {
-                // 변경 사항 가져오기
+                // 히스토리 토큰이 유효하지 않을 경우 초기화
+                if self.lastHistoryToken == nil {
+                    self.resetHistoryToken()
+                }
+
                 let fetchRequest = NSPersistentHistoryChangeRequest.fetchHistory(after: self.lastHistoryToken)
                 if let historyResult = try self.context.execute(fetchRequest) as? NSPersistentHistoryResult,
                    let transactions = historyResult.result as? [NSPersistentHistoryTransaction] {
                     for transaction in transactions {
                         self.context.mergeChanges(fromContextDidSave: transaction.objectIDNotification())
                     }
-                    // 마지막 토큰 업데이트
                     self.lastHistoryToken = transactions.last?.token
                 }
                 try self.context.save()
-                NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil, userInfo: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("CoreDataChanged"), object: nil)
                 DispatchQueue.main.async {
                     WidgetCenter.shared.reloadTimelines(ofKind: "ChallendarWidget")
                 }
             } catch {
                 print("Failed to process remote change notification: \(error)")
+                // 오류가 발생하면 히스토리 토큰을 재설정
+                self.resetHistoryToken()
             }
         }
     }
@@ -129,33 +136,31 @@ class CoreDataManager {
     func scheduleNotificationsForTodo(todo: Todo) {
         guard let reminderTime = todo.reminderTime else { return }
         let calendar = Calendar.current
-        
-        let startDate = todo.startDate ?? Date()
-        let endDate = todo.endDate ?? Date()
-        let repetitionDays = todo.repetition
+
         var notificationIdentifiers = [String]()
         
-        for dayOffset in stride(from: 0, to: calendar.dateComponents([.day], from: startDate, to: endDate).day!, by: 1) {
-            guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: startDate) else { continue }
-            let weekday = calendar.component(.weekday, from: targetDate)
-            if repetitionDays.contains(weekday) {
-                var reminderDateComponents = calendar.dateComponents([.year, .month, .day], from: targetDate)
-                let reminderTimeComponents = calendar.dateComponents([.hour, .minute], from: reminderTime)
-                reminderDateComponents.hour = reminderTimeComponents.hour
-                reminderDateComponents.minute = reminderTimeComponents.minute
-                
-                guard let finalReminderDate = calendar.date(from: reminderDateComponents) else { continue }
-                
-                let identifier = "Todo_\(todo.id?.uuidString ?? UUID().uuidString)_\(dayOffset)"
+        for (date, _) in todo.completed {
+            var reminderDateComponents = calendar.dateComponents([.year, .month, .day], from: date)
+            let reminderTimeComponents = calendar.dateComponents([.hour, .minute], from: reminderTime)
+            reminderDateComponents.hour = reminderTimeComponents.hour
+            reminderDateComponents.minute = reminderTimeComponents.minute
+
+            if let finalReminderDate = calendar.date(from: reminderDateComponents) {
+                let identifier = "Todo_\(todo.id?.uuidString ?? UUID().uuidString)_\(date)"
                 notificationIdentifiers.append(identifier)
-                sendLocalNotification(title: "\(todo.title)를 수행해야해요!", body: todo.isChallenge ? "오늘의 챌린지를 지금 바로 확인해보세요" :  "오늘의 계획을 지금 바로 확인해보세요", triggerDate: finalReminderDate, identifier: identifier)
-                
+                sendLocalNotification(
+                    title: "\(todo.title)를 수행해야해요!",
+                    body: todo.isChallenge ? "오늘의 챌린지를 지금 바로 확인해보세요!" : "오늘의 계획을 지금 바로 확인해보세요!",
+                    triggerDate: finalReminderDate,
+                    identifier: identifier
+                )
             }
         }
+
         if let todoID = todo.id, let todoModel = fetchTodoById(id: todoID) {
-                todoModel.notificationIdentifiers = notificationIdentifiers
-                saveContext()
-            }
+            todoModel.notificationIdentifiers = notificationIdentifiers
+            saveContext()
+        }
     }
     
     // CRUD Operations
