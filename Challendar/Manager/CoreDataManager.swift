@@ -101,6 +101,7 @@ class CoreDataManager {
     
     // 로컬 알림 생성 메서드
     func sendLocalNotification(title: String, body: String, seconds: Double, identifier: String) {
+        
         let content = UNMutableNotificationContent()
 //        content.title = "Data Updated"
 //        content.body = "Data has been synchronized with CloudKit."
@@ -108,13 +109,56 @@ class CoreDataManager {
         content.body = body
         content.sound = UNNotificationSound.default
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: [.hour, .minute], from: timePicker.date repeats: true)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: [.hour, .minute], from: Todo.date repeats: true)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
     
+    func scheduleNotification(newTodo: Todo) {
+        guard let reminderTime = newTodo.reminderTime else { return }
+        
+        if newTodo.reminderTime != nil {
+            if newTodo.isChallenge == true {    // 챌린지
+                let content = UNMutableNotificationContent()
+                content.title = "\(newTodo.title)를 수행해야해요!"
+                content.body = "오늘의 챌린지를 지금 바로 확인해보세요"
+                content.sound = UNNotificationSound.default
+                
+                let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTime)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request) { error in
+                    if let error = error {
+                        print("Failed to schedule notification: \(error)")
+                    } else {
+                        print("Notification scheduled for \(newTodo.title) at \(String(describing: newTodo.reminderTime))")
+                    }
+                }
+            } else {        // 계획
+                let content = UNMutableNotificationContent()
+                content.title = "\(newTodo.title)를 수행해야해요!"
+                content.body = "오늘의 계획을 지금 바로 확인해보세요"
+                content.sound = UNNotificationSound.default
+                
+                let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTime)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+                
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request) { error in
+                    if let error = error {
+                        print("Failed to schedule notification: \(error)")
+                    } else {
+                        print("Notification scheduled for \(newTodo.title) at \(String(describing: newTodo.reminderTime))")
+                    }
+                }
+            }
+        }
+    }
     
     // CRUD Operations
     
