@@ -137,6 +137,10 @@
 		B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA762C10D60000926B53 /* DailyViewController.swift */; };
 		B90CAA7B2C10DD3300926B53 /* TodoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */; };
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
+		B9C62E492C2E397B00988DB2 /* AcknowList in Frameworks */ = {isa = PBXBuildFile; productRef = B9C62E482C2E397B00988DB2 /* AcknowList */; };
+		B9C62E4B2C2E439100988DB2 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = B9C62E4A2C2E439000988DB2 /* Package.resolved */; };
+		B9C62E4F2C2ECEDE00988DB2 /* Acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9C62E4E2C2ECEDD00988DB2 /* Acknowledgements.plist */; };
+		B9C62E512C2ED92C00988DB2 /* UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9C62E502C2ED92C00988DB2 /* UITableViewController.swift */; };
 		B9EFF60F2C1B1B2E00503165 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */; };
 		B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */; };
 		DE15E4972C2ADEF60080F3F4 /* CrudTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */; };
@@ -298,6 +302,9 @@
 		B90CAA762C10D60000926B53 /* DailyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyViewController.swift; sourceTree = "<group>"; };
 		B90CAA7A2C10DD3300926B53 /* TodoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCollectionViewCell.swift; sourceTree = "<group>"; };
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
+		B9C62E4A2C2E439000988DB2 /* Package.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Package.resolved; path = Challendar.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
+		B9C62E4E2C2ECEDD00988DB2 /* Acknowledgements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Acknowledgements.plist; path = Settings.bundle/Acknowledgements.plist; sourceTree = SOURCE_ROOT; };
+		B9C62E502C2ED92C00988DB2 /* UITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewController.swift; sourceTree = "<group>"; };
 		B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBtnNew.swift; sourceTree = "<group>"; };
 		DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrudTestViewController.swift; sourceTree = "<group>"; };
@@ -319,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1472ADE52C08404D00145668 /* RxSwift in Frameworks */,
+				B9C62E492C2E397B00988DB2 /* AcknowList in Frameworks */,
 				1472ADE32C08404D00145668 /* RxCocoa in Frameworks */,
 				1472ADE82C08406D00145668 /* RAMAnimatedTabBarController in Frameworks */,
 				14C97F2C2C0A1D1600819B27 /* FSCalendar in Frameworks */,
@@ -388,6 +396,7 @@
 		1472AD9F2C082A0F00145668 /* Challendar */ = {
 			isa = PBXGroup;
 			children = (
+				B9C62E4E2C2ECEDD00988DB2 /* Acknowledgements.plist */,
 				14C3FA192C0C9EA700ACAFB6 /* Challendar.entitlements */,
 				14C3FA0D2C0C7CFF00ACAFB6 /* Manager */,
 				1472ADED2C0850C200145668 /* Component */,
@@ -618,6 +627,7 @@
 				2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */,
 				14F4DB112C19874A00B5CE45 /* UICollectionViewCellExtension.swift */,
 				14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */,
+				B9C62E502C2ED92C00988DB2 /* UITableViewController.swift */,
 				14386F232C2524A900F2BD22 /* PickerView.swift */,
 			);
 			path = Extension;
@@ -673,6 +683,7 @@
 				14C97F2B2C0A1D1600819B27 /* FSCalendar */,
 				141744D82C1821C8002335F7 /* Lottie */,
 				142052D22C1BFB5E00BC4831 /* MarkdownView */,
+				B9C62E482C2E397B00988DB2 /* AcknowList */,
 			);
 			productName = Challendar;
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
@@ -730,6 +741,7 @@
 				14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				141744D72C1821C8002335F7 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 				142052D12C1BFB5E00BC4831 /* XCRemoteSwiftPackageReference "MarkdownView" */,
+				B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */,
 			);
 			productRefGroup = 1472AD9E2C082A0F00145668 /* Products */;
 			projectDirPath = "";
@@ -754,7 +766,9 @@
 				142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */,
 				1472ADC92C082B8300145668 /* Pretendard-ExtraBold.ttf in Resources */,
 				1472ADCA2C082B8300145668 /* Pretendard-ExtraLight.ttf in Resources */,
+				B9C62E4F2C2ECEDE00988DB2 /* Acknowledgements.plist in Resources */,
 				1472ADCD2C082B8300145668 /* Pretendard-Regular.ttf in Resources */,
+				B9C62E4B2C2E439100988DB2 /* Package.resolved in Resources */,
 				1472ADC82C082B8300145668 /* Pretendard-Bold.ttf in Resources */,
 				1472ADCF2C082B8300145668 /* Pretendard-Thin.ttf in Resources */,
 				1472ADC72C082B8300145668 /* Pretendard-Black.ttf in Resources */,
@@ -851,6 +865,7 @@
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
 				1412AB712C2D34FD00575E6F /* IntArrayTransformer.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
+				B9C62E512C2ED92C00988DB2 /* UITableViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
 				14B755C62C2BE2F000B69ABB /* AppIntent.swift in Sources */,
 				2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */,
@@ -1301,6 +1316,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vtourraine/AcknowList.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1338,6 +1361,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 14C97F2A2C0A1D1600819B27 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		B9C62E482C2E397B00988DB2 /* AcknowList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9C62E472C2E397B00988DB2 /* XCRemoteSwiftPackageReference "AcknowList" */;
+			productName = AcknowList;
 		};
 /* End XCSwiftPackageProductDependency section */
 
