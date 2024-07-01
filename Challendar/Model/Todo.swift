@@ -108,12 +108,18 @@ class Todo : Hashable{
     }
     
     func setReminderTime(hour: Int, minute: Int) {
-//        reminderTime = DateComponents(hour: hour, minute: minute)
+        var dateComponents = DateComponents()
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+        let calendar = Calendar.current
+        reminderTime = calendar.date(from: dateComponents)
     }
     
     func getReminderTime() -> Date? {
         return reminderTime
     }
+    
+
     
     func getPercentageToToday() -> Double {
         let today = Date()

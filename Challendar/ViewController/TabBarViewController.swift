@@ -10,7 +10,6 @@ import RAMAnimatedTabBarController
 
 class TabBarViewController: RAMAnimatedTabBarController {
     var previousIndex: Int = 0
-//    
 //    var tabsItem = [RAMAnimatedTabBarItem()]
 //    var navs : [UINavigationController] = []
 //    var tabs : [TabModel] = [
