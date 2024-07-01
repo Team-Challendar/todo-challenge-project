@@ -56,10 +56,6 @@
 		1472ADFB2C08868100145668 /* AddPhotoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFA2C08868100145668 /* AddPhotoButton.swift */; };
 		1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */; };
 		1489D4862C2AFA60003791A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAC2C082A1000145668 /* Assets.xcassets */; };
-		1489D4882C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
-		1489D4892C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
-		1489D48B2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */; };
-		1489D48C2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */; };
 		149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F52C0B024E00D63368 /* BaseViewController.swift */; };
 		149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F92C0B065200D63368 /* UIViewControllerExtension.swift */; };
 		149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */; };
@@ -122,6 +118,8 @@
 		14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B560852C2A978700DED1EB /* Assets.xcassets */; };
 		14FDB6C02C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6BF2C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift */; };
 		14FDB6C22C328A9100C3F8FE /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */; };
+		14FDB6C72C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */; };
+		14FDB6C82C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
@@ -229,8 +227,6 @@
 		1472ADF82C087B5900145668 /* EditTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTitleLabel.swift; sourceTree = "<group>"; };
 		1472ADFA2C08868100145668 /* AddPhotoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoButton.swift; sourceTree = "<group>"; };
 		1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoImageView.swift; sourceTree = "<group>"; };
-		1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SUITE-Bold.ttf"; path = "../../../../../../Downloads/SUITE-ttf/SUITE-Bold.ttf"; sourceTree = "<group>"; };
-		1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-BoldItalic.ttf"; path = "../../../../../../Downloads/Roboto/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		149228F52C0B024E00D63368 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		149228F92C0B065200D63368 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
@@ -282,6 +278,8 @@
 		14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		14FDB6BF2C32808E00C3F8FE /* EditTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditTodoBottomSheetViewController.swift; path = Challendar/ViewController/EditTodoBottomSheetViewController.swift; sourceTree = SOURCE_ROOT; };
 		14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
+		14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Bold.ttf"; sourceTree = "<group>"; };
+		14FDB6C92C329C8D00C3F8FE /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -477,8 +475,8 @@
 		1472ADD02C082B8600145668 /* Font */ = {
 			isa = PBXGroup;
 			children = (
-				1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */,
-				1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */,
+				14FDB6C92C329C8D00C3F8FE /* Roboto-BoldItalic.ttf */,
+				14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */,
 				1472ADC62C082B8300145668 /* Pretendard */,
 			);
 			path = Font;
@@ -741,6 +739,7 @@
 			files = (
 				1472ADCC2C082B8300145668 /* Pretendard-Medium.ttf in Resources */,
 				1472ADAD2C082A1000145668 /* Assets.xcassets in Resources */,
+				14FDB6C72C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */,
 				1472ADCE2C082B8300145668 /* Pretendard-SemiBold.ttf in Resources */,
 				1472ADB02C082A1000145668 /* Base in Resources */,
 				14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */,
@@ -754,8 +753,6 @@
 				1472ADCF2C082B8300145668 /* Pretendard-Thin.ttf in Resources */,
 				1472ADC72C082B8300145668 /* Pretendard-Black.ttf in Resources */,
 				1472ADCB2C082B8300145668 /* Pretendard-Light.ttf in Resources */,
-				1489D48B2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */,
-				1489D4882C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -763,9 +760,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1489D4892C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */,
+				14FDB6C82C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */,
 				1489D4862C2AFA60003791A0 /* Assets.xcassets in Resources */,
-				1489D48C2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */,
 				14B560862C2A978700DED1EB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
