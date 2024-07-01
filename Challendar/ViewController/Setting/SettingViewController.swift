@@ -220,7 +220,7 @@ extension SettingViewController: UITableViewDelegate {
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     }
                 }else{
-                    show(EmptyViewController(), sender: self)
+//                    show(EmptyViewController(), sender: self)
                 }
             case .shareItem(let model):
                 if model.menuTitle == "문의하기" {

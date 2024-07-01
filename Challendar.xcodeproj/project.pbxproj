@@ -120,8 +120,9 @@
 		14FDB6C22C328A9100C3F8FE /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */; };
 		14FDB6C72C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */; };
 		14FDB6C82C329C7A00C3F8FE /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */; };
-		2E41FAA02C32B2E600CDA22D /* CardViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E41FA9F2C32B2E600CDA22D /* CardViewCell.swift */; };
 		14FDB6CB2C32B6F900C3F8FE /* StringArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6CA2C32B6F900C3F8FE /* StringArrayTransformer.swift */; };
+		14FDB6CD2C32C29400C3F8FE /* StringArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6CA2C32B6F900C3F8FE /* StringArrayTransformer.swift */; };
+		2E41FAA02C32B2E600CDA22D /* CardViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E41FA9F2C32B2E600CDA22D /* CardViewCell.swift */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
@@ -281,8 +282,8 @@
 		14FDB6C12C328A9100C3F8FE /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
 		14FDB6C62C329C7A00C3F8FE /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SUITE-Bold.ttf"; sourceTree = "<group>"; };
 		14FDB6C92C329C8D00C3F8FE /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
-		2E41FA9F2C32B2E600CDA22D /* CardViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewCell.swift; sourceTree = "<group>"; };
 		14FDB6CA2C32B6F900C3F8FE /* StringArrayTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringArrayTransformer.swift; sourceTree = "<group>"; };
+		2E41FA9F2C32B2E600CDA22D /* CardViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewCell.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -893,6 +894,7 @@
 				14B560912C2A987500DED1EB /* TodoModel+CoreDataClass.swift in Sources */,
 				14B560942C2A991900DED1EB /* DateExtension.swift in Sources */,
 				1412AB732C2E89A600575E6F /* IntArrayTransformer.swift in Sources */,
+				14FDB6CD2C32C29400C3F8FE /* StringArrayTransformer.swift in Sources */,
 				14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
 				1412AB722C2E89A400575E6F /* DictionaryTransformer.swift in Sources */,
 				14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */,
