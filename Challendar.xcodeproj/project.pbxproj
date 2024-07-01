@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1412AB6F2C2D31B000575E6F /* DictionaryTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */; };
+		1412AB712C2D34FD00575E6F /* IntArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */; };
+		1412AB722C2E89A400575E6F /* DictionaryTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */; };
+		1412AB732C2E89A600575E6F /* IntArrayTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */; };
 		141744D92C1821C8002335F7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 141744D82C1821C8002335F7 /* Lottie */; };
 		141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */; };
 		142052C42C1BDC1C00BC4831 /* NoticeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142052C32C1BDC1C00BC4831 /* NoticeModel.swift */; };
@@ -19,7 +23,6 @@
 		14386F242C2524A900F2BD22 /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F232C2524A900F2BD22 /* PickerView.swift */; };
 		14386F262C2586BE00F2BD22 /* CustomAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */; };
 		14386F282C25941F00F2BD22 /* CustomPickerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */; };
-		1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		1472ADA32C082A0F00145668 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA22C082A0F00145668 /* SceneDelegate.swift */; };
 		1472ADAB2C082A0F00145668 /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
 		1472ADAD2C082A1000145668 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAC2C082A1000145668 /* Assets.xcassets */; };
@@ -52,7 +55,11 @@
 		1472ADF92C087B5900145668 /* EditTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADF82C087B5900145668 /* EditTitleLabel.swift */; };
 		1472ADFB2C08868100145668 /* AddPhotoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFA2C08868100145668 /* AddPhotoButton.swift */; };
 		1472ADFD2C08B1AE00145668 /* PhotoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */; };
-		1479C8F72C214D0D00183C34 /* Transformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1479C8F62C214D0D00183C34 /* Transformer.swift */; };
+		1489D4862C2AFA60003791A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1472ADAC2C082A1000145668 /* Assets.xcassets */; };
+		1489D4882C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
+		1489D4892C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */; };
+		1489D48B2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */; };
+		1489D48C2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */; };
 		149228F62C0B024E00D63368 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F52C0B024E00D63368 /* BaseViewController.swift */; };
 		149228FA2C0B065200D63368 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228F92C0B065200D63368 /* UIViewControllerExtension.swift */; };
 		149228FC2C0B100A00D63368 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */; };
@@ -65,6 +72,24 @@
 		14AAA9092C0E217E0085E22F /* ChallengePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */; };
 		14AAA90B2C0E231D0085E22F /* Speech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90A2C0E231C0085E22F /* Speech.swift */; };
 		14AAA90E2C0E3D450085E22F /* DateRangeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */; };
+		14B5607C2C2A978600DED1EB /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14379BB02C2A909C00808968 /* WidgetKit.framework */; };
+		14B5607D2C2A978600DED1EB /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14379BB22C2A909D00808968 /* SwiftUI.framework */; };
+		14B560802C2A978600DED1EB /* ChallendarWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B5607F2C2A978600DED1EB /* ChallendarWidgetBundle.swift */; };
+		14B560822C2A978600DED1EB /* ChallendarWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560812C2A978600DED1EB /* ChallendarWidget.swift */; };
+		14B560842C2A978600DED1EB /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560832C2A978600DED1EB /* AppIntent.swift */; };
+		14B560862C2A978700DED1EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B560852C2A978700DED1EB /* Assets.xcassets */; };
+		14B5608A2C2A978700DED1EB /* ChallendarWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		14B5608F2C2A986800DED1EB /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA0E2C0C7D0A00ACAFB6 /* CoreDataManager.swift */; };
+		14B560902C2A986F00DED1EB /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA152C0C8B0F00ACAFB6 /* Todo.swift */; };
+		14B560912C2A987500DED1EB /* TodoModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA102C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift */; };
+		14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C3FA112C0C7F7C00ACAFB6 /* TodoModel+CoreDataProperties.swift */; };
+		14B560932C2A987E00DED1EB /* Challendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA92C082A0F00145668 /* Challendar.xcdatamodeld */; };
+		14B560942C2A991900DED1EB /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 149228FD2C0B1CE500D63368 /* DateExtension.swift */; };
+		14B560C12C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */; };
+		14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */; };
+		14B755C62C2BE2F000B69ABB /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560832C2A978600DED1EB /* AppIntent.swift */; };
+		14B755C72C2BE2F300B69ABB /* ChallendarWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B560812C2A978600DED1EB /* ChallendarWidget.swift */; };
+		14B755C92C2BE32300B69ABB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1472ADA02C082A0F00145668 /* AppDelegate.swift */; };
 		14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */; };
 		14BB8F042C1013E000FA92E8 /* TodoCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */; };
 		14BB8F062C1019BC00FA92E8 /* TodoCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB8F052C1019BC00FA92E8 /* TodoCalendarView.swift */; };
@@ -94,6 +119,9 @@
 		14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */; };
 		14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */; };
 		14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */; };
+		14FDB6B92C319E8100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
+		14FDB6BA2C319E9100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
+		14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B560852C2A978700DED1EB /* Assets.xcassets */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
 		2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */; };
@@ -101,7 +129,6 @@
 		2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */; };
 		2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */; };
 		2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */; };
-		2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */; };
 		B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */; };
 		B90CAA6D2C10C8AE00926B53 /* PickerBtnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */; };
 		B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */; };
@@ -112,6 +139,7 @@
 		B90CAA7D2C10E23500926B53 /* TodoSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */; };
 		B9EFF60F2C1B1B2E00503165 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */; };
 		B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */; };
+		DE15E4972C2ADEF60080F3F4 /* CrudTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */; };
 		DE6BA04E2C12D1A300C35260 /* DetailCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */; };
 		DE6EBEA32C0F15B0002F6800 /* ChallengeDateCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */; };
 		DE6EBEA52C0F187E002F6800 /* ChallengeListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */; };
@@ -124,7 +152,33 @@
 		DEDEE2912C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDEE28E2C0DEA47006AD1C6 /* PhotoCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		14B560882C2A978700DED1EB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1472AD952C082A0F00145668 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14B5607A2C2A978600DED1EB;
+			remoteInfo = ChallendarWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		14379BC42C2A909E00808968 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				14B5608A2C2A978700DED1EB /* ChallendarWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryTransformer.swift; sourceTree = "<group>"; };
+		1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntArrayTransformer.swift; sourceTree = "<group>"; };
 		141744DA2C188681002335F7 /* DailyGaugeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyGaugeCollectionViewCell.swift; sourceTree = "<group>"; };
 		142052C32C1BDC1C00BC4831 /* NoticeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeModel.swift; sourceTree = "<group>"; };
 		142052C52C1BE08700BC4831 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
@@ -132,6 +186,8 @@
 		142052D42C1BFC8000BC4831 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		1433C08E2C2346CF006DC0E3 /* NewCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCalendarView.swift; sourceTree = "<group>"; };
 		1433C0902C245DC7006DC0E3 /* AlarmPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPickerView.swift; sourceTree = "<group>"; };
+		14379BB02C2A909C00808968 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		14379BB22C2A909D00808968 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		14386F232C2524A900F2BD22 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		14386F252C2586BE00F2BD22 /* CustomAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlarmView.swift; sourceTree = "<group>"; };
 		14386F272C25941F00F2BD22 /* CustomPickerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerRowView.swift; sourceTree = "<group>"; };
@@ -169,7 +225,8 @@
 		1472ADF82C087B5900145668 /* EditTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTitleLabel.swift; sourceTree = "<group>"; };
 		1472ADFA2C08868100145668 /* AddPhotoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoButton.swift; sourceTree = "<group>"; };
 		1472ADFC2C08B1AE00145668 /* PhotoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoImageView.swift; sourceTree = "<group>"; };
-		1479C8F62C214D0D00183C34 /* Transformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transformer.swift; sourceTree = "<group>"; };
+		1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SUITE-Bold.ttf"; path = "../../../../../../Downloads/SUITE-ttf/SUITE-Bold.ttf"; sourceTree = "<group>"; };
+		1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Roboto-BoldItalic.ttf"; path = "../../../../../../Downloads/Roboto/Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
 		149228F52C0B024E00D63368 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		149228F92C0B065200D63368 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		149228FB2C0B100A00D63368 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
@@ -182,6 +239,21 @@
 		14AAA9082C0E217E0085E22F /* ChallengePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengePopUpView.swift; sourceTree = "<group>"; };
 		14AAA90A2C0E231C0085E22F /* Speech.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speech.swift; sourceTree = "<group>"; };
 		14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeDelegate.swift; sourceTree = "<group>"; };
+		14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChallendarWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		14B5607F2C2A978600DED1EB /* ChallendarWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallendarWidgetBundle.swift; sourceTree = "<group>"; };
+		14B560812C2A978600DED1EB /* ChallendarWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallendarWidget.swift; sourceTree = "<group>"; };
+		14B560832C2A978600DED1EB /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		14B560852C2A978700DED1EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14B560872C2A978700DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14B5608E2C2A97EE00DED1EB /* ChallendarWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChallendarWidgetExtension.entitlements; sourceTree = "<group>"; };
+		14B560A02C2AAA4E00DED1EB /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		14B560A32C2AAA4E00DED1EB /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		14B560A52C2AAA4E00DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		14B560AE2C2AAA4E00DED1EB /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
+		14B560B12C2AAA4E00DED1EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		14B560B32C2AAA4E00DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonIntent.swift; sourceTree = "<group>"; };
 		14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarCell.swift; sourceTree = "<group>"; };
 		14BB8F052C1019BC00FA92E8 /* TodoCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoCalendarView.swift; sourceTree = "<group>"; };
@@ -211,13 +283,13 @@
 		14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
 		14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataForWidget.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSuccessViewController.swift; sourceTree = "<group>"; };
 		2EC58EE12C25AFE800E457B8 /* RepetitionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionView.swift; sourceTree = "<group>"; };
 		2EC58EE32C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionCollectionViewCell.swift; sourceTree = "<group>"; };
-		2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		B90CAA6A2C10C8A200926B53 /* PeriodPickerButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeriodPickerButtonView.swift; sourceTree = "<group>"; };
 		B90CAA6C2C10C8AE00926B53 /* PickerBtnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerBtnView.swift; sourceTree = "<group>"; };
 		B90CAA6E2C10C8B900926B53 /* YZCenterFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YZCenterFlowLayout.swift; sourceTree = "<group>"; };
@@ -228,6 +300,7 @@
 		B90CAA7C2C10E23500926B53 /* TodoSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoSectionHeader.swift; sourceTree = "<group>"; };
 		B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		B9EFF6102C1B4AF000503165 /* FloatingBtnNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBtnNew.swift; sourceTree = "<group>"; };
+		DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrudTestViewController.swift; sourceTree = "<group>"; };
 		DE6BA04D2C12D1A300C35260 /* DetailCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCalendarCell.swift; sourceTree = "<group>"; };
 		DE6EBEA22C0F15B0002F6800 /* ChallengeDateCalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChallengeDateCalendarView.swift; path = Challendar/Component/ChallengeDateCalendarView.swift; sourceTree = SOURCE_ROOT; };
 		DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListDetailViewController.swift; sourceTree = "<group>"; };
@@ -255,16 +328,50 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		14B560782C2A978600DED1EB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14B5607D2C2A978600DED1EB /* SwiftUI.framework in Frameworks */,
+				14B5607C2C2A978600DED1EB /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1412AB6D2C2D319F00575E6F /* Transformer */ = {
+			isa = PBXGroup;
+			children = (
+				1412AB6E2C2D31B000575E6F /* DictionaryTransformer.swift */,
+				1412AB702C2D34FD00575E6F /* IntArrayTransformer.swift */,
+			);
+			path = Transformer;
+			sourceTree = "<group>";
+		};
+		14379BAF2C2A909C00808968 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				14379BB02C2A909C00808968 /* WidgetKit.framework */,
+				14379BB22C2A909D00808968 /* SwiftUI.framework */,
+				14B560A02C2AAA4E00DED1EB /* Intents.framework */,
+				14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1472AD942C082A0F00145668 = {
 			isa = PBXGroup;
 			children = (
+				14B5608E2C2A97EE00DED1EB /* ChallendarWidgetExtension.entitlements */,
 				142052D42C1BFC8000BC4831 /* Settings.bundle */,
 				14AAA90C2C0E3D3A0085E22F /* Protocol */,
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
+				14B5607E2C2A978600DED1EB /* ChallendarWidget */,
+				14B560A22C2AAA4E00DED1EB /* ChallendarWidgetIntent */,
+				14B560AD2C2AAA4E00DED1EB /* ChallendarWidgetIntentUI */,
+				14379BAF2C2A909C00808968 /* Frameworks */,
 				1472AD9E2C082A0F00145668 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -273,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				1472AD9D2C082A0F00145668 /* Challendar.app */,
+				14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -301,7 +409,6 @@
 				14C97F132C098BE500819B27 /* AddTodo */,
 				1472ADD72C083AD400145668 /* SearchViewController.swift */,
 				DEA8E4C82C19C3F3007AAF93 /* EditTodoViewController.swift */,
-				2EC58EE52C29B82600E457B8 /* EditTodoBottomSheetViewController.swift */,
 				2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
 				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
@@ -313,6 +420,7 @@
 				DE6EBEA42C0F187E002F6800 /* ChallengeListDetailViewController.swift */,
 				B9EFF60E2C1B1B2E00503165 /* LaunchScreenViewController.swift */,
 				149943FF2C1C0D82005EE584 /* EditChallengeCheckViewController.swift */,
+				DE15E4962C2ADEF60080F3F4 /* CrudTestViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -320,6 +428,7 @@
 		1472ADB82C082B1B00145668 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				1412AB6D2C2D319F00575E6F /* Transformer */,
 				14C97F2F2C0A4ABE00819B27 /* Extension */,
 				1472ADD02C082B8600145668 /* Font */,
 				1472ADA02C082A0F00145668 /* AppDelegate.swift */,
@@ -327,7 +436,6 @@
 				1472ADAC2C082A1000145668 /* Assets.xcassets */,
 				1472ADEB2C0840EB00145668 /* CustomBounceAnimation.swift */,
 				1472ADF22C086AE300145668 /* Constraint.swift */,
-				1479C8F62C214D0D00183C34 /* Transformer.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -368,6 +476,8 @@
 		1472ADD02C082B8600145668 /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				1489D4872C2AFEDD003791A0 /* SUITE-Bold.ttf */,
+				1489D48A2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf */,
 				1472ADC62C082B8300145668 /* Pretendard */,
 			);
 			path = Font;
@@ -418,6 +528,39 @@
 				14AAA90D2C0E3D450085E22F /* DateRangeDelegate.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		14B5607E2C2A978600DED1EB /* ChallendarWidget */ = {
+			isa = PBXGroup;
+			children = (
+				14B5607F2C2A978600DED1EB /* ChallendarWidgetBundle.swift */,
+				14B560812C2A978600DED1EB /* ChallendarWidget.swift */,
+				14B560832C2A978600DED1EB /* AppIntent.swift */,
+				14B560852C2A978700DED1EB /* Assets.xcassets */,
+				14B560872C2A978700DED1EB /* Info.plist */,
+				14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */,
+				14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */,
+			);
+			path = ChallendarWidget;
+			sourceTree = "<group>";
+		};
+		14B560A22C2AAA4E00DED1EB /* ChallendarWidgetIntent */ = {
+			isa = PBXGroup;
+			children = (
+				14B560A32C2AAA4E00DED1EB /* IntentHandler.swift */,
+				14B560A52C2AAA4E00DED1EB /* Info.plist */,
+			);
+			path = ChallendarWidgetIntent;
+			sourceTree = "<group>";
+		};
+		14B560AD2C2AAA4E00DED1EB /* ChallendarWidgetIntentUI */ = {
+			isa = PBXGroup;
+			children = (
+				14B560AE2C2AAA4E00DED1EB /* IntentViewController.swift */,
+				14B560B02C2AAA4E00DED1EB /* MainInterface.storyboard */,
+				14B560B32C2AAA4E00DED1EB /* Info.plist */,
+			);
+			path = ChallendarWidgetIntentUI;
 			sourceTree = "<group>";
 		};
 		14C3FA0D2C0C7CFF00ACAFB6 /* Manager */ = {
@@ -514,10 +657,12 @@
 				1472AD992C082A0F00145668 /* Sources */,
 				1472AD9A2C082A0F00145668 /* Frameworks */,
 				1472AD9B2C082A0F00145668 /* Resources */,
+				14379BC42C2A909E00808968 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				14B560892C2A978700DED1EB /* PBXTargetDependency */,
 			);
 			name = Challendar;
 			packageProductDependencies = (
@@ -533,6 +678,23 @@
 			productReference = 1472AD9D2C082A0F00145668 /* Challendar.app */;
 			productType = "com.apple.product-type.application";
 		};
+		14B5607A2C2A978600DED1EB /* ChallendarWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14B5608B2C2A978700DED1EB /* Build configuration list for PBXNativeTarget "ChallendarWidgetExtension" */;
+			buildPhases = (
+				14B560772C2A978600DED1EB /* Sources */,
+				14B560782C2A978600DED1EB /* Frameworks */,
+				14B560792C2A978600DED1EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChallendarWidgetExtension;
+			productName = ChallendarWidgetExtension;
+			productReference = 14B5607B2C2A978600DED1EB /* ChallendarWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -544,6 +706,9 @@
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					1472AD9C2C082A0F00145668 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					14B5607A2C2A978600DED1EB = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
@@ -571,6 +736,7 @@
 			projectRoot = "";
 			targets = (
 				1472AD9C2C082A0F00145668 /* Challendar */,
+				14B5607A2C2A978600DED1EB /* ChallendarWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -584,6 +750,7 @@
 				1472ADAD2C082A1000145668 /* Assets.xcassets in Resources */,
 				1472ADCE2C082B8300145668 /* Pretendard-SemiBold.ttf in Resources */,
 				1472ADB02C082A1000145668 /* Base in Resources */,
+				14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */,
 				142052D52C1BFC8000BC4831 /* Settings.bundle in Resources */,
 				1472ADC92C082B8300145668 /* Pretendard-ExtraBold.ttf in Resources */,
 				1472ADCA2C082B8300145668 /* Pretendard-ExtraLight.ttf in Resources */,
@@ -592,6 +759,19 @@
 				1472ADCF2C082B8300145668 /* Pretendard-Thin.ttf in Resources */,
 				1472ADC72C082B8300145668 /* Pretendard-Black.ttf in Resources */,
 				1472ADCB2C082B8300145668 /* Pretendard-Light.ttf in Resources */,
+				1489D48B2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */,
+				1489D4882C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14B560792C2A978600DED1EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1489D4892C2AFEDD003791A0 /* SUITE-Bold.ttf in Resources */,
+				1489D4862C2AFA60003791A0 /* Assets.xcassets in Resources */,
+				1489D48C2C2AFF5C003791A0 /* Roboto-BoldItalic.ttf in Resources */,
+				14B560862C2A978700DED1EB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,8 +786,10 @@
 				B9EFF6112C1B4AF000503165 /* FloatingBtnNew.swift in Sources */,
 				2EBF439A2C188C8200064A77 /* StrikeThroughExtension.swift in Sources */,
 				1472ADF32C086AE300145668 /* Constraint.swift in Sources */,
+				DE15E4972C2ADEF60080F3F4 /* CrudTestViewController.swift in Sources */,
 				149228FE2C0B1CE500D63368 /* DateExtension.swift in Sources */,
 				14C97F372C0A4B2500819B27 /* UITextFieldExtension.swift in Sources */,
+				1412AB6F2C2D31B000575E6F /* DictionaryTransformer.swift in Sources */,
 				1472ADF12C0868E600145668 /* EmptyView.swift in Sources */,
 				14E1EF8A2C1605A4004E1F2B /* TodoCalendarViewDifferableViewController.swift in Sources */,
 				14C3FA162C0C8B0F00ACAFB6 /* Todo.swift in Sources */,
@@ -650,7 +832,6 @@
 				1472ADEA2C0840AD00145668 /* TabBarViewController.swift in Sources */,
 				14AAA9092C0E217E0085E22F /* ChallengePopUpView.swift in Sources */,
 				14C3FA0F2C0C7D0A00ACAFB6 /* CoreDataManager.swift in Sources */,
-				1472ADA12C082A0F00145668 /* AppDelegate.swift in Sources */,
 				14C97F312C0A4AD000819B27 /* UIFontExtension.swift in Sources */,
 				1472ADF72C08720900145668 /* TodoTitleTextField.swift in Sources */,
 				149944002C1C0D82005EE584 /* EditChallengeCheckViewController.swift in Sources */,
@@ -661,21 +842,23 @@
 				B90CAA712C10C9AC00926B53 /* DailyCollectionViewCell.swift in Sources */,
 				B90CAA772C10D60000926B53 /* DailyViewController.swift in Sources */,
 				DEDEE2902C0DEA47006AD1C6 /* CalendarCell.swift in Sources */,
+				14B560C12C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
 				B90CAA6F2C10C8B900926B53 /* YZCenterFlowLayout.swift in Sources */,
+				14B755C92C2BE32300B69ABB /* AppDelegate.swift in Sources */,
 				1472ADEF2C0850D700145668 /* FloatingButton.swift in Sources */,
 				149FEFAF2C122C2300CDDC23 /* UILabelExtension.swift in Sources */,
 				141744DB2C188681002335F7 /* DailyGaugeCollectionViewCell.swift in Sources */,
-				1479C8F72C214D0D00183C34 /* Transformer.swift in Sources */,
 				14C97F292C09DB5600819B27 /* DateCalendarView.swift in Sources */,
+				1412AB712C2D34FD00575E6F /* IntArrayTransformer.swift in Sources */,
 				1472ADDA2C083AFE00145668 /* ChallengeListViewController.swift in Sources */,
 				1472ADDE2C083B2A00145668 /* AddTodoViewController.swift in Sources */,
+				14B755C62C2BE2F000B69ABB /* AppIntent.swift in Sources */,
 				2EC58EE22C25AFE800E457B8 /* RepetitionCollectionView.swift in Sources */,
 				2EC58EE42C25B9FF00E457B8 /* RepetitionCollectionViewCell.swift in Sources */,
 				14C6AFE32C0F12AA0016B80C /* SettingViewController.swift in Sources */,
 				14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */,
 				DEA8E4C92C19C3F3007AAF93 /* EditTodoViewController.swift in Sources */,
 				B90CAA6B2C10C8A200926B53 /* PeriodPickerButtonView.swift in Sources */,
-				2EC58EE62C29B82600E457B8 /* EditTodoBottomSheetViewController.swift in Sources */,
 				2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */,
 				14C3FA122C0C7F7C00ACAFB6 /* TodoModel+CoreDataClass.swift in Sources */,
 				142052C82C1BE73000BC4831 /* NoticeTableViewCell.swift in Sources */,
@@ -694,6 +877,8 @@
 				14B91FED2C1B641D00164F80 /* CloudKitManager.swift in Sources */,
 				1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
+				14B755C72C2BE2F300B69ABB /* ChallendarWidget.swift in Sources */,
+				14FDB6BA2C319E9100C3F8FE /* CoreDataForWidget.swift in Sources */,
 				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
 				DEDEE28B2C0DEA20006AD1C6 /* SearchCollectionViewCell.swift in Sources */,
@@ -701,7 +886,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		14B560772C2A978600DED1EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14B560802C2A978600DED1EB /* ChallendarWidgetBundle.swift in Sources */,
+				14B560822C2A978600DED1EB /* ChallendarWidget.swift in Sources */,
+				14B5608F2C2A986800DED1EB /* CoreDataManager.swift in Sources */,
+				14B560912C2A987500DED1EB /* TodoModel+CoreDataClass.swift in Sources */,
+				14B560942C2A991900DED1EB /* DateExtension.swift in Sources */,
+				1412AB732C2E89A600575E6F /* IntArrayTransformer.swift in Sources */,
+				14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
+				1412AB722C2E89A400575E6F /* DictionaryTransformer.swift in Sources */,
+				14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */,
+				14FDB6B92C319E8100C3F8FE /* CoreDataForWidget.swift in Sources */,
+				14B560932C2A987E00DED1EB /* Challendar.xcdatamodeld in Sources */,
+				14B560842C2A978600DED1EB /* AppIntent.swift in Sources */,
+				14B560902C2A986F00DED1EB /* Todo.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		14B560892C2A978700DED1EB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14B5607A2C2A978600DED1EB /* ChallendarWidgetExtension */;
+			targetProxy = 14B560882C2A978700DED1EB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1472ADAE2C082A1000145668 /* LaunchScreen.storyboard */ = {
@@ -711,6 +924,14 @@
 				146A27B22C20B63400624239 /* ko */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		14B560B02C2AAA4E00DED1EB /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14B560B12C2AAA4E00DED1EB /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -840,11 +1061,12 @@
 		1472ADB52C082A1000145668 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -859,7 +1081,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -868,7 +1090,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarAppStore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Challendar Development";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -882,11 +1104,12 @@
 		1472ADB62C082A1000145668 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Challendar/Challendar.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -901,7 +1124,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -910,7 +1133,83 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarAppStore;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Challendar Development";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		14B5608C2C2A978700DED1EB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ChallendarWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChallendarWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChallendarWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.ChallendarWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarWidget;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		14B5608D2C2A978700DED1EB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ChallendarWidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 27X8924SNC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChallendarWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChallendarWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seungwon.Challendar.ChallendarWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = ChallendarWidget;
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -938,6 +1237,15 @@
 			buildConfigurations = (
 				1472ADB52C082A1000145668 /* Debug */,
 				1472ADB62C082A1000145668 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		14B5608B2C2A978700DED1EB /* Build configuration list for PBXNativeTarget "ChallendarWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14B5608C2C2A978700DED1EB /* Debug */,
+				14B5608D2C2A978700DED1EB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

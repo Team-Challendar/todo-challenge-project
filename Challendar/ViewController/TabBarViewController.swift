@@ -10,7 +10,12 @@ import RAMAnimatedTabBarController
 
 class TabBarViewController: RAMAnimatedTabBarController {
     var previousIndex: Int = 0
-    
+//    
+//    var tabsItem = [RAMAnimatedTabBarItem()]
+//    var navs : [UINavigationController] = []
+//    var tabs : [TabModel] = [
+//        TabModel(title: "CRUD", image: .challenge0,selectedImage: . challenge1, vc: CrudTestViewController()),
+//    ]
     var tabsItem = [RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem(),RAMAnimatedTabBarItem()]
     var navs : [UINavigationController] = []
     var tabs : [TabModel] = [

@@ -65,7 +65,10 @@ class ChallengeListViewController: BaseViewController {
     
     // CoreData가 변경되었을 때 데이터를 다시 로드
     @objc func coreDataChanged(_ notification: Notification) {
-        loadData()
+        DispatchQueue.main.async{
+            self.loadData()
+        }
+       
     }
 
     // 체크박스가 탭되었을 때마다 모든 챌린지가 완료되었는지 확인

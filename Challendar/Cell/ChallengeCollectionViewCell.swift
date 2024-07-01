@@ -414,7 +414,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     
     // 퍼센티지 계산 로직 추가
     private func updatePercentage(for item: Todo) {
-        let completedCount = item.completed.filter { $0 }.count
+        let completedCount = item.completed.filter { $0.value }.count
         item.percentage = Double(completedCount) / Double(item.completed.count)
         
         //        print("Todo \(item.title) completed status updated: \(item.percentage)")
