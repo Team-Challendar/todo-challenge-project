@@ -106,16 +106,56 @@ class CoreDataManager {
     }
     
     // 로컬 알림 생성 메서드
-    private func sendLocalNotification() {
+    func sendLocalNotification(title: String, body: String, triggerDate: Date, identifier: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Data Updated"
-        content.body = "Data has been synchronized with CloudKit."
+        content.title = title
+        content.body = body
         content.sound = UNNotificationSound.default
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let triggerDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: triggerDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
         
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Failed to schedule notification: \(error)")
+            } else {
+                print("Notification scheduled with identifier: \(identifier)")
+            }
+        }
+    }
+    
+    func scheduleNotificationsForTodo(todo: Todo) {
+        guard let reminderTime = todo.reminderTime else { return }
+        let calendar = Calendar.current
+        
+        let startDate = todo.startDate ?? Date()
+        let endDate = todo.endDate ?? Date()
+        let repetitionDays = todo.repetition
+        var notificationIdentifiers = [String]()
+        
+        for dayOffset in stride(from: 0, to: calendar.dateComponents([.day], from: startDate, to: endDate).day!, by: 1) {
+            guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: startDate) else { continue }
+            let weekday = calendar.component(.weekday, from: targetDate)
+            if repetitionDays.contains(weekday) {
+                var reminderDateComponents = calendar.dateComponents([.year, .month, .day], from: targetDate)
+                let reminderTimeComponents = calendar.dateComponents([.hour, .minute], from: reminderTime)
+                reminderDateComponents.hour = reminderTimeComponents.hour
+                reminderDateComponents.minute = reminderTimeComponents.minute
+                
+                guard let finalReminderDate = calendar.date(from: reminderDateComponents) else { continue }
+                
+                let identifier = "Todo_\(todo.id?.uuidString ?? UUID().uuidString)_\(dayOffset)"
+                notificationIdentifiers.append(identifier)
+                sendLocalNotification(title: "\(todo.title)를 수행해야해요!", body: todo.isChallenge ? "오늘의 챌린지를 지금 바로 확인해보세요" :  "오늘의 계획을 지금 바로 확인해보세요", triggerDate: finalReminderDate, identifier: identifier)
+                
+            }
+        }
+        if let todoID = todo.id, let todoModel = fetchTodoById(id: todoID) {
+                todoModel.notificationIdentifiers = notificationIdentifiers
+                saveContext()
+            }
     }
     
     // CRUD Operations
@@ -141,6 +181,7 @@ class CoreDataManager {
             todo.isCompleted = newTodo.iscompleted
             self.saveContext()
         }
+        scheduleNotificationsForTodo(todo: newTodo)
     }
     
     // Save context
@@ -258,10 +299,51 @@ class CoreDataManager {
         todoToUpdate.reminderTime = newReminderTime
         
         saveContext()
+        
+        removeNotificationsForTodoId(id: id)
+        if let todo = convertTodoModelToTodo(todoToUpdate) {
+            scheduleNotificationsForTodo(todo: todo)
+        }
     }
+    
+    func convertTodoModelToTodo(_ model: TodoModel) -> Todo? {
+        let images: [UIImage]? = {
+            if let imageData = model.images, let decodedData = try? JSONDecoder().decode([Data].self, from: imageData) {
+                return decodedData.compactMap { UIImage(data: $0) }
+            }
+            return []
+        }()
+        return Todo(
+            id: model.id,
+            title: model.title,
+            memo: model.memo,
+            startDate: model.startDate,
+            endDate: model.endDate,
+            completed: model.completed,
+            isChallenge: model.isChallenge,
+            percentage: model.percentage,
+            images: images,
+            iscompleted: model.isCompleted,
+            repetition: model.repetition,
+            reminderTime: model.reminderTime
+        )
+    }
+
+    
+    func removeNotificationsForTodoId(id: UUID) {
+        guard let todo = fetchTodoById(id: id), let identifiers = todo.notificationIdentifiers else {
+            print("No notifications to remove for Todo ID \(id)")
+            return
+        }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        todo.notificationIdentifiers = []
+        saveContext()
+    }
+
     
     // Delete
     func deleteTodoById(id: UUID) {
+        removeNotificationsForTodoId(id: id)
         guard let todoToDelete = fetchTodoById(id: id) else {
             print("Todo not found")
             return
@@ -271,6 +353,7 @@ class CoreDataManager {
             self.context.delete(todoToDelete)
             self.saveContext()
         }
+        
     }
     
     func deleteAllTodos() {

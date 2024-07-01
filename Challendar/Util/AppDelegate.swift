@@ -1,18 +1,17 @@
 import UIKit
+import UserNotifications
 import WidgetKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         ValueTransformer.setValueTransformer(DictionaryTransformer(), forName: NSValueTransformerName("DictionaryTransformer"))
         
         ValueTransformer.setValueTransformer(IntArrayTransformer(), forName: NSValueTransformerName("IntArrayTransformer"))
         
-        
+        ValueTransformer.setValueTransformer(StringArrayTransformer(), forName: NSValueTransformerName("StringArrayTransformer"))
+
         if #available(iOS 15, *) {
             // MARK: Navigation bar appearance
             let navigationBarAppearance = UINavigationBarAppearance()
@@ -28,6 +27,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
         }
         
+        // 앱 실행 시 사용자에게 알림 허용 권한 -> CoreDataManager
+         UNUserNotificationCenter.current().delegate = self
+        
+         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in}
+         )
+        
+//        // Fetch todos on app launch
+//        CoreDataManager.shared.triggerSync()
+//        
+//        // 주기적인 동기화 설정
+//        startSyncTimer()
+
         // Fetch todos on app launch
         
         CloudKitHelper.shared.checkSchemaUpdateStatus { isSchemaUpdated in
@@ -68,5 +80,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    // Foreground 알림 설정
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.list, .banner, .sound])
+    }
+    
+    // Background, Foreground 알림에 대해 사용자가 반응했을 때 실행
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
     }
 }

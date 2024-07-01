@@ -39,7 +39,7 @@ class AlarmPickerView : UIView{
         pickerView.datePickerMode = .time
         pickerView.preferredDatePickerStyle = .wheels
         pickerView.locale = Locale(identifier: "en_GB")
-        pickerView.minuteInterval = 5
+        pickerView.minuteInterval = 1
         // 서브뷰 수정
         
     }
