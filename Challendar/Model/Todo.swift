@@ -25,8 +25,6 @@ class Todo : Hashable{
     }
     public var completed: [Date: Bool] = [:]{
         didSet{
-            print("COMPLETED")
-            print(completed)
             updatePercentage()
         }
     }

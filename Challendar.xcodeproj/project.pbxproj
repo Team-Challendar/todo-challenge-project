@@ -119,8 +119,6 @@
 		14F4DB162C1A009D00B5CE45 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */; };
 		14F4DB182C1A035200B5CE45 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */; };
 		14F4DB1C2C1A180400B5CE45 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */; };
-		14FDB6B92C319E8100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
-		14FDB6BA2C319E9100C3F8FE /* CoreDataForWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */; };
 		14FDB6BB2C31BC6800C3F8FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14B560852C2A978700DED1EB /* Assets.xcassets */; };
 		2EAB04262C2290E800298F1C /* AddTodoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */; };
 		2EB5F3FD2C12AAF1006808A6 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */; };
@@ -250,13 +248,6 @@
 		14B560852C2A978700DED1EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14B560872C2A978700DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14B5608E2C2A97EE00DED1EB /* ChallendarWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChallendarWidgetExtension.entitlements; sourceTree = "<group>"; };
-		14B560A02C2AAA4E00DED1EB /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
-		14B560A32C2AAA4E00DED1EB /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
-		14B560A52C2AAA4E00DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
-		14B560AE2C2AAA4E00DED1EB /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
-		14B560B12C2AAA4E00DED1EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		14B560B32C2AAA4E00DED1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonIntent.swift; sourceTree = "<group>"; };
 		14B91FEC2C1B641D00164F80 /* CloudKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitManager.swift; sourceTree = "<group>"; };
 		14BB8F032C1013E000FA92E8 /* TodoCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCalendarCell.swift; sourceTree = "<group>"; };
@@ -287,7 +278,6 @@
 		14F4DB152C1A009D00B5CE45 /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
 		14F4DB172C1A035200B5CE45 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		14F4DB1B2C1A180400B5CE45 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
-		14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataForWidget.swift; sourceTree = "<group>"; };
 		2E738AC02C1082E0006F4A26 /* StrikeThroughExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrikeThroughExtension.swift; sourceTree = "<group>"; };
 		2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		2EB5F3FC2C12AAF1006808A6 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
@@ -362,8 +352,6 @@
 			children = (
 				14379BB02C2A909C00808968 /* WidgetKit.framework */,
 				14379BB22C2A909D00808968 /* SwiftUI.framework */,
-				14B560A02C2AAA4E00DED1EB /* Intents.framework */,
-				14B560AB2C2AAA4E00DED1EB /* IntentsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -377,10 +365,9 @@
 				14C3FA142C0C854200ACAFB6 /* CoreData */,
 				1472AD9F2C082A0F00145668 /* Challendar */,
 				14B5607E2C2A978600DED1EB /* ChallendarWidget */,
-				14B560A22C2AAA4E00DED1EB /* ChallendarWidgetIntent */,
-				14B560AD2C2AAA4E00DED1EB /* ChallendarWidgetIntentUI */,
 				14379BAF2C2A909C00808968 /* Frameworks */,
 				1472AD9E2C082A0F00145668 /* Products */,
+				14FDB6BC2C3277AE00C3F8FE /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -548,28 +535,8 @@
 				14B560852C2A978700DED1EB /* Assets.xcassets */,
 				14B560872C2A978700DED1EB /* Info.plist */,
 				14B560C02C2ABC4D00DED1EB /* ButtonIntent.swift */,
-				14FDB6B72C319DA800C3F8FE /* CoreDataForWidget.swift */,
 			);
 			path = ChallendarWidget;
-			sourceTree = "<group>";
-		};
-		14B560A22C2AAA4E00DED1EB /* ChallendarWidgetIntent */ = {
-			isa = PBXGroup;
-			children = (
-				14B560A32C2AAA4E00DED1EB /* IntentHandler.swift */,
-				14B560A52C2AAA4E00DED1EB /* Info.plist */,
-			);
-			path = ChallendarWidgetIntent;
-			sourceTree = "<group>";
-		};
-		14B560AD2C2AAA4E00DED1EB /* ChallendarWidgetIntentUI */ = {
-			isa = PBXGroup;
-			children = (
-				14B560AE2C2AAA4E00DED1EB /* IntentViewController.swift */,
-				14B560B02C2AAA4E00DED1EB /* MainInterface.storyboard */,
-				14B560B32C2AAA4E00DED1EB /* Info.plist */,
-			);
-			path = ChallendarWidgetIntentUI;
 			sourceTree = "<group>";
 		};
 		14C3FA0D2C0C7CFF00ACAFB6 /* Manager */ = {
@@ -631,6 +598,14 @@
 				14386F232C2524A900F2BD22 /* PickerView.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		14FDB6BC2C3277AE00C3F8FE /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				B9C62E4A2C2E439000988DB2 /* Package.resolved */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		DEDEE2882C0DEA20006AD1C6 /* Cell */ = {
@@ -893,7 +868,6 @@
 				1433C0912C245DC7006DC0E3 /* AlarmPickerView.swift in Sources */,
 				1472ADEC2C0840EB00145668 /* CustomBounceAnimation.swift in Sources */,
 				14B755C72C2BE2F300B69ABB /* ChallendarWidget.swift in Sources */,
-				14FDB6BA2C319E9100C3F8FE /* CoreDataForWidget.swift in Sources */,
 				2EBF439F2C194C1200064A77 /* ChallengeSuccessViewController.swift in Sources */,
 				14C97F392C0A4B3600819B27 /* UIViewExtension.swift in Sources */,
 				DEDEE28B2C0DEA20006AD1C6 /* SearchCollectionViewCell.swift in Sources */,
@@ -914,7 +888,6 @@
 				14B560C22C2ABC4D00DED1EB /* ButtonIntent.swift in Sources */,
 				1412AB722C2E89A400575E6F /* DictionaryTransformer.swift in Sources */,
 				14B560922C2A987700DED1EB /* TodoModel+CoreDataProperties.swift in Sources */,
-				14FDB6B92C319E8100C3F8FE /* CoreDataForWidget.swift in Sources */,
 				14B560932C2A987E00DED1EB /* Challendar.xcdatamodeld in Sources */,
 				14B560842C2A978600DED1EB /* AppIntent.swift in Sources */,
 				14B560902C2A986F00DED1EB /* Todo.swift in Sources */,
@@ -939,14 +912,6 @@
 				146A27B22C20B63400624239 /* ko */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		14B560B02C2AAA4E00DED1EB /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				14B560B12C2AAA4E00DED1EB /* Base */,
-			);
-			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
