@@ -1,10 +1,6 @@
 import Foundation
 
 extension Date {
-    var weekdayIndex: Int {
-        return Calendar.current.component(.weekday, from: self) - 1 // 0부터 시작하도록 조정
-    }
-    
     func startOfDay() -> Date? {
         let calendar = Calendar.current
         var components = calendar.dateComponents([.year, .month, .day], from: self)

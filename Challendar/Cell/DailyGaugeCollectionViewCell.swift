@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-// 계획 탭 날짜 게이지바 Cell
+
 class DailyGaugeCollectionViewCell: UICollectionViewCell {
     static var identifier = "DailyGaugeCollectionViewCell"
     var gaugeBar : UIProgressView?

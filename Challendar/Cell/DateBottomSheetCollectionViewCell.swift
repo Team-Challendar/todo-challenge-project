@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-// Add / Edit 페이지에서 오늘까지/내일까지 Cell 용
+
 class DateBottomSheetCollectionViewCell: UICollectionViewCell {
     static var identifier = "DateBottomSheetCollectionViewCell"
     var textLabel = UILabel()

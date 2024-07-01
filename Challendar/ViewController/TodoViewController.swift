@@ -2,34 +2,34 @@ import UIKit
 import SnapKit
 import Lottie
 
-// TodoViewController는 BaseViewController를 상속받아 할 일 목록을 관리
 class TodoViewController: BaseViewController {
-    private var todoItems: [Todo] = [] // 모든 할 일 항목
-    private var completedTodos: [Todo] = [] // 완료된 할 일 항목
-    private var incompleteTodos: [Todo] = [] // 미완료된 할 일 항목
-    private var isPickerViewExpaned = false // 피커 뷰 확장 여부
+    private var todoItems: [Todo] = []
+    private var completedTodos: [Todo] = []
+    private var incompleteTodos: [Todo] = []
+    private var isPickerViewExpaned = false
     
     private var collectionView: UICollectionView!
     private let pickerBtnView = PickerBtnView()
     var dimmedView = UIView()
     var button = UIButton()
     
-    // 뷰가 로드되었을 때 호출되는 메서드
+    
+    
     override func viewDidLoad() {
-        setupCollectionView() // 컬렉션 뷰 설정
+        setupCollectionView()
         super.viewDidLoad()
-        configureFloatingButton() // 플로팅 버튼 설정
-        configureNav(title: "최신순") // 네비게이션 바 설정
-        loadData() // 데이터 로드
+        configureFloatingButton()
+        configureNav(title: "최신순")
+
+        loadData()
     }
     
-    // 네비게이션 바를 설정하는 함수
-    func configureNav(title: String) {
+    func configureNav(title: String){
         button = configureCalendarButtonNavigationBar(title: title)
         button.addTarget(self, action: #selector(titleTouched), for: .touchUpInside)
     }
     
-    // 데이터를 로드하고 필터 및 정렬을 수행
+    // 리로드
     private func loadData() {
         self.todoItems = CoreDataManager.shared.fetchTodos()
         filterTodos()
@@ -39,23 +39,20 @@ class TodoViewController: BaseViewController {
         }
     }
     
-    // UI를 설정하는 함수
     override func configureUI() {
         super.configureUI()
         view.backgroundColor = .secondary900
         dimmedView.backgroundColor = UIColor.secondary900.withAlphaComponent(0)
     }
     
-    // 유틸리티 설정 함수
     override func configureUtil() {
         super.configureUtil()
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(titleTouched))
         dimmedView.addGestureRecognizer(dimmedTap)
         dimmedView.isUserInteractionEnabled = true
+        
         pickerBtnView.delegate = self
     }
-    
-    // 제약 조건을 설정하는 함수
     override func configureConstraint() {
         super.configureConstraint()
         view.addSubview(pickerBtnView)
@@ -71,17 +68,17 @@ class TodoViewController: BaseViewController {
             let statusBarHeight = windowScene.statusBarManager?.statusBarFrame.height ?? 0
             let navigationBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
             let totalOffset = navigationBarHeight + statusBarHeight
-            pickerBtnView.snp.makeConstraints {
+            pickerBtnView.snp.makeConstraints{
                 $0.top.equalToSuperview().offset(totalOffset)
                 $0.leading.equalToSuperview().offset(16)
                 $0.height.equalTo(0)
                 $0.width.equalTo(96)
             }
         }
+        
     }
     
-    // 버튼 뷰를 보여주는 함수
-    func showButtonView() {
+    func showButtonView(){
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
             window.addSubview(dimmedView)
@@ -92,23 +89,20 @@ class TodoViewController: BaseViewController {
         }
     }
     
-    // 버튼 뷰를 제거하는 함수
-    func removeButtonView() {
+    func removeButtonView(){
         dimmedView.removeFromSuperview()
     }
     
-    // 노티피케이션 센터를 설정하는 함수
     override func configureNotificationCenter() {
         super.configureNotificationCenter()
         NotificationCenter.default.addObserver(self, selector: #selector(coreDataUpdated), name: NSNotification.Name("CoreDataChanged"), object: nil)
     }
     
-    // Core Data가 업데이트되었을 때 호출되는 함수
     @objc func coreDataUpdated(_ notification: Notification) {
         loadData()
     }
     
-    // 섹션 헤더를 설정하는 함수
+    // 섹션 헤더 변경
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.register(TodoCollectionViewCell.self, forCellWithReuseIdentifier: "TodoCollectionViewCell")
@@ -118,17 +112,16 @@ class TodoViewController: BaseViewController {
         collectionView.dataSource = self
         view.addSubview(collectionView)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 83, right: 0)
-        collectionView.scrollIndicatorInsets = collectionView.contentInset
+                collectionView.scrollIndicatorInsets = collectionView.contentInset
     }
     
-    // 컴포지셔널 레이아웃을 생성하는 함수
+    // 컴포지셔널 레이아웃, createTodoSection 호출
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             return self.createTodoSection(itemHeight: .absolute(75))
         }
     }
-    
-    // todoItems를 완료 및 미완료 항목으로 필터링
+    // iscompleted 값으로 필터링
     private func filterTodos() {
         let filteredItems = todoItems.filter {
             $0.endDate == nil
@@ -136,18 +129,17 @@ class TodoViewController: BaseViewController {
         completedTodos = filteredItems.filter {
             $0.iscompleted
         }
+        
         incompleteTodos = filteredItems.filter {
             !$0.iscompleted
         }
     }
     
-    // 완료 및 미완료 항목을 최근 시작 날짜 기준으로 정렬
     private func sortByRecentStartDate() {
         completedTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
         incompleteTodos.sort { ($0.startDate ?? Date.distantPast) > ($1.startDate ?? Date.distantPast) }
     }
     
-    // 제목이 터치되었을 때 호출되는 함수
     @objc func titleTouched() {
         guard let arrow = button.viewWithTag(1001) as? LottieAnimationView else { return }
         
@@ -156,21 +148,22 @@ class TodoViewController: BaseViewController {
             arrow.play(fromProgress: 1.0, toProgress: 0.0, loopMode: .none)
             isPickerViewExpaned.toggle()
             UIView.animate(withDuration: 0.3, animations: {
-                self.pickerBtnView.snp.updateConstraints {
+                self.pickerBtnView.snp.updateConstraints{
                     $0.height.equalTo(0)
                 }
                 self.dimmedView.backgroundColor = UIColor.black.withAlphaComponent(0)
                 self.view.layoutIfNeeded()
-            }, completion: { _ in
+            },completion: {_ in
                 self.removeButtonView()
             })
-        } else {
+            
+        }else{
             arrow.animationSpeed = 8
             arrow.play(fromProgress: 0.0, toProgress: 1.0, loopMode: .none)
             self.showButtonView()
             isPickerViewExpaned.toggle()
             UIView.animate(withDuration: 0.3, animations: {
-                self.pickerBtnView.snp.updateConstraints {
+                self.pickerBtnView.snp.updateConstraints{
                     $0.height.equalTo(88.5)
                 }
                 self.dimmedView.backgroundColor = UIColor.black.withAlphaComponent(dimmedViewAlpha)
@@ -180,20 +173,18 @@ class TodoViewController: BaseViewController {
     }
 }
 
-// UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, SectionHeaderDelegate 프로토콜을 채택
 extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, SectionHeaderDelegate {
-    
     // 완료 할 일, 미완료 할 일 값 유무에 따른 섹션 수
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return [completedTodos, incompleteTodos].filter { !$0.isEmpty }.count
     }
     
-    // 섹션 내 아이템 수를 반환하는 함수
+    // 이건 따로 메소드를 만들어 섹션 아이템 수를 계산했습니다.
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return getTodoItem(for: section).count
     }
     
-    // 셀을 구성하는 함수
+    // 셀에 값을 불러오는 부분입니다.
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TodoCollectionViewCell", for: indexPath) as? TodoCollectionViewCell else {
             return UICollectionViewCell()
@@ -206,7 +197,7 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         return cell
     }
     
-    // 섹션 헤더를 구성하는 함수
+    // 섹션 헤더 델리게이트와 값을 불러오는 부분입니다.
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
@@ -223,36 +214,34 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         return header
     }
     
-    // 각 인덱스 값으로 해당하는 섹션 헤더 값을 반환하는 함수
+    // 각 인덱스 값으로 해당하는 섹션 헤더 값을 반환합니다.
     private func getSectionHeaderTitle(for section: Int) -> String {
         let nonEmptySections = [incompleteTodos, completedTodos].enumerated().filter { !$0.element.isEmpty }
         return nonEmptySections[section].offset == 0 ? "할 일" : "완료된 항목"
     }
     
-    // 인덱스 값에 해당하는 섹션의 todo 배열을 반환하는 함수
+    // 마찬가지로 인덱스 값에 해당하는 섹션의 todo 배열을 반환합니다. 이걸로 섹션 내의 todo 아이템들을 계산합니다.
     private func getTodoItem(for section: Int) -> [Todo] {
         let nonEmptySections = [incompleteTodos, completedTodos].enumerated().filter { !$0.element.isEmpty }
         return nonEmptySections[section].element
     }
     
-    // 아이템 크기를 설정하는 함수
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 75)
     }
     
-    // 섹션 간격을 설정하는 함수
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 8
     }
     
-    // 섹션 헤더 크기를 설정하는 함수
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 25)
     }
     
-    // 지우기 버튼이 눌렸을 때 호출되는 함수
+    // 지우기 버튼 눌렀을 때, 각 섹션의 인덱스에 따라 완료, 미완료 항목에 해당하는 투두를 deleteTodoById로 삭제합니다.
     func didTapDeleteButton(in section: Int) {
-        let nonEmptySections = [incompleteTodos, completedTodos].enumerated().filter { !$0.element.isEmpty }
+        let nonEmptySections = [ incompleteTodos, completedTodos ].enumerated().filter { !$0.element.isEmpty }
         let sectionIndex = nonEmptySections[section].offset
         
         let todosToDelete: [Todo]
@@ -270,9 +259,7 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
 }
 
-// TodoViewCellDelegate 프로토콜을 채택
-extension TodoViewController: TodoViewCellDelegate {
-    // 편집 컨테이너가 탭되었을 때 호출되는 함수
+extension TodoViewController : TodoViewCellDelegate {
     func editContainerTapped(in cell: TodoCollectionViewCell) {
         let editVC = EditTodoViewController()
         editVC.todoId = cell.todoItem?.id
@@ -284,9 +271,7 @@ extension TodoViewController: TodoViewCellDelegate {
     }
 }
 
-// PickerBtnViewDelegate 프로토콜을 채택
-extension TodoViewController: PickerBtnViewDelegate {
-    // 최신순 버튼이 눌렸을 때 호출되는 함수
+extension TodoViewController : PickerBtnViewDelegate {
     func didTapLatestOrderButton() {
         configureNav(title: "최신순")
         todoItems.reverse()
@@ -298,11 +283,10 @@ extension TodoViewController: PickerBtnViewDelegate {
         titleTouched()
     }
     
-    // 등록순 버튼이 눌렸을 때 호출되는 함수
     func didTapRegisteredOrderButton() {
         configureNav(title: "등록순")
         loadData() // 데이터를 다시 불러와서 원래 순서로 복원
         titleTouched()
+        
     }
 }
-

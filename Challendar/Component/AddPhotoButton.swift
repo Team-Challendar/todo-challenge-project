@@ -6,7 +6,7 @@
 //
 
 import UIKit
-// 사진 추가 버튼 UIButton
+
 class AddPhotoButton: UIButton {
 
     override init(frame: CGRect) {
