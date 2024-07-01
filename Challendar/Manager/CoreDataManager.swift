@@ -100,17 +100,21 @@ class CoreDataManager {
     }
     
     // 로컬 알림 생성 메서드
-    private func sendLocalNotification() {
+    func sendLocalNotification(title: String, body: String, seconds: Double, identifier: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Data Updated"
-        content.body = "Data has been synchronized with CloudKit."
+//        content.title = "Data Updated"
+//        content.body = "Data has been synchronized with CloudKit."
+        content.title = title
+        content.body = body
         content.sound = UNNotificationSound.default
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: [.hour, .minute], from: timePicker.date repeats: true)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
+    
     
     // CRUD Operations
     

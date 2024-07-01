@@ -31,6 +31,7 @@ class ChallengeListViewController: BaseViewController {
         configureFloatingButton()
         configureTitleNavigationBar(title: "챌린지 리스트")
         loadData()
+//        CoreDataManager.shared.sendLocalNotification(title: "안녕하세요", body: "푸시 알림 테스트입니다.", seconds: 2, identifier: "PUSH_TEST")
     }
     
     override func configureUI() {
