@@ -22,6 +22,7 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     var dateLabel: UILabel!
     var stateLabel: UILabel!
     var progressBar: UIProgressView!
+    var alertImageView: UIImageView!
     private var container : UIView!
     private var deleteContainer : UIView!
     private var deleteButtonImage : UIImageView!
@@ -135,6 +136,12 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         dateLabel.font = .pretendardMedium(size: 12)
         container.addSubview(dateLabel)
         
+        alertImageView = UIImageView()
+        alertImageView.translatesAutoresizingMaskIntoConstraints = false
+        alertImageView.image = .notification2
+        alertImageView.isHidden = true
+        container.addSubview(alertImageView)
+        
         stateLabel = UILabel()
         stateLabel.translatesAutoresizingMaskIntoConstraints = false
         stateLabel.textColor = .challendarGreen200
@@ -223,6 +230,12 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         dateLabel.snp.makeConstraints {
             $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
             $0.leading.equalTo(progressBar.snp.trailing).offset(4)
+        }
+        
+        alertImageView.snp.makeConstraints {
+            $0.bottom.equalTo(container.snp.bottom).offset(-16.5)
+            $0.leading.equalTo(dateLabel.snp.trailing).offset(4)
+            $0.width.height.equalTo(14)
         }
         
         checkButton.snp.makeConstraints {
@@ -366,17 +379,17 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     @objc private func checkButtonTapped() {
         if self.swipeLeft {
             self.didSwipeCellRight()
-        }else if self.swipeRight{
+        } else if self.swipeRight {
             self.didSwipeCellLeft()
-        }else{
+        } else {
             guard let item = todoItem else { return }
-            if item.todayCompleted()! {
+            if item.completed[Date().startOfDay() ?? Date()] ?? false {
                 item.toggleTodaysCompletedState()
                 checkButton.isSelected.toggle()
                 updateTitleLabel()
                 self.updatePercentage(for: item)
                 self.updateTodoCompletion(for: item)
-            }else{
+            } else {
                 contentView.clipsToBounds = false
                 DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
                     self.didSwipeCellLeft()
@@ -396,7 +409,6 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
                 })
             }
         }
-        
     }
     
     func configure(with item: Todo) {
@@ -404,12 +416,13 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         titleLabel.text = item.title
         dateLabel.text = formatDate(item.endDate)
         stateLabel.text = calculateState(startDate: item.startDate, endDate: item.endDate)
-        updatePercentage(for: item) // Update percentage when configuring
+        updatePercentage(for: item)
         progressBar.progress = Float(item.percentage)
         
         // 오늘의 완료 여부에 따라 체크 버튼 상태 설정
-        checkButton.isSelected = item.todayCompleted() ?? false
+        checkButton.isSelected = item.completed[Date().startOfDay() ?? Date()] ?? false
         updateTitleLabel()
+        updateReminderTime(for: item)
     }
     
     // 퍼센티지 계산 로직 추가
@@ -420,19 +433,28 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
         //        print("Todo \(item.title) completed status updated: \(item.percentage)")
     }
     
+    private func updateReminderTime(for item: Todo) {
+        if item.reminderTime != nil {
+            alertImageView.isHidden = false
+        } else {
+            alertImageView.isHidden = true
+        }
+    }
+    
     private func updateTitleLabel() {
         if checkButton.isSelected {
             if let title = titleLabel.text {
-                titleLabel.attributedText = title.strikeThrough()
-                titleLabel.textColor = .secondary800
-                dateLabel.textColor = .secondary800
+                [titleLabel, dateLabel, stateLabel, progressBar, alertImageView].forEach{
+                    $0?.alpha = 0.5
+                }
             }
         } else {
             if let title = titleLabel.text {
                 titleLabel.attributedText = NSAttributedString(string: title)
             }
-            titleLabel.textColor = .challendarWhite
-            dateLabel.textColor = .secondary400
+            [titleLabel, dateLabel, stateLabel, progressBar, alertImageView].forEach{
+                $0?.alpha = 1.0
+            }
         }
     }
     
@@ -466,7 +488,12 @@ class ChallengeCollectionViewCell: UICollectionViewCell {
     }
     
     private func updateTodoCompletion(for item: Todo) {
+        // startOfDay로 수정
+        guard let startOfDay = Date().startOfDay() else { return }
+        item.completed[startOfDay] = checkButton.isSelected
+        
         CoreDataManager.shared.updateTodoById(id: item.id ?? UUID(), newCompleted: item.completed)
         NotificationCenter.default.post(name: NSNotification.Name("ButtonTapped"), object: nil, userInfo: nil)
     }
+
 }

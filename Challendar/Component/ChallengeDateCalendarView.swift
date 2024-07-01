@@ -160,7 +160,7 @@ extension ChallengeDateCalendarView : FSCalendarDelegate, FSCalendarDelegateAppe
         }
         if let completed = self.currentTodo?.todayCompleted(date: date) {
             if date < Date(){
-                return completed ? .challendarBlack : .secondary500
+                return completed ? .challendarBlack : .challendarWhite
             }else{
                 return completed ? .challendarBlack : .challendarWhite
             }

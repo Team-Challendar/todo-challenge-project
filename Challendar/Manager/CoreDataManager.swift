@@ -223,45 +223,41 @@ class CoreDataManager {
             return
         }
         
-        context.perform {
-            if let newTitle = newTitle {
-                todoToUpdate.title = newTitle
-            }
-            if let newMemo = newMemo {
-                todoToUpdate.memo = newMemo
-            }
-            if let newStartDate = newStartDate {
-                todoToUpdate.startDate = newStartDate
-            }
-            if let newEndDate = newEndDate {
-                todoToUpdate.endDate = newEndDate
-            }
-            if let newCompleted = newCompleted {
-                todoToUpdate.completed = newCompleted
-                todoToUpdate.percentage = Double(newCompleted.filter { $0.value == true }.count) / Double(newCompleted.count)
-            }
-            if let newIsChallenge = newIsChallenge {
-                todoToUpdate.isChallenge = newIsChallenge
-            }
-            if let newPercentage = newPercentage {
-                todoToUpdate.percentage = newPercentage
-            }
-            if let newImages = newImages {
-                let imageData = newImages.map { $0.pngData() }
-                todoToUpdate.images = try? JSONEncoder().encode(imageData)
-            }
-            if let newIsCompleted = newIsCompleted {
-                todoToUpdate.isCompleted = newIsCompleted
-            }
-            if let newRepetition = newRepetition {
-                todoToUpdate.repetition = newRepetition
-            }
-            if let newReminderTime = newReminderTime {
-                todoToUpdate.reminderTime = newReminderTime
-            }
-            
-            self.saveContext()
+        if let newTitle = newTitle {
+            todoToUpdate.title = newTitle
         }
+        if let newMemo = newMemo {
+            todoToUpdate.memo = newMemo
+        }
+        if let newStartDate = newStartDate {
+            todoToUpdate.startDate = newStartDate
+        }
+        if let newEndDate = newEndDate {
+            todoToUpdate.endDate = newEndDate
+        }
+        if let newCompleted = newCompleted {
+            todoToUpdate.completed = newCompleted
+            todoToUpdate.percentage = Double(newCompleted.filter{$0.value == true}.count) / Double(newCompleted.count)
+        }
+        if let newIsChallenge = newIsChallenge {
+            todoToUpdate.isChallenge = newIsChallenge
+        }
+        if let newPercentage = newPercentage {
+            todoToUpdate.percentage = newPercentage
+        }
+        if let newImages = newImages {
+            let imageData = newImages.map { $0.pngData() }
+            todoToUpdate.images = try? JSONEncoder().encode(imageData)
+        }
+        if let newIsCompleted = newIsCompleted {
+            todoToUpdate.isCompleted = newIsCompleted
+        }
+        if let newRepetition = newRepetition {
+            todoToUpdate.repetition = newRepetition
+        }
+        todoToUpdate.reminderTime = newReminderTime
+        
+        saveContext()
     }
     
     // Delete
