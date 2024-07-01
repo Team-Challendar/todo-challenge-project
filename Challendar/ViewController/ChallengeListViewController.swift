@@ -23,6 +23,8 @@ class ChallengeListViewController: BaseViewController {
     private var dateView: UIView!
     private var dayLabel: UILabel!
     private var yearLabel: UILabel!
+    
+    private var stackView: UIStackView!
     private var collectionView: UICollectionView!
     private var resetBtn: UIButton!
     
@@ -35,11 +37,17 @@ class ChallengeListViewController: BaseViewController {
 //        CoreDataManager.shared.scheduleNotification(newTodo: <#Todo#>)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadData()
+    }
+    
     override func configureUI() {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
         setupDateView()
+        setupStackView()
     }
     
     override func configureConstraint() {
@@ -67,7 +75,10 @@ class ChallengeListViewController: BaseViewController {
     
     // CoreData가 변경되었을 때 데이터를 다시 로드
     @objc func coreDataChanged(_ notification: Notification) {
-        loadData()
+        DispatchQueue.main.async{
+            self.loadData()
+        }
+       
     }
 
     // 체크박스가 탭되었을 때마다 모든 챌린지가 완료되었는지 확인
@@ -89,16 +100,22 @@ class ChallengeListViewController: BaseViewController {
     
     private func setupLayout() {
         dateView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(44)
-        }
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(dateView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
+               make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+               make.leading.trailing.equalToSuperview().inset(16)
+               make.height.equalTo(44)
+           }
+
+           stackView.snp.makeConstraints { make in
+               make.top.equalTo(dateView.snp.bottom).offset(16)
+               make.leading.trailing.equalToSuperview().inset(16)
+               make.height.equalTo(208)
+           }
+
+           collectionView.snp.makeConstraints { make in
+               make.top.equalTo(stackView.snp.bottom).offset(8)
+               make.leading.trailing.equalToSuperview()
+               make.bottom.equalToSuperview()
+           }
     }
     
     // 상단 날짜 뷰
@@ -139,6 +156,28 @@ class ChallengeListViewController: BaseViewController {
         }
     }
     
+    private func setupStackView() {
+        stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 16
+        stackView.backgroundColor = .secondary850
+        stackView.layer.cornerRadius = 20
+        stackView.layer.masksToBounds = true
+
+        view.addSubview(stackView)
+
+        let innerView = UIView()
+        innerView.backgroundColor = .clear
+
+        stackView.addArrangedSubview(innerView)
+
+        innerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(24)
+        }
+    }
+    
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout())
         collectionView.dataSource = self
@@ -162,17 +201,17 @@ class ChallengeListViewController: BaseViewController {
     // 투두 필터링: 투두 리스트를 완료, 미완료, 예정으로 필터링함
     private func filterTodos() {
         let today = Date()
-        let filteredItems = CoreDataManager.shared.fetchTodos().filter { // endDate가 오늘이거나 과거인 도전 항목
+        let filteredItems = CoreDataManager.shared.fetchTodos().filter {
             $0.isChallenge && ($0.endDate ?? today) >= today
         }
         // 왼료 도전
         completedTodos = filteredItems.filter {
-            ($0.todayCompleted(date: today) ?? false)
+            ($0.completed[Date().startOfDay() ?? Date()] ?? false)
         }
         // 미완료 도전
         incompleteTodos = filteredItems.filter {
             guard let startDate = $0.startDate else { return false }
-            return !($0.todayCompleted(date: today) ?? false) && startDate <= today
+            return !($0.completed[Date().startOfDay() ?? Date()] ?? false) && startDate <= today
         }
         // 도전 예정 항목
         upcomingTodos = filteredItems.filter {
@@ -180,6 +219,7 @@ class ChallengeListViewController: BaseViewController {
             return startDate > today
         }
     }
+
     
     // 최신순 정렬: 필터링된 항목들을 startDate 순으로 내림차순 정렬
     private func sortByRecentStartDate() {
@@ -372,12 +412,11 @@ extension ChallengeListViewController: UICollectionViewDataSource, UICollectionV
 extension ChallengeListViewController : ChallengeCollectionViewCellDelegate {
     
     func editContainerTapped(in cell: ChallengeCollectionViewCell) {
-        let editVC = EditTodoViewController()
+        let editVC = EditTodoBottomSheetViewController()
         editVC.todoId = cell.todoItem?.id
-        editVC.modalTransitionStyle = .coverVertical
-        editVC.modalPresentationStyle = .fullScreen
-        let navi = UINavigationController(rootViewController: editVC)
-        navi.modalPresentationStyle = .overFullScreen
-        self.present(navi, animated: true, completion: nil)
+        editVC.modalTransitionStyle = .crossDissolve
+        editVC.modalPresentationStyle = .overFullScreen
+        self.present(editVC, animated: true)
     }
 }
+

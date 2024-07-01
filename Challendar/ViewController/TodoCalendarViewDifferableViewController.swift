@@ -26,11 +26,12 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
     override func viewDidLoad() {
         configureCollectionView()
         super.viewDidLoad()
-        filterTodoitems(date: currentDate ?? Date())
+        self.filterTodoitems()
         configureNav(title: "달력")
         configureDataSource()
         configureFloatingButton()
     }
+    
     // UI 구성
     override func configureUI() {
         super.configureUI()
@@ -162,6 +163,7 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
         inCompletedTodo = todoItems.filter({
             $0.todayCompleted(date: date) == false
         })
+        
         days = Day.generateDaysForMonth(date: date, todos: self.todoItems)
         day = days?.first(where: {$0.date.isSameDay(as: date) })
         calendarView.dayModelForCurrentPage = days
@@ -254,9 +256,11 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
     }
     // Core Data 업데이트 알림 처리
     @objc func coreDataUpdated(){
-        todoItems = CoreDataManager.shared.fetchTodos()
-        self.filterTodoitems(date:  self.currentDate ?? Date())
-        updateDataSource() // 데이터 업데이트 메서드 호출
+        DispatchQueue.main.async {
+            self.todoItems = CoreDataManager.shared.fetchTodos()
+            self.filterTodoitems(date:  self.currentDate ?? Date())
+            self.updateDataSource() //
+        }
     }
     // 제목 터치 처리
     @objc func titleTouched() {
@@ -347,13 +351,11 @@ extension TodoCalendarViewDifferableViewController: UICollectionViewDelegate, UI
 
 extension TodoCalendarViewDifferableViewController : TodoCalendarCollectionViewCellDelegate {
     func editContainerTapped(in cell: TodoCalendarViewCell) {
-        let editVC = EditTodoViewController()
+        let editVC = EditTodoBottomSheetViewController()
         editVC.todoId = cell.todoItem?.id
-        editVC.modalTransitionStyle = .coverVertical
+        editVC.modalTransitionStyle = .crossDissolve
         editVC.modalPresentationStyle = .overFullScreen
-        let navi = UINavigationController(rootViewController: editVC)
-        navi.modalPresentationStyle = .overFullScreen
-        self.present(navi, animated: true, completion: nil)
+        self.present(editVC, animated: true)
     }
 }
 // (달력/날짜) pickerButtonView 터치 처리

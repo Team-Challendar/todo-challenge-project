@@ -30,7 +30,7 @@ class AddTodoBottomSheetViewController: UIViewController {
     var alertImageView = UIImageView()
     var alertLabel = UILabel()
     var alertPickerView = AlarmPickerView()
-    var reminderTime: Date?
+    var newReminderTime: Date?
     
     var repetitionView = UIView()
     var repetitionImageView = UIImageView()
@@ -326,6 +326,7 @@ class AddTodoBottomSheetViewController: UIViewController {
         
         repetitionLabel.snp.makeConstraints { make in
             make.leading.equalTo(repetitionImageView.snp.trailing).offset(16)
+            make.trailing.equalTo(repetitionView.snp.trailing)
             make.centerY.equalTo(repetitionView.snp.centerY)
         }
         
@@ -395,6 +396,8 @@ class AddTodoBottomSheetViewController: UIViewController {
         }
     }
     
+    private var repetitionViewTapGesture: UITapGestureRecognizer?
+    
     private func configureGestures() {
         let dimmedTapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:)))
         dimmedView.addGestureRecognizer(dimmedTapGesture)
@@ -405,10 +408,9 @@ class AddTodoBottomSheetViewController: UIViewController {
         let alertViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(alertTapped(_:)))
         alertView.addGestureRecognizer(alertViewTapGesture)
         
-        // repetitionView 탭 제스처
-        let repetitionLabelTapGesture = UITapGestureRecognizer(target: self, action: #selector(repetitionTapped(_:)))
-        repetitionLabel.addGestureRecognizer(repetitionLabelTapGesture)
-        repetitionLabel.isUserInteractionEnabled = true
+        repetitionViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(repetitionTapped(_:)))
+        repetitionView.addGestureRecognizer(repetitionViewTapGesture!)
+        repetitionView.isUserInteractionEnabled = true
         
         let repetitionImageViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(repetitionTapped(_:)))
         repetitionImageView.addGestureRecognizer(repetitionImageViewTapGesture)
@@ -452,7 +454,6 @@ class AddTodoBottomSheetViewController: UIViewController {
                 } else if view == repetitionCollectionView {
                     UIView.animate(withDuration: 0.3, animations: {
                         self.repetitionCollectionView.isHidden = true
-                        self.repetitionImageView.image = .re1
                         self.repetitionLabel.isHidden = false
                         self.repetitionLabel.snp.remakeConstraints { make in
                             make.leading.equalTo(self.repetitionImageView.snp.trailing).offset(16)
@@ -505,7 +506,6 @@ class AddTodoBottomSheetViewController: UIViewController {
                 self.alertPickerView.snp.updateConstraints { make in
                     make.height.equalTo(0)
                 }
-                self.alertImageView.image = .notification1
             } else {
                 self.alertPickerView.snp.updateConstraints { make in
                     make.height.equalTo(126)
@@ -526,7 +526,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             self.repetitionCollectionView.isHidden.toggle()
             
             if self.repetitionCollectionView.isHidden {
-                self.repetitionImageView.image = .re1
+                self.repetitionView.addGestureRecognizer(self.repetitionViewTapGesture!)
                 self.repetitionLabel.isHidden = false
                 self.repetitionLabel.snp.remakeConstraints { make in
                     make.leading.equalTo(self.repetitionImageView.snp.trailing).offset(16)
@@ -539,6 +539,7 @@ class AddTodoBottomSheetViewController: UIViewController {
                     make.centerY.equalTo(self.repetitionView.snp.centerY)
                 }
             } else {
+                self.repetitionView.removeGestureRecognizer(self.repetitionViewTapGesture!)
                 self.repetitionImageView.image = .re2
                 self.repetitionLabel.isHidden = true
                 self.repetitionCollectionView.snp.remakeConstraints { make in
@@ -553,7 +554,6 @@ class AddTodoBottomSheetViewController: UIViewController {
             self.updateUI()
         }
     }
-    
     
     @objc private func challengeCheckTapped(_ tapRecognizer: UITapGestureRecognizer) {
         view.endEditing(true)
@@ -583,7 +583,7 @@ class AddTodoBottomSheetViewController: UIViewController {
             }
         }
         if !alertPickerView.isHidden {
-            reminderTime = nil
+            alertPickerView.timeDeselected()
             UIView.animate(withDuration: 0.3, animations: {
                 self.alertPickerView.snp.updateConstraints { make in
                     make.height.equalTo(0)
@@ -611,6 +611,23 @@ class AddTodoBottomSheetViewController: UIViewController {
     @objc private func registerButtonTapped() {
         CoreDataManager.shared.createTodo(newTodo: newTodo)
         hideBottomSheet()
+        
+        print(newTodo.title, newTodo.memo, newTodo.startDate, newTodo.endDate, newTodo.completed, newTodo.isChallenge, newTodo.percentage, newTodo.iscompleted, newTodo.repetition, newTodo.reminderTime)
+        
+        let successViewController = SuccessViewController()
+        successViewController.isChallenge = newTodo.isChallenge
+        successViewController.endDate = newTodo.endDate
+        let navigationController = UINavigationController(rootViewController: successViewController)
+        navigationController.modalTransitionStyle = .coverVertical
+        navigationController.modalPresentationStyle = .overFullScreen
+        
+        self.dismiss(animated: true) {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first,
+               let rootVC = window.rootViewController as? TabBarViewController {
+                rootVC.present(navigationController, animated: true, completion: nil)
+            }
+        }
     }
     
     private func showBottomSheet() {
@@ -746,23 +763,23 @@ class AddTodoBottomSheetViewController: UIViewController {
         calendarContainerView.isChallenge = newTodo.isChallenge
         calendarContainerView.calendarView.reloadData()
         
-        if reminderTime == nil {
+        if newReminderTime == nil {
             alertLabel.text = "알림 없음"
             alertImageView.image = .notification1
             alertLabel.textColor = .secondary600
         }
         
         if alertPickerView.isHidden {
-            if reminderTime != nil {
+            if newReminderTime != nil {
                 alertImageView.image = .notification2
-                alertLabel.text = formatTime(reminderTime!)
+                alertLabel.text = formatTime(newReminderTime!)
                 alertLabel.textColor = .challendarWhite
                 cancelLabel.isHidden = true
             }
         } else {
-            if reminderTime != nil {
+            if newReminderTime != nil {
                 alertImageView.image = .notification2
-                alertLabel.text = formatTime(reminderTime!)
+                alertLabel.text = formatTime(newReminderTime!)
                 alertLabel.textColor = .alertBlue
                 cancelLabel.isHidden = false
                 cancelLabel.text = "알림 해제"
@@ -787,11 +804,27 @@ class AddTodoBottomSheetViewController: UIViewController {
             challengeCheckLabel.textColor = .secondary600
         }
         
-        // repetitinoLabel 값 표시
-        let selectedItems = selectedRepetitionDates.sorted().map { repetitionCollectionView.items[$0] }
-        repetitionLabel.text = selectedItems.isEmpty ? "반복 안 함" : selectedItems.joined(separator: ", ")
-        repetitionLabel.textColor = selectedItems.isEmpty ? UIColor.secondary600 : UIColor.challendarWhite
-        repetitionImageView.image = selectedItems.isEmpty ? UIImage.re1 : UIImage.re2
+        // repetitionLabel 업데이트
+        let selectedItems = repetitionCollectionView.selectedDates.sorted().map { repetitionCollectionView.items[$0] }
+        var formattedItems: String
+        
+        if selectedItems.contains("매일") {
+            formattedItems = "매일"
+            repetitionLabel.textColor = .secondary600
+            repetitionImageView.image = .re1
+            if !repetitionCollectionView.isHidden{
+                formattedItems = "매일"
+                repetitionImageView.image = .re2
+            }
+        } else {
+            formattedItems = selectedItems.enumerated().map { index, item in
+                index == selectedItems.count - 1 ? "\(item)요일" : item
+            }.joined(separator: ", ")
+            repetitionLabel.textColor = .challendarWhite
+            repetitionImageView.image = .re2
+        }
+        
+        repetitionLabel.text = formattedItems
         
         registerButton.setTitle(newTodo.isChallenge ? "챌린지 추가하기" : (newTodo.startDate != nil && newTodo.endDate != nil ? "계획 추가하기" : "할 일 추가하기"), for: .normal)
         registerButton.setTitleColor(newTodo.isChallenge ?  UIColor.challendarBlack : UIColor.challendarWhite, for: .normal)
@@ -843,18 +876,36 @@ extension AddTodoBottomSheetViewController: NewCalendarDelegate {
 }
 
 extension AddTodoBottomSheetViewController: AlarmPickerViewDelegate {
-    func timeDidChanged(date: Date) {
-        reminderTime = date
+    func timeDeselected() {
+        newReminderTime = nil
+        newTodo.reminderTime = newReminderTime
         updateUI()
+    }
+    
+    func timeDidChanged(date: Date) {
+        newReminderTime = date
+        newTodo.reminderTime = newReminderTime
+        updateUI()
+        print("\(String(describing: newTodo.reminderTime))")
     }
 }
 
 extension AddTodoBottomSheetViewController: RepetitionCollectionViewDelegate {
     func selectedDates(dates: [Int]) {
         if dates.contains(0){
-            newTodo.repetition = [0,1,2,3,4,5,6]
-        }else{
-            newTodo.repetition = dates.map {$0 - 1}
+            newTodo.repetition = [0,1,2,3,4,5,6,7]
+        } else {
+            if dates.contains(7){
+                var dates = dates
+                dates.removeAll(where: {
+                    $0 == 7
+                })
+                dates.append(0)
+                newTodo.repetition = dates.map {$0}
+            }else{
+                newTodo.repetition = dates.map {$0}
+            }
+            
         }
     }
     

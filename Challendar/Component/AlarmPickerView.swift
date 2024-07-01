@@ -10,6 +10,8 @@ import SnapKit
 
 protocol AlarmPickerViewDelegate {
     func timeDidChanged(date: Date)
+    
+    func timeDeselected()
 }
 class AlarmPickerView : UIView{
     let pickerView = UIDatePicker()
@@ -60,5 +62,9 @@ class AlarmPickerView : UIView{
         print(datePicker.date.dateToString())
         self.delegate?.timeDidChanged(date: datePicker.date)
     }
-
+    
+    func timeDeselected() {
+          pickerView.setDate(Date(), animated: false)
+          self.delegate?.timeDeselected()
+      }
 }

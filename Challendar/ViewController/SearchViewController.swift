@@ -65,7 +65,10 @@ class SearchViewController: BaseViewController {
     }
     // CoreData가 변경되었을 때 데이터를 다시 로드
     @objc func coreDataChanged(_ notification: Notification) {
-        reloadData()
+        DispatchQueue.main.async{
+            self.reloadData()
+        }
+        
     }
     
     // 컬렉션 뷰의 제약 조건

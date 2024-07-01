@@ -9,6 +9,10 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>IntentIntent</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Black.ttf</string>
@@ -21,6 +25,8 @@
 		<string>Pretendard-SemiBold.ttf</string>
 		<string>Pretendard-Thin.ttf</string>
 		<string>PretendardVariable.ttf</string>
+		<string>SUITE-Bold.ttf</string>
+		<string>Roboto-BoldItalic.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

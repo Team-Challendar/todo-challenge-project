@@ -25,8 +25,6 @@ class Todo : Hashable{
     }
     public var completed: [Date: Bool] = [:]{
         didSet{
-            print("COMPLETED")
-            print(completed)
             updatePercentage()
         }
     }
@@ -60,9 +58,10 @@ class Todo : Hashable{
         print(repetition)
         completed = [:]
         guard let startDate = startDate, let endDate = endDate else { return }
-        let days = endDate.daysBetween(startDate)
+        let days = endDate.daysBetween(startDate)+1
         for day in 0...days {
             let date = startDate.addingDays(day)!
+
             if repetition.contains(date.weekdayIndex) {
                 completed[date] = false
             }
@@ -76,13 +75,13 @@ class Todo : Hashable{
     }
     
     func todayCompleted(date: Date = Date()) -> Bool? {
-        return completed[date]
+        return completed[date.startOfDay()!]
     }
     
     func toggleTodaysCompletedState() {
         let today = Date()
-        if let _ = completed[today] {
-            completed[today]?.toggle()
+        if let _ = completed[today.startOfDay()!] {
+            completed[today.startOfDay()!]?.toggle()
         }
 //        if let currentStatus = completed[today] {
 //            completed[today] = !currentStatus
@@ -90,8 +89,8 @@ class Todo : Hashable{
     }
     
     func toggleDatesCompletedState(date: Date) {
-        if let _ = completed[date] {
-            completed[date]?.toggle()
+        if let _ = completed[date.startOfDay()!] {
+            completed[date.startOfDay()!]?.toggle()
         }
 //        if let currentStatus = completed[date] {
 //            completed[date] = !currentStatus

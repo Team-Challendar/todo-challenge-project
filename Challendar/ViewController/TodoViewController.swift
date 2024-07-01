@@ -105,7 +105,9 @@ class TodoViewController: BaseViewController {
     
     // Core Data가 업데이트되었을 때 호출되는 함수
     @objc func coreDataUpdated(_ notification: Notification) {
-        loadData()
+        DispatchQueue.main.async {
+            self.loadData()
+        }
     }
     
     // 섹션 헤더를 설정하는 함수
@@ -274,13 +276,11 @@ extension TodoViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
 extension TodoViewController: TodoViewCellDelegate {
     // 편집 컨테이너가 탭되었을 때 호출되는 함수
     func editContainerTapped(in cell: TodoCollectionViewCell) {
-        let editVC = EditTodoViewController()
+        let editVC = EditTodoBottomSheetViewController()
         editVC.todoId = cell.todoItem?.id
-        editVC.modalTransitionStyle = .coverVertical
-        editVC.modalPresentationStyle = .fullScreen
-        let navi = UINavigationController(rootViewController: editVC)
-        navi.modalPresentationStyle = .overFullScreen
-        self.present(navi, animated: true, completion: nil)
+        editVC.modalTransitionStyle = .crossDissolve
+        editVC.modalPresentationStyle = .overFullScreen
+        self.present(editVC, animated: true)
     }
 }
 
