@@ -254,9 +254,11 @@ class TodoCalendarViewDifferableViewController: BaseViewController{
     }
     // Core Data 업데이트 알림 처리
     @objc func coreDataUpdated(){
-        todoItems = CoreDataManager.shared.fetchTodos()
-        self.filterTodoitems(date:  self.currentDate ?? Date())
-        updateDataSource() // 데이터 업데이트 메서드 호출
+        DispatchQueue.main.async {
+            self.todoItems = CoreDataManager.shared.fetchTodos()
+            self.filterTodoitems(date:  self.currentDate ?? Date())
+            self.updateDataSource() //
+        }
     }
     // 제목 터치 처리
     @objc func titleTouched() {
