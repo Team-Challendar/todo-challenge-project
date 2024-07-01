@@ -95,6 +95,21 @@ class ChallengeListViewController: BaseViewController {
         filterTodos()
         sortByRecentStartDate()
         updateEmptyStateVisibility()
+        
+        let challengeTodos = todoItems.filter { $0.isChallenge }
+         if !challengeTodos.isEmpty {
+             let completedChallenges = challengeTodos.filter { $0.completed[Date().startOfDay() ?? Date()] ?? false }
+             cardImageView.image = .done0.withTintColor(.challendarGreen200)
+             cardTitleLabel.text = "도전 중인 챌린지"
+             cardTitleLabel.textColor = .challendarWhite
+             
+             let completeLabel = cardTodoState.subviews.compactMap { $0 as? UILabel }.first { $0.font.pointSize == 18 }
+             completeLabel?.text = "\(completedChallenges.count)"
+             
+             let totalLabel = cardTodoState.subviews.compactMap { $0 as? UILabel }.first { $0.font.pointSize == 12 && $0.textColor == .secondary600 }
+             totalLabel?.text = "\(challengeTodos.count)"
+         }
+        
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.updateEmptyStateVisibility()
@@ -165,54 +180,69 @@ class ChallengeListViewController: BaseViewController {
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.spacing = 16
-        stackView.backgroundColor = .secondary850
-        stackView.layer.cornerRadius = 20
-        stackView.layer.masksToBounds = true
-        
+        stackView.backgroundColor = .clear
         view.addSubview(stackView)
         
         cardView = UIView()
-        cardView.backgroundColor = .clear
-        stackView.addSubview(cardView)
+        cardView.backgroundColor = .secondary850
+        cardView.layer.cornerRadius = 20
+        cardView.layer.masksToBounds = true
+        stackView.addArrangedSubview(cardView)
         
         cardImageView = UIImageView()
-        cardImageView.image = .done0.withTintColor(.challendarGreen200)
         cardView.addSubview(cardImageView)
         
         cardTitleLabel = UILabel()
-        cardTitleLabel.text = "도전 중인 챌린지"
-        cardTitleLabel.font = .pretendardMedium(size: 16)
-        cardTitleLabel.textColor = .challendarWhite
         cardView.addSubview(cardTitleLabel)
         
         cardTodoState = UIView()
         cardTodoState.backgroundColor = .clear
         cardView.addSubview(cardTodoState)
-//        
-//        let complete = UILabel()
-//        complete.text =
         
-    }
-    
-    private func setupStackViewConstrains() {
-        cardView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().offset(-24)
-        }
+        let completeLabel = UILabel()
+        completeLabel.font = .pretendardMedium(size: 18)
+        completeLabel.textColor = .white
+        cardTodoState.addSubview(completeLabel)
+        
+        let slashLabel = UILabel()
+        slashLabel.font = .pretendardMedium(size: 12)
+        slashLabel.textColor = .secondary600
+        slashLabel.text = "/"
+        cardTodoState.addSubview(slashLabel)
+        
+        let totalLabel = UILabel()
+        totalLabel.font = .pretendardMedium(size: 12)
+        totalLabel.textColor = .secondary600
+        cardTodoState.addSubview(totalLabel)
         
         cardImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.leading.equalTo(cardView.snp.leading)
-            make.height.width.equalTo(32)
+            make.width.height.equalTo(32)
         }
         
         cardTitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(cardImageView.snp.trailing).offset(12)
             make.centerY.equalToSuperview()
-            make.leading.equalTo(cardView.snp.leading).offset(12)
         }
         
         cardTodoState.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
             make.centerY.equalToSuperview()
+        }
+        
+        completeLabel.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+        }
+        
+        slashLabel.snp.makeConstraints { make in
+            make.leading.equalTo(completeLabel.snp.trailing).offset(4)
+            make.centerY.equalToSuperview()
+        }
+        
+        totalLabel.snp.makeConstraints { make in
+            make.leading.equalTo(slashLabel.snp.trailing).offset(4)
+            make.trailing.top.bottom.equalToSuperview()
         }
     }
     
