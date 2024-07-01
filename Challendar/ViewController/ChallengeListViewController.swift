@@ -24,6 +24,11 @@ class ChallengeListViewController: BaseViewController {
     private var dayLabel: UILabel!
     private var yearLabel: UILabel!
     
+    private var cardImageView: UIImageView!
+    private var cardTitleLabel: UILabel!
+    private var cardTodoState: UIView!
+    private var cardView: UIView!
+    
     private var stackView: UIStackView!
     private var collectionView: UICollectionView!
     private var resetBtn: UIButton!
@@ -92,6 +97,21 @@ class ChallengeListViewController: BaseViewController {
         filterTodos()
         sortByRecentStartDate()
         updateEmptyStateVisibility()
+        
+        let challengeTodos = todoItems.filter { $0.isChallenge }
+         if !challengeTodos.isEmpty {
+             let completedChallenges = challengeTodos.filter { $0.completed[Date().startOfDay() ?? Date()] ?? false }
+             cardImageView.image = .done0.withTintColor(.challendarGreen200)
+             cardTitleLabel.text = "도전 중인 챌린지"
+             cardTitleLabel.textColor = .challendarWhite
+             
+             let completeLabel = cardTodoState.subviews.compactMap { $0 as? UILabel }.first { $0.font.pointSize == 18 }
+             completeLabel?.text = "\(completedChallenges.count)"
+             
+             let totalLabel = cardTodoState.subviews.compactMap { $0 as? UILabel }.first { $0.font.pointSize == 12 && $0.textColor == .secondary600 }
+             totalLabel?.text = "\(challengeTodos.count)"
+         }
+        
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.updateEmptyStateVisibility()
@@ -106,13 +126,13 @@ class ChallengeListViewController: BaseViewController {
            }
 
            stackView.snp.makeConstraints { make in
-               make.top.equalTo(dateView.snp.bottom).offset(16)
+               make.top.equalTo(dateView.snp.bottom).offset(12)
                make.leading.trailing.equalToSuperview().inset(16)
-               make.height.equalTo(208)
+//               make.height.equalTo(208)
            }
 
            collectionView.snp.makeConstraints { make in
-               make.top.equalTo(stackView.snp.bottom).offset(8)
+               make.top.equalTo(stackView.snp.bottom).offset(24)
                make.leading.trailing.equalToSuperview()
                make.bottom.equalToSuperview()
            }
@@ -162,19 +182,69 @@ class ChallengeListViewController: BaseViewController {
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.spacing = 16
-        stackView.backgroundColor = .secondary850
-        stackView.layer.cornerRadius = 20
-        stackView.layer.masksToBounds = true
-
+        stackView.backgroundColor = .clear
         view.addSubview(stackView)
-
-        let innerView = UIView()
-        innerView.backgroundColor = .clear
-
-        stackView.addArrangedSubview(innerView)
-
-        innerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(24)
+        
+        cardView = UIView()
+        cardView.backgroundColor = .secondary850
+        cardView.layer.cornerRadius = 20
+        cardView.layer.masksToBounds = true
+        stackView.addArrangedSubview(cardView)
+        
+        cardImageView = UIImageView()
+        cardView.addSubview(cardImageView)
+        
+        cardTitleLabel = UILabel()
+        cardView.addSubview(cardTitleLabel)
+        
+        cardTodoState = UIView()
+        cardTodoState.backgroundColor = .clear
+        cardView.addSubview(cardTodoState)
+        
+        let completeLabel = UILabel()
+        completeLabel.font = .pretendardMedium(size: 18)
+        completeLabel.textColor = .white
+        cardTodoState.addSubview(completeLabel)
+        
+        let slashLabel = UILabel()
+        slashLabel.font = .pretendardMedium(size: 12)
+        slashLabel.textColor = .secondary600
+        slashLabel.text = "/"
+        cardTodoState.addSubview(slashLabel)
+        
+        let totalLabel = UILabel()
+        totalLabel.font = .pretendardMedium(size: 12)
+        totalLabel.textColor = .secondary600
+        cardTodoState.addSubview(totalLabel)
+        
+        cardImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(32)
+        }
+        
+        cardTitleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(cardImageView.snp.trailing).offset(12)
+            make.centerY.equalToSuperview()
+        }
+        
+        cardTodoState.snp.makeConstraints { make in
+            make.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        completeLabel.snp.makeConstraints { make in
+            make.leading.top.bottom.equalToSuperview()
+        }
+        
+        slashLabel.snp.makeConstraints { make in
+            make.leading.equalTo(completeLabel.snp.trailing).offset(4)
+            make.centerY.equalToSuperview()
+        }
+        
+        totalLabel.snp.makeConstraints { make in
+            make.leading.equalTo(slashLabel.snp.trailing).offset(4)
+            make.trailing.top.bottom.equalToSuperview()
         }
     }
     

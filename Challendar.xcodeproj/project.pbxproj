@@ -408,6 +408,7 @@
 				14C97F1C2C09A4C800819B27 /* BottomSheetViewController.swift */,
 				2EAB04252C2290E800298F1C /* AddTodoBottomSheetViewController.swift */,
 				1472ADD92C083AFE00145668 /* ChallengeListViewController.swift */,
+				2E41FA9D2C32994700CDA22D /* EditTodoBottomSheetViewController.swift */,
 				2EBF439E2C194C1200064A77 /* ChallengeSuccessViewController.swift */,
 				1472ADE92C0840AD00145668 /* TabBarViewController.swift */,
 				1472ADA42C082A0F00145668 /* TodoCalendarViewController.swift */,
