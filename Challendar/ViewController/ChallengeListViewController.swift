@@ -23,6 +23,8 @@ class ChallengeListViewController: BaseViewController {
     private var dateView: UIView!
     private var dayLabel: UILabel!
     private var yearLabel: UILabel!
+    
+    private var stackView: UIStackView!
     private var collectionView: UICollectionView!
     private var resetBtn: UIButton!
     
@@ -33,11 +35,17 @@ class ChallengeListViewController: BaseViewController {
         loadData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadData()
+    }
+    
     override func configureUI() {
         super.configureUI()
         setupEmptyStateViews()
         setupCollectionView()
         setupDateView()
+        setupStackView()
     }
     
     override func configureConstraint() {
@@ -87,16 +95,22 @@ class ChallengeListViewController: BaseViewController {
     
     private func setupLayout() {
         dateView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(44)
-        }
-        
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(dateView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-        }
+               make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+               make.leading.trailing.equalToSuperview().inset(16)
+               make.height.equalTo(44)
+           }
+
+           stackView.snp.makeConstraints { make in
+               make.top.equalTo(dateView.snp.bottom).offset(16)
+               make.leading.trailing.equalToSuperview().inset(16)
+               make.height.equalTo(208)
+           }
+
+           collectionView.snp.makeConstraints { make in
+               make.top.equalTo(stackView.snp.bottom).offset(8)
+               make.leading.trailing.equalToSuperview()
+               make.bottom.equalToSuperview()
+           }
     }
     
     // 상단 날짜 뷰
@@ -134,6 +148,28 @@ class ChallengeListViewController: BaseViewController {
         yearLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(dayLabel.snp.trailing).offset(7)
+        }
+    }
+    
+    private func setupStackView() {
+        stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 16
+        stackView.backgroundColor = .secondary850
+        stackView.layer.cornerRadius = 20
+        stackView.layer.masksToBounds = true
+
+        view.addSubview(stackView)
+
+        let innerView = UIView()
+        innerView.backgroundColor = .clear
+
+        stackView.addArrangedSubview(innerView)
+
+        innerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(24)
         }
     }
     
@@ -373,7 +409,7 @@ extension ChallengeListViewController : ChallengeCollectionViewCellDelegate {
     func editContainerTapped(in cell: ChallengeCollectionViewCell) {
         let editVC = EditTodoBottomSheetViewController()
         editVC.todoId = cell.todoItem?.id
-        editVC.modalTransitionStyle = .coverVertical
+        editVC.modalTransitionStyle = .crossDissolve
         editVC.modalPresentationStyle = .overFullScreen
         self.present(editVC, animated: true)
     }
