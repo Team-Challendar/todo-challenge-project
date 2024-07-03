@@ -5,9 +5,11 @@
 
 [<img width="220" src="https://user-images.githubusercontent.com/50910456/173174832-7d395623-ceb3-4796-b718-22e550af6934.svg">](https://apps.apple.com/kr/app/%EC%B1%8C%EB%A6%B0%EB%8D%94-challendar/id6504077858)
 
-<!--!<img width="77" src="https://img.shields.io/badge/iOS-17.0+-silver">
-[Generic badge](https://img.shields.io/badge/version-2.0-critical.svg) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/Team-Challendar/todo-challenge-project&count_bg=%2378F5B6&title_bg=%23555555&icon=github.svg&icon&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)-->
 
+
+![Generic badge](https://img.shields.io/badge/version-2.0-critical.svg) <img width="77" src="https://img.shields.io/badge/iOS-17.0+-silver">
+<br/>
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://github.com/Team-Challendar/todo-challenge-project&count_bg=%2378F5B6&title_bg=%23555555&icon=github.svg&icon&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
 </div>
 
@@ -18,7 +20,7 @@
 4. [Project Structure](#%EF%B8%8F-project-structure)
 5. [Developer](#-developer)
 
-<br>
+<br/>
 
 ## ✨ Introduction
 <div align="center">
@@ -33,9 +35,9 @@
 
 ```
 우리의 일상을 들여다보면, 다양한 ‘To-Do’ 가 숨어 있어요.
-1. 일상의 짤막한 메모도 있고  → **`할 일`**
-2. 단기적, 장기적인 스케줄도 있고  → **`계획`**
-3. 기간 내 반드시 해야 하는 도전도 있고  → **`챌린지`**
+1. 일상의 짤막한 메모도 있고  → `할 일`
+2. 단기적, 장기적인 스케줄도 있고  → `계획`
+3. 기간 내 반드시 해야 하는 도전도 있고  → `챌린지`
 ```
 
 비슷해 보이지만.. 다르죠?
@@ -48,24 +50,24 @@
 ## 🎯 Main Feature
 ### 🟩  **`챌린지`:  더 직관적으로**
 일상에서 도전을 실천해보세요! 🎯 
-여러분의 **`챌린지`**를 응원하며, 성공의 파트너가 되어드릴게요!
+여러분의 **`챌린지`** 를 응원하며, 성공의 파트너가 되어드릴게요!
 - **`챌린지`** 현황을 한 눈에 파악할 수 있어요.
 - **`챌린지`** 를 완료하면 ‘**참 잘했어요 폭죽**’이 파팡! 터진답니다. 🎉  성취의 순간을 즐겨보세요! 😄
-- 
+  
 ![Slide 4_3 - 3](https://github.com/Team-Challendar/todo-challenge-project/assets/100783766/babfe8d5-0bef-4da4-bc15-0d3594d56f3e)
 <br/>
 ### 🟥  **`할 일`**:  형식없이 편하게
 **‘챌린더’ 와 함께라면** 일상의 **`할 일` 도 깜빡하지 않아요! 놓치는 일 없이 모두 챙겨보세요. 💪**
 - 좌상단 **`정렬 버튼`** 을 선택하여 목록을 **`최신순`** 또는 **`등록순`** 으로 정렬할 수 있어요.
-- 예정된 **`할 일`**은 상단에, 완료된 **`할 일`** 은 바로 아래에 위치해 있어요. 완료된 항목도 체크박스로 다시**`할 일`** 로 부활 가능! 🔄 효율적으로 관리해보세요.✨
-- 
+- 예정된 **`할 일`**은 상단에, 완료된 **`할 일`** 은 바로 아래에 위치해 있어요. 완료된 항목도 체크박스로 다시 **`할 일`** 로 부활 가능! 🔄 효율적으로 관리할 수 있어요.✨
+  
 ![Slide 4_3 - 4](https://github.com/Team-Challendar/todo-challenge-project/assets/100783766/e85ccf35-1de7-4a1d-9678-6fdf4204a319)
 <br/>
 ### 🟦  **`계획`**:  달력으로 한 눈에
 **‘챌린더’ 와 함께** 도전이 아닌 일상의 **`계획` 도 빠짐없이 해내봅시다**. 
 달성 현황에 따른 Blue 컬러의 차이가 보이시나요? 목표 달성의 기쁨이 점점 진해집니다! 💙✨
 - 좌상단 정렬 버튼을 선택하여 달력 → 날짜로 ‘일자 별’ 현황도  파악하세요.
-- 
+  
 ![Slide 4_3 - 5](https://github.com/Team-Challendar/todo-challenge-project/assets/100783766/aef4adaa-3985-4f82-ac1f-e5973010a78e)
 <br/>
 ### 🌈  **`스와이프`**: 모든 것을 간편하게
