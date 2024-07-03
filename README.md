@@ -17,8 +17,9 @@
 1. [Introduction](#-introduction)
 2. [Main Feature](#-main-feature)
 3. [Development Tool](#-development-tool)
-4. [Project Structure](#%EF%B8%8F-project-structure)
+4. [Project Improvement](#%EF%B8%8F-project-improvement)
 5. [Developer](#-developer)
+6. [License](#-license)
 
 <br/>
 
@@ -52,14 +53,15 @@
 일상에서 도전을 실천해보세요! 🎯 
 여러분의 **`챌린지`** 를 응원하며, 성공의 파트너가 되어드릴게요!
 - **`챌린지`** 현황을 한 눈에 파악할 수 있어요.
-- **`챌린지`** 를 완료하면 ‘**참 잘했어요 폭죽**’이 파팡! 터진답니다. 🎉  성취의 순간을 즐겨보세요! 😄
+- **`챌린지`** 를 완료하면 ‘**참 잘했어요 폭죽**’이 파팡! 터진답니다. 🎉 성취의 순간을 즐겨보세요! 😄
   
 ![Slide 4_3 - 3](https://github.com/Team-Challendar/todo-challenge-project/assets/100783766/babfe8d5-0bef-4da4-bc15-0d3594d56f3e)
 <br/>
 ### 🟥  **`할 일`**:  형식없이 편하게
 **‘챌린더’ 와 함께라면** 일상의 **`할 일` 도 깜빡하지 않아요! 놓치는 일 없이 모두 챙겨보세요. 💪**
 - 좌상단 **`정렬 버튼`** 을 선택하여 목록을 **`최신순`** 또는 **`등록순`** 으로 정렬할 수 있어요.
-- 예정된 **`할 일`**은 상단에, 완료된 **`할 일`** 은 바로 아래에 위치해 있어요. 완료된 항목도 체크박스로 다시 **`할 일`** 로 부활 가능! 🔄 효율적으로 관리할 수 있어요.✨
+- 예정된 **`할 일`** 은 상단에, 완료된 **`할 일`** 은 바로 아래에 위치해 있어요.
+- 완료된 항목도 체크박스로 다시 **`할 일`** 로 부활 가능! 🔄 효율적으로 관리할 수 있어요.✨
   
 ![Slide 4_3 - 4](https://github.com/Team-Challendar/todo-challenge-project/assets/100783766/e85ccf35-1de7-4a1d-9678-6fdf4204a319)
 <br/>
@@ -78,8 +80,6 @@
 
 ## 🛠 Development Tool
 
-
-
 | 분야 | 도구 |
 | ----- | ----- |
 | Environment | <img src = https://camo.githubusercontent.com/d68a9ca7e7bd162a95193e369f2851d5e1548f11f6fce154642bc8291821e522/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d58636f64652d3134374546423f7374796c653d666c6174266c6f676f3d78636f6465266c6f676f436f6c6f723d7768697465> <img src = https://camo.githubusercontent.com/0563e6563a564cc6842269359009f22cd8d905b0605fc31d2ec4721b474289c0/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d6769742d4630353033323f7374796c653d666c6174266c6f676f3d676974266c6f676f436f6c6f723d7768697465> <img src = https://camo.githubusercontent.com/b96cf47430c7ed7cb8e9b863ec909ad51c20aa24c02ea07ef04c59fd56d97b19/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d6769746875622d3138313731373f7374796c653d666c6174266c6f676f3d676974687562266c6f676f436f6c6f723d7768697465> |
@@ -88,19 +88,29 @@
 | Design | ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white) |
 | Communication | ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)|
 
+<br/>
 
 
 
+## 🏛️ Project Improvement
+![Screenshot_2024-07-03_at_11 47 11_AM-removebg](https://github.com/Team-Challendar/todo-challenge-project/assets/100783766/813a7555-50c3-4b74-9684-e62990ca50fc)
 
-## 🏛️ Project Structure
-
-
-
-
-
-## 👨‍👩‍👧‍👦 Developer
+![Frame 2809](https://github.com/Team-Challendar/todo-challenge-project/assets/100783766/5c3c9435-49cb-421d-b185-59e32dca7677)
 
 
+<br/>
+
+## 🧑‍💻 Developer
+| Name    | <center>채나연</center>|<center>이승원</center> |<center>조현민</center> | <center>서혜림</center> | <center>이정복</center>
+| ------- | --------------------------------------------- | ------------------------------------ | --------------------------------------------- | --------------------------------------- | --------------------------------------- |
+| Profile | <center> <img width="100px" height="100px" src="https://avatars.githubusercontent.com/u/155615768?v=4" /></center> |<center><img width="100px" height="100px" src="https://avatars.githubusercontent.com/u/12388297?v=4" /></center> |<center><img width="100px" height="100px" src="https://avatars.githubusercontent.com/u/100783766?v=4" /></center> |<center><img width="100px" height="100px" src="https://avatars.githubusercontent.com/u/156744336?v=4" /></center> |<center><img width="100px" height="100px" src="https://avatars.githubusercontent.com/u/161338683?v=4" /></center> |
+GitHub | <center>[@aNY-Chae](https://github.com/NY-Chae)</center> | <center>[@sam98528](https://github.com/sam98528) </center> | <center>[@Chynmn](https://github.com/Chynmn) </center>| <center>[@hyelim9300](https://github.com/hyelim9300)</center> | <center>[@DevJaby](https://github.com/DevJaby)</center> |
+
+<br/>
+
+## 🪪 License
+
+Challendar is released under the MIT license. [See LICENSE](https://github.com/Team-Challendar/todo-challenge-project/blob/dev-V1.0.1/LICENSE) for details.
 
 
 
